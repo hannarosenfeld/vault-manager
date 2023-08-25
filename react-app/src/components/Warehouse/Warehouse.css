@@ -1,0 +1,21 @@
+.warehouse {
+    height: 65vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-gap: 1%;
+    background-color: #fff;
+    color: #444;
+}
+
+.row {
+    display: flex;
+}
+
+.field {
+    background-color: #444;
+    color: #fff;
+    border-radius: 5px;
+    padding: 2%;
+    font-size: 12px;
+}

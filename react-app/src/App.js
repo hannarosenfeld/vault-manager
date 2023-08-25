@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Route, Switch } from "react-router-dom";
+
+import { authenticate } from "./store/session";
+
 import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
-import { authenticate } from "./store/session";
 import Navigation from "./components/Navigation";
+import Index from "./components/Index";
+
+
 
 function App() {
   const dispatch = useDispatch();
@@ -18,6 +23,9 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
+          <Route path="/">
+            <Index />
+          </Route>
           <Route path="/login" >
             <LoginFormPage />
           </Route>

@@ -1,7 +1,33 @@
+.profile-button {
+  padding: 10px;
+}
+
 .profile-dropdown {
   position: absolute;
+  border: 1px solid var(--qwhite) !important;
+  min-width: 10em;
+  left: auto !important;
+  right: auto !important;
+  transform: translate(-40%, 0) !important;
+  margin-top: 0.3em;
 }
 
 .hidden {
   display: none;
 }
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.home-button {
+  width: 50px;
+}
+
+.home-button img {
+  max-width: 100%;
+}
+

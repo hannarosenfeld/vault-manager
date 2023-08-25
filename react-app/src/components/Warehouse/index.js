@@ -1,0 +1,82 @@
+import "./Warehouse.css"
+
+export default function Warehouse () {
+    return (
+        <div className="warehouse-container">
+        <div className="warehouse">
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+                <div className="field">x</div>
+        </div>
+        </div>
+    )
+}
