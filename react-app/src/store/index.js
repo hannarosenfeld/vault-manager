@@ -1,9 +1,13 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import session from './session'
+import userReducer from './user';
+import vaultReducer from './vault'
 
 const rootReducer = combineReducers({
   session,
+  user: userReducer,
+  vault: vaultReducer
 });
 
 

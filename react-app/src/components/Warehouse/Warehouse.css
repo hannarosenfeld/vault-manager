@@ -1,11 +1,21 @@
+.warehouse-wrapper {
+    padding: 0 10px;
+    height: 85vh;
+}
+
 .warehouse {
-    height: 65vh;
+    height: 80%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-gap: 1%;
     background-color: #fff;
     color: #444;
+}
+
+.field-info {
+    height: 20%;
+    /* border: 2px solid blueviolet; */
 }
 
 .row {
@@ -16,6 +26,6 @@
     background-color: #444;
     color: #fff;
     border-radius: 5px;
-    padding: 2%;
+    padding: 10%;
     font-size: 12px;
 }

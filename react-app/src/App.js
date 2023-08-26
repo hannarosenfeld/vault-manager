@@ -8,6 +8,7 @@ import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import Navigation from "./components/Navigation";
 import Index from "./components/Index";
+import Warehouse from "./components/Warehouse";
 
 
 
@@ -23,8 +24,11 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
-          <Route path="/">
+          <Route exact path="/">
             <Index />
+          </Route>
+          <Route path="/warehouse">
+            <Warehouse/>
           </Route>
           <Route path="/login" >
             <LoginFormPage />
