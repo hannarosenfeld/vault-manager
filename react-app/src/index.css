@@ -1,14 +1,16 @@
-:root {
-    --nwhite:#F4F3F2;
-    --naglee-red:  #ea373d;
 
+:root {
+    --white:#F4F3F2;
+    --red:  #ea373d;
+    --grey: #878788;
+    --blac: #1A1A1D;
 }
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 body {
@@ -16,6 +18,7 @@ body {
     height: 100vh;
     display: flex;
     flex-direction: column;
+    color: var(--black);
 }
 
 .wrapper {

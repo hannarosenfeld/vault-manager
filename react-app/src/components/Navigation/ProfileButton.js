@@ -5,73 +5,64 @@ import { logout } from "../../store/session";
 import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
+
+import { Drawer, List, ListItem, ListItemText, Button } from "@mui/material";
+
 import "./Navigation.css"; // Make sure to adjust the path to your CSS file
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
-  const [showMenu, setShowMenu] = useState(false);
-  const ulRef = useRef();
+  const [showDrawer, setShowDrawer] = useState(false);
 
-  const openMenu = () => {
-    setShowMenu(true);
+  const openDrawer = () => {
+    setShowDrawer(true);
   };
 
-  useEffect(() => {
-    const closeMenu = (e) => {
-      if (ulRef.current && !ulRef.current.contains(e.target)) {
-        setShowMenu(false);
-      }
-    };
-
-    if (showMenu) {
-      document.addEventListener("click", closeMenu);
-    }
-
-    return () => {
-      document.removeEventListener("click", closeMenu);
-    };
-  }, [showMenu]);
+  const closeDrawer = () => {
+    setShowDrawer(false);
+  };
 
   const handleLogout = (e) => {
     e.preventDefault();
     dispatch(logout());
   };
 
-  const sidebarClassName = `sidebar-menu${showMenu ? " show-sidebar" : ""}`;
-
   return (
     <>
-      <button onClick={openMenu} className="profile-button">
+      <Button onClick={openDrawer} className="profile-button">
         <i className="fas fa-user-circle" />
-      </button>
-      <div className={sidebarClassName} ref={ulRef}>
-        {user ? (
-            <ul className="user-sidebar-menu">
-              <li>{user.username}</li>
-              <li>{user.email}</li>
-              <li>
-                <NavLink to="/add-vault">Add Vault</NavLink>
-              </li>
-              <li>
-                <button onClick={handleLogout}>Log Out</button>
-              </li>
-            </ul>
-        ) : (
-          <div className="auth-buttons">
-            <OpenModalButton
-              buttonText="Log In"
-              onItemClick={() => setShowMenu(false)}
-              modalComponent={<LoginFormModal />}
-            />
-            <OpenModalButton
-              buttonText="Sign Up"
-              onItemClick={() => setShowMenu(false)}
-              modalComponent={<SignupFormModal />}
-            />
-          </div>
-        )}
-      </div>
-      {showMenu && <div className="overlay" onClick={() => setShowMenu(false)} />}
+      </Button>
+      <Drawer anchor="right" open={showDrawer} onClose={closeDrawer}>
+        <div className="user-drawer">
+          {user ? (
+            <List>
+              <ListItem>
+                <ListItemText primary={user.username} secondary={user.email} />
+              </ListItem>
+              <ListItem button component={NavLink} to="/add-vault">
+                <ListItemText primary="Add Vault" />
+              </ListItem>
+              <ListItem>
+                <Button onClick={handleLogout}>Log Out</Button>
+              </ListItem>
+            </List>
+          ) : (
+            <div className="auth-buttons">
+              <OpenModalButton
+                buttonText="Log In"
+                onItemClick={closeDrawer}
+                modalComponent={<LoginFormModal />}
+              />
+              <OpenModalButton
+                buttonText="Sign Up"
+                onItemClick={closeDrawer}
+                modalComponent={<SignupFormModal />}
+              />
+            </div>
+          )}
+        </div>
+      </Drawer>
+      {showDrawer && <div className="overlay" onClick={closeDrawer} />}
     </>
   );
 }

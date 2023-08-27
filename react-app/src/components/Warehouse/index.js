@@ -72,7 +72,7 @@ export default function Warehouse () {
                  {row.fields.map((field, index) => (
                  <div
                     className="field"
-                    style={{ backgroundColor: `${field.vaults.length ? "#ea373d" : "#4e4e50"}` }}
+                    style={{ backgroundColor: `${field.vaults.length ? "var(--red)" : "var(--grey)"}` }}
                     onClick={() => handleFieldClick(field, row, index)} // Call the click handler here
                 >
                     <div className="field-number">{row.id}{index + 1}</div>

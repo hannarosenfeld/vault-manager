@@ -17,7 +17,6 @@
     display: grid; /* Use CSS Grid for the layout */
     grid-template-columns: 70% 30%; /* Divide the columns into 70% and 30% */
     height: 20%;
-    border: 2px solid blueviolet;
 }
 
 .selected-field-vaults-tmb {
@@ -64,7 +63,7 @@
 
 .field-number {
     text-align: center;
-    color: rgb(39, 37, 37);
+    color: var(--black);
     font-size: 12px;
     margin: 0 auto;
     align-self: center;
