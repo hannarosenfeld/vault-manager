@@ -1,3 +1,9 @@
+:root {
+    --nwhite:#F4F3F2;
+    --naglee-red:  #ea373d;
+
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -6,7 +12,7 @@
 }
 
 body {
-    background-color: #F4F3F2;
+    background-color: var(--nwhite);
     height: 100vh;
     display: flex;
     flex-direction: column;

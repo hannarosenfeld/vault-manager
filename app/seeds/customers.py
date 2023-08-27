@@ -4,7 +4,7 @@ from sqlalchemy.sql import text
 
 def seed_customers():
     c1 = Customer(
-        name="Naglee", color="ea373d"
+        name="Office Furniture", color="ea373d"
     )
     c2 = Customer(
         name="Knox"

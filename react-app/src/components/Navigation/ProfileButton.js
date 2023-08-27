@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
+import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
 import { logout } from "../../store/session";
 import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
+import "./Navigation.css"; // Make sure to adjust the path to your CSS file
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -11,22 +13,23 @@ function ProfileButton({ user }) {
   const ulRef = useRef();
 
   const openMenu = () => {
-    if (showMenu) return;
     setShowMenu(true);
   };
 
   useEffect(() => {
-    if (!showMenu) return;
-
     const closeMenu = (e) => {
-      if (!ulRef.current.contains(e.target)) {
+      if (ulRef.current && !ulRef.current.contains(e.target)) {
         setShowMenu(false);
       }
     };
 
-    document.addEventListener("click", closeMenu);
+    if (showMenu) {
+      document.addEventListener("click", closeMenu);
+    }
 
-    return () => document.removeEventListener("click", closeMenu);
+    return () => {
+      document.removeEventListener("click", closeMenu);
+    };
   }, [showMenu]);
 
   const handleLogout = (e) => {
@@ -34,39 +37,41 @@ function ProfileButton({ user }) {
     dispatch(logout());
   };
 
-  const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
-  const closeMenu = () => setShowMenu(false);
+  const sidebarClassName = `sidebar-menu${showMenu ? " show-sidebar" : ""}`;
 
   return (
     <>
       <button onClick={openMenu} className="profile-button">
         <i className="fas fa-user-circle" />
       </button>
-      <ul className={ulClassName} ref={ulRef}>
+      <div className={sidebarClassName} ref={ulRef}>
         {user ? (
-          <>
-            <li>{user.username}</li>
-            <li>{user.email}</li>
-            <li>
-              <button onClick={handleLogout}>Log Out</button>
-            </li>
-          </>
+            <ul className="user-sidebar-menu">
+              <li>{user.username}</li>
+              <li>{user.email}</li>
+              <li>
+                <NavLink to="/add-vault">Add Vault</NavLink>
+              </li>
+              <li>
+                <button onClick={handleLogout}>Log Out</button>
+              </li>
+            </ul>
         ) : (
-          <div>
+          <div className="auth-buttons">
             <OpenModalButton
               buttonText="Log In"
-              onItemClick={closeMenu}
+              onItemClick={() => setShowMenu(false)}
               modalComponent={<LoginFormModal />}
             />
-
             <OpenModalButton
               buttonText="Sign Up"
-              onItemClick={closeMenu}
+              onItemClick={() => setShowMenu(false)}
               modalComponent={<SignupFormModal />}
             />
           </div>
         )}
-      </ul>
+      </div>
+      {showMenu && <div className="overlay" onClick={() => setShowMenu(false)} />}
     </>
   );
 }

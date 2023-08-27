@@ -9,12 +9,12 @@ import LoginFormPage from "./components/LoginFormPage";
 import Navigation from "./components/Navigation";
 import Index from "./components/Index";
 import Warehouse from "./components/Warehouse";
-
-
+import AddVault from "./components/AddVault";
 
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
+
   useEffect(() => {
     dispatch(authenticate()).then(() => setIsLoaded(true));
   }, [dispatch]);
@@ -29,6 +29,9 @@ function App() {
           </Route>
           <Route path="/warehouse">
             <Warehouse/>
+          </Route>
+          <Route path="/add-vault">
+            <AddVault/>
           </Route>
           <Route path="/login" >
             <LoginFormPage />
