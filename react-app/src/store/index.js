@@ -3,11 +3,15 @@ import thunk from 'redux-thunk';
 import session from './session'
 import userReducer from './user';
 import vaultReducer from './vault'
+import rowReducer from './rows';
+import fieldReducer from './field';
 
 const rootReducer = combineReducers({
   session,
   user: userReducer,
-  vault: vaultReducer
+  vault: vaultReducer,
+  row: rowReducer,
+  field: fieldReducer
 });
 
 
