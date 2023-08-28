@@ -75,7 +75,7 @@ export default function Warehouse () {
                     style={{ backgroundColor: `${field.vaults.length ? "var(--red)" : "var(--lightgrey)"}` }}
                     onClick={() => handleFieldClick(field, row, index)} // Call the click handler here
                 >
-                    <div className="field-number">{row.id}{index + 1}</div>
+                    <div className="field-number">{field.field_id}</div>
                 </div>
                 ))}
                  </div>

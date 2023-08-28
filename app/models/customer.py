@@ -1,7 +1,6 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from flask_login import UserMixin
 
-
 class Customer(db.Model, UserMixin):
     __tablename__ = 'customers'
 
@@ -11,14 +10,15 @@ class Customer(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     color = db.Column(db.String(100), default='1B3333')
-    vaults = db.relationship('Vault', backref='related_customer', lazy=True)
+    associated_customer_vaults = db.relationship('Vault', back_populates='customer')  # Use back_populates
+
 
     def to_dict(self):
         return {
             'id': self.id,
             'name': self.name,
             'color': self.color,
-            'vaults': [vault.to_dict() for vault in self.vaults],
+            'vaults': [vault.to_dict() for vault in self.associated_customer_vaults],  # Update relationship name here
         }
 
     def to_summary_dict(self):

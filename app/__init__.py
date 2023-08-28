@@ -13,6 +13,7 @@ from .api.auth_routes import auth_routes
 from .api.vault_routes import vault_routes
 from .api.row_routes import row_routes
 from .api.field_routes import field_routes
+from .api.customers_routes import customers_routes
 
 # from .api.answer_routes import answer_routes
 from .seeds import seed_commands
@@ -40,6 +41,7 @@ app.register_blueprint(auth_routes, url_prefix='/api/auth')
 app.register_blueprint(vault_routes, url_prefix='/api/vaults')
 app.register_blueprint(row_routes, url_prefix='/api/rows')
 app.register_blueprint(field_routes, url_prefix='/api/fields')
+app.register_blueprint(customers_routes, url_prefix='/api/customers')
 
 
 db.init_app(app)

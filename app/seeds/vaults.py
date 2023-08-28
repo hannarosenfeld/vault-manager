@@ -4,11 +4,11 @@ from sqlalchemy.sql import text
 
 def seed_vaults():
     v1 = Vault(
-        customer_id=2, field_id=25, field="C1", position='TOP', vault_id='144')
+        customer_id=2, field_id=25, field_name="C1", position='TOP', vault_id='144')
     v2 = Vault(
-        customer_id=3, field_id=25, field="C1", position='MIDDLE', vault_id='266')
+        customer_id=3, field_id=25, field_name="C1", position='MIDDLE', vault_id='266')
     v3 = Vault(
-        customer_id=1, field_id=25, field="C1", position='BOTTOM', vault_id='176')
+        customer_id=1, field_id=25, field_name="C1", position='BOTTOM', vault_id='176')
 
     db.session.add(v1)
     db.session.add(v2)

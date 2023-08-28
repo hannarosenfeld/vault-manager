@@ -5,6 +5,7 @@ from app.forms import VaultForm
 
 vault_routes = Blueprint('vaults', __name__)
 
+
 def validation_errors_to_error_messages(validation_errors):
     """
     Simple function that turns the WTForms validation errors into a simple list
@@ -35,7 +36,6 @@ def single_vault(id):
 
 
 
-
 @vault_routes.route('/', methods=['POST'])
 @login_required
 def add_vault():
@@ -49,6 +49,7 @@ def add_vault():
         new_vault = Vault(
             customer_id=customer.id if customer else None,  # Use the existing customer's id or None
             field_id=form.data['field_id'],
+            field_name=form.data['field_name'],
             position=form.data['position'],
             vault_id=form.data['vault_id'],
         )

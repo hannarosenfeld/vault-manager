@@ -11,7 +11,8 @@ class Field(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     row_id = db.Column(db.String, db.ForeignKey('rows.id'))
     empty = db.Column(db.Boolean, default=True)
-    vaults = db.relationship('Vault', backref='field', lazy=True)  # One-to-many relationship with Vault
+    vaults = db.relationship('Vault', foreign_keys='Vault.field_id', backref='field', lazy=True)
+    field_id = db.Column(db.String(3), unique=True, nullable=False)  # Remove backref
 
     def generate_field_id(self, row_id, numerical_identifier):
         # Example: For row_id = 'B' and numerical_identifier = 11, generate 'B11'
@@ -21,6 +22,7 @@ class Field(db.Model, UserMixin):
         return {
             'id': self.id,
             'row_id': self.row_id,
+            'field_id': self.field_id,
             'empty': self.empty,
-            'vaults': [vault.to_dict() for vault in self.vaults]
+            'vaults': [vault.to_dict() for vault in self.vaults],
         }

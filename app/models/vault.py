@@ -8,19 +8,21 @@ class Vault(db.Model, UserMixin):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    customer_id = db.Column(db.Integer, db.ForeignKey('customers.id'), nullable=False)
+    customer_id = db.Column(db.Integer, db.ForeignKey('customers.id'), nullable=True, index=True)
     field_id = db.Column(db.Integer, db.ForeignKey('fields.id'), nullable=False)
-    field = db.Column(db.String(10), nullable=False)
+    field_name = db.Column(db.String, db.ForeignKey('fields.field_id'), nullable=False)
     position = db.Column(db.String(100), nullable=False)
     vault_id = db.Column(db.String(100), nullable=False)
 
-    customer = db.relationship('Customer', backref='associated_customer')
+    customer = db.relationship('Customer', back_populates='associated_customer_vaults')  # Use back_populates
+
 
     def to_dict(self):
         return {
             'id': self.id,
             'customer_id': self.customer_id,
             'field_id': self.field_id,
+            'field_name': self.field_name,
             'position': self.position,
             'vault_id': self.vault_id,
             'customer': self.customer.to_summary_dict() if self.customer else None  # Use a summary dict for customer
