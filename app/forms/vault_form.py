@@ -3,9 +3,9 @@ from wtforms import StringField, IntegerField
 from wtforms.validators import DataRequired
 
 class VaultForm(FlaskForm):
-    customer = StringField('customer', validators=[DataRequired()])
-    field = IntegerField('field', validators=[DataRequired()])
+    customer_name = StringField('customer_name', validators=[DataRequired()])
+    field_id = IntegerField('field_id', validators=[DataRequired()])
     position = StringField('position', validators=[DataRequired()])
-    vault_id = StringField('vault id', validators=[DataRequired()])
+    vault_id = StringField('vault_id', validators=[DataRequired()])
     
 

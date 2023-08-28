@@ -1,8 +1,19 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from flask_login import login_required
-from app.models import Vault
+from app.models import Customer, Vault, db
+from app.forms import VaultForm
 
 vault_routes = Blueprint('vaults', __name__)
+
+def validation_errors_to_error_messages(validation_errors):
+    """
+    Simple function that turns the WTForms validation errors into a simple list
+    """
+    errorMessages = []
+    for field in validation_errors:
+        for error in validation_errors[field]:
+            errorMessages.append(f'{field} : {error}')
+    return errorMessages
 
 
 @vault_routes.route('/')
@@ -21,3 +32,32 @@ def single_vault(id):
     """
     vault = Vault.query.get(id)
     return vault.to_dict()
+
+
+
+
+@vault_routes.route('/', methods=['POST'])
+@login_required
+def add_vault():
+    form = VaultForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    if form.validate_on_submit():
+        customer_name = form.data['customer_name']
+        customer = Customer.query.filter_by(name=customer_name).first()
+
+        new_vault = Vault(
+            customer_id=customer.id if customer else None,  # Use the existing customer's id or None
+            field_id=form.data['field_id'],
+            position=form.data['position'],
+            vault_id=form.data['vault_id'],
+        )
+
+        db.session.add(new_vault)
+        db.session.commit()
+
+        dict_new_vault = new_vault.to_dict()
+
+        return dict_new_vault
+
+    return jsonify({'errors': validation_errors_to_error_messages(form.errors)}), 400

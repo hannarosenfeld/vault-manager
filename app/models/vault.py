@@ -10,6 +10,7 @@ class Vault(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     customer_id = db.Column(db.Integer, db.ForeignKey('customers.id'), nullable=False)
     field_id = db.Column(db.Integer, db.ForeignKey('fields.id'), nullable=False)
+    field = db.Column(db.String(10), nullable=False)
     position = db.Column(db.String(100), nullable=False)
     vault_id = db.Column(db.String(100), nullable=False)
 
@@ -22,7 +23,7 @@ class Vault(db.Model, UserMixin):
             'field_id': self.field_id,
             'position': self.position,
             'vault_id': self.vault_id,
-            'customer': self.customer.to_summary_dict() if self.customer else None  # Use the summary dict for customer
+            'customer': self.customer.to_summary_dict() if self.customer else None  # Use a summary dict for customer
         }
     
     def to_summary_dict(self):
