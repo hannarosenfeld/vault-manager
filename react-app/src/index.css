@@ -1,9 +1,12 @@
 
 :root {
-    --white:#F4F3F2;
+    --white:#F4F4F4;
     --red:  #ea373d;
-    --grey: #878788;
-    --blac: #1A1A1D;
+    --teal: #2A9D8F;
+    --blue: #007bff;
+    --lightgrey: #CBCBCB;
+    --grey: #505050;
+    --black: #1A1A1D;
 }
 
 * {
@@ -14,7 +17,7 @@
 }
 
 body {
-    background-color: var(--nwhite);
+    background-color: var(--white);
     height: 100vh;
     display: flex;
     flex-direction: column;

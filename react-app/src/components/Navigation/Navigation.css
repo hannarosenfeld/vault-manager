@@ -50,24 +50,3 @@
   max-width: 100%;
 }
 
-.sidebar-menu {
-  position: fixed; /* Change to fixed positioning */
-  top: 0;
-  right: 0;
-  bottom: 0; /* Make it cover the full height */
-  width: 40%; /* Change width as needed */
-  background: #1a1a1d;
-  color: var(--nwhite);
-  z-index: 100; /* Ensure it's on top of other content */
-  overflow-y: auto; /* Enable scrolling if needed */
-  display: none; /* Initially hidden */
-  padding: 10px;
-}
-
-.show-sidebar {
-  display: block; /* Display it when active */
-}
-
-.user-sidebar-menu {
-  
-}

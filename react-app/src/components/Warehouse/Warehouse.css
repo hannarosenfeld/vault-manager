@@ -34,7 +34,7 @@
 }
 
 .top, .middle {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid var(--white);
 }
 
 /* Warehouse Rows */
@@ -56,7 +56,6 @@
 }
 
 .field {
-    background: grey;
     border-radius: 3px;
     display: flex;
 }

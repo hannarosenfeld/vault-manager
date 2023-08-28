@@ -29,21 +29,39 @@ function ProfileButton({ user }) {
 
   return (
     <>
-      <Button onClick={openDrawer} className="profile-button">
+      <Button 
+        onClick={openDrawer} 
+        className="profile-button"
+        style={{color: "var(--blue)"}}>
         <i className="fas fa-user-circle" />
       </Button>
-      <Drawer anchor="right" open={showDrawer} onClose={closeDrawer}>
+      <Drawer 
+        anchor="right" 
+        open={showDrawer} 
+        onClose={closeDrawer}
+        PaperProps={{
+          sx: {
+            backgroundColor: "var(--black)",
+            color: "var(--lightgrey)",
+            width: "40%"
+          }
+        }}>
         <div className="user-drawer">
           {user ? (
             <List>
               <ListItem>
-                <ListItemText primary={user.username} secondary={user.email} />
+                <ListItemText primary={user.username}/>
               </ListItem>
-              <ListItem button component={NavLink} to="/add-vault">
+              <ListItem 
+                button 
+                component={NavLink} 
+                to="/add-vault" 
+                style={{color: "var(--blue)", display: "flex", gap: "5px"}}>
+                <i class="fa-solid fa-plus"></i>
                 <ListItemText primary="Add Vault" />
               </ListItem>
-              <ListItem>
-                <Button onClick={handleLogout}>Log Out</Button>
+              <ListItem >
+                <Button style={{color: "var(--red)"}} onClick={handleLogout}>Log Out</Button>
               </ListItem>
             </List>
           ) : (

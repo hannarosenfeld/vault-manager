@@ -5,13 +5,15 @@ import userReducer from './user';
 import vaultReducer from './vault'
 import rowReducer from './rows';
 import fieldReducer from './field';
+import customerReducer from './customer';
 
 const rootReducer = combineReducers({
   session,
   user: userReducer,
   vault: vaultReducer,
   row: rowReducer,
-  field: fieldReducer
+  field: fieldReducer,
+  customer: customerReducer
 });
 
 
