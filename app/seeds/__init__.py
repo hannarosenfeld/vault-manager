@@ -26,8 +26,8 @@ def seed():
         undo_users()
     seed_users()
     seed_customers()
-    seed_fields()  # Seed fields before customers
-    seed_rows()    # Seed rows before fields
+    seed_rows()    
+    seed_fields()
     seed_vaults()
     # Add other seed functions here
 
@@ -36,7 +36,7 @@ def seed():
 def undo():
     undo_vaults()
     undo_customers()
-    undo_fields()  # Undo fields before users
-    undo_rows()    # Undo rows before fields
+    undo_rows()
+    undo_fields() 
     undo_users()
     # Add other undo functions here
