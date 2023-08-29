@@ -23,8 +23,20 @@ export default function MiniWareHouse({ selectedField }) {
                     <div
                         className="field"
                         key={field.id}
-                        style={{ backgroundColor: `${field.vaults.length ? "var(--red)" : "var(--lightgrey)" }`, border: `${selectedField?.field_id === field?.field_id ? "2px solid var(--blue)" : "transparent"}`}}>
-                        <div className="field-number">{field.field_id}</div>
+                        style={{
+                            backgroundColor: selectedField?.field_id === field?.field_id
+                                ? "var(--blue)"
+                                : field.vaults.length
+                                ? "rgba(234, 55, 61, 0.3)"
+                                : selectedField.field_id !== field.field_id
+                                ? "rgba(203, 203, 203, 0.5)"
+                                : "var(--lightgrey)",
+                            borderColor:
+                                selectedField?.field_id === field?.field_id
+                                ? "var(--blue)"
+                                : "transparent",
+                        }}>
+                        <div style={{color: selectedField?.field_id === field?.field_id ?  "var(--white)" : "rgba(80, 80, 80, 0.5)" }} className="field-number">{field.field_id}</div>
                     </div>
                 ))}
                 </div>
