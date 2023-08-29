@@ -5,10 +5,7 @@ import { getAllVaultsThunk } from '../../store/vault';
 import { getAllRowsThunk } from "../../store/rows";
 import { getAllFieldsThunk } from "../../store/field";
 
-// import Row from './Row';
-
 import "./Warehouse.css"
-
 
 
 export default function Warehouse () {
@@ -34,16 +31,6 @@ export default function Warehouse () {
         dispatch(getAllFieldsThunk());
     }, [])
 
-    // const rowA = fields.filter(field => field.row_id === "A")
-    // const rowB = fields.filter(field => field.row_id === "B")
-    // const rowC = fields.filter(field => field.row_id === "C")
-    // const rowD = fields.filter(field => field.row_id === "D")
-    // const rowE = fields.filter(field => field.row_id === "E")
-    // const rowF = fields.filter(field => field.row_id === "F")
-    // const rowG = fields.filter(field => field.row_id === "G")
-    // const rowH = fields.filter(field => field.row_id === "H")
-    // const rowI = fields.filter(field => field.row_id === "I")
-
     const handleFieldClick = async (field, row, index) => {
         await setSelectedField(field);
         setSelectedRow(row.id);
@@ -58,20 +45,13 @@ export default function Warehouse () {
             setMiddle(field.vaults.find(vault => vault.position === "M"))
             setBottom(field.vaults.find(vault => vault.position === "B"))
         }
-
-        console.log("🪞", field, selectedField)
     };
-
-    useEffect(() => {
-        console.log("🖼️", selectedField);
-    }, [selectedField]);
-    
 
     const AddVaultButton = () => {
         return (
         <div className="add-vault-button">
             <i class="fa-solid fa-plus"/>
-            Add Vault
+            <span> Add Vault</span>
             </div>
         )
     }
@@ -81,7 +61,6 @@ export default function Warehouse () {
         const onlyMiddle = !top && !middle && bottom        
         const onlyTop = !top && middle && bottom        
 
-        console.log("🧸", bottom)
         return (
             <div className="selected-field-vaults-tmb">
                 <div className="top"><span>T</span> {onlyTop ? <AddVaultButton /> : top ? top.customer.name  + '  ' + top.vault_id : ""}</div>
@@ -113,7 +92,6 @@ export default function Warehouse () {
                  <div
                     className="field"
                     style={{ backgroundColor: `${field.vaults.length ? "#ea373d" : "var(--lightgrey)"}`, border: `${selectedField?.id === field?.id ? "3px solid var(--blue)" : "blue"}` }}
-                    // style={{ backgroundColor: `${field.vaults.length ? "#ea373d" : "grey"}`}}
                     onClick={() => handleFieldClick(field, row, index)} // Call the click handler here
                 >
                     <div className="field-number">{row.id}{index + 1}</div>
