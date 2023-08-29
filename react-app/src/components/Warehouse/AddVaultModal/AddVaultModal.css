@@ -1,22 +1,95 @@
-  .add-vault-container {
+/* ADD VAULT */
+input {
+    height: 2.3em;
+}
+
+.add-vault-container {
     display: flex;
     flex-direction: column;
-    max-width: 400px;
-    padding: 10px;
+    width: 100%;
+    padding: 20px;
     margin: 0 auto;
     border: 1px solid #ccc;
-    border-radius: 8px;
     background-color: #f5f5f5;
-    height: 90vh;
+    height: 100vh;
+}
+
+.add-vault-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.add-vault-form button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: var(--blue);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
   }
 
-  /* .add-vault-form {
-    border: 2px solid hotpink;
+  .vault-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    color: var(--grey);
+  }
+
+  .vault-info span {
+    color: var(--blue);
+  }
+
+.suggested-customers-container {
+    width: 100%;
+    overflow-y: auto;
+    border-radius: 4px;
+    background-color: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+.suggested-customers-list li:hover {
+    background-color: #f0f0f0;
+}
+
+.suggested-customers-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.suggested-customers-list li {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-bottom: 1px solid #e0e0e0; /* Add a border below each list item */
+}
+
+/* Apply a different style to the last list item to remove the border */
+.suggested-customers-list li:last-child {
+    border-bottom: none;
+}
+
+.vault-order-number {
+    display: flex;
+    justify-content: space-between;
+}
+
+.vault-order-number-item {
+    width: 48%;
+}
+
+
+
+.add-vault-form {
     display: flex;
     flex-direction: column;
     gap: 10px;
 
-  } */
+  }
 
   .add-vault-form label {
     display: block;
@@ -94,9 +167,11 @@ margin-bottom: 20px;
 }
 
 .position-radio-container {
+  border: 2px solid var(--lightgrey);
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+  
 }
 
 .position-radio {

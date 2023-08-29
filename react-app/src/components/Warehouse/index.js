@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-
+import Modal from '@mui/material/Modal';
 import { getAllVaultsThunk } from '../../store/vault';
 import { getAllRowsThunk } from "../../store/rows";
 import { getAllFieldsThunk } from "../../store/field";
-
+import AddVaultModal from "./AddVaultModal/AddVaultModal.js"
 import "./Warehouse.css"
 
 
@@ -24,6 +24,8 @@ export default function Warehouse () {
     let [top, setTop] = useState(null);
     let [middle, setMiddle] = useState(null);
     let [bottom, setBottom] = useState(null);
+    const [position, setPosition] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         dispatch(getAllRowsThunk());
@@ -47,11 +49,21 @@ export default function Warehouse () {
         }
     };
 
+    // Handler for opening the modal
+    const handleOpenModal = () => {
+        setIsModalOpen(true);
+    };
+
+    // Handler for closing the modal
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
+
     const AddVaultButton = () => {
         return (
-        <div className="add-vault-button">
-            <i class="fa-solid fa-plus"/>
-            <span> Add Vault</span>
+            <div className="add-vault-button" onClick={handleOpenModal}>
+                <i class="fa-solid fa-plus" />
+                <span> Add Vault</span>
             </div>
         )
     }
@@ -63,9 +75,9 @@ export default function Warehouse () {
 
         return (
             <div className="selected-field-vaults-tmb">
-                <div className="top"><span>T</span> {onlyTop ? <AddVaultButton /> : top ? top.customer.name  + '  ' + top.vault_id : ""}</div>
-                <div className="middle"><span>M</span> {onlyMiddle ? <AddVaultButton /> : middle ? middle.customer.name  + '  ' + middle.vault_id : ""}</div>
-                <div className="bottom"><span>B</span> {onlyBottom ? <AddVaultButton /> : bottom ? bottom.customer.name  + '  ' + bottom.vault_id : ""}</div>
+                <div className="top"><span>T</span> {onlyTop ? <AddVaultButton onClick={setPosition("T")}/> : top ? top.customer.name  + '  ' + top.vault_id : ""}</div>
+                <div className="middle"><span>M</span> {onlyMiddle ? <AddVaultButton onClick={setPosition("M")}/> : middle ? middle.customer.name  + '  ' + middle.vault_id : ""}</div>
+                <div className="bottom"><span>B</span> {onlyBottom ? <AddVaultButton onClick={setPosition("B")}/> : bottom ? bottom.customer.name  + '  ' + bottom.vault_id : ""}</div>
             </div>  
         )      
     }
@@ -101,6 +113,9 @@ export default function Warehouse () {
              </div>
             ))}
             </div>
+            <Modal open={isModalOpen}>
+                <AddVaultModal onClose={handleCloseModal} selectedField={selectedField} tmb={position}/>
+            </Modal>
         </div>
     )
 }
