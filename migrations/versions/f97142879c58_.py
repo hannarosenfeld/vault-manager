@@ -1,16 +1,20 @@
 """empty message
 
-Revision ID: ee7cee9a6e73
+Revision ID: f97142879c58
 Revises: 
-Create Date: 2023-08-29 15:34:25.640942
+Create Date: 2023-08-29 17:27:21.289502
 
 """
 from alembic import op
 import sqlalchemy as sa
 
 
+import os
+environment = os.getenv("FLASK_ENV")
+SCHEMA = os.environ.get("SCHEMA")
+
 # revision identifiers, used by Alembic.
-revision = 'ee7cee9a6e73'
+revision = 'f97142879c58'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -24,10 +28,16 @@ def upgrade():
     sa.Column('color', sa.String(length=100), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
+    if environment == "production":
+        op.execute(f"ALTER TABLE customers SET SCHEMA {SCHEMA};")
+
     op.create_table('rows',
     sa.Column('id', sa.String(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
+    if environment == "production":
+        op.execute(f"ALTER TABLE rows SET SCHEMA {SCHEMA};")
+
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('username', sa.String(length=40), nullable=False),
@@ -37,6 +47,9 @@ def upgrade():
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username')
     )
+    if environment == "production":
+        op.execute(f"ALTER TABLE users SET SCHEMA {SCHEMA};")
+
     op.create_table('fields',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('row_id', sa.String(), nullable=True),
@@ -46,6 +59,9 @@ def upgrade():
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('field_id')
     )
+    if environment == "production":
+        op.execute(f"ALTER TABLE fields SET SCHEMA {SCHEMA};")
+
     op.create_table('vaults',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('customer_id', sa.Integer(), nullable=True),
@@ -53,7 +69,6 @@ def upgrade():
     sa.Column('field_name', sa.String(), nullable=False),
     sa.Column('position', sa.String(length=100), nullable=False),
     sa.Column('vault_id', sa.String(length=100), nullable=False),
-    sa.Column('order_number', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['customer_id'], ['customers.id'], ),
     sa.ForeignKeyConstraint(['field_id'], ['fields.id'], ),
     sa.ForeignKeyConstraint(['field_name'], ['fields.field_id'], ),
@@ -61,7 +76,8 @@ def upgrade():
     )
     with op.batch_alter_table('vaults', schema=None) as batch_op:
         batch_op.create_index(batch_op.f('ix_vaults_customer_id'), ['customer_id'], unique=False)
-
+    if environment == "production":
+        op.execute(f"ALTER TABLE vaults SET SCHEMA {SCHEMA};")
     # ### end Alembic commands ###
 
 

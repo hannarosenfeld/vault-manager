@@ -74,11 +74,14 @@ export default function Warehouse () {
         const onlyTop = !top && middle && bottom        
 
         return (
-            <div className="selected-field-vaults-tmb">
-                <div className="top"><span>T</span> {onlyTop ? <AddVaultButton onClick={setPosition("T")}/> : top ? top.customer.name  + '  ' + top.vault_id : ""}</div>
-                <div className="middle"><span>M</span> {onlyMiddle ? <AddVaultButton onClick={setPosition("M")}/> : middle ? middle.customer.name  + '  ' + middle.vault_id : ""}</div>
-                <div className="bottom"><span>B</span> {onlyBottom ? <AddVaultButton onClick={setPosition("B")}/> : bottom ? bottom.customer.name  + '  ' + bottom.vault_id : ""}</div>
-            </div>  
+            <>
+                <div className="selected-field-vaults-tmb">
+                    <div className="top"><span>T</span> {onlyTop ? <AddVaultButton onClick={setPosition("T")}/> : top ? top.customer.name  + '  ' + top.vault_id : ""}</div>
+                    <div className="middle"><span>M</span> {onlyMiddle ? <AddVaultButton onClick={setPosition("M")}/> : middle ? middle.customer.name  + '  ' + middle.vault_id : ""}</div>
+                    <div className="bottom"><span>B</span> {onlyBottom ? <AddVaultButton onClick={setPosition("B")}/> : bottom ? bottom.customer.name  + '  ' + bottom.vault_id : ""}</div>
+                </div>  
+                <div className="selected-field-id">{selectedRow + selectedFieldIndex}</div>
+            </>
         )      
     }
 
@@ -86,10 +89,7 @@ export default function Warehouse () {
         <div className="warehouse-wrapper">
             <div className="field-info">
             {selectedField ? (
-                <>
                 <RenderTMB />
-                <div className="selected-field-id">{selectedRow + selectedFieldIndex}</div>
-                </>
             ) : (
                 <div>
                     Select a field to view its info

@@ -3,8 +3,6 @@ import Warehouse from "../Warehouse";
 
 export default function Index() {
     return(
-        <div style={{marginTop: "-5px"}}>
-            <Warehouse />
-        </div>
+        <Warehouse />
     )
 }
