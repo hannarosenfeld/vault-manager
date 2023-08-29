@@ -44,21 +44,28 @@ export default function Warehouse () {
     // const rowH = fields.filter(field => field.row_id === "H")
     // const rowI = fields.filter(field => field.row_id === "I")
 
-    const handleFieldClick = (field, row, index) => {
+    const handleFieldClick = async (field, row, index) => {
+        await setSelectedField(field);
+        setSelectedRow(row.id);
+        setSelectedFieldIndex(index + 1);
+
         setTop(null)
         setMiddle(null)
         setBottom(null)
         
-        setSelectedField(field);
-        setSelectedRow(row.id);
-        setSelectedFieldIndex(index + 1);
-
         if (field.vaults.length > 0) {
             setTop(field.vaults.find(vault => vault.position === "T"))
             setMiddle(field.vaults.find(vault => vault.position === "M"))
             setBottom(field.vaults.find(vault => vault.position === "B"))
         }
+
+        console.log("🪞", field, selectedField)
     };
+
+    useEffect(() => {
+        console.log("🖼️", selectedField);
+    }, [selectedField]);
+    
 
     const AddVaultButton = () => {
         return (
@@ -105,7 +112,8 @@ export default function Warehouse () {
                  {row.fields.map((field, index) => (
                  <div
                     className="field"
-                    style={{ backgroundColor: `${field.vaults.length ? "#ea373d" : "grey"}` }}
+                    style={{ backgroundColor: `${field.vaults.length ? "#ea373d" : "var(--lightgrey)"}`, border: `${selectedField?.id === field?.id ? "3px solid var(--blue)" : "blue"}` }}
+                    // style={{ backgroundColor: `${field.vaults.length ? "#ea373d" : "grey"}`}}
                     onClick={() => handleFieldClick(field, row, index)} // Call the click handler here
                 >
                     <div className="field-number">{row.id}{index + 1}</div>
