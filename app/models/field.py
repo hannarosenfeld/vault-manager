@@ -9,13 +9,12 @@ class Field(db.Model, UserMixin):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    row_id = db.Column(db.String, db.ForeignKey('rows.id'))
+    row_id = db.Column(db.String, db.ForeignKey('rows.id'))  # Match data type
     empty = db.Column(db.Boolean, default=True)
     vaults = db.relationship('Vault', foreign_keys='Vault.field_id', backref='field', lazy=True)
-    field_id = db.Column(db.String(3), unique=True, nullable=False)  # Remove backref
+    field_id = db.Column(db.String(3), unique=True, nullable=False)
 
     def generate_field_id(self, row_id, numerical_identifier):
-        # Example: For row_id = 'B' and numerical_identifier = 11, generate 'B11'
         return f"{row_id}{numerical_identifier:02d}"
 
     def to_dict(self):
