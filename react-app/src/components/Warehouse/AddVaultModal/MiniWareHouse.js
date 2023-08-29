@@ -13,7 +13,7 @@ export default function MiniWareHouse({ selectedField }) {
     }, [])
 
     return(
-        <div className="warehouse-wrapper" style={{height: "100%"}}>
+        <div className="warehouse-wrapper" style={{height: "100%", padding:"0"}}>
         <div className="warehouse" style={{height: "100%"}}>
             {rowsArr.map((row) => (
                 <div key={row.id} className="row">

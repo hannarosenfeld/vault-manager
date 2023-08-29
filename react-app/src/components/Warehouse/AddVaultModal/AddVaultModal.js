@@ -122,18 +122,20 @@ export default function AddVaultModal({ onClose, selectedField, tmb}) {
                         onChange={handleCustomerNameChange}
                     />
                     {suggestedCustomers?.length > 0 && customer_name && (
-                        <Paper elevation={3} className="suggested-customers-container">
-                            <ul className="suggested-customers-list">
-                                {suggestedCustomers.map((customer) => (
-                                    <li
-                                        key={customer.id}
-                                        onClick={() => handleSuggestedCustomerClick(customer)}
-                                    >
-                                        {customer.name}
-                                    </li>
-                                ))}
-                            </ul>
-                        </Paper>
+                        <div className="suggested-customers-wrapper">
+                            <Paper elevation={3} className="suggested-customers-container">
+                                <ul className="suggested-customers-list">
+                                    {suggestedCustomers.map((customer) => (
+                                        <li
+                                            key={customer.id}
+                                            onClick={() => handleSuggestedCustomerClick(customer)}
+                                        >
+                                            {customer.name}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </Paper>
+                        </div>
                     )}
                 </FormGroup>
                 <div className="vault-order-number" >

@@ -65,10 +65,10 @@ input {
     padding: 10px;
     cursor: pointer;
     transition: background-color 0.2s;
-    border-bottom: 1px solid #e0e0e0; /* Add a border below each list item */
+    border-bottom: 1px solid #e0e0e0;
 }
 
-/* Apply a different style to the last list item to remove the border */
+
 .suggested-customers-list li:last-child {
     border-bottom: none;
 }
@@ -82,109 +82,17 @@ input {
     width: 48%;
 }
 
-
-
-.add-vault-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-
-  }
-
-  .add-vault-form label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  .add-vault-form input {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .add-vault-form button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: var(--blue);
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .add-vault-form button:hover {
-    background-color: #0056b3;
-  }
-  
-  .row-field-id {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 10px;
-  }
-
-  .row-field-id-input {
-    display: flex;
-    align-items: baseline;
-  }
-
-  .row-field-id-input label{
-    margin-right: 5px;
-  }
-
-  .row-field-id-input select{
-    width: 48px;
-    margin-right: 3px;
-    padding: 3px;
-  }  
-
-.expand-button {
-  width: 10px;
-}
-/* AddVault.css *
-
-/* ... other styles ... */
-
-.add-vault-form {
-  flex: 1; /* Takes up remaining vertical space */
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+.add-vault-form button:hover {
+  background-color: #0056b3;
 }
 
-.expanded-section {
-display: block;
-background-color: #f1f1f1;
-width: 100%;
-flex-grow: 1; /* This makes the section take up the remaining vertical space */
-overflow-y: auto;
-height: 90%;
-margin-bottom: 20px;
+.customer-input-container {
+  position: relative;
 }
 
-.position-radio-container {
-  border: 2px solid var(--lightgrey);
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-  
-}
+.suggested-customers-container {
+  position: absolute;
 
-.position-radio {
   width: 100%;
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
+  z-index: 1;
 }
-
-.position-radio-button label{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 50px;
-}
-
