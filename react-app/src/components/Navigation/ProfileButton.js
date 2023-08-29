@@ -33,7 +33,7 @@ function ProfileButton({ user }) {
         onClick={openDrawer} 
         className="profile-button"
         style={{color: "var(--blue)"}}>
-        <i className="fas fa-user-circle" />
+        <i className="fas fa-user-circle" style={{fontSize: "1.5em"}}/>
       </Button>
       <Drawer 
         anchor="right" 
