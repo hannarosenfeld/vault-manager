@@ -33,43 +33,36 @@ export default function AddVaultModal({ onClose, selectedField, tmb}) {
         }
     }, [customersObj]);
 
-    
     useEffect(() => {
-        dispatch(getAllCustomersThunk());
+        dispatch(getAllCustomersThunk())
     }, [dispatch]);
     
-
     useEffect(() => {
         const filteredCustomers = customers?.filter(
             (customer) =>
                 customer?.name?.toLowerCase().includes(customer_name.toLowerCase())
         );
         setSuggestedCustomers(filteredCustomers);
-    }, [customers, customer_name]);
-
+    }, [customers]);
 
     const handleCustomerNameChange = (e) => {
         const enteredName = e.target.value;
         setCustomerName(enteredName);
-    
+
         if (enteredName) {
             const filteredCustomers = customers?.filter(
                 (customer) =>
                     customer?.name?.toLowerCase().includes(enteredName.toLowerCase())
             );
-            if (filteredCustomers.length > 0) {
-                setSuggestedCustomers(filteredCustomers);
-            } else {
-                setSuggestedCustomers([]);
-            }
+            setSuggestedCustomers(filteredCustomers);
         } else {
             setSuggestedCustomers([]);
         }
     };
-    
 
     const handleSuggestedCustomerClick = (customer) => {
         setCustomerName(customer.name);
+        setSuggestedCustomers([]);
     };
 
     const handleSubmit = async (e) => {
@@ -77,7 +70,6 @@ export default function AddVaultModal({ onClose, selectedField, tmb}) {
 
         const lowercaseCustomerName = customer_name.toLowerCase();
         const search = await customers.find(customer => customer.name.toLowerCase() === lowercaseCustomerName);
-
 
         console.log("🪞", customers)
         if (search === undefined) {
@@ -92,7 +84,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb}) {
             customer: newCustomer,
             field_id: selectedField.id, // Combine row id and field id
             field_name: selectedField.field_id,
-            position: tmb,
+            position: position,
             vault_id: vault_id,
         };
 
