@@ -10,6 +10,14 @@
     height: 90vh;
   }
 
+  /* .add-vault-form {
+    border: 2px solid hotpink;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+  } */
+
   .add-vault-form label {
     display: block;
     margin-bottom: 5px;
@@ -84,3 +92,24 @@ overflow-y: auto;
 height: 90%;
 margin-bottom: 20px;
 }
+
+.position-radio-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.position-radio {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.position-radio-button label{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50px;
+}
+

@@ -29,12 +29,28 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
+    font-size: 26px;
     font-weight: bold;
 }
 
 .top, .middle {
-    border-bottom: 1px solid var(--white);
+    border-bottom: 1px solid var(--lightgrey);
+}
+
+.top, .middle, .bottom {
+    display: flex;
+    align-items: center;
+    font-size: 19px;
+
+}
+
+.top span, .middle span, .bottom span {
+    margin-right: 20px;
+}
+
+.add-vault-button {
+    color: var(--blue);
+
 }
 
 /* Warehouse Rows */

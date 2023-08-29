@@ -2,6 +2,7 @@ const GET_CUSTOMER = "customer/GET_CUSTOMER";
 const GET_ALL_CUSTOMERS = "customer/GET_ALL_CUSTOMERS";
 const ADD_CUSTOMER = "customer/ADD_CUSTOMER";
 
+
 const getCustomerAction = (customer) => ({
   type: GET_CUSTOMER,
   customer
@@ -16,6 +17,7 @@ const addCustomerAction = (customer) => ({
   type: ADD_CUSTOMER,
   customer
 });
+
 
 export const getCustomerThunk = (customerId) => async (dispatch) => {
   try {
@@ -35,7 +37,7 @@ export const getCustomerThunk = (customerId) => async (dispatch) => {
 };
 
 export const getAllCustomersThunk = () => async (dispatch) => {
-  console.log("⛩️ in thunk")
+
   try {
     const res = await fetch('/api/customers');
     if (res.ok) {
@@ -54,6 +56,7 @@ export const getAllCustomersThunk = () => async (dispatch) => {
 };
 
 export const addCustomerThunk = (customerData) => async (dispatch) => {
+  console.log("🏮")
   try {
     const res = await fetch('/api/customers/', {
       method: 'POST',
@@ -93,7 +96,7 @@ const customerReducer = (state = initialState, action) => {
           [action.customer.id]: action.customer
         },
         currentCustomer: action.customer
-      };
+      };    
     case GET_ALL_CUSTOMERS:
       return {
         ...state,
