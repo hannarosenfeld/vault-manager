@@ -9,7 +9,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close'; // Import the Close icon
-import { FormGroup, FormLabel } from '@mui/material';
+import { FormGroup, FormLabel, keyframes } from '@mui/material';
 
 
 import "./AddVaultModal.css"
@@ -122,7 +122,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb}) {
                         onChange={handleCustomerNameChange}
                     />
                     {suggestedCustomers?.length > 0 && customer_name && (
-                        <div className="suggested-customers-wrapper">
+                        <div className="suggested-customers-wrapper" style={{maxWidth: "100%", border: "2px solid pink"}}>
                             <Paper elevation={3} className="suggested-customers-container">
                                 <ul className="suggested-customers-list">
                                     {suggestedCustomers.map((customer) => (
@@ -156,7 +156,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb}) {
                     />  
                 </FormGroup>
                 </div>
-                <div style={{height: "98%"}}>
+                <div style={{height: "22em", marginBottom: "1em"}}>
                     <MiniWareHouse selectedField={selectedField}/>
                 </div>
                 <button type="submit">Submit</button>

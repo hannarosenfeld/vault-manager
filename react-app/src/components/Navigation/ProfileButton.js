@@ -52,14 +52,14 @@ function ProfileButton({ user }) {
               <ListItem>
                 <ListItemText primary={user.username}/>
               </ListItem>
-              <ListItem 
+              {/* <ListItem 
                 button 
                 component={NavLink} 
                 to="/add-vault" 
                 style={{color: "var(--blue)", display: "flex", gap: "5px"}}>
                 <i class="fa-solid fa-plus"></i>
                 <ListItemText primary="Add Vault" />
-              </ListItem>
+              </ListItem> */}
               <ListItem >
                 <Button style={{color: "var(--red)"}} onClick={handleLogout}>Log Out</Button>
               </ListItem>
