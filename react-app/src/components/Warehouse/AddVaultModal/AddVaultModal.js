@@ -115,6 +115,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb}) {
             </div>
             <form className="add-vault-form" onSubmit={handleSubmit}>
                 <FormGroup>
+                <div className="customer-input-container">
                     <FormLabel>Customer Name</FormLabel>
                     <input
                         type="text"
@@ -122,21 +123,23 @@ export default function AddVaultModal({ onClose, selectedField, tmb}) {
                         onChange={handleCustomerNameChange}
                     />
                     {suggestedCustomers?.length > 0 && customer_name && (
-                        <div className="suggested-customers-wrapper" style={{maxWidth: "100%", border: "2px solid pink"}}>
-                            <Paper elevation={3} className="suggested-customers-container">
-                                <ul className="suggested-customers-list">
-                                    {suggestedCustomers.map((customer) => (
-                                        <li
-                                            key={customer.id}
-                                            onClick={() => handleSuggestedCustomerClick(customer)}
-                                        >
-                                            {customer.name}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </Paper>
+                        <div className="suggested-customers-container">
+                        <Paper elevation={3}>
+                            <ul className="suggested-customers-list">
+                            {suggestedCustomers.map((customer) => (
+                                <li
+                                key={customer.id}
+                                onClick={() => handleSuggestedCustomerClick(customer)}
+                                >
+                                {customer.name}
+                                </li>
+                            ))}
+                            </ul>
+                        </Paper>
                         </div>
                     )}
+                    </div>
+
                 </FormGroup>
                 <div className="vault-order-number" >
                 <FormGroup className="vault-order-number-item">
@@ -156,7 +159,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb}) {
                     />  
                 </FormGroup>
                 </div>
-                <div style={{height: "22em", marginBottom: "1em"}}>
+                <div style={{height: "100%", marginBottom: "1em"}}>
                     <MiniWareHouse selectedField={selectedField}/>
                 </div>
                 <button type="submit">Submit</button>
