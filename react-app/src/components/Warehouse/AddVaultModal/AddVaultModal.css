@@ -14,7 +14,6 @@
   flex: 1; /* Takes up remaining vertical space */
   display: flex;
   flex-direction: column;
-  height: 100%;
 }
 
 .add-vault-form button {

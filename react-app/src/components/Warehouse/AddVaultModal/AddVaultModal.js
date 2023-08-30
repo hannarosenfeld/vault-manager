@@ -159,7 +159,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb}) {
                     />  
                 </FormGroup>
                 </div>
-                <div style={{height: "100%", marginBottom: "1em"}}>
+                <div style={{height: "63%", marginBottom: "1em"}}>
                     <MiniWareHouse selectedField={selectedField}/>
                 </div>
                 <button type="submit">Submit</button>
