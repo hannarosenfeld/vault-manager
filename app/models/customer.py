@@ -10,15 +10,16 @@ class Customer(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     color = db.Column(db.String(100), default='1B3333')
-    associated_customer_vaults = db.relationship('Vault', back_populates='customer')  # Use back_populates
 
+    # Define the relationship with 'Vault' using back_populates
+    associated_customer_vaults = db.relationship('Vault', back_populates='customer')
 
     def to_dict(self):
         return {
             'id': self.id,
             'name': self.name,
             'color': self.color,
-            'vaults': [vault.to_dict() for vault in self.associated_customer_vaults],  # Update relationship name here
+            'vaults': [vault.to_dict() for vault in self.associated_customer_vaults],
         }
 
     def to_summary_dict(self):

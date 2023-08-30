@@ -3,6 +3,8 @@ import Warehouse from "../Warehouse";
 
 export default function Index() {
     return(
-        <Warehouse />
+        <div className="wrapper">
+            <Warehouse />
+        </div>
     )
 }
