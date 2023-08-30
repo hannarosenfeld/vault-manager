@@ -86,8 +86,9 @@ def downgrade():
         batch_op.drop_index(batch_op.f('ix_vaults_customer_id'))
 
     op.drop_table('vaults')
-    op.drop_table('fields')
-    op.drop_table('users')
     op.drop_table('rows')
-    op.drop_table('customers')
+    op.drop_table('fields')
+    op.drop_table('customers')    
+    op.drop_table('users')
+
     # ### end Alembic commands ###
