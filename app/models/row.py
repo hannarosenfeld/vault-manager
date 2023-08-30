@@ -9,7 +9,7 @@ class Row(db.Model, UserMixin):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.String, primary_key=True)
-    fields = db.relationship('Field', backref='row', lazy=True)
+    fields = db.relationship('Field', backref='row', lazy=True, cascade='all, delete-orphan')
 
     def to_dict(self):
         return {
