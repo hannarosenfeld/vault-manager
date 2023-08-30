@@ -77,8 +77,8 @@ def upgrade():
     if environment == "production":
         op.execute(f"ALTER TABLE vaults SET SCHEMA {SCHEMA};")
 
-    # with op.batch_alter_table('vaults', schema=None) as batch_op:
-    #     batch_op.create_index(batch_op.f('ix_vaults_customer_id'), ['customer_id'], unique=False)
+    with op.batch_alter_table('vaults', schema=None) as batch_op:
+        batch_op.create_index(batch_op.f('ix_vaults_customer_id'), ['customer_id'], unique=False)
 
     # ### end Alembic commands ###
 
