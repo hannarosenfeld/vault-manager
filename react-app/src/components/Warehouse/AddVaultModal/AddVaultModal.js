@@ -84,7 +84,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb}) {
             customer: newCustomer,
             field_id: selectedField.id, // Combine row id and field id
             field_name: selectedField.field_id,
-            position: position,
+            position: tmb,
             vault_id: vault_id,
         };
 
