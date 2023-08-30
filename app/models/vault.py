@@ -1,8 +1,7 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from flask_login import UserMixin
 
-
-class Vault(db.Model):
+class Vault(db.Model, UserMixin):
     __tablename__ = 'vaults'
 
     if environment == "production":
@@ -15,9 +14,8 @@ class Vault(db.Model):
     position = db.Column(db.String(100), nullable=False)
     vault_id = db.Column(db.String(100), nullable=False)
 
-    # Establishing the relationship with Field using back_populates
-    field = db.relationship('Field', back_populates='vaults')
-    customer = db.relationship('Customer', back_populates='associated_customer_vaults')
+    customer = db.relationship('Customer', back_populates='associated_customer_vaults')  # Use back_populates
+
 
     def to_dict(self):
         return {
@@ -27,7 +25,7 @@ class Vault(db.Model):
             'field_name': self.field_name,
             'position': self.position,
             'vault_id': self.vault_id,
-            'customer': self.customer.to_summary_dict() if self.customer else None,
+            'customer': self.customer.to_summary_dict() if self.customer else None  # Use a summary dict for customer
         }
     
     def to_summary_dict(self):
@@ -36,4 +34,3 @@ class Vault(db.Model):
             'position': self.position,
             'vault_id': self.vault_id
         }
-

@@ -10,7 +10,7 @@ class Customer(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     color = db.Column(db.String(100), default='1B3333')
-    associated_customer_vaults = db.relationship('Vault', back_populates='customer', cascade='all, delete-orphan')  # Use back_populates
+    associated_customer_vaults = db.relationship('Vault', back_populates='customer')  # Use back_populates
 
 
     def to_dict(self):
