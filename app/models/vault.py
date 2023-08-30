@@ -14,8 +14,10 @@ class Vault(db.Model, UserMixin):
     position = db.Column(db.String(100), nullable=False)
     vault_id = db.Column(db.String(100), nullable=False)
 
-    # Define the relationship with 'Customer' using back_populates
-    customer = db.relationship('Customer', back_populates='associated_customer_vaults')
+    customer = db.relationship('Customer', back_populates='vaults')
+    
+    # Specify primaryjoin for field relationship
+    field = db.relationship('Field', back_populates='vaults', foreign_keys='Vault.field_id')
 
     def to_dict(self):
         return {

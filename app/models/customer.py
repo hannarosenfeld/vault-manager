@@ -12,7 +12,7 @@ class Customer(db.Model, UserMixin):
     color = db.Column(db.String(100), default='1B3333')
 
     # Define the relationship with 'Vault' using back_populates
-    associated_customer_vaults = db.relationship('Vault', back_populates='customer')
+    vaults = db.relationship('Vault', back_populates='customer')
 
     def to_dict(self):
         return {
