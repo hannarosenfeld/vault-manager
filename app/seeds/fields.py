@@ -1,4 +1,5 @@
 from app.models import db, Field
+from sqlalchemy.sql import text
 
 def seed_fields():
     fields = []
