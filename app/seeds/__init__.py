@@ -21,8 +21,8 @@ def seed():
         # Make sure to add all your other model's undo functions below
         undo_vaults()        
         undo_customers()
-        undo_fields()  # Undo fields before users
-        undo_rows()    # Undo rows before fields
+        undo_fields()  
+        undo_rows()    
         undo_users()
     seed_users()
     seed_customers()
@@ -36,7 +36,7 @@ def seed():
 def undo():
     undo_vaults()
     undo_customers()
-    undo_rows()
     undo_fields() 
+    undo_rows()
     undo_users()
     # Add other undo functions here
