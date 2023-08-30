@@ -11,7 +11,7 @@ class Field(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     row_id = db.Column(db.String, db.ForeignKey(add_prefix_for_prod('rows.id'), ondelete='CASCADE'))  # Match data type
     empty = db.Column(db.Boolean, default=True)
-    vaults = db.relationship('Vault', foreign_keys=f'{SCHEMA}.field_id', backref='field', lazy=True)
+    vaults = db.relationship('Vault', foreign_keys=f'{SCHEMA}.vault.field_id', backref='field', lazy=True)
     field_id = db.Column(db.String(3), unique=True, nullable=False)
 
     def generate_field_id(self, row_id, numerical_identifier):
