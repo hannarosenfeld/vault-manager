@@ -1,4 +1,4 @@
-from app.models import db, Field
+from app.models import db, Field, environment, SCHEMA
 from sqlalchemy.sql import text
 
 def seed_fields():
@@ -15,5 +15,8 @@ def seed_fields():
     db.session.commit()
 
 def undo_fields():
-    db.session.execute(text("DELETE FROM fields"))
+    if environment == "production":
+        db.session.execute(f"TRUNCATE table {SCHEMA}.fields RESTART IDENTITY CASCADE;")
+    else:
+        db.session.execute(text("DELETE FROM fieldss"))
     db.session.commit()
