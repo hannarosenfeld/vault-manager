@@ -13,6 +13,7 @@ class Vault(db.Model, UserMixin):
     field_name = db.Column(db.String, db.ForeignKey(add_prefix_for_prod('fields.field_id'), ondelete='CASCADE'), nullable=False)
     position = db.Column(db.String(100), nullable=False)
     vault_id = db.Column(db.String(100), nullable=False)
+    staged = db.Column(db.Boolean, default=False, nullable=False)
 
     customer = db.relationship('Customer', back_populates='vaults')
     
@@ -27,6 +28,7 @@ class Vault(db.Model, UserMixin):
             'field_name': self.field_name,
             'position': self.position,
             'vault_id': self.vault_id,
+            'staged': self.staged,
             'customer': self.customer.to_summary_dict() if self.customer else None,
         }
 
