@@ -37,6 +37,7 @@ export default function Warehouse () {
         dispatch(getAllFieldsThunk());
     }, [])
 
+
     const handleFieldClick = async (field, row, index) => {
         await setSelectedField(field);
         setSelectedRow(row.id);
@@ -85,6 +86,10 @@ export default function Warehouse () {
             setSelectedVaultToDelete(vault);
             openDeleteModal();
         };
+
+    useEffect(() => {
+        console.log("📃", selectedVaultToDelete)
+    }, [selectedVaultToDelete])
     
         return (
             <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
@@ -158,7 +163,13 @@ export default function Warehouse () {
                 <AddVaultModal onClose={handleCloseModal} selectedField={selectedField} tmb={position} />
             </Modal>
             <Modal open={isDeleteModalOpen} onClose={closeDeleteModal}>
-                <DeleteVaultModal open={isDeleteModalOpen} onClose={closeDeleteModal} vaultId={selectedVaultToDelete?.vault.id} />
+                <DeleteVaultModal 
+                    open={isDeleteModalOpen} 
+                    onClose={closeDeleteModal} 
+                    vaultId={selectedVaultToDelete?.vault.id} 
+                    vaultCustomer={selectedVaultToDelete?.vault.customer.name}
+                    vaultNumber={selectedVaultToDelete?.vault.vault_id}
+                />
             </Modal>
         </div>
     )
