@@ -1,13 +1,29 @@
 const GET_VAULT = "vault/GET_VAULT";
 const GET_ALL_VAULTS = "vault/GET_ALL_VAULTS"; // Add this new action type
 const ADD_VAULT = "vault/ADD_VAULT"; // Add this new action type
+const EDIT_VAULT = "vault/EDIT_VAULT";
+const DELETE_VAULT = "vault/DELETE_VAULT";
+const STAGE_VAULT = "vault/STAGE_VAULT";
 
+const editVaultAction = (vault) => ({
+  type: EDIT_VAULT,
+  vault
+});
+
+const deleteVaultAction = (vaultId) => ({
+  type: DELETE_VAULT,
+  vaultId
+});
+
+const stageVaultAction = (vaultId) => ({
+  type: STAGE_VAULT,
+  vaultId
+});
 
 const getVaultAction = (vault) => ({
   type: GET_VAULT,
   vault
 });
-
 
 const getAllVaultsAction = (vaults) => ({
   type: GET_ALL_VAULTS,
@@ -18,6 +34,66 @@ const addVaultAction = (vault) => ({
   type: ADD_VAULT,
   vault
 });
+
+
+export const editVaultThunk = (vaultData) => async (dispatch) => {
+  try {
+    const res = await fetch(`/api/vaults/${vaultData.vaultId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(vaultData)
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      dispatch(editVaultAction(data)); // Update the state with the edited vault
+      return data;
+    } else {
+      const err = await res.json();
+      console.error("Error editing vault:", err);
+      return err;
+    }
+  } catch (error) {
+    console.error("Error editing vault:", error);
+    return error;
+  }
+};
+
+export const deleteVaultThunk = (vaultId) => async (dispatch) => {
+  try {
+    const res = await fetch(`/api/vaults/${vaultId}`, {
+      method: 'DELETE'
+    });
+
+    if (res.ok) {
+      dispatch(deleteVaultAction(vaultId)); // Update the state by removing the deleted vault
+      return vaultId;
+    } else {
+      const err = await res.json();
+      console.error("Error deleting vault:", err);
+      return err;
+    }
+  } catch (error) {
+    console.error("Error deleting vault:", error);
+    return error;
+  }
+};
+
+export const stageVaultThunk = (vaultId) => async (dispatch) => {
+  try {
+    // Implement staging logic here if needed
+    // You may need to make an API call or perform some specific actions
+    // For example, moving a vault to a "staged" status
+
+    dispatch(stageVaultAction(vaultId)); // Update the state to reflect the staged vault
+    return vaultId;
+  } catch (error) {
+    console.error("Error staging vault:", error);
+    return error;
+  }
+};
 
 
 export const getVaultThunk = (vaultId) => async (dispatch) => {
@@ -83,7 +159,6 @@ export const addVaultThunk = (vaultData) => async (dispatch) => {
   }
 };
 
-
 const initialState = {
   vaults: {},
   currentVault: {}
@@ -103,7 +178,10 @@ const vaultReducer = (state = initialState, action) => {
     case GET_ALL_VAULTS:
       return {
         ...state,
-        ...action.vaults // Update the vaults directly
+        vaults: {
+          ...state.vaults,
+          ...action.vaults
+        }
       };
     case ADD_VAULT:
       return {
@@ -112,11 +190,33 @@ const vaultReducer = (state = initialState, action) => {
           ...state.vaults,
           [action.vault.vaultId]: action.vault
         }
-      };      
+      };
+    case EDIT_VAULT:
+      return {
+        ...state,
+        vaults: {
+          ...state.vaults,
+          [action.vault.vaultId]: action.vault
+        }
+      };
+    case DELETE_VAULT:
+      // Create a copy of the state.vaults object without the deleted vault
+      const updatedVaults = { ...state.vaults };
+      delete updatedVaults[action.vaultId];
+
+      return {
+        ...state,
+        vaults: updatedVaults
+      };
+    case STAGE_VAULT:
+      // Implement the staging logic in your specific use case if needed
+      // You may update the state to reflect the staged vault as required
+      // For example, change the vault's status to "staged"
+
+      return state; // Return the unchanged state for now
     default:
       return state;
   }
 };
-
 
 export default vaultReducer;

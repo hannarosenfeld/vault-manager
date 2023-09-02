@@ -62,3 +62,64 @@ def add_vault():
         return dict_new_vault
 
     return jsonify({'errors': validation_errors_to_error_messages(form.errors)}), 400
+
+
+
+@vault_routes.route('/<int:id>', methods=['GET', 'PUT', 'DELETE'])
+@login_required
+def manage_vault(id):
+    """
+    Query for a vault by id and manage it (GET, PUT/EDIT, DELETE)
+    """
+    vault = Vault.query.get(id)
+
+    if not vault:
+        return {'errors': 'Vault not found'}, 404
+
+    if vault.customer_id != current_user.id:  # Ensure the current user owns the vault
+        return {'errors': 'Unauthorized'}, 401
+
+    if request.method == 'GET':
+        return vault.to_dict()
+
+    if request.method == 'PUT':
+        form = VaultForm()
+        form['csrf_token'].data = request.cookies['csrf_token']
+
+        if form.validate_on_submit():
+            # Update the vault with the form data
+            vault.customer_id = current_user.id  # Ensure the current user owns the vault
+            vault.field_id = form.data['field_id']
+            vault.field_name = form.data['field_name']
+            vault.position = form.data['position']
+            vault.vault_id = form.data['vault_id']
+
+            db.session.commit()
+            return vault.to_dict()
+        else:
+            return jsonify({'errors': validation_errors_to_error_messages(form.errors)}), 400
+
+    if request.method == 'DELETE':
+        db.session.delete(vault)
+        db.session.commit()
+        return {'message': 'Vault deleted successfully'}
+
+@vault_routes.route('/<int:id>/stage', methods=['POST'])
+@login_required
+def stage_vault(id):
+    """
+    Stage a vault by id (POST request)
+    """
+    vault = Vault.query.get(id)
+
+    if not vault:
+        return {'errors': 'Vault not found'}, 404
+
+    if vault.customer_id != current_user.id:  # Ensure the current user owns the vault
+        return {'errors': 'Unauthorized'}, 401
+
+    # Implement your staging logic here if needed
+    # You may update the vault's status or perform specific actions
+
+    db.session.commit()
+    return {'message': 'Vault staged successfully'}

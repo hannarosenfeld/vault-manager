@@ -76,9 +76,9 @@ export default function Warehouse () {
                     <div>{vault.vault.vault_id}</div>
                 </div>
                 <div className="edit-symbols">
-                    <span class="material-symbols-outlined">forklift</span>                
-                    <span class="material-symbols-outlined">edit</span>                    
-                    <span class="material-symbols-outlined">delete</span>
+                    <span style={{color: "#FFA500"}} className="material-symbols-outlined">forklift</span>                
+                    <span style={{color: "#0074D9"}} className="material-symbols-outlined">edit</span>                    
+                    <span style={{color: "#FF4136"}} className="material-symbols-outlined">delete</span>
                 </div>
             </div>
         )
