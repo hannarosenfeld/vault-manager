@@ -62,6 +62,7 @@ export const editVaultThunk = (vaultData) => async (dispatch) => {
 };
 
 export const deleteVaultThunk = (vaultId) => async (dispatch) => {
+  console.log("💌 in thunk")
   try {
     const res = await fetch(`/api/vaults/${vaultId}`, {
       method: 'DELETE'
@@ -95,7 +96,6 @@ export const stageVaultThunk = (vaultId) => async (dispatch) => {
   }
 };
 
-
 export const getVaultThunk = (vaultId) => async (dispatch) => {
   try {
     const res = await fetch(`/api/vaults/${vaultId}`); // Adjust the API endpoint
@@ -112,7 +112,6 @@ export const getVaultThunk = (vaultId) => async (dispatch) => {
     return error;
   }
 };
-
 
 export const getAllVaultsThunk = () => async (dispatch) => {
   try {
@@ -133,7 +132,6 @@ export const getAllVaultsThunk = () => async (dispatch) => {
 };
 
 export const addVaultThunk = (vaultData) => async (dispatch) => {
-  console.log("🥊 in thunk", vaultData)
   try {
     const res = await fetch('/api/vaults/', {
       method: 'POST',
@@ -145,7 +143,6 @@ export const addVaultThunk = (vaultData) => async (dispatch) => {
 
     if (res.ok) {
       const data = await res.json();
-      console.log("🎾 data")
       dispatch(addVaultAction(data)); // Update the state with the new vault
       return data;
     } else {

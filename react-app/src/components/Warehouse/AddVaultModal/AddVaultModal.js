@@ -11,7 +11,7 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close'; // Import the Close icon
+import CloseIcon from '@mui/icons-material/Close';
 import { FormGroup, FormLabel, keyframes } from '@mui/material';
 
 

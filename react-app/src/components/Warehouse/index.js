@@ -5,6 +5,7 @@ import { getAllVaultsThunk } from '../../store/vault';
 import { getAllRowsThunk } from "../../store/rows";
 import { getAllFieldsThunk } from "../../store/field";
 import AddVaultModal from "./AddVaultModal/AddVaultModal.js"
+import DeleteVaultModal from "./DeleteVaultModal";
 import "./Warehouse.css"
 
 
@@ -25,7 +26,10 @@ export default function Warehouse () {
     let [middle, setMiddle] = useState(null);
     let [bottom, setBottom] = useState(null);
     const [position, setPosition] = useState(null);
+
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [selectedVaultToDelete, setSelectedVaultToDelete] = useState(null);
 
     useEffect(() => {
         dispatch(getAllRowsThunk());
@@ -59,30 +63,44 @@ export default function Warehouse () {
         setIsModalOpen(false);
     };
 
+    const openDeleteModal = () => {
+        setIsDeleteModalOpen(true);
+    };
+
+    const closeDeleteModal = () => {
+        setIsDeleteModalOpen(false);
+    };
+
     const AddVaultButton = () => {
         return (
             <div className="add-vault-button" onClick={handleOpenModal}>
                 <i className="fa-solid fa-plus" />
-                <span> Add Vault</span>
+                <span>Add Vault</span>
             </div>
         )
     }
 
     const VaultInstance = (vault) => {
+        const handleDeleteClick = () => {
+            setSelectedVaultToDelete(vault);
+            openDeleteModal();
+        };
+    
         return (
-            <div style={{display: "flex", justifyContent: "space-between", width: "100%"}}>
-                <div style={{display: "flex", width: "60%", gap: "5px"}}>
+            <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+                <div style={{ display: "flex", width: "60%", gap: "5px" }}>
                     <div>{vault.vault.customer.name}</div>
                     <div>{vault.vault.vault_id}</div>
                 </div>
                 <div className="edit-symbols">
-                    <span style={{color: "#FFA500"}} className="material-symbols-outlined">forklift</span>                
-                    <span style={{color: "#0074D9"}} className="material-symbols-outlined">edit</span>                    
-                    <span style={{color: "#FF4136"}} className="material-symbols-outlined">delete</span>
+                    <span style={{ color: "#FFA500" }} className="material-symbols-outlined">forklift</span>
+                    <span style={{ color: "#0074D9" }} className="material-symbols-outlined">edit</span>
+                    <span onClick={handleDeleteClick} style={{ color: "var(--delete)" }} className="material-symbols-outlined">delete</span>
                 </div>
             </div>
-        )
-    }
+        );
+    };
+    
 
     const RenderTMB = () => {
         const onlyBottom = !top && !middle && !bottom;
@@ -93,7 +111,8 @@ export default function Warehouse () {
             <>
                 <div className="selected-field-vaults-tmb">
                     <div className="top">
-                        <span className="position">T</span> {onlyTop ? <AddVaultButton onClick={() => setPosition("T")}/> : top ? <VaultInstance vault={top}/> : ""}
+                        <span 
+                            className="position">T</span> {onlyTop ? <AddVaultButton onClick={() => setPosition("T")}/> : top ? <VaultInstance vault={top}/> : ""}
                     </div>
                     <div className="middle">
                         <span className="position">M</span> {onlyMiddle ? <AddVaultButton onClick={() => setPosition("M")}/> : middle ? <VaultInstance vault={middle}/> : ""}
@@ -126,7 +145,7 @@ export default function Warehouse () {
                  <div
                     className="field"
                     style={{ backgroundColor: `${field.vaults.length ? "#ea373d" : "var(--lightgrey)"}`, border: `${selectedField?.id === field?.id ? "3px solid var(--blue)" : "blue"}` }}
-                    onClick={() => handleFieldClick(field, row, index)} // Call the click handler here
+                    onClick={() => handleFieldClick(field, row, index)}
                 >
                     <div className="field-number">{row.id}{index + 1}</div>
                 </div>
@@ -137,6 +156,9 @@ export default function Warehouse () {
             </div>
             <Modal open={isModalOpen}>
                 <AddVaultModal onClose={handleCloseModal} selectedField={selectedField} tmb={position} />
+            </Modal>
+            <Modal open={isDeleteModalOpen} onClose={closeDeleteModal}>
+                <DeleteVaultModal open={isDeleteModalOpen} onClose={closeDeleteModal} vaultId={selectedVaultToDelete?.vault.id} />
             </Modal>
         </div>
     )

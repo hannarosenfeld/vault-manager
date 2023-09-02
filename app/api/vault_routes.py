@@ -47,6 +47,7 @@ def add_vault():
         customer = Customer.query.filter_by(name=customer_name).first()
 
         new_vault = Vault(
+            customer_name=form.data['customer_name'],
             customer_id=customer.id if customer else None,  # Use the existing customer's id or None
             field_id=form.data['field_id'],
             field_name=form.data['field_name'],
@@ -73,11 +74,10 @@ def manage_vault(id):
     """
     vault = Vault.query.get(id)
 
+    print("🪭 in route", vault)
+
     if not vault:
         return {'errors': 'Vault not found'}, 404
-
-    if vault.customer_id != current_user.id:  # Ensure the current user owns the vault
-        return {'errors': 'Unauthorized'}, 401
 
     if request.method == 'GET':
         return vault.to_dict()
@@ -88,7 +88,9 @@ def manage_vault(id):
 
         if form.validate_on_submit():
             # Update the vault with the form data
-            vault.customer_id = current_user.id  # Ensure the current user owns the vault
+            vault.customer_name= form.data['customer_name']
+            customer = Customer.query.filter_by(name=customer_name).first()
+            customer_id=customer.id if customer else None,
             vault.field_id = form.data['field_id']
             vault.field_name = form.data['field_name']
             vault.position = form.data['position']
