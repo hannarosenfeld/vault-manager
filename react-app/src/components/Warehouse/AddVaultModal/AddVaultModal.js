@@ -1,8 +1,11 @@
 import React, { useState, useEffect  } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
-import { addVaultThunk } from '../../../store/vault';
+import { addVaultThunk, getAllVaultsThunk } from '../../../store/vault';
 import { getAllCustomersThunk, addCustomerThunk } from '../../../store/customer'
+import { getAllRowsThunk } from '../../../store/rows';
+import { getAllFieldsThunk } from '../../../store/field';
 
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
@@ -18,6 +21,7 @@ import MiniWareHouse from './MiniWareHouse';
 
 export default function AddVaultModal({ onClose, selectedField, tmb}) {
     const dispatch = useDispatch();
+    const history = useHistory();
     const customersObj = useSelector(state => state.customer.customers)
     const [customers, setCustomers] = useState([]);
     const [customer_name, setCustomerName] = useState('');
@@ -88,7 +92,13 @@ export default function AddVaultModal({ onClose, selectedField, tmb}) {
             vault_id: vault_id,
         };
 
-        const response = await dispatch(addVaultThunk(vaultData));
+        const newVault = await dispatch(addVaultThunk(vaultData));
+        await dispatch(getAllRowsThunk());
+        await dispatch(getAllVaultsThunk());
+        await dispatch(getAllFieldsThunk());
+    
+        onClose(newVault);
+        
     };
 
     return (
