@@ -37,11 +37,12 @@ export const getCustomerThunk = (customerId) => async (dispatch) => {
 };
 
 export const getAllCustomersThunk = () => async (dispatch) => {
-
   try {
     const res = await fetch('/api/customers');
+    console.log("📫", res)
     if (res.ok) {
       const data = await res.json();
+      console.log("📫", data)
       dispatch(getAllCustomersAction(data));
       return data;
     } else {

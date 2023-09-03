@@ -19,7 +19,7 @@ class Customer(db.Model, UserMixin):
             'id': self.id,
             'name': self.name,
             'color': self.color,
-            'vaults': [vault.to_dict() for vault in self.associated_customer_vaults],
+            'vaults': [vault.to_dict() for vault in self.vaults],
         }
 
     def to_summary_dict(self):

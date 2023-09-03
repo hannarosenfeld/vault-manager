@@ -35,8 +35,7 @@ export default function Warehouse () {
         dispatch(getAllRowsThunk());
         dispatch(getAllVaultsThunk());
         dispatch(getAllFieldsThunk());
-    }, [])
-
+    }, [dispatch])
 
     const handleFieldClick = async (field, row, index) => {
         await setSelectedField(field);
@@ -144,11 +143,12 @@ export default function Warehouse () {
             </div>
             <div className="warehouse">
             {rowsArr.map((row) => (
-                 <div className="row">
+                 <div className="row" key={row.id}>
                  <div className="fields">
                  {row.fields.map((field, index) => (
                  <div
                     className="field"
+                    key={field.id}
                     style={{ backgroundColor: `${field.vaults.length ? "#ea373d" : "var(--lightgrey)"}`, border: `${selectedField?.id === field?.id ? "3px solid var(--blue)" : "blue"}` }}
                     onClick={() => handleFieldClick(field, row, index)}
                 >
