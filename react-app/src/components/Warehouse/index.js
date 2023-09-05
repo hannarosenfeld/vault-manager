@@ -53,11 +53,10 @@ export default function Warehouse () {
         }
     };
 
-    // Handler for opening the modal
-    const handleOpenModal = () => {
+    const handleOpenModal = (position) => {
+        setPosition(position);
         setIsModalOpen(true);
     };
-
     // Handler for closing the modal
     const handleCloseModal = () => {
         setIsModalOpen(false);
@@ -71,14 +70,15 @@ export default function Warehouse () {
         setIsDeleteModalOpen(false);
     };
 
-    const AddVaultButton = () => {
+    const AddVaultButton = ({ position }) => {
         return (
-            <div className="add-vault-button" onClick={handleOpenModal}>
+            <div className="add-vault-button" onClick={() => handleOpenModal(position)}>
                 <i className="fa-solid fa-plus" />
                 <span>Add Vault</span>
             </div>
-        )
-    }
+        );
+    };
+    
 
     const VaultInstance = (vault) => {
         const handleDeleteClick = () => {
@@ -115,14 +115,16 @@ export default function Warehouse () {
             <>
                 <div className="selected-field-vaults-tmb">
                     <div className="top">
-                        <span 
-                            className="position">T</span> {onlyTop ? <AddVaultButton onClick={() => setPosition("T")}/> : top ? <VaultInstance vault={top}/> : ""}
+                        <span className="position">T</span>
+                        {onlyTop ? <AddVaultButton position="T" /> : top ? <VaultInstance vault={top} /> : ""}
                     </div>
                     <div className="middle">
-                        <span className="position">M</span> {onlyMiddle ? <AddVaultButton onClick={() => setPosition("M")}/> : middle ? <VaultInstance vault={middle}/> : ""}
+                        <span className="position">M</span>
+                        {onlyMiddle ? <AddVaultButton position="M" /> : middle ? <VaultInstance vault={middle} /> : ""}
                     </div>
                     <div className="bottom">
-                        <span className="position">B</span> {onlyBottom ? <AddVaultButton onClick={() => setPosition("B")}/> : bottom ? <VaultInstance vault={bottom}/> : ""}
+                        <span className="position">B</span>
+                        {onlyBottom ? <AddVaultButton position="B" /> : bottom ? <VaultInstance vault={bottom} /> : ""}
                     </div>
                 </div>
                 <div className="selected-field-id">{selectedRow + selectedFieldIndex}</div>

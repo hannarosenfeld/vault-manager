@@ -75,7 +75,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb}) {
         const lowercaseCustomerName = customer_name.toLowerCase();
         const search = await customers.find(customer => customer.name.toLowerCase() === lowercaseCustomerName);
 
-        console.log("🪞", customers)
+        console.log("🪞", tmb)
         if (search === undefined) {
             const customerData = {
                 name: customer_name
@@ -83,10 +83,11 @@ export default function AddVaultModal({ onClose, selectedField, tmb}) {
             newCustomer = await dispatch(addCustomerThunk(customerData))
         }
         
+        console.log("🌓 customer name", customer_name)
         const vaultData = {
             customer_name: customer_name,
             customer: newCustomer,
-            field_id: selectedField.id, // Combine row id and field id
+            field_id: selectedField.id,
             field_name: selectedField.field_id,
             position: tmb,
             vault_id: vault_id,

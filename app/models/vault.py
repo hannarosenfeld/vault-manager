@@ -14,7 +14,8 @@ class Vault(db.Model, UserMixin):
     position = db.Column(db.String(100), nullable=False)
     vault_id = db.Column(db.String(100), nullable=False)
     staged = db.Column(db.Boolean, default=False, nullable=False)
-
+    customer_name = db.Column(db.String(255))
+    
     customer = db.relationship('Customer', back_populates='vaults')
     
     # Specify primaryjoin for field relationship

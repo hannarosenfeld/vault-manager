@@ -69,6 +69,7 @@ def upgrade():
     sa.Column('field_name', sa.String(), nullable=False),
     sa.Column('position', sa.String(length=100), nullable=False),
     sa.Column('vault_id', sa.String(length=100), nullable=False),
+    sa.Column('customer_name', sa.String(), nullable=False),
     sa.ForeignKeyConstraint(['customer_id'], ['customers.id'], ondelete='SET NULL'),
     sa.ForeignKeyConstraint(['field_id'], ['fields.id'], ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['field_name'], ['fields.field_id'], ondelete='CASCADE'),
