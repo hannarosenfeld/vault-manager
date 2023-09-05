@@ -19,7 +19,7 @@ import "./AddVaultModal.css"
 import MiniWareHouse from './MiniWareHouse';
 
 
-export default function AddVaultModal({ onClose, selectedField, tmb}) {
+export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB}) {
     const dispatch = useDispatch();
     const history = useHistory();
     const customersObj = useSelector(state => state.customer.customers)
@@ -98,6 +98,8 @@ export default function AddVaultModal({ onClose, selectedField, tmb}) {
         await dispatch(getAllVaultsThunk());
         await dispatch(getAllFieldsThunk());
     
+        updateTMB(newVault);
+
         onClose(newVault);
         
     };

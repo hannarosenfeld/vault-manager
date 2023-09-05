@@ -26,16 +26,24 @@ export default function Warehouse () {
     let [middle, setMiddle] = useState(null);
     let [bottom, setBottom] = useState(null);
     const [position, setPosition] = useState(null);
-
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [selectedVaultToDelete, setSelectedVaultToDelete] = useState(null);
+    const [updatedVault, setUpdatedVault] = useState(null);
 
     useEffect(() => {
         dispatch(getAllRowsThunk());
         dispatch(getAllVaultsThunk());
         dispatch(getAllFieldsThunk());
     }, [dispatch])
+
+    useEffect(() => {
+        if (updatedVault) {
+          if (updatedVault.position === "T") setTop(updatedVault);
+          if (updatedVault.position === "M") setMiddle(updatedVault);
+          if (updatedVault.position === "B") setBottom(updatedVault);
+        }
+      }, [updatedVault]);
 
     const handleFieldClick = async (field, row, index) => {
         await setSelectedField(field);
@@ -85,10 +93,6 @@ export default function Warehouse () {
             setSelectedVaultToDelete(vault);
             openDeleteModal();
         };
-
-    useEffect(() => {
-        console.log("📃", selectedVaultToDelete)
-    }, [selectedVaultToDelete])
     
         return (
             <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
@@ -162,7 +166,12 @@ export default function Warehouse () {
             ))}
             </div>
             <Modal open={isModalOpen}>
-                <AddVaultModal onClose={handleCloseModal} selectedField={selectedField} tmb={position} />
+                <AddVaultModal 
+                onClose={handleCloseModal} 
+                selectedField={selectedField} 
+                tmb={position}
+                updateTMB={setUpdatedVault}
+                />
             </Modal>
             <Modal open={isDeleteModalOpen} onClose={closeDeleteModal}>
                 <DeleteVaultModal 
