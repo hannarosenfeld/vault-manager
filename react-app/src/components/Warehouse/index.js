@@ -103,7 +103,7 @@ export default function Warehouse () {
                 <div className="edit-symbols">
                     <span style={{ color: "#FFA500" }} className="material-symbols-outlined">forklift</span>
                     <span style={{ color: "#0074D9" }} className="material-symbols-outlined">edit</span>
-                    <span onClick={handleDeleteClick} style={{ color: "var(--delete)" }} className="material-symbols-outlined">delete</span>
+                    {/* <span onClick={handleDeleteClick} style={{ color: "var(--delete)" }} className="material-symbols-outlined">delete</span> */}
                 </div>
             </div>
         );
