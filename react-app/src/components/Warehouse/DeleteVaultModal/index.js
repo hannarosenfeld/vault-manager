@@ -4,14 +4,18 @@ import Button from '@mui/material/Button';
 import "./DeleteVaultModal.css"
 import { useDispatch } from 'react-redux';
 import { deleteVaultThunk, getAllVaultsThunk } from '../../../store/vault';
+import { getAllRowsThunk } from '../../../store/rows';
+import { getAllFieldsThunk } from '../../../store/field';
 
 export default function DeleteVaultModal({ onClose, vaultId, vaultCustomer, vaultNumber }) {
-    console.log("🛍️", vaultCustomer)
     const dispatch = useDispatch();
 
     const handleSubmit = async () => {
         await dispatch(deleteVaultThunk(vaultId));
+        await dispatch(getAllRowsThunk());
         await dispatch(getAllVaultsThunk());
+        await dispatch(getAllFieldsThunk());
+    
         onClose();
     }
 
