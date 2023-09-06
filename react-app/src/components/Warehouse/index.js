@@ -7,6 +7,7 @@ import { getAllFieldsThunk } from "../../store/field";
 import AddVaultModal from "./AddVaultModal/AddVaultModal.js"
 import DeleteVaultModal from "./DeleteVaultModal";
 import "./Warehouse.css"
+import ConfirmStaging from "./ConfirmStaging";
 
 
 export default function Warehouse () {
@@ -28,8 +29,10 @@ export default function Warehouse () {
     const [position, setPosition] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] = useState(false);
     const [selectedVaultToDelete, setSelectedVaultToDelete] = useState(null);
     const [updatedVault, setUpdatedVault] = useState(null);
+    const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
 
     useEffect(() => {
         dispatch(getAllRowsThunk());
@@ -78,6 +81,14 @@ export default function Warehouse () {
         setIsDeleteModalOpen(false);
     };
 
+    const openConfirmStagingModal = () => {
+        setIsConfirmStagingModalOpen(true);
+    }
+
+    const closeConfirmStagingModal = () => {
+        setIsConfirmStagingModalOpen(false);
+    }
+
     const AddVaultButton = ({ position }) => {
         return (
             <div className="add-vault-button" onClick={() => handleOpenModal(position)}>
@@ -93,6 +104,11 @@ export default function Warehouse () {
             setSelectedVaultToDelete(vault);
             openDeleteModal();
         };
+
+        const handleStageClick = () => {
+            setSelectedVaultToStage(vault);
+            openConfirmStagingModal();
+        }
     
         return (
             <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
@@ -102,7 +118,7 @@ export default function Warehouse () {
                 </div>
                 <div className="edit-symbols">
                     <span style={{ color: "#FFA500" }} className="material-symbols-outlined">forklift</span>
-                    <span style={{ color: "#0074D9" }} className="material-symbols-outlined">edit</span>
+                    <span onClick={handleStageClick} style={{ color: "#0074D9" }} className="material-symbols-outlined">edit</span>
                     {/* <span onClick={handleDeleteClick} style={{ color: "var(--delete)" }} className="material-symbols-outlined">delete</span> */}
                 </div>
             </div>
@@ -180,6 +196,12 @@ export default function Warehouse () {
                     vaultId={selectedVaultToDelete?.vault.id} 
                     vaultCustomer={selectedVaultToDelete?.vault.customer.name}
                     vaultNumber={selectedVaultToDelete?.vault.vault_id}
+                />
+            </Modal>
+            <Modal open={isConfirmStagingModalOpen} onClose={setIsConfirmStagingModalOpen}>
+                <ConfirmStaging 
+                    vaultCustomer={selectedVaultToStage?.vault.customer.name}
+                    vaultNumber={selectedVaultToStage?.vault.vault_id}
                 />
             </Modal>
         </div>
