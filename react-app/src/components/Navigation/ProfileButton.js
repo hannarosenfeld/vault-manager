@@ -4,7 +4,7 @@ import { logout } from "../../store/session";
 import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
-
+import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
 import { Drawer, List, ListItem, ListItemText, Button } from "@mui/material";
 
 import "./Navigation.css"; // Make sure to adjust the path to your CSS file
@@ -51,14 +51,14 @@ function ProfileButton({ user }) {
               <ListItem>
                 <ListItemText primary={user.username}/>
               </ListItem>
-              {/* <ListItem 
+              <ListItem 
                 button 
                 component={NavLink} 
-                to="/add-vault" 
-                style={{color: "var(--blue)", display: "flex", gap: "5px"}}>
-                <i class="fa-solid fa-plus"></i>
-                <ListItemText primary="Add Vault" />
-              </ListItem> */}
+                to="/stage" 
+                style={{color: "#FFB002", display: "flex", gap: "5px"}}>
+                {/* <i class="fa-solid fa-plus"></i> */}
+                <ListItemText primary="Staged" />
+              </ListItem>
               <ListItem >
                 <Button style={{color: "var(--red)"}} onClick={handleLogout}>Log Out</Button>
               </ListItem>

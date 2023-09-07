@@ -9,6 +9,7 @@ import LoginFormPage from "./components/LoginFormPage";
 import Navigation from "./components/Navigation";
 import Index from "./components/Index";
 import Warehouse from "./components/Warehouse";
+import StagedVaults from "./components/StagedVaults";
 
 function App() {
   const dispatch = useDispatch();
@@ -28,6 +29,9 @@ function App() {
           </Route>
           <Route path="/warehouse">
             <Warehouse/>
+          </Route>
+          <Route path="/stage">
+            <StagedVaults />
           </Route>
           <Route path="/login" >
             <LoginFormPage />

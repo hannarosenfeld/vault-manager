@@ -10,7 +10,8 @@ import { getAllFieldsThunk } from '../../../store/field';
 export default function DeleteVaultModal({ onClose, vaultId, vaultCustomer, vaultNumber }) {
     const dispatch = useDispatch();
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         await dispatch(deleteVaultThunk(vaultId));
         await dispatch(getAllRowsThunk());
         await dispatch(getAllVaultsThunk());

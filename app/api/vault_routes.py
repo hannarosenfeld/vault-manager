@@ -65,7 +65,6 @@ def add_vault():
     return jsonify({'errors': validation_errors_to_error_messages(form.errors)}), 400
 
 
-
 @vault_routes.route('/<int:id>', methods=['GET', 'PUT', 'DELETE'])
 @login_required
 def manage_vault(id):
@@ -73,8 +72,6 @@ def manage_vault(id):
     Query for a vault by id and manage it (GET, PUT/EDIT, DELETE)
     """
     vault = Vault.query.get(id)
-
-    print("🪭 in route", vault)
 
     if not vault:
         return {'errors': 'Vault not found'}, 404
@@ -105,23 +102,30 @@ def manage_vault(id):
         db.session.delete(vault)
         db.session.commit()
         return {'message': 'Vault deleted successfully'}
+    
 
-@vault_routes.route('/<int:id>/stage', methods=['POST'])
+@vault_routes.route('/stage/<int:id>', methods=['PUT'])
 @login_required
 def stage_vault(id):
     """
-    Stage a vault by id (POST request)
+    Stage a vault by setting the 'staged' property to True
     """
     vault = Vault.query.get(id)
 
     if not vault:
         return {'errors': 'Vault not found'}, 404
 
-    if vault.customer_id != current_user.id:  # Ensure the current user owns the vault
-        return {'errors': 'Unauthorized'}, 401
+    vault.staged = True  # Set the 'staged' property to True
+    db.session.commit()  # Commit the changes to the database
 
-    # Implement your staging logic here if needed
-    # You may update the vault's status or perform specific actions
+    return vault.to_dict()
 
-    db.session.commit()
-    return {'message': 'Vault staged successfully'}
+
+@vault_routes.route('/stage')
+@login_required
+def get_staged_vaults():
+    """
+    Query for all staged vaults and return them in a list of vault dictionaries
+    """
+    staged_vaults = Vault.query.filter_by(staged=True).all()
+    return {'staged_vaults': [vault.to_dict() for vault in staged_vaults]}

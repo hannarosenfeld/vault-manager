@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 822bc6ef0895
+Revision ID: 04869d503373
 Revises: 
-Create Date: 2023-08-30 10:37:11.508677
+Create Date: 2023-09-06 19:18:17.827663
 
 """
 from alembic import op
@@ -13,7 +13,7 @@ environment = os.getenv("FLASK_ENV")
 SCHEMA = os.environ.get("SCHEMA")
 
 # revision identifiers, used by Alembic.
-revision = '822bc6ef0895'
+revision = '04869d503373'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -54,7 +54,7 @@ def upgrade():
     sa.Column('row_id', sa.String(), nullable=True),
     sa.Column('empty', sa.Boolean(), nullable=True),
     sa.Column('field_id', sa.String(length=3), nullable=False),
-    sa.ForeignKeyConstraint(['row_id'], ['rows.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['row_id'], ['rows.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('field_id')
     )
@@ -68,7 +68,8 @@ def upgrade():
     sa.Column('field_name', sa.String(), nullable=False),
     sa.Column('position', sa.String(length=100), nullable=False),
     sa.Column('vault_id', sa.String(length=100), nullable=False),
-    sa.Column('customer_name', sa.String(), nullable=False),
+    sa.Column('staged', sa.Boolean(), nullable=True),
+    sa.Column('customer_name', sa.String(length=255), nullable=True),
     sa.ForeignKeyConstraint(['customer_id'], ['customers.id'], ondelete='SET NULL'),
     sa.ForeignKeyConstraint(['field_id'], ['fields.id'], ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['field_name'], ['fields.field_id'], ondelete='CASCADE'),
@@ -76,8 +77,6 @@ def upgrade():
     )
     if environment == "production":
         op.execute(f"ALTER TABLE vaults SET SCHEMA {SCHEMA};")
-
-    op.add_column('vaults', sa.Column('staged', sa.Boolean(), server_default=sa.text('FALSE')))
 
     with op.batch_alter_table('vaults', schema=None) as batch_op:
         batch_op.create_index(batch_op.f('ix_vaults_customer_id'), ['customer_id'], unique=False)

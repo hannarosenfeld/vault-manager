@@ -9,6 +9,7 @@
 
 .confirm-staging-modal form {
     width: 70%;
+    max-width: 600px;
     background: var(--white);
     height: fit-content;
     display: flex;

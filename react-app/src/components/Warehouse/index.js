@@ -86,6 +86,7 @@ export default function Warehouse () {
     }
 
     const closeConfirmStagingModal = () => {
+        setSelectedVaultToStage(null);
         setIsConfirmStagingModalOpen(false);
     }
 
@@ -200,8 +201,10 @@ export default function Warehouse () {
             </Modal>
             <Modal open={isConfirmStagingModalOpen} onClose={setIsConfirmStagingModalOpen}>
                 <ConfirmStaging 
-                    vaultCustomer={selectedVaultToStage?.vault.customer.name}
-                    vaultNumber={selectedVaultToStage?.vault.vault_id}
+                    vaultCustomer={selectedVaultToStage?.vault?.customer.name}
+                    vaultNumber={selectedVaultToStage?.vault?.vault_id}
+                    vaultId={selectedVaultToStage?.vault?.id}
+                    onClose={closeConfirmStagingModal}
                 />
             </Modal>
         </div>

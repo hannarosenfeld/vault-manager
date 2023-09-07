@@ -31,6 +31,10 @@ body {
     margin: 0 auto;
 }
 
+.page-wrapper {
+    margin: 10px;
+}
+
 ul {
     margin: 0;
     padding: 0;
