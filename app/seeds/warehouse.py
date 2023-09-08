@@ -1,6 +1,5 @@
-from app.models import db, Warehouse, Row, Field, environment, SCHEMA
+from app.models import db, Warehouse, Row, Field, Vault, environment, SCHEMA
 from sqlalchemy.sql import text
-
 
 def seed_warehouse():
     # Create a warehouse instance
@@ -10,10 +9,14 @@ def seed_warehouse():
     rows = Row.query.all()
     fields = Field.query.all()
     
-    # Associate rows and fields with the warehouse
+    # Retrieve the Vault instances you want to include in the warehouse
+    vaults = Vault.query.filter(Vault.id.in_([1, 2, 3])).all()  # Replace [1, 2, 3] with the actual IDs of the vaults you want to include
+    
+    # Associate rows, fields, and vaults with the warehouse
     warehouse.warehouse_rows = rows
     warehouse.warehouse_fields = fields
-
+    warehouse.warehouse_vaults = vaults
+    
     db.session.add(warehouse)
     db.session.commit()
 

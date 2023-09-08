@@ -15,7 +15,7 @@ class Field(db.Model, UserMixin):
     vaults = db.relationship('Vault', back_populates='field', foreign_keys='Vault.field_id')
     row = db.relationship('Row', back_populates='fields')
 
-    warehouse_id = db.Column(db.Integer, db.ForeignKey('warehouse.id'))
+    warehouse_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('warehouse.id')))
     warehouse = db.relationship('Warehouse', back_populates='warehouse_fields')
 
 

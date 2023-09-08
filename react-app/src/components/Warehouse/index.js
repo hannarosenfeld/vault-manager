@@ -14,9 +14,9 @@ import ConfirmStaging from "./ConfirmStaging";
 
 export default function Warehouse () {
     const dispatch = useDispatch();
-    const rows = useSelector(state => state.row.rows);
-    const vaults = useSelector(state => state.warehouse.vaults)
-    const fields = useSelector(state => state.field.fields)
+    const rows = useSelector(state => state.warehouse.warehouseRows);
+    const vaults = useSelector(state => state.warehouse.warehouseVaults)
+    const fields = useSelector(state => state.field.warehouseFields)
     const warehouse = useSelector(state => state.warehouse);
 
 
@@ -29,7 +29,7 @@ export default function Warehouse () {
         if (vaults) vaultsArr = Object.values(vaults);
     },[vaults])
 
-    const fieldsArr = Object.values(fields);
+    // const fieldsArr = Object.values(fields);
 
     const [selectedField, setSelectedField] = useState(null); // Add this state
     const [selectedRow, setSelectedRow] = useState(null)

@@ -3,7 +3,8 @@ from .users import seed_users, undo_users
 from .vaults import seed_vaults, undo_vaults
 from .customers import seed_customers, undo_customers
 from .fields import seed_fields, undo_fields
-from .rows import seed_rows, undo_rows  # Import the new seeders for rows
+from .rows import seed_rows, undo_rows
+from .warehouse import seed_warehouse, undo_warehouse
 
 from app.models.db import db, environment, SCHEMA
 
@@ -24,14 +25,15 @@ def seed():
         undo_rows()
         undo_customers()
         undo_users()
+        undo_warehouse()
     seed_users()
     seed_customers()
     seed_rows()
     seed_fields()
     seed_vaults()
-    # Add other seed functions here
+    seed_warehouse()
 
-# Creates the `flask seed undo` command
+
 @seed_commands.command('undo')
 def undo():
     undo_vaults()

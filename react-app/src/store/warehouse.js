@@ -27,12 +27,12 @@ export const getAllWarehouseVaultsAction = (vaults) => ({
 export const getWarehouseInfoThunk = () => async (dispatch) => {
   try {
     // Simulate an API call to fetch all warehouse information (replace with your actual API call)
-    const response = await fetch('/api/warehouse/info');
+    const response = await fetch('/api/warehouse');
 
     if (response.ok) {
       // Assuming the response includes the complete warehouse information
       const warehouseInfo = await response.json();
-
+      console.log("🪸", warehouseInfo)
       // Dispatch the action with the fetched warehouse information
       dispatch(getWarehouseInfoAction(warehouseInfo));
 
@@ -49,14 +49,15 @@ export const getWarehouseInfoThunk = () => async (dispatch) => {
 };
 
 export const getAllWarehouseVaultsThunk = () => async (dispatch) => {
+    console.log("🥀 in thunk")
     try {
       // Simulate an API call to fetch all warehouse vaults (replace with your actual API call)
-      const response = await fetch('/api/warehouse');
+      const response = await fetch('/api/warehouse/vaults');
   
       if (response.ok) {
         // Assuming the response includes the warehouse vaults data
         const vaults = await response.json();
-  
+        console.log("🥀", vaults)
         // Dispatch the action with the fetched vaults
         dispatch(getAllWarehouseVaultsAction(vaults));
   
@@ -75,7 +76,7 @@ export const getAllWarehouseVaultsThunk = () => async (dispatch) => {
   export const addVaultToWarehouseThunk = (vaultId) => async (dispatch) => {
     try {
       // Simulate an API call to add the vault to the warehouse (replace with your actual API call)
-      const response = await fetch(`/api/warehouse/${vaultId}`, {
+      const response = await fetch(`/api/warehouse/vaults/${vaultId}`, {
         method: 'PUT',
       });
       if (response.ok) {
@@ -105,11 +106,12 @@ const warehouseReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_WAREHOUSE_INFO:
       // Update the state with the complete warehouse information
+      console.log("in action warehouse info", action.payload.warehouse_info.fields)
       return {
         ...state,
-        warehouseVaults: action.payload.warehouseVaults,
-        warehouseFields: action.payload.warehouseFields,
-        warehouseRows: action.payload.warehouseRows,
+        warehouseVaults: action.payload.warehouse_info.vaults,
+        warehouseFields: action.payload.warehouse_info.fields,
+        warehouseRows: action.payload.warehouse_info.rows,
       };
     case ADD_VAULT_TO_WAREHOUSE:
       // Add the vault to the warehouseVaults array in state

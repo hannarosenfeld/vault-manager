@@ -10,7 +10,7 @@ class Row(db.Model, UserMixin):
 
     id = db.Column(db.String, primary_key=True)
     fields = db.relationship('Field', back_populates="row")
-    warehouse_id = db.Column(db.Integer, db.ForeignKey('warehouse.id'))
+    warehouse_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('warehouse.id')))
     warehouse = db.relationship('Warehouse', back_populates='warehouse_rows')
 
     def to_dict(self):
