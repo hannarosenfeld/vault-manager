@@ -1,19 +1,20 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux"
-import { getAllStagedVaultsThunk, getAllVaultsThunk } from "../../store/vault";
+import { getAllStagedVaultsThunk } from "../../store/stage";
 
 import "./StagedVaults.css"
 
 
 export default function StagedVaults() {
     const dispatch = useDispatch();
-    const staged = useSelector(state => state.vault.stagedVaults?.staged_vaults);
-
-    let stagedVaults;
+    const staged = useSelector(state => state.stage?.vaults);
+    const stagedArr = Object.values(staged);
 
     useEffect(() => {
-        console.log("🪻", staged)
+        console.log("🪻", stagedArr[0])
     },[staged])
+
+    let hi;
 
     useEffect(() => {
         dispatch(getAllStagedVaultsThunk())
@@ -22,7 +23,7 @@ export default function StagedVaults() {
     return (
         <div className="page-wrapper">
             <div className="hazard-border staged-containers">
-                {staged?.map(vault => (
+                {stagedArr[0]?.map(vault => (
                     <div key={vault.id} className="vault">
                         <p>{vault.customer.name}</p>
                         <p>{vault.vault_id}</p>

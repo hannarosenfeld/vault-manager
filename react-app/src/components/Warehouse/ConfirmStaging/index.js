@@ -1,8 +1,9 @@
 import { useDispatch } from 'react-redux';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { stageVaultThunk } from '../../../store/vault';
+import { stageVaultThunk } from '../../../store/stage';
 import "./ConfirmStaging.css"
+
 
 export default function ConfirmStaging({ vaultCustomer, vaultNumber, vaultId, onClose }) {
     const dispatch = useDispatch();
@@ -10,7 +11,6 @@ export default function ConfirmStaging({ vaultCustomer, vaultNumber, vaultId, on
     const handleSubmit = async (e) => {
         e.preventDefault();
         const staged = await dispatch(stageVaultThunk(vaultId));
-        console.log("🌓", staged)
         onClose();
     }
 

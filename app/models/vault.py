@@ -21,6 +21,12 @@ class Vault(db.Model, UserMixin):
     # Specify primaryjoin for field relationship
     field = db.relationship('Field', back_populates='vaults', foreign_keys='Vault.field_id')
 
+    warehouse_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('warehouse.id'), ondelete='CASCADE'))
+    warehouse = db.relationship('Warehouse', back_populates='warehouse_vaults')
+
+    stage_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('stage.id'), ondelete='CASCADE'), nullable=True)
+    stage = db.relationship('Stage', back_populates='staged_vaults')
+
     def to_dict(self):
         return {
             'id': self.id,

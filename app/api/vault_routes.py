@@ -102,30 +102,3 @@ def manage_vault(id):
         db.session.delete(vault)
         db.session.commit()
         return {'message': 'Vault deleted successfully'}
-    
-
-@vault_routes.route('/stage/<int:id>', methods=['PUT'])
-@login_required
-def stage_vault(id):
-    """
-    Stage a vault by setting the 'staged' property to True
-    """
-    vault = Vault.query.get(id)
-
-    if not vault:
-        return {'errors': 'Vault not found'}, 404
-
-    vault.staged = True  # Set the 'staged' property to True
-    db.session.commit()  # Commit the changes to the database
-
-    return vault.to_dict()
-
-
-@vault_routes.route('/stage')
-@login_required
-def get_staged_vaults():
-    """
-    Query for all staged vaults and return them in a list of vault dictionaries
-    """
-    staged_vaults = Vault.query.filter_by(staged=True).all()
-    return {'staged_vaults': [vault.to_dict() for vault in staged_vaults]}

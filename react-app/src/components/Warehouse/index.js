@@ -118,8 +118,8 @@ export default function Warehouse () {
                     <div>{vault.vault.vault_id}</div>
                 </div>
                 <div className="edit-symbols">
-                    <span style={{ color: "#FFA500" }} className="material-symbols-outlined">forklift</span>
-                    <span onClick={handleStageClick} style={{ color: "#0074D9" }} className="material-symbols-outlined">edit</span>
+                    <span onClick={handleStageClick} style={{ color: "#FFA500" }} className="material-symbols-outlined">forklift</span>
+                    <span style={{ color: "#0074D9" }} className="material-symbols-outlined">edit</span>
                     {/* <span onClick={handleDeleteClick} style={{ color: "var(--delete)" }} className="material-symbols-outlined">delete</span> */}
                 </div>
             </div>

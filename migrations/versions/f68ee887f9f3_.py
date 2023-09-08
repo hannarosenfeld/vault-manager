@@ -1,19 +1,16 @@
 """empty message
 
-Revision ID: 04869d503373
+Revision ID: f68ee887f9f3
 Revises: 
-Create Date: 2023-09-06 19:18:17.827663
+Create Date: 2023-09-07 20:30:00.397019
 
 """
 from alembic import op
 import sqlalchemy as sa
 
-import os
-environment = os.getenv("FLASK_ENV")
-SCHEMA = os.environ.get("SCHEMA")
 
 # revision identifiers, used by Alembic.
-revision = '04869d503373'
+revision = 'f68ee887f9f3'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -27,16 +24,14 @@ def upgrade():
     sa.Column('color', sa.String(length=100), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
-    if environment == "production":
-        op.execute(f"ALTER TABLE customers SET SCHEMA {SCHEMA};")
-
     op.create_table('rows',
     sa.Column('id', sa.String(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
-    if environment == "production":
-        op.execute(f"ALTER TABLE rows SET SCHEMA {SCHEMA};")
-
+    op.create_table('stage',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.PrimaryKeyConstraint('id')
+    )
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('username', sa.String(length=40), nullable=False),
@@ -46,9 +41,10 @@ def upgrade():
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username')
     )
-    if environment == "production":
-        op.execute(f"ALTER TABLE users SET SCHEMA {SCHEMA};")
-
+    op.create_table('warehouse',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.PrimaryKeyConstraint('id')
+    )
     op.create_table('fields',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('row_id', sa.String(), nullable=True),
@@ -58,9 +54,6 @@ def upgrade():
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('field_id')
     )
-    if environment == "production":
-        op.execute(f"ALTER TABLE fields SET SCHEMA {SCHEMA};")
-
     op.create_table('vaults',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('customer_id', sa.Integer(), nullable=True),
@@ -70,14 +63,15 @@ def upgrade():
     sa.Column('vault_id', sa.String(length=100), nullable=False),
     sa.Column('staged', sa.Boolean(), nullable=True),
     sa.Column('customer_name', sa.String(length=255), nullable=True),
+    sa.Column('warehouse_id', sa.Integer(), nullable=True),
+    sa.Column('stage_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['customer_id'], ['customers.id'], ondelete='SET NULL'),
     sa.ForeignKeyConstraint(['field_id'], ['fields.id'], ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['field_name'], ['fields.field_id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['stage_id'], ['stage.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['warehouse_id'], ['warehouse.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
-    if environment == "production":
-        op.execute(f"ALTER TABLE vaults SET SCHEMA {SCHEMA};")
-
     with op.batch_alter_table('vaults', schema=None) as batch_op:
         batch_op.create_index(batch_op.f('ix_vaults_customer_id'), ['customer_id'], unique=False)
 
@@ -91,7 +85,9 @@ def downgrade():
 
     op.drop_table('vaults')
     op.drop_table('fields')
+    op.drop_table('warehouse')
     op.drop_table('users')
+    op.drop_table('stage')
     op.drop_table('rows')
     op.drop_table('customers')
     # ### end Alembic commands ###
