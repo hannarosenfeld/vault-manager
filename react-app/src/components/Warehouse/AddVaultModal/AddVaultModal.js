@@ -18,6 +18,7 @@ import { FormGroup, FormLabel, keyframes } from '@mui/material';
 
 import "./AddVaultModal.css"
 import MiniWareHouse from './MiniWareHouse';
+import { addVaultThunk } from '../../../store/vault';
 
 
 export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB}) {
@@ -93,15 +94,14 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB})
             vault_id: vault_id,
         };
 
-        const newVault = await dispatch(addVaultToWarehouseThunk(vaultData));
-        await dispatch(getAllRowsThunk());
-        // await dispatch(getAllVaultsFromThunk());
-        await dispatch(getAllFieldsThunk());
-    
+        const newVault = await dispatch(addVaultThunk(vaultData));
+        console.log("🌈 newVault", newVault, newVault.id)
+        const warehouseVault = await dispatch(addVaultToWarehouseThunk(newVault.id));
+        console.log("🔥 warehouseVault", warehouseVault)
+
         updateTMB(newVault);
 
         onClose(newVault);
-        
     };
 
     return (

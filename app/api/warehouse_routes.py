@@ -5,19 +5,6 @@ from app.models import Warehouse, Vault, db
 warehouse_routes = Blueprint('warehouse', __name__)
 
 
-print("🍄 in router")
-
-def validation_errors_to_error_messages(validation_errors):
-    """
-    Simple function that turns the WTForms validation errors into a simple list
-    """
-    errorMessages = []
-    for field in validation_errors:
-        for error in validation_errors[field]:
-            errorMessages.append(f'{field} : {error}')
-    return errorMessages
-
-
 @warehouse_routes.route('/', methods=['GET'])
 def get_warehouse_info():
     """
@@ -25,25 +12,18 @@ def get_warehouse_info():
     """
     warehouse = Warehouse.query.get(1)  # Assuming there is only one warehouse with ID 1
 
-    print("🌈 in warehouse info route", warehouse)
-
     if not warehouse:
         return {'errors': 'Warehouse not found'}, 404
 
     return {'warehouse_info': warehouse.to_dict()}
 
+print("🍄 in router")
 
-@warehouse_routes.route('/add_vault', methods=['POST'])
-def add_vault_to_warehouse():
+@warehouse_routes.route('/vaults/<int:vault_id>', methods=['PUT'])
+def add_vault_to_warehouse(vault_id):
     """
     Add a vault to the warehouse
     """
-    data = request.get_json()
-    vault_id = data.get('vault_id')
-
-    if not vault_id:
-        return {'errors': 'vault_id is required'}, 400
-
     warehouse = Warehouse.query.get(1)  # Assuming there is only one warehouse with ID 1
 
     if not warehouse:
@@ -60,7 +40,7 @@ def add_vault_to_warehouse():
     warehouse.warehouse_vaults.append(vault)
     db.session.commit()
 
-    return {'message': 'Vault added to warehouse successfully'}
+    return {'message': 'Vault added to the warehouse successfully'}
 
 
 @warehouse_routes.route('/vaults', methods=['GET'])
