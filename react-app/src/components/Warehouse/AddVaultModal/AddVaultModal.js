@@ -2,7 +2,8 @@ import React, { useState, useEffect  } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { addVaultThunk, getAllVaultsThunk } from '../../../store/vault';
+// import { addVaultThunk, getAllVaultsThunk } from '../../../store/vault';
+import { addVaultToWarehouseThunk, getAllWarehouseVaultsThunk } from '../../../store/warehouse';
 import { getAllCustomersThunk, addCustomerThunk } from '../../../store/customer'
 import { getAllRowsThunk } from '../../../store/rows';
 import { getAllFieldsThunk } from '../../../store/field';
@@ -83,7 +84,6 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB})
             newCustomer = await dispatch(addCustomerThunk(customerData))
         }
         
-        console.log("🌓 customer name", customer_name)
         const vaultData = {
             customer_name: customer_name,
             customer: newCustomer,
@@ -93,9 +93,9 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB})
             vault_id: vault_id,
         };
 
-        const newVault = await dispatch(addVaultThunk(vaultData));
+        const newVault = await dispatch(addVaultToWarehouseThunk(vaultData));
         await dispatch(getAllRowsThunk());
-        await dispatch(getAllVaultsThunk());
+        // await dispatch(getAllVaultsFromThunk());
         await dispatch(getAllFieldsThunk());
     
         updateTMB(newVault);

@@ -7,6 +7,7 @@ import rowReducer from './rows';
 import fieldReducer from './field';
 import customerReducer from './customer';
 import stageReducer from './stage';
+import warehouseReducer from './warehouse';
 
 const rootReducer = combineReducers({
   session,
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
   row: rowReducer,
   field: fieldReducer,
   customer: customerReducer,
-  stage: stageReducer
+  stage: stageReducer,
+  warehouse: warehouseReducer
 });
 
 

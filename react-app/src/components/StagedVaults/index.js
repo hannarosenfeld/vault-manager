@@ -14,8 +14,6 @@ export default function StagedVaults() {
         console.log("🪻", stagedArr[0])
     },[staged])
 
-    let hi;
-
     useEffect(() => {
         dispatch(getAllStagedVaultsThunk())
     }, [dispatch])

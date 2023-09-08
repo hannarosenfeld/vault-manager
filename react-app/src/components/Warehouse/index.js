@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from '@mui/material/Modal';
-import { getAllVaultsThunk } from '../../store/vault';
+
+import { getAllWarehouseVaultsThunk, getWarehouseInfoThunk } from "../../store/warehouse";
 import { getAllRowsThunk } from "../../store/rows";
 import { getAllFieldsThunk } from "../../store/field";
+
 import AddVaultModal from "./AddVaultModal/AddVaultModal.js"
 import DeleteVaultModal from "./DeleteVaultModal";
 import "./Warehouse.css"
@@ -13,11 +15,20 @@ import ConfirmStaging from "./ConfirmStaging";
 export default function Warehouse () {
     const dispatch = useDispatch();
     const rows = useSelector(state => state.row.rows);
-    const vaults = useSelector(state => state.vault.vaults)
+    const vaults = useSelector(state => state.warehouse.vaults)
     const fields = useSelector(state => state.field.fields)
+    const warehouse = useSelector(state => state.warehouse);
+
+
+    console.log("🪴", warehouse)
 
     const rowsArr = Object.values(rows);
-    const vaultsArr = Object.values(vaults);
+    let vaultsArr;
+
+    useEffect(() => {
+        if (vaults) vaultsArr = Object.values(vaults);
+    },[vaults])
+
     const fieldsArr = Object.values(fields);
 
     const [selectedField, setSelectedField] = useState(null); // Add this state
@@ -35,9 +46,10 @@ export default function Warehouse () {
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
 
     useEffect(() => {
-        dispatch(getAllRowsThunk());
-        dispatch(getAllVaultsThunk());
-        dispatch(getAllFieldsThunk());
+        // dispatch(getAllRowsThunk());
+        dispatch(getWarehouseInfoThunk());
+        dispatch(getAllWarehouseVaultsThunk());
+        // dispatch(getAllFieldsThunk());
     }, [dispatch])
 
     useEffect(() => {
