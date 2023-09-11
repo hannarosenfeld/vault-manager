@@ -56,3 +56,27 @@ def get_warehouse_vaults():
 
     warehouse_vaults = warehouse.warehouse_vaults
     return {'warehouse_vaults': [vault.to_dict() for vault in warehouse_vaults]}
+
+
+@warehouse_routes.route('/vaults/<int:vault_id>', methods=['DELETE'])
+def remove_vault_from_warehouse(vault_id):
+    """
+    Remove a vault from the warehouse
+    """
+    warehouse = Warehouse.query.get(1)  # Assuming there is only one warehouse with ID 1
+
+    if not warehouse:
+        return {'errors': 'Warehouse not found'}, 404
+
+    vault = Vault.query.get(vault_id)
+
+    if not vault:
+        return {'errors': 'Vault not found'}, 404
+
+    if vault not in warehouse.warehouse_vaults:
+        return {'errors': 'Vault is not in the warehouse'}, 400
+
+    warehouse.warehouse_vaults.remove(vault)
+    db.session.commit()
+
+    return {'message': 'Vault removed from the warehouse successfully'}

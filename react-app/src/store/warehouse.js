@@ -32,7 +32,6 @@ export const getWarehouseInfoThunk = () => async (dispatch) => {
     if (response.ok) {
       // Assuming the response includes the complete warehouse information
       const warehouseInfo = await response.json();
-      console.log("🪸", warehouseInfo)
       // Dispatch the action with the fetched warehouse information
       dispatch(getWarehouseInfoAction(warehouseInfo));
 
@@ -49,7 +48,6 @@ export const getWarehouseInfoThunk = () => async (dispatch) => {
 };
 
 export const getAllWarehouseVaultsThunk = () => async (dispatch) => {
-    console.log("🥀 in thunk")
     try {
       // Simulate an API call to fetch all warehouse vaults (replace with your actual API call)
       const response = await fetch('/api/warehouse/vaults');
@@ -57,7 +55,6 @@ export const getAllWarehouseVaultsThunk = () => async (dispatch) => {
       if (response.ok) {
         // Assuming the response includes the warehouse vaults data
         const vaults = await response.json();
-        console.log("🥀", vaults)
         // Dispatch the action with the fetched vaults
         dispatch(getAllWarehouseVaultsAction(vaults));
   
@@ -74,8 +71,6 @@ export const getAllWarehouseVaultsThunk = () => async (dispatch) => {
   };
 
   export const addVaultToWarehouseThunk = (vaultId) => async (dispatch) => {
-    console.log("🌛 in thunk")
-
     try {
       // Simulate an API call to add the vault to the warehouse (replace with your actual API call)
       const response = await fetch(`/api/warehouse/vaults/${vaultId}`, {
@@ -85,7 +80,6 @@ export const getAllWarehouseVaultsThunk = () => async (dispatch) => {
       if (response.ok) {
         // Dispatch the action with the added vaultId
         dispatch(addVaultToWarehouseAction(vaultId));
-        console.log("🌓 thunk", response)
         return vaultId;
       } else {
         const errorData = await response.json();
@@ -97,6 +91,28 @@ export const getAllWarehouseVaultsThunk = () => async (dispatch) => {
       return error;
     }
   };
+
+export const removeVaultFromWarehouseThunk = (vaultId) => async (dispatch) => {
+  try {
+    // Simulate an API call to remove the vault from the warehouse (replace with your actual API call)
+    const response = await fetch(`/api/warehouse/vaults/${vaultId}`, {
+      method: 'DELETE', // Assuming you use DELETE to remove a vault from the warehouse
+    });
+
+    if (response.ok) {
+      // Dispatch the action to remove the vault from the warehouse
+      dispatch(removeVaultFromWarehouse(vaultId));
+      return vaultId;
+    } else {
+      const errorData = await response.json();
+      console.error('Error removing vault from warehouse:', errorData.errors);
+      return errorData;
+    }
+  } catch (error) {
+    console.error('Error removing vault from warehouse:', error);
+    return error;
+  }
+};
   
 const initialState = {
   warehouseVaults: [],

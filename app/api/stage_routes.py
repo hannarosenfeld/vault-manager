@@ -9,7 +9,9 @@ def stage_vault(id):
     """
     Stage a vault by setting the 'staged' property to True and associating it with the stage.
     """
+
     vault = Vault.query.get(id)
+    print("🪴 in route", vault)
 
     if not vault:
         return {'errors': 'Vault not found'}, 404

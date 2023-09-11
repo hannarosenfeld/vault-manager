@@ -34,6 +34,7 @@ export const getAllStagedVaultsThunk = () => async (dispatch) => {
 
 
 export const stageVaultThunk = (vaultId) => async (dispatch) => {
+  console.log("🐚 in thunk")
     try {
         const response = await fetch(`/api/stage/${vaultId}`, {
         method: 'PUT',
@@ -66,8 +67,9 @@ const initialState = {
   const stageReducer = (state = initialState, action) => {
     switch (action.type) {
       case STAGE_VAULT:
+        console.log('⭐️ Action object:', action);
         // Ensure that action.vault exists and has a vaultId property
-        if (action.vault && action.vault.vaultId) {
+        if (action.vaultId) {
           const updatedVault = {
             ...state.vaults[action.vault.vaultId],
             staged: true,

@@ -23,7 +23,7 @@ export default function Warehouse () {
         if (vaults) vaultsArr = Object.values(vaults);
     },[vaults])
 
-    const [selectedField, setSelectedField] = useState(null); // Add this state
+    const [selectedField, setSelectedField] = useState(null);
     const [selectedRow, setSelectedRow] = useState(null)
     const [selectedFieldIndex, setSelectedFieldIndex] = useState(0);
     let [top, setTop] = useState(null);
@@ -185,10 +185,10 @@ export default function Warehouse () {
             </div>
             <Modal open={isModalOpen}>
                 <AddVaultModal 
-                onClose={handleCloseModal} 
-                selectedField={selectedField} 
-                tmb={position}
-                updateTMB={setUpdatedVault}
+                    onClose={handleCloseModal} 
+                    selectedField={selectedField} 
+                    tmb={position}
+                    updateTMB={setUpdatedVault}
                 />
             </Modal>
             <Modal open={isDeleteModalOpen} onClose={closeDeleteModal}>

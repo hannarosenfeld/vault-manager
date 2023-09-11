@@ -1,24 +1,18 @@
 import React, { useState, useEffect  } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-
-// import { addVaultThunk, getAllVaultsThunk } from '../../../store/vault';
-import { addVaultToWarehouseThunk, getAllWarehouseVaultsThunk } from '../../../store/warehouse';
+import { addVaultToWarehouseThunk, getAllWarehouseVaultsThunk, getWarehouseInfoThunk} from '../../../store/warehouse';
 import { getAllCustomersThunk, addCustomerThunk } from '../../../store/customer'
-import { getAllRowsThunk } from '../../../store/rows';
-import { getAllFieldsThunk } from '../../../store/field';
-
+import { addVaultThunk } from '../../../store/vault';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { FormGroup, FormLabel, keyframes } from '@mui/material';
-
-
 import "./AddVaultModal.css"
 import MiniWareHouse from './MiniWareHouse';
-import { addVaultThunk } from '../../../store/vault';
+
 
 
 export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB}) {
@@ -77,7 +71,6 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB})
         const lowercaseCustomerName = customer_name.toLowerCase();
         const search = await customers.find(customer => customer.name.toLowerCase() === lowercaseCustomerName);
 
-        console.log("🪞", tmb)
         if (search === undefined) {
             const customerData = {
                 name: customer_name
@@ -95,11 +88,10 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB})
         };
 
         const newVault = await dispatch(addVaultThunk(vaultData));
-        console.log("🌈 newVault", newVault, newVault.id)
         const warehouseVault = await dispatch(addVaultToWarehouseThunk(newVault.id));
-        console.log("🔥 warehouseVault", warehouseVault)
-
         updateTMB(newVault);
+        await dispatch(getAllWarehouseVaultsThunk())
+        await dispatch(getWarehouseInfoThunk())
 
         onClose(newVault);
     };
