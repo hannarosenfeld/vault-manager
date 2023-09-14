@@ -17,7 +17,6 @@ def get_warehouse_info():
 
     return {'warehouse_info': warehouse.to_dict()}
 
-print("🍄 in router")
 
 @warehouse_routes.route('/vaults/<int:vault_id>', methods=['PUT'])
 def add_vault_to_warehouse(vault_id):

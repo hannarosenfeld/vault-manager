@@ -18,6 +18,7 @@ class Warehouse(db.Model):
 
     def to_dict(self):
         return {
+            'id': self.id,
             'vaults': [vault.to_dict() for vault in self.warehouse_vaults],
             'fields': [field.to_dict() for field in self.warehouse_fields],
             'rows': [row.to_dict() for row in self.warehouse_rows],

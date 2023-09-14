@@ -37,6 +37,7 @@ export default function Warehouse () {
     const [updatedVault, setUpdatedVault] = useState(null);
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
 
+
     useEffect(() => {
         dispatch(getWarehouseInfoThunk());
         dispatch(getAllWarehouseVaultsThunk());

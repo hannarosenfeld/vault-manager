@@ -13,5 +13,6 @@ class Stage(db.Model, UserMixin):
 
     def to_dict(self):
         return {
+            'id': self.id,
             'vaults': [vault.to_dict() for vault in self.vaults],
         }

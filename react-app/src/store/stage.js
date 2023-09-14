@@ -1,101 +1,137 @@
-const STAGE_VAULT = "vault/STAGE_VAULT";
-const GET_ALL_STAGED_VAULTS = "vault/GET_ALL_STAGED_VAULTS";
+const GET_STAGE_INFO = 'stage/GET_STAGE_INFO';
+const ADD_VAULT_TO_STAGE = 'stage/ADD_VAULT_TO_STAGE';
+const GET_ALL_STAGED_VAULTS = 'stage/GET_ALL_STAGED_VAULTS';
+const REMOVE_VAULT_FROM_STAGE = 'stage/REMOVE_VAULT_FROM_STAGE';
+
+export const getStageInfoAction = (stageInfo) => ({
+  type: GET_STAGE_INFO,
+  payload: stageInfo,
+});
+
+export const addVaultToStageAction = (vault) => ({
+  type: ADD_VAULT_TO_STAGE,
+  payload: vault,
+});
 
 
-const getAllStagedVaultsAction = (vaults) => ({
-    type: GET_ALL_STAGED_VAULTS,
-    vaults
-  });
+export const getAllStagedVaultsAction = (vaults) => ({
+  type: GET_ALL_STAGED_VAULTS,
+  payload: vaults,
+});
 
-const stageVaultAction = (vaultId) => ({
-    type: STAGE_VAULT,
-    vaultId
-  });
+export const removeVaultFromStageAction = (vaultId) => ({
+  type: REMOVE_VAULT_FROM_STAGE,
+  payload: vaultId,
+});
 
+export const getStageInfoThunk = () => async (dispatch) => {
+  try {
+    const response = await fetch('/api/stage');
+    if (response.ok) {
+      const stageInfo = await response.json();
+      dispatch(getStageInfoAction(stageInfo.stage_info));
+      return stageInfo;
+    } else {
+      const errorData = await response.json();
+      console.error('Error fetching stage information:', errorData.errors);
+      return errorData;
+    }
+  } catch (error) {
+    console.error('Error fetching stage information:', error);
+    return error;
+  }
+};
+
+export const addVaultToStageThunk = (vaultId) => async (dispatch, getState) => {
+  try {
+    const response = await fetch(`/api/stage/vaults/${vaultId}`, {
+      method: 'PUT',
+    });
+
+    if (response.ok) {
+      const updatedVault = await response.json();
+      dispatch(addVaultToStageAction(updatedVault)); // Dispatch the entire vault object
+      return updatedVault;
+    } else {
+      const errorData = await response.json();
+      console.error('Error adding vault to stage:', errorData.errors);
+      return errorData;
+    }
+  } catch (error) {
+    console.error('Error adding vault to stage:', error);
+    return error;
+  }
+};
 
 
 export const getAllStagedVaultsThunk = () => async (dispatch) => {
-    try {
-        const res = await fetch('/api/stage'); // Adjust the API endpoint for staged vaults
-        if (res.ok) {
-        const data = await res.json();
-        dispatch(getAllStagedVaultsAction(data));
-        return data;
-        } else {
-        const err = await res.json();
-        console.error("Error fetching staged vaults:", err);
-        return err;
-        }
-    } catch (error) {
-        console.error("Error fetching staged vaults:", error);
-        return error;
+  try {
+    const response = await fetch('/api/stage/vaults');
+    if (response.ok) {
+      const vaults = await response.json();
+      dispatch(getAllStagedVaultsAction(vaults.staged_vaults));
+      return vaults;
+    } else {
+      const errorData = await response.json();
+      console.error('Error fetching staged vaults:', errorData.errors);
+      return errorData;
     }
+  } catch (error) {
+    console.error('Error fetching staged vaults:', error);
+    return error;
+  }
 };
 
+export const removeVaultFromStageThunk = (vaultId) => async (dispatch) => {
+  try {
+    const response = await fetch(`/api/stage/vaults/${vaultId}`, {
+      method: 'DELETE',
+    });
 
-export const stageVaultThunk = (vaultId) => async (dispatch) => {
-  console.log("🐚 in thunk")
-    try {
-        const response = await fetch(`/api/stage/${vaultId}`, {
-        method: 'PUT',
-        });
-
-        if (response.ok) {
-        // Assuming the response includes the staged vault data
-        const updatedVault = await response.json();
-
-        // Dispatch the action with the updated vault
-        dispatch(stageVaultAction(vaultId));
-        
-        return updatedVault;
-        } else {
-        const errorData = await response.json();
-        console.error("Error staging vault:", errorData.errors);
-        return errorData;
-        }
-    } catch (error) {
-        console.error("Error staging vault:", error);
-        return error;
+    if (response.ok) {
+      dispatch(removeVaultFromStageAction(vaultId));
+      return vaultId;
+    } else {
+      const errorData = await response.json();
+      console.error('Error removing vault from stage:', errorData.errors);
+      return errorData;
     }
+  } catch (error) {
+    console.error('Error removing vault from stage:', error);
+    return error;
+  }
 };
 
 const initialState = {
-    vaults: {},
-    currentVault: {}
-  };
-  
-  const stageReducer = (state = initialState, action) => {
-    switch (action.type) {
-      case STAGE_VAULT:
-        console.log('⭐️ Action object:', action);
-        // Ensure that action.vault exists and has a vaultId property
-        if (action.vaultId) {
-          const updatedVault = {
-            ...state.vaults[action.vault.vaultId],
-            staged: true,
-          };      
-          return {
-            ...state,
-            vaults: {
-              ...state.vaults,
-              [action.vault.vaultId]: updatedVault,
-            },
-          };
-        } else {
-          // Handle the case where action.vault is missing or vaultId is missing
-          return state; // Or you can handle it differently based on your requirements
-        }
-        case GET_ALL_STAGED_VAULTS:
-          console.log('⭐️ Action object:', action); // Log the action object to inspect its structure
-          return {
-            ...state,
-            vaults: action.vaults
-          };
-        
-      default:
-        return state;
-    }
-  };
-  
-  export default stageReducer;
-  
+  stageInfo: {},
+  stagedVaults: [],
+};
+
+const stageReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case GET_STAGE_INFO:
+      return {
+        ...state,
+        stageInfo: action.payload,
+      };
+    case ADD_VAULT_TO_STAGE:
+      return {
+        ...state,
+        stagedVaults: [...state.stagedVaults, action.payload],
+      };    
+    case GET_ALL_STAGED_VAULTS:
+      return {
+        ...state,
+        stagedVaults: action.payload,
+      };
+    case REMOVE_VAULT_FROM_STAGE:
+      return {
+        ...state,
+        stagedVaults: state.stagedVaults.filter((vault) => vault !== action.payload),
+      };
+    default:
+      return state;
+  }
+};
+
+export default stageReducer;
