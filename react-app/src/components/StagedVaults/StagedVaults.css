@@ -12,22 +12,24 @@
     ) 10;
     }
 
-.staged-containers {
-    padding: 5px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-}    
-
-.vault {
-    font-size: 9px;
-    display: flex;
-    flex-direction: column;
-    height: 4em;
-    width: 4em;
-    padding: 4px;
-    gap: 3px;
-    border-radius: 3px;
-    border: 1px solid var(--black);
-    background-color: #ffb101;
-}
+    .staged-containers {
+        padding: 5px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        justify-content: flex-start; /* Adjust the alignment as needed */
+    }
+    
+    .vault {
+        font-size: 9px;
+        display: flex;
+        flex-direction: column;
+        width: 4.4em; /* Set the width */
+        height: 4.4em; /* Set the height to the same value to make it a square */
+        padding: 4px;
+        gap: 3px;
+        border-radius: 3px;
+        border: 1px solid var(--black);
+        background-color: #ffb101;
+    }
+    
