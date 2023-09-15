@@ -20,13 +20,15 @@ export default function StagedVaults() {
 
     return (
         <div className="page-wrapper">
-            <div className="hazard-border staged-containers">
-                {stagedArr?.map(vault => (
-                    <div key={vault.id} className="vault">
-                        <p>{vault?.customer?.name}</p>
-                        <p>{vault?.vault_id}</p>
-                    </div>
-                ))}
+            <div className="hazard-border">
+                <div className="staged-containers">
+                    {stagedArr?.map(vault => (
+                        <div key={vault.id} className="vault">
+                            <p>{vault?.customer?.name}</p>
+                            <p>{vault?.vault_id}</p>
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     )

@@ -1,5 +1,6 @@
 .hazard-border {
     border: 10px solid pink;
+    height: 85vh;
     border-image: repeating-linear-gradient(
         -55deg,
         #000,
@@ -10,10 +11,11 @@
     }
 
 .staged-containers {
-    height: 85vh;
     padding: 10px;
     display: flex;
+    flex-wrap: wrap;
     gap: 5px;
+
 }    
 
 .vault {
