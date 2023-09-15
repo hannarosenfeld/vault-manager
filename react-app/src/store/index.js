@@ -3,8 +3,8 @@ import thunk from 'redux-thunk';
 import session from './session'
 import userReducer from './user';
 import vaultReducer from './vault'
-import rowReducer from './rows';
-import fieldReducer from './field';
+// import rowReducer from './rows';
+// import fieldReducer from './field';
 import customerReducer from './customer';
 import stageReducer from './stage';
 import warehouseReducer from './warehouse';

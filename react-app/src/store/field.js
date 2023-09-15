@@ -1,5 +1,6 @@
 // const GET_FIELD = "field/GET_FIELD";
 // const GET_ALL_FIELDS = "field/GET_ALL_FIELDS"; // Add this new action type
+// // const REMOVE_VAULT_FROM_FIELD = "field/REMOVE_VAULT_FROM_FIELD"; // New action type for removing a vault from a field
 
 // // Action creator for getting a single field
 // const getFieldAction = (field) => ({
@@ -12,6 +13,13 @@
 //   type: GET_ALL_FIELDS,
 //   fields
 // });
+
+// // // Action creator for removing a vault from a field
+// // const removeVaultFromFieldAction = (fieldId, vaultId) => ({
+// //   type: REMOVE_VAULT_FROM_FIELD,
+// //   fieldId,
+// //   vaultId
+// // });
 
 // // Thunk action creator for getting a single field
 // export const getFieldThunk = (fieldId) => async (dispatch) => {
@@ -50,6 +58,27 @@
 //   }
 // };
 
+// // // Thunk action creator for removing a vault from a field
+// // export const removeVaultFromFieldThunk = (fieldId, vaultId) => async (dispatch) => {
+// //     console.log("🌺 in thunk! ", fieldId, vaultId)
+// //   try {
+// //     const res = await fetch(`/api/fields/${fieldId}/vaults/${vaultId}`, {
+// //       method: 'DELETE',
+// //     });
+// //     if (res.ok) {
+// //       console.log("🌺 in thunk! ", res)
+// //       dispatch(removeVaultFromFieldAction(fieldId, vaultId));
+// //     } else {
+// //       const err = await res.json();
+// //       console.error("Error removing vault from field:", err); // Log the error
+// //       return err;
+// //     }
+// //   } catch (error) {
+// //     console.error("Error removing vault from field:", error);
+// //     return error;
+// //   }
+// // };
+
 // const initialState = {
 //   fields: {},
 //   currentField: {}
@@ -71,6 +100,27 @@
 //         ...state,
 //         fields: action.fields
 //       };
+//     // case REMOVE_VAULT_FROM_FIELD:
+//     // // Check if the field exists in the state
+//     // if (!state.fields[action.fieldId]) {
+//     //     // Field doesn't exist, return the current state
+//     //     return state;
+//     // }
+    
+//     // const updatedField = { ...state.fields[action.fieldId] };
+//     // // Check if the 'vaults' property exists in the field object
+//     // if (updatedField.vaults && Array.isArray(updatedField.vaults)) {
+//     //     updatedField.vaults = updatedField.vaults.filter(vault => vault.id !== action.vaultId);
+//     // }
+    
+//     // return {
+//     //     ...state,
+//     //     fields: {
+//     //     ...state.fields,
+//     //     [action.fieldId]: updatedField
+//     //     }
+//     // };
+      
 //     default:
 //       return state;
 //   }

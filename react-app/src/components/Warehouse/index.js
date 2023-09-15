@@ -1,21 +1,17 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from '@mui/material/Modal';
-
 import { getAllWarehouseVaultsThunk, getWarehouseInfoThunk } from "../../store/warehouse";
-
 import AddVaultModal from "./AddVaultModal/AddVaultModal.js"
 import DeleteVaultModal from "./DeleteVaultModal";
-import "./Warehouse.css"
 import ConfirmStaging from "./ConfirmStaging";
+import "./Warehouse.css"
 
 
 export default function Warehouse () {
     const dispatch = useDispatch();
     const rows = useSelector(state => state.warehouse.warehouseRows);
     const vaults = useSelector(state => state.warehouse.warehouseVaults)
-    // const warehouse = useSelector(state => state.warehouse);
-
     const rowsArr = Object.values(rows);
     let vaultsArr;
 
@@ -37,7 +33,6 @@ export default function Warehouse () {
     const [updatedVault, setUpdatedVault] = useState(null);
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
 
-
     useEffect(() => {
         dispatch(getWarehouseInfoThunk());
         dispatch(getAllWarehouseVaultsThunk());
@@ -53,6 +48,7 @@ export default function Warehouse () {
 
     const handleFieldClick = async (field, row, index) => {
         await setSelectedField(field);
+
         setSelectedRow(row.id);
         setSelectedFieldIndex(index + 1);
 
@@ -71,7 +67,7 @@ export default function Warehouse () {
         setPosition(position);
         setIsModalOpen(true);
     };
-    // Handler for closing the modal
+
     const handleCloseModal = () => {
         setIsModalOpen(false);
     };
@@ -92,6 +88,12 @@ export default function Warehouse () {
         setSelectedVaultToStage(null);
         setIsConfirmStagingModalOpen(false);
     }
+
+    const updateVaultPosition = (position) => {
+        if (position === "T") setTop(null);
+        if (position === "M") setMiddle(null);
+        if (position === "B") setBottom(null);
+      };
 
     const AddVaultButton = ({ position }) => {
         return (
@@ -207,6 +209,9 @@ export default function Warehouse () {
                     vaultNumber={selectedVaultToStage?.vault?.vault_id}
                     vaultId={selectedVaultToStage?.vault?.id}
                     onClose={closeConfirmStagingModal}
+                    fieldId={selectedField?.id}
+                    updateVaultPosition={updateVaultPosition}
+                    tmb={position}
                 />
             </Modal>
         </div>
