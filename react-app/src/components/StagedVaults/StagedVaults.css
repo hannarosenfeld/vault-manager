@@ -1,4 +1,6 @@
 .hazard-border {
+    max-width: 800px;
+    margin: 0 auto;
     border: 10px solid pink;
     height: 85vh;
     border-image: repeating-linear-gradient(
@@ -15,15 +17,14 @@
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
-
 }    
 
 .vault {
     font-size: 9px;
     display: flex;
     flex-direction: column;
-    height: 2.5rem;
-    width: 2.5rem;
+    height: 4em;
+    width: 4em;
     padding: 4px;
     gap: 3px;
     border-radius: 3px;

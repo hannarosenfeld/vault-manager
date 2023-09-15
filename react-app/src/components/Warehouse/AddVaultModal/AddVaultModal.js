@@ -11,7 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { FormGroup, FormLabel, keyframes } from '@mui/material';
 import "./AddVaultModal.css"
-// import MiniWareHouse from './MiniWareHouse';
+import MiniWareHouse from './MiniWareHouse';
 
 
 
@@ -165,7 +165,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB})
                 </FormGroup>
                 </div>
                 <div style={{height: "63%", marginBottom: "1em"}}>
-                    {/* <MiniWareHouse selectedField={selectedField}/> */}
+                    <MiniWareHouse selectedField={selectedField}/>
                 </div>
                 <button type="submit">Submit</button>
             </form>
