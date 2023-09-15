@@ -11,7 +11,7 @@
     }
 
 .staged-containers {
-    padding: 10px;
+    padding: 5px;
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
@@ -19,12 +19,14 @@
 }    
 
 .vault {
-    border: 2px solid #A1662F;
-    font-size: 10px;
+    font-size: 9px;
     display: flex;
     flex-direction: column;
-    height: 50px;
-    width: 50px;
-    padding: 3px;
- 
+    height: 2.5rem;
+    width: 2.5rem;
+    padding: 4px;
+    gap: 3px;
+    border-radius: 3px;
+    border: 1px solid var(--black);
+    background-color: #ffb101;
 }
