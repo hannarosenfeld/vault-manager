@@ -9,6 +9,7 @@ export default function StagedVaults() {
   const staged = useSelector((state) => state.stage.stagedVaults);
   const stagedArr = Object.values(staged);
   const [isModalOpen, setIsModalOpen] = useState(false); // State variable for the modal
+  const [selectedVault, setSelectedVault] = useState(null);
 
   useEffect(() => {
     dispatch(getAllStagedVaultsThunk());
@@ -23,7 +24,8 @@ export default function StagedVaults() {
   };
 
   // Function to handle click and open the modal
-  const handleVaultClick = () => {
+  const handleVaultClick = (vault) => {
+    setSelectedVault(vault);
     setIsModalOpen(true);
   };
 
@@ -31,15 +33,19 @@ export default function StagedVaults() {
     <div className="page-wrapper">
       <div className="hazard-border">
         <div className="staged-containers">
-          {stagedArr?.map((vault) => (
-            <div key={vault.id} className="vault" onClick={handleVaultClick}>
-              <p><b>{truncateString(vault?.customer?.name, 6)}</b></p>
-              <p>{vault?.vault_id}</p>
-            </div>
-          ))}
+        {stagedArr?.map((vault) => (
+          <div
+            key={vault.id}
+            className="vault"
+            onClick={() => handleVaultClick(vault)} // Pass the vault to the click handler
+          >
+            <p><b>{truncateString(vault?.customer?.name, 6)}</b></p>
+            <p>{vault?.vault_id}</p>
+          </div>
+        ))}
         </div>
       </div>
-      {isModalOpen && <StageToWareHouseModal closeModal={() => setIsModalOpen(false)} />} {/* Display the modal when isModalOpen is true */}
+      {isModalOpen && <StageToWareHouseModal selectedVault={selectedVault} closeModal={() => setIsModalOpen(false)} />} {/* Display the modal when isModalOpen is true */}
     </div>
   );
 }

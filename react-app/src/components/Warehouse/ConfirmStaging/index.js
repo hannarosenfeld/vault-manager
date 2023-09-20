@@ -5,6 +5,7 @@ import { addVaultToStageThunk } from '../../../store/stage';
 import { removeVaultFromWarehouseThunk, getWarehouseInfoThunk, getAllWarehouseVaultsThunk } from '../../../store/warehouse';
 import { removeVaultFromFieldThunk } from '../../../store/field';
 import "./ConfirmStaging.css"
+import { dialogClasses } from '@mui/material';
 
 
 export default function ConfirmStaging({ vaultCustomer, vaultNumber, vaultId, onClose, fieldId, updateVaultPosition, tmb}) {
@@ -15,10 +16,11 @@ export default function ConfirmStaging({ vaultCustomer, vaultNumber, vaultId, on
     const handleSubmit = async (e) => {
         e.preventDefault();
         const staged = await dispatch(addVaultToStageThunk(vaultId));
+        await dispatch(removeVaultFromWarehouseThunk(vaultId))
         console.log("🔥", staged)
 
         if (staged) {
-            updateVaultPosition(tmb);
+            await updateVaultPosition(tmb);
           }
 
         await dispatch(getWarehouseInfoThunk());

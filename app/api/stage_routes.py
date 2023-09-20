@@ -47,6 +47,7 @@ def add_vault_to_stage(vault_id):
     vault.field_id = None
 
     field.vaults.remove(vault)
+    # warehouse.warehouseVaults.remove(vault)
     # Add the vault to the staging area
     stage.staged_vaults.append(vault)
 
