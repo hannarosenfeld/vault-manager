@@ -8,6 +8,9 @@ Create Date: 2023-09-20 15:01:48.052330
 from alembic import op
 import sqlalchemy as sa
 
+import os
+environment = os.getenv("FLASK_ENV")
+SCHEMA = os.environ.get("SCHEMA")
 
 # revision identifiers, used by Alembic.
 revision = '69bfa6a98df3'
@@ -24,10 +27,16 @@ def upgrade():
     sa.Column('color', sa.String(length=100), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
+    if environment == "production":
+        op.execute(f"ALTER TABLE customers SET SCHEMA {SCHEMA};")
+
     op.create_table('stage',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
+    if environment == "production":
+        op.execute(f"ALTER TABLE stage SET SCHEMA {SCHEMA};")
+
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('username', sa.String(length=40), nullable=False),
@@ -37,16 +46,25 @@ def upgrade():
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username')
     )
+    if environment == "production":
+        op.execute(f"ALTER TABLE users SET SCHEMA {SCHEMA};")
+
     op.create_table('warehouse',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
+    if environment == "production":
+        op.execute(f"ALTER TABLE warehouse SET SCHEMA {SCHEMA};")
+
     op.create_table('rows',
     sa.Column('id', sa.String(), nullable=False),
     sa.Column('warehouse_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['warehouse_id'], ['warehouse.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    if environment == "production":
+        op.execute(f"ALTER TABLE rows SET SCHEMA {SCHEMA};")
+
     op.create_table('fields',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('row_id', sa.String(), nullable=True),
@@ -57,6 +75,9 @@ def upgrade():
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('field_id')
     )
+    if environment == "production":
+        op.execute(f"ALTER TABLE fields SET SCHEMA {SCHEMA};")
+
     op.create_table('vaults',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('customer_id', sa.Integer(), nullable=True),
@@ -75,6 +96,9 @@ def upgrade():
     sa.ForeignKeyConstraint(['warehouse_id'], ['warehouse.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
+    if environment == "production":
+        op.execute(f"ALTER TABLE vaults SET SCHEMA {SCHEMA};")
+
     with op.batch_alter_table('vaults', schema=None) as batch_op:
         batch_op.create_index(batch_op.f('ix_vaults_customer_id'), ['customer_id'], unique=False)
 

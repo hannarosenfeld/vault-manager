@@ -64,14 +64,14 @@ def add_vault_to_warehouse(vault_id):
     new_field_id = request.json.get('fieldId')  # Get the new fieldId from the request body
     vault.field_id = new_field_id
 
+    # Mark the vault as not staged
+    vault.staged = False
+    
     # Remove the vault from the stage (assuming you have a similar route for removing from the stage)
     stage.staged_vaults.remove(vault)
 
     # Add the vault back to the warehouse
     warehouse.warehouse_vaults.append(vault)
-
-    # Mark the vault as not staged
-    vault.staged = False
 
     print("🌺 in route:", vault.field_id)
 
