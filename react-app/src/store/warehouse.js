@@ -93,7 +93,6 @@ export const getAllWarehouseVaultsThunk = () => async (dispatch) => {
   };
 
 export const removeVaultFromWarehouseThunk = (vaultId) => async (dispatch) => {
-  console.log("🍒 in thunk")
   try {
     // Simulate an API call to remove the vault from the warehouse (replace with your actual API call)
     const response = await fetch(`/api/warehouse/vaults/${vaultId}`, {
@@ -102,7 +101,6 @@ export const removeVaultFromWarehouseThunk = (vaultId) => async (dispatch) => {
 
     if (response.ok) {
       // Dispatch the action to remove the vault from the warehouse
-      console.log("🍒 in thunk")
       dispatch(removeVaultFromWarehouse(vaultId));
       return vaultId;
     } else {

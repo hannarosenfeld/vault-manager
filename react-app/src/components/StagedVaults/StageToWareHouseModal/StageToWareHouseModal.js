@@ -1,7 +1,9 @@
 import React, { useDebugValue, useEffect } from "react";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { getAllWarehouseVaultsThunk, getWarehouseInfoThunk } from "../../../store/warehouse";
+import Button from '@mui/material/Button';
+
+import { addVaultToWarehouseThunk, getAllWarehouseVaultsThunk, getWarehouseInfoThunk } from "../../../store/warehouse";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./StageToWareHouseModal.css";
@@ -17,17 +19,14 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   const [selectedRow, setSelectedRow] = useState(null)
   const [position, setPosition] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
   const [selectedVaultToDelete, setSelectedVaultToDelete] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] = useState(false);
-
+  const [confirmationModalOpen, setConfirmationModalOpen] = useState(false); // New state for confirmation modal
+  const [confirmationVault, setConfirmationVault] = useState(null); // Vault to be confirmed
   let [top, setTop] = useState(null);
   let [middle, setMiddle] = useState(null);
   let [bottom, setBottom] = useState(null);
   let vaultsArr;
-
-  console.log("🐚", selectedVault)
 
   useEffect(() => {
     dispatch(getAllWarehouseVaultsThunk());
@@ -38,12 +37,6 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
     vaultsArr = Object.values(vaults)
     // rowsArr = Object.values(rows);
   }, [vaults, rows])
-
-  useEffect(() => {
-    console.log("🌈 vaultsArr: " , vaultsArr)
-    console.log("🌈 rowsArr: " , rowsArr)
-
-  }, [vaultsArr, rowsArr])
 
   const handleFieldClick = async (field, row, index) => {
     await setSelectedField(field);
@@ -71,15 +64,11 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
     setIsDeleteModalOpen(true);
   };
 
-  const openConfirmStagingModal = () => {
-    setIsConfirmStagingModalOpen(true);
-  }
-
   const AddVaultButton = ({ position }) => {
     return (
-        <div className="add-vault-button" onClick={() => handleOpenModal(position)}>
+        <div className="add-vault-button" onClick={() => openConfirmationModal(position)}>
             <i className="fa-solid fa-plus" />
-            <span>Add Vault</span>
+            <span> Move here</span>
         </div>
     );
   };
@@ -90,21 +79,11 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
         openDeleteModal();
     };
 
-    const handleStageClick = () => {
-        setSelectedVaultToStage(vault);
-        openConfirmStagingModal();
-    }
-
       return (
           <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
               <div style={{ display: "flex", width: "60%", gap: "5px" }}>
                   <div>{vault.vault.customer.name}</div>
                   <div>{vault.vault.vault_id}</div>
-              </div>
-              <div className="edit-symbols">
-                  <span onClick={handleStageClick} style={{ color: "#FFA500" }} className="material-symbols-outlined">forklift</span>
-                  <span style={{ color: "#0074D9" }} className="material-symbols-outlined">edit</span>
-                  {/* <span onClick={handleDeleteClick} style={{ color: "var(--delete)" }} className="material-symbols-outlined">delete</span> */}
               </div>
           </div>
       );
@@ -135,6 +114,40 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
         </>
     );
 };
+
+  const openConfirmationModal = (vault) => {
+    setConfirmationVault(vault);
+    setConfirmationModalOpen(true);
+  };
+
+  // Function to close the confirmation modal
+  const closeConfirmationModal = () => {
+    setConfirmationModalOpen(false);
+  };
+
+  const moveVault = async (vault) => {
+    if (selectedField) {
+      const vaultData = {
+        vault: selectedVault,
+        fieldId: selectedField ? selectedField.id : null,
+      };
+      await dispatch(addVaultToWarehouseThunk(vaultData));
+    }
+  };
+  
+  const ConfirmationModal = ({ fieldId }) => {
+    return (
+      <div className="modal-container">
+        <div className="modal-content">
+          <p style={{marginBottom: "1em"}}>Are you sure you want to move vault to warehouse?</p>
+          <div style={{display: "flex", margin: "0 auto", float: "right", gap: "1em"}}>
+            <Button variant="contained" onClick={() => moveVault(selectedVault)}>Yes</Button>
+            <Button variant="outlined" color="error" onClick={closeConfirmationModal}>No</Button>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="stage-to-warehouse-modal-wrapper">
@@ -185,7 +198,8 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
           </div>
         )}
       </div>
+      {confirmationModalOpen && <ConfirmationModal fieldId={selectedField.id} />}
+
     </div>
   );
 }
-

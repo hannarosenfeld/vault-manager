@@ -30,3 +30,29 @@
 .fields {
     max-height: 95%;
 }
+
+
+/* In your CSS file or component */
+.modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100%;
+    display: flex;
+    justify-content: flex-center;
+    align-items: flex-center;
+    background-color: rgba(0, 0, 0, 0.5); /* Add a semi-transparent background */
+  }
+  
+  .modal-content {
+    width: 95%; /* Set width to 100% to take up the entire width */
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    height: fit-content;
+    align-self: center;
+    margin: 0 auto;
+  }
+  

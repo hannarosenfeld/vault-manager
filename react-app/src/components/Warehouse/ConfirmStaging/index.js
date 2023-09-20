@@ -10,14 +10,11 @@ import { dialogClasses } from '@mui/material';
 
 export default function ConfirmStaging({ vaultCustomer, vaultNumber, vaultId, onClose, fieldId, updateVaultPosition, tmb}) {
     const dispatch = useDispatch();
-
-    console.log("🌏", vaultId)
-
+ 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const staged = await dispatch(addVaultToStageThunk(vaultId));
         await dispatch(removeVaultFromWarehouseThunk(vaultId))
-        console.log("🔥", staged)
 
         if (staged) {
             await updateVaultPosition(tmb);
