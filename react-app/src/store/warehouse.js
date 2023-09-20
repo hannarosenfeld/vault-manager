@@ -8,9 +8,9 @@ export const getWarehouseInfoAction = (warehouseInfo) => ({
   payload: warehouseInfo,
 });
 
-export const addVaultToWarehouseAction = (vaultId) => ({
+export const addVaultToWarehouseAction = (vault) => ({
   type: ADD_VAULT_TO_WAREHOUSE,
-  payload: vaultId,
+  payload: vault,
 });
 
 export const removeVaultFromWarehouse = (vaultId) => ({
@@ -70,17 +70,20 @@ export const getAllWarehouseVaultsThunk = () => async (dispatch) => {
     }
   };
 
-  export const addVaultToWarehouseThunk = (vaultId) => async (dispatch) => {
+  export const addVaultToWarehouseThunk = (vaultId, fieldId) => async (dispatch) => {
     try {
-      // Simulate an API call to add the vault to the warehouse (replace with your actual API call)
       const response = await fetch(`/api/warehouse/vaults/${vaultId}`, {
         method: 'PUT',
+        body: JSON.stringify({ fieldId }), // Send the fieldId in the request body
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
-
+  
       if (response.ok) {
-        // Dispatch the action with the added vaultId
-        dispatch(addVaultToWarehouseAction(vaultId));
-        return vaultId;
+        const updatedVault = await response.json();
+        dispatch(addVaultToWarehouseAction(updatedVault));
+        return updatedVault;
       } else {
         const errorData = await response.json();
         console.error('Error adding vault to warehouse:', errorData.errors);
@@ -91,6 +94,7 @@ export const getAllWarehouseVaultsThunk = () => async (dispatch) => {
       return error;
     }
   };
+  
 
 export const removeVaultFromWarehouseThunk = (vaultId) => async (dispatch) => {
   try {

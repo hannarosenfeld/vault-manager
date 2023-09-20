@@ -127,11 +127,8 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
 
   const moveVault = async (vault) => {
     if (selectedField) {
-      const vaultData = {
-        vault: selectedVault,
-        fieldId: selectedField ? selectedField.id : null,
-      };
-      await dispatch(addVaultToWarehouseThunk(vaultData));
+      console.log("⭐️", vault.id, selectedField.id)
+      await dispatch(addVaultToWarehouseThunk(vault.id, selectedField.id));
     }
   };
   
@@ -199,7 +196,6 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
         )}
       </div>
       {confirmationModalOpen && <ConfirmationModal fieldId={selectedField.id} />}
-
     </div>
   );
 }
