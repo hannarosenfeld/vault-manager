@@ -4,6 +4,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Button from '@mui/material/Button';
 
 import { addVaultToWarehouseThunk, getAllWarehouseVaultsThunk, getWarehouseInfoThunk } from "../../../store/warehouse";
+import { getAllStagedVaultsThunk } from "../../../store/stage"
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./StageToWareHouseModal.css";
@@ -127,8 +128,11 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
 
   const moveVault = async (vault) => {
     if (selectedField) {
-      console.log("⭐️", vault.id, selectedField.id)
+      console.log("⭐️", vault.id, selectedField.id);
       await dispatch(addVaultToWarehouseThunk(vault.id, selectedField.id));
+      await dispatch(getAllStagedVaultsThunk());
+      closeConfirmationModal();
+      closeModal();
     }
   };
   
