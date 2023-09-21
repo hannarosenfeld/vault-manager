@@ -47,6 +47,7 @@
   
   .modal-content {
     width: 95%; /* Set width to 100% to take up the entire width */
+    max-width: 320px;
     background-color: white;
     padding: 20px;
     border-radius: 8px;
