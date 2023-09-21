@@ -119,3 +119,7 @@
     margin: 0;
     cursor: pointer;
 }
+
+.add-vault-button {
+    cursor: pointer;
+}

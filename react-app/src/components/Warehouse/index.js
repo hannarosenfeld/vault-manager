@@ -99,7 +99,7 @@ export default function Warehouse () {
         return (
             <div className="add-vault-button" onClick={() => handleOpenModal(position)}>
                 <i className="fa-solid fa-plus" />
-                <span>Add Vault</span>
+                <span> Add Vault</span>
             </div>
         );
     };
