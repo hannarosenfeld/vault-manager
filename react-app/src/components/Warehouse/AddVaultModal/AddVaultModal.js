@@ -98,19 +98,16 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB})
 
     return (
         <Box className="add-vault-container">
-            <IconButton
-                edge="end"
-                color="inherit"
-                aria-label="close"
-                onClick={onClose} 
-                sx={{
-                    position: 'absolute',
-                    right: 15,
-                    top: 8,
-                }}
-            >
-                <CloseIcon />
-            </IconButton>
+            <div className="close-icon-container">
+                <IconButton
+                    edge="end"
+                    color="inherit"
+                    aria-label="close"
+                    onClick={onClose} 
+                >
+                    <CloseIcon />
+                </IconButton>
+            </div>
             <div style={{marginBottom: "10px"}}>
             <Typography style={{marginBottom: "5px"}} id="modal-modal-title" variant="h6" component="h2">Add Vault</Typography>
                 <div className="vault-info">
