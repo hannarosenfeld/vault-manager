@@ -3,6 +3,7 @@ import { login } from "../../store/session";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import './LoginForm.css';
+import naglee from './naglee.png'
 
 function LoginFormPage() {
   const dispatch = useDispatch();
@@ -22,35 +23,41 @@ function LoginFormPage() {
   };
 
   return (
-    <>
-      <h1>Log In</h1>
+    <div className="login-page-container">
+      <div className="login-page-content">
+      <div className="login-header">
+        <img src={naglee} />
+        {/* <h2>Naagle Vault Manager</h2> */}
+      </div>
+      {/* <h3>Sign In</h3> */}
       <form onSubmit={handleSubmit}>
-        <ul>
+        <ul style={{color: "var(--red)"}}>
           {errors.map((error, idx) => (
             <li key={idx}>{error}</li>
           ))}
         </ul>
-        <label>
-          Email
-          <input
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
-        <label>
-          Password
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
+        <fieldset>
+          <span class="material-symbols-outlined">person</span>
+            <input
+              type="text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </fieldset>
+          <fieldset>
+            <span class="material-symbols-outlined">lock</span>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </fieldset>
         <button type="submit">Log In</button>
       </form>
-    </>
+    </div>
+    </div>
   );
 }
 
