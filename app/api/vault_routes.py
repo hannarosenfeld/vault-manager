@@ -53,6 +53,7 @@ def add_vault():
             field_name=form.data['field_name'],
             position=form.data['position'],
             vault_id=form.data['vault_id'],
+            warehouse_id=1
         )
 
         db.session.add(new_vault)

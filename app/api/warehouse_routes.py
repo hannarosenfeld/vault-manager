@@ -66,6 +66,8 @@ def add_vault_to_warehouse(vault_id):
 
     # Mark the vault as not staged
     vault.staged = False
+    vault.warehouse_id=1
+    vault.stage_id=None
     
     # Remove the vault from the stage (assuming you have a similar route for removing from the stage)
     stage.staged_vaults.remove(vault)
