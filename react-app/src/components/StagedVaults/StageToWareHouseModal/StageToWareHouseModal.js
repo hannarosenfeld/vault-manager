@@ -66,9 +66,8 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   };
 
   const AddVaultButton = ({ position }) => {
-    setPosition(position)
     const handleAddVaultClick = () => {
-      openConfirmationModal();
+      openConfirmationModal(position); // Pass the position here
     };
   
     return (
@@ -121,26 +120,27 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
     );
   };
 
-  const openConfirmationModal = (vault) => {
-    setConfirmationVault(vault);
+  const openConfirmationModal = (position) => {
+    setPosition(position);
     setConfirmationModalOpen(true);
   };
+  
 
   const closeConfirmationModal = () => {
     setConfirmationModalOpen(false);
   };
 
-  const moveVault = async (vault) => {
-    console.log("🐚", position)
+  const moveVault = async (vault, position) => { // Accept position as a parameter
     if (selectedField) {
+      console.log("🐚", position);
       await dispatch(addVaultToWarehouseThunk(vault.id, selectedField.id, position));
       await dispatch(getAllStagedVaultsThunk());
       closeConfirmationModal();
       closeModal();
     }
-  };  
+  };
 
-  const ConfirmationModal = ({ fieldId, position }) => {
+  const ConfirmationModal = () => { // No need to pass fieldId and position here
     return (
       <div className="modal-container">
         <div className="modal-content">

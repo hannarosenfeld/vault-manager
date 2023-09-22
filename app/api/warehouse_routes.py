@@ -34,8 +34,8 @@ def add_vault_to_warehouse(vault_id):
     new_field_id = request.json.get('fieldId')
     position = request.json.get('position')  # Get the position from the request body
 
-    if position not in ('T', 'M', 'B'):
-        return jsonify({'errors': 'Invalid position'}), 400
+    # if position not in ('T', 'M', 'B'):
+    #     return jsonify({'errors': 'Invalid position'}), 400
 
     # Set the vault's field_id and position to the new values
     vault.field_id = new_field_id
