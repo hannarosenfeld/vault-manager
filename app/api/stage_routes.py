@@ -45,7 +45,8 @@ def add_vault_to_stage(vault_id):
 
     # Set the vault's field_id to None to indicate it's no longer in a field
     vault.field_id = None
-
+    vault.position = ''
+    
     field.vaults.remove(vault)
     # warehouse.warehouseVaults.remove(vault)
     # Add the vault to the staging area

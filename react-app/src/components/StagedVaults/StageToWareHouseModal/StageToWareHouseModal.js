@@ -66,8 +66,13 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   };
 
   const AddVaultButton = ({ position }) => {
+    setPosition(position)
+    const handleAddVaultClick = () => {
+      openConfirmationModal();
+    };
+  
     return (
-      <div className="add-vault-button" onClick={() => openConfirmationModal(position)}>
+      <div className="add-vault-button" onClick={handleAddVaultClick}>
         <i className="fa-solid fa-plus" />
         <span> Move here</span>
       </div>
@@ -94,7 +99,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
     const onlyBottom = !top && !middle && !bottom;
     const onlyMiddle = !top && !middle && bottom;
     const onlyTop = !top && middle && bottom;
-
+  
     return (
       <>
         <div className="selected-field-vaults-tmb">
@@ -126,21 +131,22 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   };
 
   const moveVault = async (vault) => {
+    console.log("🐚", position)
     if (selectedField) {
-      await dispatch(addVaultToWarehouseThunk(vault.id, selectedField.id));
+      await dispatch(addVaultToWarehouseThunk(vault.id, selectedField.id, position));
       await dispatch(getAllStagedVaultsThunk());
       closeConfirmationModal();
       closeModal();
     }
-  };
+  };  
 
-  const ConfirmationModal = ({ fieldId }) => {
+  const ConfirmationModal = ({ fieldId, position }) => {
     return (
       <div className="modal-container">
         <div className="modal-content">
           <p style={{ marginBottom: "1em" }}>Are you sure you want to move the vault to the warehouse?</p>
           <div style={{ display: "flex", margin: "0 auto", float: "right", gap: "1em" }}>
-            <Button variant="contained" onClick={() => moveVault(selectedVault)}>Yes</Button>
+            <Button variant="contained" onClick={() => moveVault(selectedVault, position)}>Yes</Button>
             <Button variant="outlined" color="error" onClick={closeConfirmationModal}>No</Button>
           </div>
         </div>
