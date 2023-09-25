@@ -71,8 +71,6 @@ export const getAllWarehouseVaultsThunk = () => async (dispatch) => {
   };
 
   export const addVaultToWarehouseThunk = (vaultId, fieldId, position) => async (dispatch) => {
-    console.log("🍒", vaultId, fieldId, position)
-
     try {
       const response = await fetch(`/api/warehouse/vaults/${vaultId}`, {
         method: 'PUT',
@@ -84,7 +82,6 @@ export const getAllWarehouseVaultsThunk = () => async (dispatch) => {
   
       if (response.ok) {
         const updatedVault = await response.json();
-        console.log("🌸", vaultId, fieldId, position, updatedVault)
         dispatch(addVaultToWarehouseAction(updatedVault));
         return updatedVault;
       } else {

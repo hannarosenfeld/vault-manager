@@ -1,8 +1,6 @@
 import React from "react";
 
-const VaultInstance = ({ vault, handleStageClick }) => {
-  console.log("🍥 vault", vault);
-
+const VaultInstance = ({ vault, position, handleStageClick }) => {
   return (
     <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
       <div style={{ display: "flex", width: "60%", gap: "5px" }}>
@@ -11,7 +9,7 @@ const VaultInstance = ({ vault, handleStageClick }) => {
       </div>
       <div className="edit-symbols">
         <span
-          onClick={() => handleStageClick(vault)} // Pass the vault as an argument
+          onClick={() => handleStageClick(vault, position)} // Pass the vault as an argument
           style={{ color: "#FFA500" }}
           className="material-symbols-outlined"
         >

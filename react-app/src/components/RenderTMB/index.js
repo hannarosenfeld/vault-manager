@@ -16,7 +16,7 @@ const RenderTMB = ({ top, middle, bottom, handleStageClick, handleOpenModal }) =
             <AddVaultButton position="T" handleOpenModal={handleOpenModal} />
 
           ) : top ? (
-            <VaultInstance vault={top} handleStageClick={handleStageClick} />
+            <VaultInstance position="T" vault={top} handleStageClick={handleStageClick} />
           ) : (
             ""
           )}
@@ -26,7 +26,7 @@ const RenderTMB = ({ top, middle, bottom, handleStageClick, handleOpenModal }) =
           {onlyMiddle ? (
             <AddVaultButton position="M" handleOpenModal={handleOpenModal}/>
           ) : middle ? (
-            <VaultInstance vault={middle} handleStageClick={handleStageClick} />
+            <VaultInstance position="M" vault={middle} handleStageClick={handleStageClick} />
           ) : (
             ""
           )}
@@ -36,7 +36,7 @@ const RenderTMB = ({ top, middle, bottom, handleStageClick, handleOpenModal }) =
           {onlyBottom ? (
             <AddVaultButton position="B" handleOpenModal={handleOpenModal}/>
           ) : bottom ? (
-            <VaultInstance vault={bottom} handleStageClick={handleStageClick} />
+            <VaultInstance position="B" vault={bottom} handleStageClick={handleStageClick} />
           ) : (
             ""
           )}

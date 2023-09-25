@@ -52,7 +52,6 @@ export default function Warehouse () {
       }, [selectedVaultToStage])
 
     const handleFieldClick = async (field, row, index) => {
-        console.log("🥝", selectedField)
         await setSelectedField(field);
         await setSelectedRow(row.id);
         await setSelectedFieldIndex(index + 1);
@@ -76,8 +75,9 @@ export default function Warehouse () {
     const handleCloseModal = () => {
         setIsModalOpen(false);
     };
-    const handleStageClick = async (vault) => {
+    const handleStageClick = async (vault, position) => {
     await setSelectedVaultToStage(vault);
+    setPosition(position)
     };
 
     // Add a new useEffect to open the modal when selectedVaultToStage changes
@@ -88,24 +88,6 @@ export default function Warehouse () {
     }, [selectedVaultToStage]);
 
     const openConfirmStagingModal = () => {
-    console.log(
-        "🥞 open modal staging..",
-        "vaultCustomer",
-        selectedVaultToStage.customer.name,
-        "vaultNumber",
-        selectedVaultToStage.vault_id,
-        "vaultId",
-        selectedVaultToStage.id,
-        "onClose",
-        closeConfirmStagingModal,
-        "fieldId",
-        selectedField?.id,
-        "updateVaultPosition",
-        updateVaultPosition,
-        "tmb",
-        position
-    );
-
     setIsConfirmStagingModalOpen(true);
     };
 

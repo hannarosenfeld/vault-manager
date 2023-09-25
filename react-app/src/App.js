@@ -24,10 +24,6 @@ function App() {
         // dispatch(getUserThunk());
       });
   }, [dispatch]);
-  
-  useEffect(() => {
-    console.log("🔥", sessionUser)
-  }, [sessionUser])
 
   return (
     <>

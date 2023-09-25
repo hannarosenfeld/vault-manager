@@ -98,7 +98,6 @@ const initialState = { user: null };
 export default function reducer(state = initialState, action) {
 	switch (action.type) {
 		case SET_USER:
-			console.log("🍯 in session reducer, ",action.payload)
 			return { user: action.payload };
 		case REMOVE_USER:
 			return { user: null };

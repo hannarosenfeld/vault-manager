@@ -132,7 +132,6 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
 
   const moveVault = async (vault, position) => { // Accept position as a parameter
     if (selectedField) {
-      console.log("🐚", position);
       await dispatch(addVaultToWarehouseThunk(vault.id, selectedField.id, position));
       await dispatch(getAllStagedVaultsThunk());
       closeConfirmationModal();
