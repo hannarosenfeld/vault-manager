@@ -4,6 +4,7 @@ import Modal from '@mui/material/Modal';
 import { getAllWarehouseVaultsThunk, getWarehouseInfoThunk } from "../../store/warehouse";
 import AddVaultModal from "./AddVaultModal/AddVaultModal.js"
 import DeleteVaultModal from "./DeleteVaultModal";
+import RenderTMB from "../RenderTMB";
 import ConfirmStaging from "./ConfirmStaging";
 import "./Warehouse.css"
 
@@ -27,9 +28,9 @@ export default function Warehouse () {
     let [bottom, setBottom] = useState(null);
     const [position, setPosition] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    // const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] = useState(false);
-    const [selectedVaultToDelete, setSelectedVaultToDelete] = useState(null);
+    // const [selectedVaultToDelete, setSelectedVaultToDelete] = useState(null);
     const [updatedVault, setUpdatedVault] = useState(null);
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
 
@@ -46,43 +47,75 @@ export default function Warehouse () {
         }
       }, [updatedVault]);
 
-    const handleFieldClick = async (field, row, index) => {
-        await setSelectedField(field);
+      useEffect(() => {
+        console.log("🍿 selected vault", selectedVaultToStage)
+      }, [selectedVaultToStage])
 
-        setSelectedRow(row.id);
-        setSelectedFieldIndex(index + 1);
+    const handleFieldClick = async (field, row, index) => {
+        console.log("🥝", selectedField)
+        await setSelectedField(field);
+        await setSelectedRow(row.id);
+        await setSelectedFieldIndex(index + 1);
 
         setTop(null)
         setMiddle(null)
         setBottom(null)
         
         if (field.vaults.length > 0) {
-            setTop(field.vaults.find(vault => vault.position === "T"))
-            setMiddle(field.vaults.find(vault => vault.position === "M"))
-            setBottom(field.vaults.find(vault => vault.position === "B"))
+            await setTop(field.vaults.find(vault => vault.position === "T"))
+            await setMiddle(field.vaults.find(vault => vault.position === "M"))
+            await setBottom(field.vaults.find(vault => vault.position === "B"))
         }
     };
 
-    const handleOpenModal = (position) => {
-        setPosition(position);
+    const handleOpenModal = async (position) => {
+        await setPosition(position);
         setIsModalOpen(true);
     };
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
     };
-
-    const openDeleteModal = () => {
-        setIsDeleteModalOpen(true);
+    const handleStageClick = async (vault) => {
+    await setSelectedVaultToStage(vault);
     };
 
-    const closeDeleteModal = () => {
-        setIsDeleteModalOpen(false);
-    };
+    // Add a new useEffect to open the modal when selectedVaultToStage changes
+    useEffect(() => {
+    if (selectedVaultToStage) {
+        openConfirmStagingModal();
+    }
+    }, [selectedVaultToStage]);
 
     const openConfirmStagingModal = () => {
-        setIsConfirmStagingModalOpen(true);
-    }
+    console.log(
+        "🥞 open modal staging..",
+        "vaultCustomer",
+        selectedVaultToStage.customer.name,
+        "vaultNumber",
+        selectedVaultToStage.vault_id,
+        "vaultId",
+        selectedVaultToStage.id,
+        "onClose",
+        closeConfirmStagingModal,
+        "fieldId",
+        selectedField?.id,
+        "updateVaultPosition",
+        updateVaultPosition,
+        "tmb",
+        position
+    );
+
+    setIsConfirmStagingModalOpen(true);
+    };
+
+    // const openDeleteModal = () => {
+    //     setIsDeleteModalOpen(true);
+    // };
+
+    // const closeDeleteModal = () => {
+    //     setIsDeleteModalOpen(false);
+    // };
 
     const closeConfirmStagingModal = () => {
         setSelectedVaultToStage(null);
@@ -95,74 +128,12 @@ export default function Warehouse () {
         if (position === "B") setBottom(null);
       };
 
-    const AddVaultButton = ({ position }) => {
-        return (
-            <div className="add-vault-button" onClick={() => handleOpenModal(position)}>
-                <i className="fa-solid fa-plus" />
-                <span> Add Vault</span>
-            </div>
-        );
-    };
-
-    const VaultInstance = (vault) => {
-        const handleDeleteClick = () => {
-            setSelectedVaultToDelete(vault);
-            openDeleteModal();
-        };
-
-        const handleStageClick = () => {
-            setSelectedVaultToStage(vault);
-            openConfirmStagingModal();
-        }
-    
-        return (
-            <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
-                <div style={{ display: "flex", width: "60%", gap: "5px" }}>
-                    <div>{vault.vault.customer.name}</div>
-                    <div>{vault.vault.vault_id}</div>
-                </div>
-                <div className="edit-symbols">
-                    <span onClick={handleStageClick} style={{ color: "#FFA500" }} className="material-symbols-outlined">forklift</span>
-                    <span style={{ color: "#0074D9" }} className="material-symbols-outlined">edit</span>
-                    {/* <span onClick={handleDeleteClick} style={{ color: "var(--delete)" }} className="material-symbols-outlined">delete</span> */}
-                </div>
-            </div>
-        );
-    };
-    
-
-    const RenderTMB = () => {
-        const onlyBottom = !top && !middle && !bottom;
-        const onlyMiddle = !top && !middle && bottom;
-        const onlyTop = !top && middle && bottom;
-    
-        return (
-            <>
-                <div className="selected-field-vaults-tmb">
-                    <div className="top">
-                        <span className="position">T</span>
-                        {onlyTop ? <AddVaultButton position="T" /> : top ? <VaultInstance vault={top} /> : ""}
-                    </div>
-                    <div className="middle">
-                        <span className="position">M</span>
-                        {onlyMiddle ? <AddVaultButton position="M" /> : middle ? <VaultInstance vault={middle} /> : ""}
-                    </div>
-                    <div className="bottom">
-                        <span className="position">B</span>
-                        {onlyBottom ? <AddVaultButton position="B" /> : bottom ? <VaultInstance vault={bottom} /> : ""}
-                    </div>
-                </div>
-                <div className="selected-field-id">{selectedRow + selectedFieldIndex}</div>
-            </>
-        );
-    };
-    
     return (
         <div className="warehouse-wrapper">
             <div className="field-info">
             {selectedField ? (
-                <RenderTMB />
-            ) : (
+                <RenderTMB top={top} middle={middle} bottom={bottom} handleStageClick={handleStageClick} />
+          ) : (
                 <div>
                     Select a field to view its info
                 </div>
@@ -194,7 +165,7 @@ export default function Warehouse () {
                     updateTMB={setUpdatedVault}
                 />
             </Modal>
-            <Modal open={isDeleteModalOpen} onClose={closeDeleteModal}>
+            {/* <Modal open={isDeleteModalOpen} onClose={closeDeleteModal}>
                 <DeleteVaultModal 
                     open={isDeleteModalOpen} 
                     onClose={closeDeleteModal} 
@@ -202,12 +173,12 @@ export default function Warehouse () {
                     vaultCustomer={selectedVaultToDelete?.vault.customer.name}
                     vaultNumber={selectedVaultToDelete?.vault.vault_id}
                 />
-            </Modal>
-            <Modal open={isConfirmStagingModalOpen} onClose={setIsConfirmStagingModalOpen}>
+            </Modal> */}
+            <Modal open={isConfirmStagingModalOpen} onClose={setIsConfirmStagingModalOpen}>                
                 <ConfirmStaging 
-                    vaultCustomer={selectedVaultToStage?.vault?.customer.name}
-                    vaultNumber={selectedVaultToStage?.vault?.vault_id}
-                    vaultId={selectedVaultToStage?.vault?.id}
+                    vaultCustomer={selectedVaultToStage?.customer.name}
+                    vaultNumber={selectedVaultToStage?.vault_id}
+                    vaultId={selectedVaultToStage?.id}
                     onClose={closeConfirmStagingModal}
                     fieldId={selectedField?.id}
                     updateVaultPosition={updateVaultPosition}

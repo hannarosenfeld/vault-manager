@@ -5,7 +5,6 @@ import { addVaultToStageThunk } from '../../../store/stage';
 import { removeVaultFromWarehouseThunk, getWarehouseInfoThunk, getAllWarehouseVaultsThunk } from '../../../store/warehouse';
 import { removeVaultFromFieldThunk } from '../../../store/field';
 import "./ConfirmStaging.css"
-import { dialogClasses } from '@mui/material';
 
 
 export default function ConfirmStaging({ vaultCustomer, vaultNumber, vaultId, onClose, fieldId, updateVaultPosition, tmb}) {

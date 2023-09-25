@@ -18,10 +18,13 @@ function App() {
 
 
   useEffect(() => {
-    dispatch(authenticate()).then(() => setIsLoaded(true));
-    dispatch(getUserThunk())
+    dispatch(authenticate())
+      .then(() => {
+        setIsLoaded(true);
+        // dispatch(getUserThunk());
+      });
   }, [dispatch]);
-
+  
   useEffect(() => {
     console.log("🔥", sessionUser)
   }, [sessionUser])

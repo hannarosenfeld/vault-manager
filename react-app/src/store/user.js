@@ -6,6 +6,7 @@ const getUserAction = (user) => ({
 })
 
 export const getUserThunk = (userId) => async (dispatch) => {
+    console.log("🥩 in thunk, userId:", userId)
     const res = await fetch(`/api/users/${userId}`)
     if (res.ok) {
         const data = await res.json()
