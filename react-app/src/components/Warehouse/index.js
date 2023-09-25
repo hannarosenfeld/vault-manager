@@ -157,6 +157,7 @@ export default function Warehouse () {
                 />
             </Modal> */}
             <Modal open={isConfirmStagingModalOpen} onClose={setIsConfirmStagingModalOpen}>                
+            <>
                 <ConfirmStaging 
                     vaultCustomer={selectedVaultToStage?.customer.name}
                     vaultNumber={selectedVaultToStage?.vault_id}
@@ -166,6 +167,7 @@ export default function Warehouse () {
                     updateVaultPosition={updateVaultPosition}
                     tmb={position}
                 />
+                </>
             </Modal>
         </div>
     )
