@@ -43,7 +43,6 @@ export const getStageInfoThunk = () => async (dispatch) => {
 };
 
 export const addVaultToStageThunk = (vaultId) => async (dispatch) => {
-  console.log("🌾 in thunk")
   try {
     const response = await fetch(`/api/stage/vaults/${vaultId}`, {
       method: 'PUT',

@@ -70,7 +70,32 @@ export const getAllWarehouseVaultsThunk = () => async (dispatch) => {
     }
   };
 
-  export const addVaultToWarehouseThunk = (vaultId, fieldId, fieldName, position) => async (dispatch) => {
+  export const addVaultToWarehouseThunk = (vaultId) => async (dispatch) => {
+    try {
+      const response = await fetch(`/api/warehouse/vaults/${vaultId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (response.ok) {
+        const updatedVault = await response.json();
+        dispatch(addVaultToWarehouseAction(updatedVault));
+        return updatedVault;
+      } else {
+        const errorData = await response.json();
+        console.error('Error adding vault to warehouse:', errorData.errors);
+        return errorData;
+      }
+    } catch (error) {
+      console.error('Error adding vault to warehouse:', error);
+      return error;
+    }
+  }; 
+
+  export const moveVaultFromStageToWarehouseThunk = (vaultId, fieldId, fieldName, position) => async (dispatch) => {
+    console.log("🪨 entered moveVaultFromStageToWarehouseThunk thunk")
     try {
       const response = await fetch(`/api/warehouse/vaults/${vaultId}`, {
         method: 'PUT',
@@ -82,6 +107,7 @@ export const getAllWarehouseVaultsThunk = () => async (dispatch) => {
   
       if (response.ok) {
         const updatedVault = await response.json();
+        console.log("🪨", updatedVault)
         dispatch(addVaultToWarehouseAction(updatedVault));
         return updatedVault;
       } else {

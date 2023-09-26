@@ -9,7 +9,8 @@ class Stage(db.Model, UserMixin):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    staged_vaults = db.relationship('Vault', back_populates="stage", lazy='joined', cascade='all, delete-orphan')
+    staged_vaults = db.relationship('Vault', back_populates="stage", lazy='joined')
+    #  cascade='all, delete-orphan'
 
     def to_dict(self):
         return {

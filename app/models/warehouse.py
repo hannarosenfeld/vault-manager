@@ -9,7 +9,7 @@ class Warehouse(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    warehouse_vaults = db.relationship('Vault', back_populates="warehouse", lazy='joined')
+    warehouse_vaults = db.relationship('Vault', back_populates="warehouse")
 
 #    TODO: add relationships to fields ands rows. access vaults through warehouse.fields/rows
     warehouse_fields = db.relationship('Field', back_populates='warehouse', foreign_keys='Field.warehouse_id')

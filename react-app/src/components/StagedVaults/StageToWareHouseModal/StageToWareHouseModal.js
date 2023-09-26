@@ -3,7 +3,7 @@ import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
 import {
-  addVaultToWarehouseThunk,
+  moveVaultFromStageToWarehouseThunk,
   getAllWarehouseVaultsThunk,
   getWarehouseInfoThunk,
 } from "../../../store/warehouse";
@@ -65,7 +65,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
 
   const moveVault = async (vault, position) => {
     if (selectedField) {
-      await dispatch(addVaultToWarehouseThunk(vault.id, selectedField.id, fieldName, position));
+      await dispatch(moveVaultFromStageToWarehouseThunk(vault.id, selectedField.id, fieldName, position));
       await dispatch(getAllStagedVaultsThunk());
       closeConfirmationModal();
       closeModal();

@@ -3,8 +3,7 @@ import { useDispatch } from 'react-redux';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { addVaultToStageThunk } from '../../../store/stage';
-import { removeVaultFromWarehouseThunk, getWarehouseInfoThunk, getAllWarehouseVaultsThunk } from '../../../store/warehouse';
-import { removeVaultFromFieldThunk } from '../../../store/field';
+import { removeVaultFromWarehouseThunk, getWarehouseInfoThunk } from '../../../store/warehouse';
 import "./ConfirmStaging.css";
 
 const ConfirmStaging = forwardRef(({ vaultCustomer, vaultNumber, vaultId, onClose, fieldId, updateVaultPosition, tmb }, ref) => {

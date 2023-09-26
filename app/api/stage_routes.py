@@ -47,8 +47,8 @@ def add_vault_to_stage(vault_id):
     vault.field_id = None
     vault.field_name = ''
     vault.position = ''
-
     vault.staged = True
+    
     stage.staged_vaults.append(vault)
 
     db.session.commit()
