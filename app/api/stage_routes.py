@@ -54,7 +54,7 @@ def add_vault_to_stage(vault_id):
     print("🍋", {'vault' : vault.to_dict()})
     db.session.commit()
 
-    return {'vault' : vault.to_dict()}
+    return vault.to_dict()
 
 
 @stage_routes.route('/vaults', methods=['GET'])

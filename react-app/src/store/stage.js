@@ -13,7 +13,6 @@ export const addVaultToStageAction = (vault) => ({
   payload: vault,
 });
 
-
 export const getAllStagedVaultsAction = (vaults) => ({
   type: GET_ALL_STAGED_VAULTS,
   payload: vaults,
@@ -119,6 +118,7 @@ const stageReducer = (state = initialState, action) => {
         stageInfo: action.payload,
       };
     case ADD_VAULT_TO_STAGE:
+      console.log("🍉", action.payload)
       return {
         ...state,
         stagedVaults: [...state.stagedVaults, action.payload],
