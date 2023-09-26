@@ -53,7 +53,7 @@ def add_vault_to_stage(vault_id):
 
     db.session.commit()
 
-    return jsonify(vault.to_dict()), 200
+    return {'vault' : vault.to_dict()}
 
 
 @stage_routes.route('/vaults', methods=['GET'])

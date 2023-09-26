@@ -59,7 +59,7 @@ def add_vault_to_warehouse(vault_id):
         db.session.commit()
 
         print("🥐 : ", warehouse.warehouse_vaults)
-        print("🥐 return: ", jsonify(vault.to_dict()))
+        print("🥐 return: ", {'vault': vault.to_dict()})
 
         return {'vault': vault.to_dict()}
 
