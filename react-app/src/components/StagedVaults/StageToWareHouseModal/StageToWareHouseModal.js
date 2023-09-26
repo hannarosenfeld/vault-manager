@@ -9,6 +9,7 @@ import {
 } from "../../../store/warehouse";
 import { getAllStagedVaultsThunk } from "../../../store/stage";
 import { useDispatch, useSelector } from "react-redux";
+import RenderTMB from "../../RenderTMB";
 import "./StageToWareHouseModal.css";
 
 export default function StageToWareHouseModal({ closeModal, selectedVault }) {
@@ -20,11 +21,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   const [selectedFieldIndex, setSelectedFieldIndex] = useState(0);
   const [selectedRow, setSelectedRow] = useState(null);
   const [position, setPosition] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedVaultToDelete, setSelectedVaultToDelete] = useState(null);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
-  const [confirmationVault, setConfirmationVault] = useState(null);
   const [top, setTop] = useState(null);
   const [middle, setMiddle] = useState(null);
   const [bottom, setBottom] = useState(null);
@@ -57,81 +54,16 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
     }
   };
 
-  const handleOpenModal = (position) => {
-    setPosition(position);
-    setIsModalOpen(true);
-  };
-
-  const openDeleteModal = () => {
-    setIsDeleteModalOpen(true);
-  };
-
-  const AddVaultButton = ({ position }) => {
-    const handleAddVaultClick = () => {
-      openConfirmationModal(position); // Pass the position here
-    };
-  
-    return (
-      <div className="add-vault-button" onClick={handleAddVaultClick}>
-        <i className="fa-solid fa-plus" />
-        <span> Move here</span>
-      </div>
-    );
-  };
-
-  const VaultInstance = (vault) => {
-    const handleDeleteClick = () => {
-      setSelectedVaultToDelete(vault);
-      openDeleteModal();
-    };
-
-    return (
-      <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
-        <div style={{ display: "flex", width: "60%", gap: "5px" }}>
-          <div>{vault.vault.customer.name}</div>
-          <div>{vault.vault.vault_id}</div>
-        </div>
-      </div>
-    );
-  };
-
-  const RenderTMB = () => {
-    const onlyBottom = !top && !middle && !bottom;
-    const onlyMiddle = !top && !middle && bottom;
-    const onlyTop = !top && middle && bottom;
-  
-    return (
-      <>
-        <div className="selected-field-vaults-tmb">
-          <div className="top">
-            <span className="position">T</span>
-            {onlyTop ? <AddVaultButton position="T" /> : top ? <VaultInstance vault={top} /> : ""}
-          </div>
-          <div className="middle">
-            <span className="position">M</span>
-            {onlyMiddle ? <AddVaultButton position="M" /> : middle ? <VaultInstance vault={middle} /> : ""}
-          </div>
-          <div className="bottom">
-            <span className="position">B</span>
-            {onlyBottom ? <AddVaultButton position="B" /> : bottom ? <VaultInstance vault={bottom} /> : ""}
-          </div>
-        </div>
-        <div className="selected-field-id">{selectedRow + selectedFieldIndex}</div>
-      </>
-    );
-  };
-
   const openConfirmationModal = (position) => {
     setPosition(position);
     setConfirmationModalOpen(true);
   };
-  
 
   const closeConfirmationModal = () => {
     setConfirmationModalOpen(false);
   };
 
-  const moveVault = async (vault, position) => { // Accept position as a parameter
+  const moveVault = async (vault, position) => {
     if (selectedField) {
       await dispatch(addVaultToWarehouseThunk(vault.id, selectedField.id, fieldName, position));
       await dispatch(getAllStagedVaultsThunk());
@@ -140,7 +72,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
     }
   };
 
-  const ConfirmationModal = () => { // No need to pass fieldId and position here
+  const ConfirmationModal = () => {
     return (
       <div className="modal-container">
         <div className="modal-content">
@@ -176,7 +108,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
               <div className="warehouse-wrapper">
                 <div className="field-info">
                   {selectedField ? (
-                    <RenderTMB />
+                    <RenderTMB top={top} middle={middle} bottom={bottom} handleOpenModal={openConfirmationModal} />
                   ) : (
                     <div>
                       Select a field to view its info

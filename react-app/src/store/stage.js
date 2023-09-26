@@ -42,7 +42,8 @@ export const getStageInfoThunk = () => async (dispatch) => {
   }
 };
 
-export const addVaultToStageThunk = (vaultId) => async (dispatch, getState) => {
+export const addVaultToStageThunk = (vaultId) => async (dispatch) => {
+  console.log("🌾 in thunk")
   try {
     const response = await fetch(`/api/stage/vaults/${vaultId}`, {
       method: 'PUT',
@@ -50,6 +51,7 @@ export const addVaultToStageThunk = (vaultId) => async (dispatch, getState) => {
 
     if (response.ok) {
       const updatedVault = await response.json();
+      console.log("🐚 in thunk, response ok. updatedVault: ", updatedVault)
       dispatch(addVaultToStageAction(updatedVault)); // Dispatch the entire vault object
       return updatedVault;
     } else {
