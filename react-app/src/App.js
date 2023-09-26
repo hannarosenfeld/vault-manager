@@ -8,7 +8,6 @@ import Navigation from "./components/Navigation";
 import Index from "./components/Index";
 import Warehouse from "./components/Warehouse";
 import StagedVaults from "./components/StagedVaults";
-import { getUserThunk } from "./store/user"
 
 
 function App() {
@@ -16,12 +15,10 @@ function App() {
   const [isLoaded, setIsLoaded] = useState(false);
 	const sessionUser = useSelector(state => state.session.user);
 
-
   useEffect(() => {
     dispatch(authenticate())
       .then(() => {
         setIsLoaded(true);
-        // dispatch(getUserThunk());
       });
   }, [dispatch]);
 

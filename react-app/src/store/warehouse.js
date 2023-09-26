@@ -70,11 +70,11 @@ export const getAllWarehouseVaultsThunk = () => async (dispatch) => {
     }
   };
 
-  export const addVaultToWarehouseThunk = (vaultId, fieldId, position) => async (dispatch) => {
+  export const addVaultToWarehouseThunk = (vaultId, fieldId, fieldName, position) => async (dispatch) => {
     try {
       const response = await fetch(`/api/warehouse/vaults/${vaultId}`, {
         method: 'PUT',
-        body: JSON.stringify({ fieldId, position }), 
+        body: JSON.stringify({ fieldId, fieldName, position }), 
         headers: {
           'Content-Type': 'application/json',
         },

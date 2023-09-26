@@ -27,37 +27,30 @@ def add_vault_to_warehouse(vault_id):
     vault = Vault.query.get(vault_id)
     stage = Stage.query.get(1)
 
-    print("🍟 in route", vault.customer)
     if not vault:
         return jsonify({'errors': 'Vault not found'}), 404
+    
+    # if vault is in storage, set values according to selected warehouse position and move it
+    if vault in stage.staged_vaults:
+        new_field_id = request.json.get('fieldId')
+        new_field_name = request.json.get('fieldName')
+        position = request.json.get('position')
+        vault.field_id = new_field_id
+        vault.field_name = new_field_name
+        vault.position = position
+        vault.staged = False
+        vault.warehouse_id = 1
+        vault.stage_id = None
+        stage.staged_vaults.remove(vault)        
 
-    new_field_id = request.json.get('fieldId')
-    position = request.json.get('position')  # Get the position from the request body
+    try:
+        warehouse.warehouse_vaults.append(vault)
+        db.session.commit()
+        return jsonify(vault.to_dict()), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'errors': str(e)}), 500
 
-    # if position not in ('T', 'M', 'B'):
-    #     return jsonify({'errors': 'Invalid position'}), 400
-
-    # Set the vault's field_id and position to the new values
-    vault.field_id = new_field_id
-    vault.position = position
-
-    # Mark the vault as not staged
-    vault.staged = False
-    vault.warehouse_id = 1
-    vault.stage_id = None
-
-    # Remove the vault from the stage (assuming you have a similar route for removing from the stage)
-    stage.staged_vaults.remove(vault)
-
-    # Add the vault back to the warehouse
-    warehouse.warehouse_vaults.append(vault)
-
-    print("🌺 in route:", vault.field_id)
-
-    # Commit the changes to the database
-    db.session.commit()
-
-    return jsonify(vault.to_dict()), 200
 
 
 @warehouse_routes.route('/vaults', methods=['GET'])

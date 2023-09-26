@@ -28,6 +28,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   const [top, setTop] = useState(null);
   const [middle, setMiddle] = useState(null);
   const [bottom, setBottom] = useState(null);
+  let fieldName = selectedRow && selectedFieldIndex ? selectedRow + selectedFieldIndex : null;
   let vaultsArr;
 
   useEffect(() => {
@@ -132,7 +133,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
 
   const moveVault = async (vault, position) => { // Accept position as a parameter
     if (selectedField) {
-      await dispatch(addVaultToWarehouseThunk(vault.id, selectedField.id, position));
+      await dispatch(addVaultToWarehouseThunk(vault.id, selectedField.id, fieldName, position));
       await dispatch(getAllStagedVaultsThunk());
       closeConfirmationModal();
       closeModal();

@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from '@mui/material/Modal';
 import { getAllWarehouseVaultsThunk, getWarehouseInfoThunk } from "../../store/warehouse";
+import { getAllVaultsThunk } from "../../store/vault"
 import AddVaultModal from "./AddVaultModal/AddVaultModal.js"
-import DeleteVaultModal from "./DeleteVaultModal";
+// import DeleteVaultModal from "./DeleteVaultModal";
 import RenderTMB from "../RenderTMB";
 import ConfirmStaging from "./ConfirmStaging";
 import "./Warehouse.css"
@@ -28,27 +29,29 @@ export default function Warehouse () {
     let [bottom, setBottom] = useState(null);
     const [position, setPosition] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    // const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] = useState(false);
-    // const [selectedVaultToDelete, setSelectedVaultToDelete] = useState(null);
     const [updatedVault, setUpdatedVault] = useState(null);
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
+    // const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    // const [selectedVaultToDelete, setSelectedVaultToDelete] = useState(null);    
 
     useEffect(() => {
-        dispatch(getWarehouseInfoThunk());
-        dispatch(getAllWarehouseVaultsThunk());
+        const getWareHouseInfo = dispatch(getWarehouseInfoThunk());
+        const getAllWarehouseVaults = dispatch(getAllWarehouseVaultsThunk());
+        const getAllVaults = dispatch(getAllVaultsThunk())
+        console.log("⭐️ all vaults:", getAllVaults)
     }, [dispatch])
 
-    useEffect(() => {
-        if (updatedVault) {
-          if (updatedVault.position === "T") setTop(updatedVault);
-          if (updatedVault.position === "M") setMiddle(updatedVault);
-          if (updatedVault.position === "B") setBottom(updatedVault);
-        }
-      }, [updatedVault]);
+    // useEffect(() => {
+    //     if (updatedVault) {
+    //       if (updatedVault.position === "T") setTop(updatedVault);
+    //       if (updatedVault.position === "M") setMiddle(updatedVault);
+    //       if (updatedVault.position === "B") setBottom(updatedVault);
+    //     }
+    //   }, [updatedVault]);
 
       useEffect(() => {
-        console.log("🍿 selected vault", selectedVaultToStage)
+        // console.log("🍿 selected vault", selectedVaultToStage)
       }, [selectedVaultToStage])
 
     const handleFieldClick = async (field, row, index) => {
