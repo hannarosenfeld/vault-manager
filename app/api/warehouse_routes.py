@@ -53,27 +53,16 @@ def add_vault_to_warehouse(vault_id):
         if vault in stage.staged_vaults:
             stage.staged_vaults.remove(vault)        
 
-        print("🍐 vault.id", vault.id)
-        # make_transient(vault)  # Detach the vault from the session
-
-        # vault.id = None
-        print("🍐 vault.id", vault.id)
-
     try:
-
-        print("🫐 vault.id", vault.id)
-        # vault.id = 500
         warehouse.warehouse_vaults.append(vault)
-
-        print("🍇 vault: ", vault.to_dict())
-        print("🍇 warehouse: ", warehouse.warehouse_vaults)
 
         db.session.commit()
 
         print("🥐 : ", warehouse.warehouse_vaults)
         print("🥐 return: ", jsonify(vault.to_dict()))
 
-        return jsonify(vault.to_dict()), 200
+        return {'vault': vault.to_dict()}
+
     except Exception as e:
         db.session.rollback()
         return jsonify({'errors': str(e)}), 500
