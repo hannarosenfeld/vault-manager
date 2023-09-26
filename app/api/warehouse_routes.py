@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 from app.models import Warehouse, Field, Vault, Stage, db
-from sqlalchemy.orm import make_transient
+# from sqlalchemy.orm import make_transient
 
 warehouse_routes = Blueprint('warehouse', __name__)
 
@@ -50,6 +50,9 @@ def add_vault_to_warehouse(vault_id):
         vault.warehouse_id = 1
         vault.stage_id = None
 
+        if vault in stage.staged_vaults:
+            stage.staged_vaults.remove(vault)        
+
         print("🍐 vault.id", vault.id)
         # make_transient(vault)  # Detach the vault from the session
 
@@ -61,9 +64,6 @@ def add_vault_to_warehouse(vault_id):
         print("🫐 vault.id", vault.id)
         # vault.id = 500
         warehouse.warehouse_vaults.append(vault)
-        
-        if vault in stage.staged_vaults:
-            stage.staged_vaults.remove(vault)
 
         print("🍇 vault: ", vault.to_dict())
         print("🍇 warehouse: ", warehouse.warehouse_vaults)
