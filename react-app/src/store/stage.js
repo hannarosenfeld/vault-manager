@@ -46,6 +46,9 @@ export const addVaultToStageThunk = (vaultId) => async (dispatch) => {
   try {
     const response = await fetch(`/api/stage/vaults/${vaultId}`, {
       method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },      
     });
 
     if (response.ok) {
