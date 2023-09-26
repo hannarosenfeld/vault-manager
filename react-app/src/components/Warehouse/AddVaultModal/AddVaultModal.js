@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { addVaultToWarehouseThunk, getAllWarehouseVaultsThunk, getWarehouseInfoThunk} from '../../../store/warehouse';
 import { getAllCustomersThunk, addCustomerThunk } from '../../../store/customer'
-import { addVaultThunk } from '../../../store/vault';
+import { addVaultThunk, getAllVaultsThunk } from '../../../store/vault';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -15,7 +15,7 @@ import MiniWareHouse from './MiniWareHouse';
 
 
 
-export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB}) {
+export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, updateSelectedFieldVaults}) {
     const dispatch = useDispatch();
     const history = useHistory();
     const customersObj = useSelector(state => state.customer.customers)
@@ -92,6 +92,10 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB})
         updateTMB(newVault);
         await dispatch(getAllWarehouseVaultsThunk())
         await dispatch(getWarehouseInfoThunk())
+        const allVaults = await dispatch(getAllVaultsThunk())
+        console.log("🪸", allVaults)
+
+        updateSelectedFieldVaults(newVault);
 
         onClose(newVault);
     };

@@ -54,6 +54,18 @@ export default function Warehouse () {
         // console.log("🍿 selected vault", selectedVaultToStage)
       }, [selectedVaultToStage])
 
+    const updateSelectedFieldVaults = (newVault) => {
+    if (selectedField && newVault.field_id === selectedField.id) {
+        const updatedTop = newVault.position === "T" ? newVault : top;
+        const updatedMiddle = newVault.position === "M" ? newVault : middle;
+        const updatedBottom = newVault.position === "B" ? newVault : bottom;
+    
+        setTop(updatedTop);
+        setMiddle(updatedMiddle);
+        setBottom(updatedBottom);
+    }
+    };
+      
     const handleFieldClick = async (field, row, index) => {
         await setSelectedField(field);
         await setSelectedRow(row.id);
@@ -143,12 +155,15 @@ export default function Warehouse () {
             ))}
             </div>
             <Modal open={isModalOpen}>
-                <AddVaultModal 
-                    onClose={handleCloseModal} 
-                    selectedField={selectedField} 
+                <>
+                <AddVaultModal
+                    onClose={handleCloseModal}
+                    selectedField={selectedField}
                     tmb={position}
                     updateTMB={setUpdatedVault}
+                    updateSelectedFieldVaults={updateSelectedFieldVaults} // Pass the function here
                 />
+                </>
             </Modal>
             {/* <Modal open={isDeleteModalOpen} onClose={closeDeleteModal}>
                 <DeleteVaultModal 
