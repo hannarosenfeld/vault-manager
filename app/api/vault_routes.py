@@ -57,8 +57,6 @@ def add_vault():
             warehouse_id=1
         )
 
-        print("🗽", new_vault)
-
         db.session.add(new_vault)
         db.session.commit()
 
@@ -90,7 +88,7 @@ def manage_vault(id):
         if form.validate_on_submit():
             vault.customer_name= form.data['customer_name']
             vault.vault_id = form.data['vault_id']
-            vault.order_number= form.data['order_number'],
+            vault.order_number= form.data['order_number']
 
             db.session.commit()
             return vault.to_dict()

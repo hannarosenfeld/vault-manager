@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './EditVaultModal.css';
 import { useDispatch } from 'react-redux';
 import { editVaultThunk } from '../../../store/vault';
+import { updateCustomerNameThunk } from '../../../store/customer';
+
 
 const EditVaultModal = ({ vault, onClose }) => {
   const dispatch = useDispatch();
@@ -14,8 +16,11 @@ const EditVaultModal = ({ vault, onClose }) => {
   const handleSave = async (e) => {
     e.preventDefault();
 
+    console.log("🥞", vault.customer.id, formData.customer_name)
+
     try {
-      dispatch(editVaultThunk(vault.id, formData));
+      await dispatch(updateCustomerNameThunk(vault.customer.id, formData.customer_name))
+      await dispatch(editVaultThunk(vault.id, formData));
       onClose();
     } catch (error) {
       console.error('Error saving vault:', error);

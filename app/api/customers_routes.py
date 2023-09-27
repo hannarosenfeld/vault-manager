@@ -48,3 +48,23 @@ def add_customer():
         return new_customer.to_dict()
 
     return jsonify({'errors': validation_errors_to_error_messages(form.errors)}), 400
+
+
+@customers_routes.route('/<int:id>', methods=['PUT'])
+def update_customer_name(id):
+    """
+    Update a customer's name by ID and return the updated customer in a dictionary
+    """
+    customer = Customer.query.get(id)
+    if customer:
+        # Get the new name from the request data
+        new_name = request.json.get('name')
+
+        if new_name:
+            # Update the customer's name
+            customer.name = new_name
+            db.session.commit()
+
+            return customer.to_dict()
+
+    return jsonify({'error': 'Customer not found or name not provided'}), 400

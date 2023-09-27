@@ -1,7 +1,13 @@
 const GET_CUSTOMER = "customer/GET_CUSTOMER";
 const GET_ALL_CUSTOMERS = "customer/GET_ALL_CUSTOMERS";
 const ADD_CUSTOMER = "customer/ADD_CUSTOMER";
+const UPDATE_CUSTOMER_NAME = "customer/UPDATE_CUSTOMER_NAME";
 
+const updateCustomerNameAction = (customerId, newName) => ({
+  type: UPDATE_CUSTOMER_NAME,
+  customerId,
+  newName
+});
 
 const getCustomerAction = (customer) => ({
   type: GET_CUSTOMER,
@@ -18,6 +24,30 @@ const addCustomerAction = (customer) => ({
   customer
 });
 
+export const updateCustomerNameThunk = (customerId, newName) => async (dispatch) => {
+  try {
+    const res = await fetch(`/api/customers/${customerId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name: newName })
+    });
+
+    if (res.ok) {
+      const updatedCustomer = await res.json();
+      dispatch(updateCustomerNameAction(customerId, newName)); // Update the state with the new name
+      return updatedCustomer;
+    } else {
+      const err = await res.json();
+      console.error("Error updating customer name:", err);
+      return err;
+    }
+  } catch (error) {
+    console.error("Error updating customer name:", error);
+    return error;
+  }
+};
 
 export const getCustomerThunk = (customerId) => async (dispatch) => {
   try {
@@ -111,6 +141,16 @@ const customerReducer = (state = initialState, action) => {
           [action.customer.id]: action.customer
         }
       };
+    case UPDATE_CUSTOMER_NAME:
+      const updatedCustomer = { ...state.customers[action.customerId], name: action.newName };
+    
+      return {
+        ...state,
+        customers: {
+          ...state.customers,
+          [action.customerId]: updatedCustomer
+        }
+      };      
     default:
       return state;
   }
