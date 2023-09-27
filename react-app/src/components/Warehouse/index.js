@@ -51,18 +51,18 @@ export default function Warehouse () {
     //   }, [updatedVault]);
 
       useEffect(() => {
-        // console.log("🍿 selected vault", selectedVaultToStage)
+        console.log("🍿 selected vault", selectedVaultToStage)
       }, [selectedVaultToStage])
 
-    const updateSelectedFieldVaults = (newVault) => {
+    const updateSelectedFieldVaults = async (newVault) => {
     if (selectedField && newVault.field_id === selectedField.id) {
         const updatedTop = newVault.position === "T" ? newVault : top;
         const updatedMiddle = newVault.position === "M" ? newVault : middle;
         const updatedBottom = newVault.position === "B" ? newVault : bottom;
     
-        setTop(updatedTop);
-        setMiddle(updatedMiddle);
-        setBottom(updatedBottom);
+        await setTop(updatedTop);
+        await setMiddle(updatedMiddle);
+        await setBottom(updatedBottom);
     }
     };
       
@@ -71,9 +71,9 @@ export default function Warehouse () {
         await setSelectedRow(row.id);
         await setSelectedFieldIndex(index + 1);
 
-        setTop(null)
-        setMiddle(null)
-        setBottom(null)
+        await setTop(null)
+        await setMiddle(null)
+        await setBottom(null)
         
         if (field.vaults.length > 0) {
             await setTop(field.vaults.find(vault => vault.position === "T"))
@@ -91,8 +91,8 @@ export default function Warehouse () {
         setIsModalOpen(false);
     };
     const handleStageClick = async (vault, position) => {
-    await setSelectedVaultToStage(vault);
-    setPosition(position)
+        await setSelectedVaultToStage(vault);
+        await setPosition(position)
     };
 
     // Add a new useEffect to open the modal when selectedVaultToStage changes
