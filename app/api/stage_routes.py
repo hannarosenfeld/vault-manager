@@ -45,7 +45,7 @@ def add_vault_to_stage(vault_id):
     # warehouse.warehouseVaults.remove(vault)
     
     vault.field_id = None
-    vault.field_name = ''
+    # vault.field_name = ''
     vault.position = ''
     vault.staged = True
     
