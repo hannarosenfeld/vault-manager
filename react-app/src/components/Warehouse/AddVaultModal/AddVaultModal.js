@@ -85,6 +85,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
             field_name: selectedField.field_id,
             position: tmb,
             vault_id: vault_id,
+            order_number: order_number
         };
 
         const newVault = await dispatch(addVaultThunk(vaultData));
@@ -93,7 +94,6 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
         await dispatch(getAllWarehouseVaultsThunk())
         await dispatch(getWarehouseInfoThunk())
         const allVaults = await dispatch(getAllVaultsThunk())
-        console.log("🪸", allVaults)
 
         updateSelectedFieldVaults(newVault);
 

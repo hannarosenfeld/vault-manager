@@ -15,7 +15,8 @@ class Vault(db.Model, UserMixin):
     vault_id = db.Column(db.String(100), nullable=False)
     staged = db.Column(db.Boolean, default=False)
     customer_name = db.Column(db.String(255))
-    
+    order_number = db.Column(db.String, nullable=False)
+
     customer = db.relationship('Customer', back_populates='vaults')
     
     # Specify primaryjoin for field relationship
@@ -35,6 +36,7 @@ class Vault(db.Model, UserMixin):
             'field_name': self.field_name,
             'position': self.position,
             'vault_id': self.vault_id,
+            'order_number': self.order_number,
             'staged': self.staged,
             'customer': self.customer.to_summary_dict() if self.customer else None,
         }

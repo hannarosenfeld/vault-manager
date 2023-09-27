@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required
 from app.models import Customer, Vault, db
-from app.forms import VaultForm
+from app.forms import VaultForm, EditVaultForm
 
 vault_routes = Blueprint('vaults', __name__)
 
@@ -53,8 +53,11 @@ def add_vault():
             field_name=form.data['field_name'],
             position=form.data['position'],
             vault_id=form.data['vault_id'],
+            order_number=form.data['order_number'],
             warehouse_id=1
         )
+
+        print("🗽", new_vault)
 
         db.session.add(new_vault)
         db.session.commit()
@@ -81,18 +84,13 @@ def manage_vault(id):
         return vault.to_dict()
 
     if request.method == 'PUT':
-        form = VaultForm()
+        form = EditVaultForm()
         form['csrf_token'].data = request.cookies['csrf_token']
 
         if form.validate_on_submit():
-            # Update the vault with the form data
             vault.customer_name= form.data['customer_name']
-            customer = Customer.query.filter_by(name=customer_name).first()
-            customer_id=customer.id if customer else None,
-            vault.field_id = form.data['field_id']
-            vault.field_name = form.data['field_name']
-            vault.position = form.data['position']
             vault.vault_id = form.data['vault_id']
+            vault.order_number= form.data['order_number'],
 
             db.session.commit()
             return vault.to_dict()

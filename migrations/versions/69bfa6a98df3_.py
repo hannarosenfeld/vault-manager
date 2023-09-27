@@ -102,6 +102,9 @@ def upgrade():
     with op.batch_alter_table('vaults', schema=None) as batch_op:
         batch_op.create_index(batch_op.f('ix_vaults_customer_id'), ['customer_id'], unique=False)
 
+
+    op.add_column('vaults', sa.Column('order_number', sa.String(), nullable=False))
+
     # ### end Alembic commands ###
 
 
@@ -117,4 +120,6 @@ def downgrade():
     op.drop_table('users')
     op.drop_table('stage')
     op.drop_table('customers')
+
+    op.drop_column('vaults', 'order_number')    
     # ### end Alembic commands ###

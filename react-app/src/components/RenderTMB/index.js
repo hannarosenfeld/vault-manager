@@ -2,7 +2,7 @@ import React from "react";
 import AddVaultButton from "./AddVaultButton";
 import VaultInstance from "../VaultInstance";
 
-const RenderTMB = ({ top, middle, bottom, handleStageClick, handleOpenModal }) => {
+const RenderTMB = ({ top, middle, bottom, handleStageClick, handleOpenModal, handleEditClick }) => {
   const onlyBottom = !top && !middle && !bottom;
   const onlyMiddle = !top && !middle && bottom;
   const onlyTop = !top && middle && bottom;
@@ -16,7 +16,7 @@ const RenderTMB = ({ top, middle, bottom, handleStageClick, handleOpenModal }) =
             <AddVaultButton position="T" handleOpenModal={handleOpenModal} />
 
           ) : top ? (
-            <VaultInstance position="T" vault={top} handleStageClick={handleStageClick} />
+            <VaultInstance position="T" vault={top} handleStageClick={handleStageClick} handleEditClick={handleEditClick}/>
           ) : (
             ""
           )}
@@ -26,7 +26,7 @@ const RenderTMB = ({ top, middle, bottom, handleStageClick, handleOpenModal }) =
           {onlyMiddle ? (
             <AddVaultButton position="M" handleOpenModal={handleOpenModal}/>
           ) : middle ? (
-            <VaultInstance position="M" vault={middle} handleStageClick={handleStageClick} />
+            <VaultInstance position="M" vault={middle} handleStageClick={handleStageClick} handleEditClick={handleEditClick}/>
           ) : (
             ""
           )}
@@ -36,7 +36,7 @@ const RenderTMB = ({ top, middle, bottom, handleStageClick, handleOpenModal }) =
           {onlyBottom ? (
             <AddVaultButton position="B" handleOpenModal={handleOpenModal}/>
           ) : bottom ? (
-            <VaultInstance position="B" vault={bottom} handleStageClick={handleStageClick} />
+            <VaultInstance position="B" vault={bottom} handleStageClick={handleStageClick} handleEditClick={handleEditClick}/>
           ) : (
             ""
           )}

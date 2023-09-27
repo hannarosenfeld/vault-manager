@@ -52,7 +52,6 @@ export const addVaultToStageThunk = (vaultId) => async (dispatch) => {
 
     if (response.ok) {
       const updatedVault = await response.json();
-      console.log("🐚 in thunk, response ok. updatedVault: ", updatedVault)
       dispatch(addVaultToStageAction(updatedVault)); // Dispatch the entire vault object
       return updatedVault;
     } else {
@@ -118,7 +117,6 @@ const stageReducer = (state = initialState, action) => {
         stageInfo: action.payload,
       };
     case ADD_VAULT_TO_STAGE:
-      console.log("🍉", action.payload)
       return {
         ...state,
         stagedVaults: [...state.stagedVaults, action.payload],

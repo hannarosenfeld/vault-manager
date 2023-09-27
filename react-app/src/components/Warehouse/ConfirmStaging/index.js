@@ -15,14 +15,6 @@ export default function ConfirmStaging({ vaultCustomer, vaultNumber, vaultId, on
         const removeVault = await dispatch(removeVaultFromWarehouseThunk(vaultId))        
         const addVaultToStage = await dispatch(addVaultToStageThunk(vaultId));
 
-        console.log("🥨 in handleSubmit")
-        console.log("🥨 removeVault: ", removeVault)
-        console.log("🥨 addVaultToStage: ", addVaultToStage)
-
-        // if (staged) {
-        //     await updateVaultPosition(tmb);
-        // }
-
         await dispatch(getWarehouseInfoThunk());
 
         onClose();

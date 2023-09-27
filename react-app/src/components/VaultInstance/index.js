@@ -1,6 +1,4 @@
-import React from "react";
-
-const VaultInstance = ({ vault, position, handleStageClick }) => {
+const VaultInstance = ({ vault, position, handleStageClick, handleEditClick }) => {
   return (
     <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
       <div style={{ display: "flex", width: "60%", gap: "5px" }}>
@@ -15,7 +13,11 @@ const VaultInstance = ({ vault, position, handleStageClick }) => {
         >
           forklift
         </span>
-        <span style={{ color: "#0074D9" }} className="material-symbols-outlined">
+        <span
+          onClick={() => handleEditClick(vault)} // Call handleEditClick with the vault as an argument
+          style={{ color: "#0074D9" }}
+          className="material-symbols-outlined"
+        >
           edit
         </span>
         {/* <span onClick={handleDeleteClick} style={{ color: "var(--delete)" }} className="material-symbols-outlined">delete</span> */}

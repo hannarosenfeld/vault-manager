@@ -8,4 +8,4 @@ class VaultForm(FlaskForm):
     field_name = StringField('field_id', validators=[DataRequired()])
     position = StringField('position', validators=[DataRequired()])
     vault_id = StringField('vault_id', validators=[DataRequired()])
-    
+    order_number= StringField('order_number', validators=[DataRequired()])

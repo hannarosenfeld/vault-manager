@@ -6,6 +6,7 @@ import { getAllVaultsThunk } from "../../store/vault"
 import AddVaultModal from "./AddVaultModal/AddVaultModal.js"
 // import DeleteVaultModal from "./DeleteVaultModal";
 import RenderTMB from "../RenderTMB";
+import EditVaultModal from "./EditVaultModal";
 import ConfirmStaging from "./ConfirmStaging";
 import "./Warehouse.css"
 
@@ -34,12 +35,13 @@ export default function Warehouse () {
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
     // const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     // const [selectedVaultToDelete, setSelectedVaultToDelete] = useState(null);    
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [editedVault, setEditedVault] = useState(null);
 
     useEffect(() => {
         const getWareHouseInfo = dispatch(getWarehouseInfoThunk());
         const getAllWarehouseVaults = dispatch(getAllWarehouseVaultsThunk());
         const getAllVaults = dispatch(getAllVaultsThunk())
-        console.log("⭐️ all vaults:", getAllVaults)
     }, [dispatch])
 
     // useEffect(() => {
@@ -49,10 +51,6 @@ export default function Warehouse () {
     //       if (updatedVault.position === "B") setBottom(updatedVault);
     //     }
     //   }, [updatedVault]);
-
-      useEffect(() => {
-        console.log("🍿 selected vault", selectedVaultToStage)
-      }, [selectedVaultToStage])
 
     const updateSelectedFieldVaults = async (newVault) => {
     if (selectedField && newVault.field_id === selectedField.id) {
@@ -95,6 +93,12 @@ export default function Warehouse () {
         await setPosition(position)
     };
 
+    const handleEditClick = (vault) => {
+        setEditedVault(vault);
+        setIsEditModalOpen(true);
+      };
+      
+      
     // Add a new useEffect to open the modal when selectedVaultToStage changes
     useEffect(() => {
     if (selectedVaultToStage) {
@@ -129,7 +133,7 @@ export default function Warehouse () {
         <div className="warehouse-wrapper">
             <div className="field-info">
             {selectedField ? (
-                <RenderTMB top={top} middle={middle} bottom={bottom} handleStageClick={handleStageClick} handleOpenModal={handleOpenModal} />
+                <RenderTMB top={top} middle={middle} bottom={bottom} handleStageClick={handleStageClick} handleOpenModal={handleOpenModal} handleEditClick={handleEditClick}/>
           ) : (
                 <div>
                     Select a field to view its info
@@ -187,6 +191,13 @@ export default function Warehouse () {
                 />
                 </>
             </Modal>
+                {editedVault && isEditModalOpen && (
+                    <EditVaultModal
+                        vault={editedVault}
+                        onClose={() => setIsEditModalOpen(false)}
+                        // Add any additional props you need for editing
+                    />
+                )}
         </div>
     )
 }
