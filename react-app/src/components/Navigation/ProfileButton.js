@@ -7,7 +7,7 @@ import SignupFormModal from "../SignupFormModal";
 import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
 import { Drawer, List, ListItem, ListItemText, Button } from "@mui/material";
 
-import "./Navigation.css"; // Make sure to adjust the path to your CSS file
+import "./Navigation.css";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -53,6 +53,7 @@ function ProfileButton({ user }) {
               </ListItem>
               <ListItem 
                 button 
+                onClick={closeDrawer} // Close the drawer when "Stage" is clicked
                 component={NavLink} 
                 to="/stage" 
                 style={{color: "#FFB002", display: "flex", gap: "5px"}}>
