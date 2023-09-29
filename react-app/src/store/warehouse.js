@@ -83,7 +83,7 @@ export const getAllWarehouseVaultsThunk = () => async (dispatch) => {
       if (response.ok) {
         const updatedVault = await response.json();
         console.log("🍥 response.ok : ", updatedVault )
-        const vaultDispatch = dispatch(addVaultToWarehouseAction(updatedVault));
+        const vaultDispatch = await dispatch(addVaultToWarehouseAction(updatedVault));
         console.log("🍥 dispatch: ", vaultDispatch)
         return updatedVault;
       } else {

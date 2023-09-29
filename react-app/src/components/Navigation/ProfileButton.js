@@ -55,13 +55,21 @@ function ProfileButton({ user }) {
                 button 
                 onClick={closeDrawer} // Close the drawer when "Stage" is clicked
                 component={NavLink} 
+                to="/" 
+                style={{display: "flex", gap: "5px"}}>
+                <ListItemText primary="Warehouse" />
+              </ListItem>                 
+              <ListItem 
+                button 
+                onClick={closeDrawer} // Close the drawer when "Stage" is clicked
+                component={NavLink} 
                 to="/stage" 
-                style={{color: "#FFB002", display: "flex", gap: "5px"}}>
+                style={{display: "flex", gap: "5px"}}>
                 {/* <i class="fa-solid fa-plus"></i> */}
-                <ListItemText primary="Staged" />
-              </ListItem>
+                <ListItemText primary="Stage" />
+              </ListItem>           
               <ListItem >
-                <Button style={{color: "var(--red)"}} onClick={handleLogout}>Log Out</Button>
+                <Button variant="outlined" style={{color: "var(--lightgrey)", borderColor: "var(--lightgrey)"}} onClick={handleLogout}>Log Out</Button>
               </ListItem>
             </List>
           ) : (
