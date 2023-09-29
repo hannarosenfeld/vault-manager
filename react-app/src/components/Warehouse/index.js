@@ -44,13 +44,12 @@ export default function Warehouse () {
         const getAllVaults = dispatch(getAllVaultsThunk())
     }, [dispatch])
 
-    // useEffect(() => {
-    //     if (updatedVault) {
-    //       if (updatedVault.position === "T") setTop(updatedVault);
-    //       if (updatedVault.position === "M") setMiddle(updatedVault);
-    //       if (updatedVault.position === "B") setBottom(updatedVault);
-    //     }
-    //   }, [updatedVault]);
+    const onEditSubmit = (editedVault) => {
+        console.log("⭐️ editedVault", editedVault)
+            if (editedVault.position === "T") setTop(editedVault);
+            if (editedVault.position === "M") setMiddle(editedVault);
+            if (editedVault.position === "B") setBottom(editedVault);
+    }
 
     const updateSelectedFieldVaults = async (newVault) => {
     if (selectedField && newVault.field_id === selectedField.id) {
@@ -195,7 +194,7 @@ export default function Warehouse () {
                     <EditVaultModal
                         vault={editedVault}
                         onClose={() => setIsEditModalOpen(false)}
-                        // Add any additional props you need for editing
+                        onEditSubmit={onEditSubmit}
                     />
                 )}
         </div>

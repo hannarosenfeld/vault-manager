@@ -7,14 +7,14 @@ const VaultInstance = ({ vault, position, handleStageClick, handleEditClick }) =
       </div>
       <div className="edit-symbols">
         <span
-          onClick={() => handleStageClick(vault, position)} // Pass the vault as an argument
+          onClick={() => handleStageClick(vault, position)}
           style={{ color: "#FFA500" }}
           className="material-symbols-outlined"
         >
           forklift
         </span>
         <span
-          onClick={() => handleEditClick(vault)} // Call handleEditClick with the vault as an argument
+          onClick={() => handleEditClick(vault)}
           style={{ color: "#0074D9" }}
           className="material-symbols-outlined"
         >
@@ -26,5 +26,5 @@ const VaultInstance = ({ vault, position, handleStageClick, handleEditClick }) =
   );
 };
 
-export default VaultInstance; // Export VaultInstance as the default export
+export default VaultInstance;
 

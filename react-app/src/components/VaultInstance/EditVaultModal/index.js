@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './EditVaultModal.css';
 import { useDispatch } from 'react-redux';
-import { editVaultThunk } from '../../../store/vault';
+import { editVaultThunk, getVaultThunk } from '../../../store/vault';
 import { updateCustomerNameThunk } from '../../../store/customer';
 
 
@@ -13,21 +13,6 @@ const EditVaultModal = ({ vault, onClose, onEditSubmit }) => {
     order_number: vault.order_number || ''
   });
 
-  const handleSave = async (e) => {
-    e.preventDefault();
-
-    console.log("🥞", vault.customer.id, formData.customer_name)
-
-    try {
-      await dispatch(updateCustomerNameThunk(vault.customer.id, formData.customer_name))
-      const editedVault = await dispatch(editVaultThunk(vault.id, formData));
-      onEditSubmit(editedVault);
-      onClose();
-    } catch (error) {
-      console.error('Error saving vault:', error);
-    }
-  };
-
   useEffect(() => {
     setFormData({
       customer_name: vault.customer.name || '',
@@ -35,6 +20,19 @@ const EditVaultModal = ({ vault, onClose, onEditSubmit }) => {
       order_number: vault.order_number || ''      
     });
   }, [vault]);
+
+  const handleSave = async (e) => {
+    e.preventDefault();
+
+    try {
+      await dispatch(updateCustomerNameThunk(vault.customer.id, formData.customer_name))
+      const updatedVault = await dispatch(editVaultThunk(vault.id, formData));
+      onEditSubmit(updatedVault)
+      onClose();
+    } catch (error) {
+      console.error('Error saving vault:', error);
+    }
+  };
 
   return (
     <div className="edit-vault-modal-container">
