@@ -121,13 +121,10 @@ export default function Warehouse () {
         }
       };
 
- 
-
     const handleEditClick = (vault) => {
         setEditedVault(vault);
         setIsEditModalOpen(true);
       };
-      
       
     // Add a new useEffect to open the modal when selectedVaultToStage changes
     useEffect(() => {

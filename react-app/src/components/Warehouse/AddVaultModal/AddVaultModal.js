@@ -45,24 +45,24 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
         setSuggestedCustomers(filteredCustomers);
     }, [customers]);
 
-    const handleCustomerNameChange = (e) => {
+    const handleCustomerNameChange = async (e) => {
         const enteredName = e.target.value;
-        setCustomerName(enteredName);
+        await setCustomerName(enteredName);
 
         if (enteredName) {
             const filteredCustomers = customers?.filter(
                 (customer) =>
                     customer?.name?.toLowerCase().includes(enteredName.toLowerCase())
             );
-            setSuggestedCustomers(filteredCustomers);
+            await setSuggestedCustomers(filteredCustomers);
         } else {
-            setSuggestedCustomers([]);
+            await setSuggestedCustomers([]);
         }
     };
 
-    const handleSuggestedCustomerClick = (customer) => {
-        setCustomerName(customer.name);
-        setSuggestedCustomers([]);
+    const handleSuggestedCustomerClick = async (customer) => {
+        await setCustomerName(customer.name);
+        await setSuggestedCustomers([]);
     };
 
     const handleSubmit = async (e) => {
@@ -91,14 +91,14 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
     
             const newVault = await dispatch(addVaultThunk(vaultData));
             const warehouseVault = await dispatch(addVaultToWarehouseThunk(newVault.id));
-            updateTMB(newVault);
+            await updateTMB(newVault);
             await dispatch(getAllWarehouseVaultsThunk());
             await dispatch(getWarehouseInfoThunk());
             const allVaults = await dispatch(getAllVaultsThunk());
     
-            updateSelectedFieldVaults(newVault);
+            await updateSelectedFieldVaults(newVault);
     
-            onClose(newVault);
+            await onClose(newVault);
         } catch (error) {
             console.error('Error in handleSubmit:', error);
             // Handle the error here, such as displaying an error message to the user
