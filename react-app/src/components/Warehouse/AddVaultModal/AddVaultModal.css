@@ -11,10 +11,12 @@
 }
 
 .add-vault-form {
-  flex: 1; /* Takes up remaining vertical space */
+  flex: 1;
   display: flex;
   flex-direction: column;
+  overflow-y: scroll;
 }
+
 
 .add-vault-form button {
     display: block;
@@ -25,6 +27,7 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    align-self: flex-end;
   }
 
 .vault-info {
@@ -60,10 +63,9 @@
     padding: 10px;
     cursor: pointer;
     transition: background-color 0.2s;
-    border-bottom: 1px solid #e0e0e0; /* Add a border below each list item */
+    border-bottom: 1px solid #e0e0e0;
 }
 
-/* Apply a different style to the last list item to remove the border */
 .suggested-customers-list li:last-child {
     border-bottom: none;
 }
@@ -102,8 +104,8 @@
 
 .suggested-customers-container {
   position: absolute;
-  width: 100%; /* Set the width to 100% */
-  max-width: 300px; /* Set a maximum width */
+  width: 100%;
+  max-width: 300px;
   background-color: var(--white);
   border-radius: 4px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
@@ -112,18 +114,24 @@
 
 @media (max-width: 768px) {
   .suggested-customers-container {
-    max-width: 100%; /* Adjust as needed */
-    /* ... other responsive styles ... */
+    max-width: 100%;
   }
 }
 
 .close-icon-container {
   position: relative;
-  margin-right: 10px; /* Add some margin to create space between the icon and the modal edge */
+  margin-right: 10px;
 }
 
 .close-icon-container button {
   position: absolute;
   top: 1px;
   right: 5px;
+}
+
+
+@media (max-width: 768px) {
+  .suggested-customers-container {
+    max-width: 100%;
+  }
 }
