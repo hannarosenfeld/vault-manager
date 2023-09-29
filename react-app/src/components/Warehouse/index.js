@@ -46,7 +46,6 @@ export default function Warehouse () {
     }, [dispatch])
 
     const onEditSubmit = (editedVault) => {
-        console.log("⭐️ editedVault", editedVault)
             if (editedVault.position === "T") setTop(editedVault);
             if (editedVault.position === "M") setMiddle(editedVault);
             if (editedVault.position === "B") setBottom(editedVault);
@@ -117,7 +116,6 @@ export default function Warehouse () {
         ) {
           await setSelectedVaultToStage(vault);
           await setPosition(position)
-          console.log("Staging Allowed!");
         } else {
           console.log("Staging not allowed for this vault position.");
         }

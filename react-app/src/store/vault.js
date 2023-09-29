@@ -32,7 +32,6 @@ const addVaultAction = (vault) => ({
 
 
 export const editVaultThunk = (vaultId, vaultData) => async (dispatch) => {
-  console.log("🌹 in thunk", vaultData)
   try {
     const res = await fetch(`/api/vaults/${vaultId}`, {
       method: 'PUT',
@@ -44,7 +43,6 @@ export const editVaultThunk = (vaultId, vaultData) => async (dispatch) => {
 
     if (res.ok) {
       const data = await res.json();
-      console.log("🌹", data)
       dispatch(editVaultAction(data)); // Update the state with the edited vault
       return data;
     } else {
@@ -126,7 +124,7 @@ export const addVaultThunk = (vaultData) => async (dispatch) => {
 
     if (res.ok) {
       const data = await res.json();
-
+      console.log("⭐️ in thunk. res.ok: ", data)
       dispatch(addVaultAction(data)); // Update the state with the new vault
       return data;
     } else {
@@ -165,6 +163,9 @@ const vaultReducer = (state = initialState, action) => {
         }
       };
     case ADD_VAULT:
+      console.log("🌈 in reducer: ", action.vault)
+      console.log("🌈 in reducer: ", {...state, vaults: { ...state.vaults, [action.vault.vaultId]: action.vault }})
+
       return {
         ...state,
         vaults: {
