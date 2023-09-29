@@ -67,38 +67,44 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        const lowercaseCustomerName = customer_name.toLowerCase();
-        const search = await customers.find(customer => customer.name.toLowerCase() === lowercaseCustomerName);
-
-        if (search === undefined) {
-            const customerData = {
-                name: customer_name
+    
+        try {
+            const lowercaseCustomerName = customer_name.toLowerCase();
+            const search = await customers.find(customer => customer.name.toLowerCase() === lowercaseCustomerName);
+    
+            if (search === undefined) {
+                const customerData = {
+                    name: customer_name
+                }
+                newCustomer = await dispatch(addCustomerThunk(customerData))
             }
-            newCustomer = await dispatch(addCustomerThunk(customerData))
+            
+            const vaultData = {
+                customer_name: customer_name,
+                customer: newCustomer,
+                field_id: selectedField.id,
+                field_name: selectedField.field_id,
+                position: tmb,
+                vault_id: vault_id,
+                order_number: order_number
+            };
+    
+            const newVault = await dispatch(addVaultThunk(vaultData));
+            const warehouseVault = await dispatch(addVaultToWarehouseThunk(newVault.id));
+            updateTMB(newVault);
+            await dispatch(getAllWarehouseVaultsThunk());
+            await dispatch(getWarehouseInfoThunk());
+            const allVaults = await dispatch(getAllVaultsThunk());
+    
+            updateSelectedFieldVaults(newVault);
+    
+            onClose(newVault);
+        } catch (error) {
+            console.error('Error in handleSubmit:', error);
+            // Handle the error here, such as displaying an error message to the user
         }
-        
-        const vaultData = {
-            customer_name: customer_name,
-            customer: newCustomer,
-            field_id: selectedField.id,
-            field_name: selectedField.field_id,
-            position: tmb,
-            vault_id: vault_id,
-            order_number: order_number
-        };
-
-        const newVault = await dispatch(addVaultThunk(vaultData));
-        const warehouseVault = await dispatch(addVaultToWarehouseThunk(newVault.id));
-        updateTMB(newVault);
-        await dispatch(getAllWarehouseVaultsThunk())
-        await dispatch(getWarehouseInfoThunk())
-        const allVaults = await dispatch(getAllVaultsThunk())
-
-        updateSelectedFieldVaults(newVault);
-
-        onClose(newVault);
     };
+    
 
     return (
         <Box className="add-vault-container">
