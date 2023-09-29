@@ -147,7 +147,15 @@ export default function Warehouse () {
                  <div
                     className="field"
                     key={field.id}
-                    style={{ backgroundColor: `${field.vaults.length ? "#ea373d" : "var(--lightgrey)"}`, border: `${selectedField?.id === field?.id ? "3px solid var(--blue)" : "blue"}` }}
+                    style={{
+                        backgroundColor: `${
+                          field.vaults.length === 3 ? "#ea373d" :
+                          field.vaults.length === 2 ? "var(--yellow)":
+                          field.vaults.length === 1 ? "var(--green)" :
+                          "var(--lightgrey)"
+                        }`,
+                        border: `${selectedField?.id === field?.id ? "3px solid var(--blue)" : "blue"}`,
+                      }}                      
                     onClick={() => handleFieldClick(field, row, index)}
                 >
                     <div className="field-number">{row.id}{index + 1}</div>
