@@ -10,7 +10,7 @@ export const getWarehouseInfoAction = (warehouseInfo) => ({
 
 export const addVaultToWarehouseAction = (vault) => ({
   type: ADD_VAULT_TO_WAREHOUSE,
-  payload: vault,
+  payload: { vault },
 });
 
 export const removeVaultFromWarehouse = (vaultId) => ({
@@ -162,8 +162,9 @@ const warehouseReducer = (state = initialState, action) => {
       // Add the vault to the warehouseVaults array in state
       return {
         ...state,
-        warehouseVaults: [...state.warehouseVaults, action.vaultId],
+        warehouseVaults: [...state.warehouseVaults, action.payload.vault], // Access the vault property
       };
+      
     case GET_ALL_WAREHOUSE_VAULTS:
     return {
         ...state,
