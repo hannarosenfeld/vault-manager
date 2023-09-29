@@ -37,6 +37,7 @@ export default function Warehouse () {
     // const [selectedVaultToDelete, setSelectedVaultToDelete] = useState(null);    
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [editedVault, setEditedVault] = useState(null);
+    const [topmostVault, setTopmostVault] = useState(null);
 
     useEffect(() => {
         const getWareHouseInfo = dispatch(getWarehouseInfoThunk());
@@ -62,6 +63,16 @@ export default function Warehouse () {
         await setBottom(updatedBottom);
     }
     };
+
+    function findTopmostVault(vaults) {
+
+        for (const vault of vaults) {
+          if (!topmostVault || vault.position < topmostVault.position) {
+            setTopmostVault(vault)
+          }
+        }
+      }
+      
       
     const handleFieldClick = async (field, row, index) => {
         await setSelectedField(field);
@@ -77,6 +88,16 @@ export default function Warehouse () {
             await setMiddle(field.vaults.find(vault => vault.position === "M"))
             await setBottom(field.vaults.find(vault => vault.position === "B"))
         }
+
+        if (field.vaults.length > 0) {
+            const topmost = findTopmostVault(field.vaults);
+            if (topmost) {
+              setTopmostVault(topmost);
+              if (topmost.position === "T") await setTop(topmost);
+              if (topmost.position === "M") await setMiddle(topmost);
+              if (topmost.position === "B") await setBottom(topmost);
+            }
+          }
     };
 
     const handleOpenModal = async (position) => {
@@ -87,10 +108,22 @@ export default function Warehouse () {
     const handleCloseModal = () => {
         setIsModalOpen(false);
     };
+
     const handleStageClick = async (vault, position) => {
-        await setSelectedVaultToStage(vault);
-        await setPosition(position)
-    };
+        if (
+          (position === "T") || 
+          (position === "M" && !top) ||
+          (position === "B" && !middle) 
+        ) {
+          await setSelectedVaultToStage(vault);
+          await setPosition(position)
+          console.log("Staging Allowed!");
+        } else {
+          console.log("Staging not allowed for this vault position.");
+        }
+      };
+
+ 
 
     const handleEditClick = (vault) => {
         setEditedVault(vault);
