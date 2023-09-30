@@ -63,11 +63,10 @@ export default function Warehouse () {
     }
     };
 
-    function findTopmostVault(vaults) {
-
+    async function findTopmostVault(vaults) {
         for (const vault of vaults) {
           if (!topmostVault || vault.position < topmostVault.position) {
-            setTopmostVault(vault)
+            await setTopmostVault(vault)
           }
         }
       }
@@ -89,9 +88,9 @@ export default function Warehouse () {
         }
 
         if (field.vaults.length > 0) {
-            const topmost = findTopmostVault(field.vaults);
+            const topmost = await findTopmostVault(field.vaults);
             if (topmost) {
-              setTopmostVault(topmost);
+              await setTopmostVault(topmost);
               if (topmost.position === "T") await setTop(topmost);
               if (topmost.position === "M") await setMiddle(topmost);
               if (topmost.position === "B") await setBottom(topmost);
@@ -101,11 +100,11 @@ export default function Warehouse () {
 
     const handleOpenModal = async (position) => {
         await setPosition(position);
-        setIsModalOpen(true);
+        await setIsModalOpen(true);
     };
 
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
+    const handleCloseModal = async () => {
+        await setIsModalOpen(false);
     };
 
     const handleStageClick = async (vault, position) => {
