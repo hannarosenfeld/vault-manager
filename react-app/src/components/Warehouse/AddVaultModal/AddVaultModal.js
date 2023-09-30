@@ -45,67 +45,60 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
         setSuggestedCustomers(filteredCustomers);
     }, [customers]);
 
-    const handleCustomerNameChange = async (e) => {
+    const handleCustomerNameChange = (e) => {
         const enteredName = e.target.value;
-        await setCustomerName(enteredName);
+        setCustomerName(enteredName);
 
         if (enteredName) {
             const filteredCustomers = customers?.filter(
                 (customer) =>
                     customer?.name?.toLowerCase().includes(enteredName.toLowerCase())
             );
-            await setSuggestedCustomers(filteredCustomers);
+            setSuggestedCustomers(filteredCustomers);
         } else {
-            await setSuggestedCustomers([]);
+            setSuggestedCustomers([]);
         }
     };
 
-    const handleSuggestedCustomerClick = async (customer) => {
-        await setCustomerName(customer.name);
-        await setSuggestedCustomers([]);
+    const handleSuggestedCustomerClick = (customer) => {
+        setCustomerName(customer.name);
+        setSuggestedCustomers([]);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
-        try {
-            const lowercaseCustomerName = customer_name.toLowerCase();
-            const search = await customers.find(customer => customer.name.toLowerCase() === lowercaseCustomerName);
-    
-            if (search === undefined) {
-                const customerData = {
-                    name: customer_name
-                }
-                newCustomer = await dispatch(addCustomerThunk(customerData))
+
+        const lowercaseCustomerName = customer_name.toLowerCase();
+        const search = await customers.find(customer => customer.name.toLowerCase() === lowercaseCustomerName);
+
+        if (search === undefined) {
+            const customerData = {
+                name: customer_name
             }
-            
-            const vaultData = {
-                customer_name: customer_name,
-                customer: newCustomer,
-                field_id: selectedField.id,
-                field_name: selectedField.field_id,
-                position: tmb,
-                vault_id: vault_id,
-                order_number: order_number
-            };
-    
-            const newVault = await dispatch(addVaultThunk(vaultData));
-            const warehouseVault = await dispatch(addVaultToWarehouseThunk(newVault.id));
-            await updateTMB(newVault);
-            const allWarehouseVaults = await dispatch(getAllWarehouseVaultsThunk());
-            console.log("🍉 in component. all warehouse vaults: ", allWarehouseVaults)
-            await dispatch(getWarehouseInfoThunk());
-            const allVaults = await dispatch(getAllVaultsThunk());
-    
-            await updateSelectedFieldVaults(newVault);
-    
-            await onClose(newVault);
-        } catch (error) {
-            console.error('Error in handleSubmit:', error);
-            // Handle the error here, such as displaying an error message to the user
+            newCustomer = await dispatch(addCustomerThunk(customerData))
         }
+        
+        const vaultData = {
+            customer_name: customer_name,
+            customer: newCustomer,
+            field_id: selectedField.id,
+            field_name: selectedField.field_id,
+            position: tmb,
+            vault_id: vault_id,
+            order_number: order_number
+        };
+
+        const newVault = await dispatch(addVaultThunk(vaultData));
+        const warehouseVault = await dispatch(addVaultToWarehouseThunk(newVault.id));
+        updateTMB(newVault);
+        await dispatch(getAllWarehouseVaultsThunk())
+        await dispatch(getWarehouseInfoThunk())
+        const allVaults = await dispatch(getAllVaultsThunk())
+
+        updateSelectedFieldVaults(newVault);
+
+        onClose(newVault);
     };
-    
 
     return (
         <Box className="add-vault-container">

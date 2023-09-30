@@ -37,7 +37,6 @@ export default function Warehouse () {
     // const [selectedVaultToDelete, setSelectedVaultToDelete] = useState(null);    
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [editedVault, setEditedVault] = useState(null);
-    const [topmostVault, setTopmostVault] = useState(null);
 
     useEffect(() => {
         const getWareHouseInfo = dispatch(getWarehouseInfoThunk());
@@ -46,6 +45,7 @@ export default function Warehouse () {
     }, [dispatch])
 
     const onEditSubmit = (editedVault) => {
+        console.log("⭐️ editedVault", editedVault)
             if (editedVault.position === "T") setTop(editedVault);
             if (editedVault.position === "M") setMiddle(editedVault);
             if (editedVault.position === "B") setBottom(editedVault);
@@ -62,15 +62,6 @@ export default function Warehouse () {
         await setBottom(updatedBottom);
     }
     };
-
-    async function findTopmostVault(vaults) {
-        for (const vault of vaults) {
-          if (!topmostVault || vault.position < topmostVault.position) {
-            await setTopmostVault(vault)
-          }
-        }
-      }
-      
       
     const handleFieldClick = async (field, row, index) => {
         await setSelectedField(field);
@@ -86,44 +77,26 @@ export default function Warehouse () {
             await setMiddle(field.vaults.find(vault => vault.position === "M"))
             await setBottom(field.vaults.find(vault => vault.position === "B"))
         }
-
-        if (field.vaults.length > 0) {
-            const topmost = await findTopmostVault(field.vaults);
-            if (topmost) {
-              await setTopmostVault(topmost);
-              if (topmost.position === "T") await setTop(topmost);
-              if (topmost.position === "M") await setMiddle(topmost);
-              if (topmost.position === "B") await setBottom(topmost);
-            }
-          }
     };
 
     const handleOpenModal = async (position) => {
         await setPosition(position);
-        await setIsModalOpen(true);
+        setIsModalOpen(true);
     };
 
-    const handleCloseModal = async () => {
-        await setIsModalOpen(false);
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
     };
-
     const handleStageClick = async (vault, position) => {
-        if (
-          (position === "T") || 
-          (position === "M" && !top) ||
-          (position === "B" && !middle) 
-        ) {
-          await setSelectedVaultToStage(vault);
-          await setPosition(position)
-        } else {
-          console.log("Staging not allowed for this vault position.");
-        }
-      };
+        await setSelectedVaultToStage(vault);
+        await setPosition(position)
+    };
 
     const handleEditClick = (vault) => {
         setEditedVault(vault);
         setIsEditModalOpen(true);
       };
+      
       
     // Add a new useEffect to open the modal when selectedVaultToStage changes
     useEffect(() => {
@@ -174,15 +147,7 @@ export default function Warehouse () {
                  <div
                     className="field"
                     key={field.id}
-                    style={{
-                        backgroundColor: `${
-                          field.vaults.length === 3 ? "#ea373d" :
-                          field.vaults.length === 2 ? "var(--yellow)":
-                          field.vaults.length === 1 ? "var(--green)" :
-                          "var(--lightgrey)"
-                        }`,
-                        border: `${selectedField?.id === field?.id ? "3px solid var(--blue)" : "blue"}`,
-                      }}                      
+                    style={{ backgroundColor: `${field.vaults.length ? "#ea373d" : "var(--lightgrey)"}`, border: `${selectedField?.id === field?.id ? "3px solid var(--blue)" : "blue"}` }}
                     onClick={() => handleFieldClick(field, row, index)}
                 >
                     <div className="field-number">{row.id}{index + 1}</div>

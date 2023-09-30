@@ -181,6 +181,7 @@ const vaultReducer = (state = initialState, action) => {
         }
       };
     case DELETE_VAULT:
+      // Create a copy of the state.vaults object without the deleted vault
       const updatedVaults = { ...state.vaults };
       delete updatedVaults[action.vaultId];
 

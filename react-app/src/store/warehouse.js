@@ -71,7 +71,6 @@ export const getAllWarehouseVaultsThunk = () => async (dispatch) => {
   };
 
   export const addVaultToWarehouseThunk = (vaultId) => async (dispatch) => {
-    console.log("🍥 in add vault to warehouse thunk")
     try {
       const response = await fetch(`/api/warehouse/vaults/${vaultId}`, {
         method: 'PUT',
@@ -82,9 +81,7 @@ export const getAllWarehouseVaultsThunk = () => async (dispatch) => {
   
       if (response.ok) {
         const updatedVault = await response.json();
-        console.log("🍥 response.ok : ", updatedVault )
-        const vaultDispatch = await dispatch(addVaultToWarehouseAction(updatedVault));
-        console.log("🍥 dispatch: ", vaultDispatch)
+        dispatch(addVaultToWarehouseAction(updatedVault));
         return updatedVault;
       } else {
         const errorData = await response.json();
@@ -124,11 +121,13 @@ export const getAllWarehouseVaultsThunk = () => async (dispatch) => {
 
 export const removeVaultFromWarehouseThunk = (vaultId) => async (dispatch) => {
   try {
+    // Simulate an API call to remove the vault from the warehouse (replace with your actual API call)
     const response = await fetch(`/api/warehouse/vaults/${vaultId}`, {
-      method: 'DELETE',
+      method: 'DELETE', // Assuming you use DELETE to remove a vault from the warehouse
     });
 
     if (response.ok) {
+      // Dispatch the action to remove the vault from the warehouse
       dispatch(removeVaultFromWarehouse(vaultId));
       return vaultId;
     } else {
@@ -152,6 +151,7 @@ const initialState = {
 const warehouseReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_WAREHOUSE_INFO:
+      // Update the state with the complete warehouse information
       return {
         ...state,
         warehouseVaults: action.payload.warehouse_info.vaults,
@@ -159,15 +159,10 @@ const warehouseReducer = (state = initialState, action) => {
         warehouseRows: action.payload.warehouse_info.rows,
       };
     case ADD_VAULT_TO_WAREHOUSE:
-    console.log("🥞 in reducer - action", action)
-    console.log("🥞 in reducer - action.payload", action.payload)
-    console.log("🥞 in reducer - ", {
-      ...state,
-      warehouseVaults: [...state.warehouseVaults, action.payload.vault.id],
-    })
+      // Add the vault to the warehouseVaults array in state
       return {
         ...state,
-        warehouseVaults: [...state.warehouseVaults, action.payload.vault.id],
+        warehouseVaults: [...state.warehouseVaults, action.vaultId],
       };
     case GET_ALL_WAREHOUSE_VAULTS:
     return {
