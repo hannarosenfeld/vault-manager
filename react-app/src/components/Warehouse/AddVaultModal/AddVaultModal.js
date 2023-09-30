@@ -92,7 +92,8 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
             const newVault = await dispatch(addVaultThunk(vaultData));
             const warehouseVault = await dispatch(addVaultToWarehouseThunk(newVault.id));
             await updateTMB(newVault);
-            await dispatch(getAllWarehouseVaultsThunk());
+            const allWarehouseVaults = await dispatch(getAllWarehouseVaultsThunk());
+            console.log("🍉 in component. all warehouse vaults: ", allWarehouseVaults)
             await dispatch(getWarehouseInfoThunk());
             const allVaults = await dispatch(getAllVaultsThunk());
     
