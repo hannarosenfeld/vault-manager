@@ -16,13 +16,6 @@ import MiniWareHouse from './MiniWareHouse';
 
 
 export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, updateSelectedFieldVaults}) {
-    console.log("🌱 enter AddVaultModal",
-        "selectedFIeld: ", selectedField,
-        "tmb", tmb,
-        "updateTMB", updateTMB,
-        "updateSelectedField", updateSelectedFieldVaults
-    )
-
     const dispatch = useDispatch();
     const history = useHistory();
     const customersObj = useSelector(state => state.customer.customers)
