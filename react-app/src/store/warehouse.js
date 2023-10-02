@@ -10,7 +10,7 @@ export const getWarehouseInfoAction = (warehouseInfo) => ({
 
 export const addVaultToWarehouseAction = (vault) => ({
   type: ADD_VAULT_TO_WAREHOUSE,
-  payload: vault,
+  payload: { vault: [vault] }, // Always pass an array
 });
 
 export const removeVaultFromWarehouse = (vaultId) => ({
@@ -171,10 +171,11 @@ const warehouseReducer = (state = initialState, action) => {
             warehouseVaults: [...state.warehouseVaults, ...action.payload.vault],
           };
         } else {
-          console.error('Payload vault is not an array:', action.payload.vault);
+          console.error('🚨 Payload vault is not an array:', action.payload.vault);
           // Return the current state or handle the error as needed
           return state;
-        }           
+        }
+               
     case GET_ALL_WAREHOUSE_VAULTS:
     return {
         ...state,
@@ -183,7 +184,7 @@ const warehouseReducer = (state = initialState, action) => {
     case REMOVE_VAULT_FROM_WAREHOUSE:
         // Remove the vaultId from the warehouseVaults array in state
         return {
-          ...state,
+          ...state, 
           warehouseVaults: state.warehouseVaults.filter(
             (vault) => vault !== action.vaultId
           ),
