@@ -172,17 +172,24 @@ const warehouseReducer = (state = initialState, action) => {
         warehouseFields: action.payload.warehouse_info.fields,
         warehouseRows: action.payload.warehouse_info.rows,
       };
-    case ADD_VAULT_TO_WAREHOUSE:
-        // Ensure that action.payload is an array
-        console.log("⭐️ action.payload ", action.payload);
-        console.log("🍋 return: ", {
-          ...state,
-          warehouseVaults: [...state.warehouseVaults, ...action.payload],
-        })
+      case ADD_VAULT_TO_WAREHOUSE:
+        let payloadArray;
+        
+        // Check if action.payload is an array, if not, convert it to an array
+        if (Array.isArray(action.payload)) {
+          payloadArray = action.payload;
+        } else {
+          // Convert action.payload to an array with a single item
+          payloadArray = [action.payload];
+        }
+
+        console.log("🍐", payloadArray)
+        
         return {
           ...state,
-          warehouseVaults: [...state.warehouseVaults, ...action.payload],
+          warehouseVaults: [...state.warehouseVaults, ...payloadArray],
         };
+      
     case GET_ALL_WAREHOUSE_VAULTS:
       return {
         ...state,
