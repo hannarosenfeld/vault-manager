@@ -164,18 +164,15 @@ const warehouseReducer = (state = initialState, action) => {
         warehouseRows: action.payload.warehouse_info.rows,
       };
       case ADD_VAULT_TO_WAREHOUSE:
-        // Ensure that action.payload.vault is an array
-        if (Array.isArray(action.payload.vault)) {
-          return {
-            ...state,
-            warehouseVaults: [...state.warehouseVaults, ...action.payload.vault],
-          };
-        } else {
-          console.error('🚨 Payload vault is not an array:', action.payload.vault);
-          // Return the current state or handle the error as needed
-          return state;
-        }
-               
+        // Ensure that action.payload.vault is an array or convert it to an array if it's not.
+        const newVaults = Array.isArray(action.payload.vault)
+          ? action.payload.vault
+          : [action.payload.vault];
+  
+        return {
+          ...state,
+          warehouseVaults: [...state.warehouseVaults, ...newVaults],
+        };
     case GET_ALL_WAREHOUSE_VAULTS:
     return {
         ...state,
