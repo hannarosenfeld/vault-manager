@@ -52,7 +52,7 @@ export const addVaultToStageThunk = (vaultId) => async (dispatch) => {
 
     if (response.ok) {
       const updatedVault = await response.json();
-      dispatch(addVaultToStageAction(updatedVault)); // Dispatch the entire vault object
+      dispatch(addVaultToStageAction(updatedVault));
       return updatedVault;
     } else {
       const errorData = await response.json();

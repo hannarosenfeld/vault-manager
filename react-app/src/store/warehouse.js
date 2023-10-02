@@ -175,11 +175,9 @@ const warehouseReducer = (state = initialState, action) => {
       case ADD_VAULT_TO_WAREHOUSE:
         let payloadArray;
         
-        // Check if action.payload is an array, if not, convert it to an array
         if (Array.isArray(action.payload)) {
           payloadArray = action.payload;
         } else {
-          // Convert action.payload to an array with a single item
           payloadArray = [action.payload];
         }
 

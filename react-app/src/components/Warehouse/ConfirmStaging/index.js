@@ -10,8 +10,6 @@ import "./ConfirmStaging.css"
 export default function ConfirmStaging({ vaultCustomer, vaultNumber, vaultId, onClose, fieldId, updateVaultPosition, tmb}) {
     const dispatch = useDispatch();
  
-    console.log("🍄", "b" < "m")
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         const removeVault = await dispatch(removeVaultFromWarehouseThunk(vaultId))        
