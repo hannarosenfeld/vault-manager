@@ -70,7 +70,7 @@ export const getAllWarehouseVaultsThunk = () => async (dispatch) => {
     }
   };
 
-  
+
   export const addVaultToWarehouseThunk = (vaultId) => async (dispatch) => {
     console.log("🦔 in thunk")
     try {
@@ -172,30 +172,26 @@ const warehouseReducer = (state = initialState, action) => {
         warehouseFields: action.payload.warehouse_info.fields,
         warehouseRows: action.payload.warehouse_info.rows,
       };
-      case ADD_VAULT_TO_WAREHOUSE:
-        // Ensure that action.payload.vault is an array or convert it to an array if it's not.
-        const newVaults = Array.isArray(action.payload.vault)
-          ? action.payload.vault
-          : [action.payload.vault];
-  
-        return {
-          ...state,
-          warehouseVaults: [...state.warehouseVaults, ...newVaults],
-        };
+    case ADD_VAULT_TO_WAREHOUSE:
+      // Ensure that action.payload.vault is an array
+      const vaultToAdd = Array.isArray(action.payload.vault) ? action.payload.vault : [action.payload.vault];
+      return {
+        ...state,
+        warehouseVaults: [...state.warehouseVaults, ...vaultToAdd],
+      };
     case GET_ALL_WAREHOUSE_VAULTS:
-    return {
+      return {
         ...state,
         warehouseVaults: action.vaults,
-    };
+      };
     case REMOVE_VAULT_FROM_WAREHOUSE:
-        // Remove the vaultId from the warehouseVaults array in state
-        return {
-          ...state, 
-          warehouseVaults: state.warehouseVaults.filter(
-            (vault) => vault !== action.vaultId
-          ),
-        };
-  
+      // Remove the vaultId from the warehouseVaults array in state
+      return {
+        ...state,
+        warehouseVaults: state.warehouseVaults.filter(
+          (vault) => vault !== action.vaultId
+        ),
+      };
     default:
       return state;
   }
