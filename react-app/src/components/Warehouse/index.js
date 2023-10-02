@@ -46,7 +46,6 @@ export default function Warehouse () {
     }, [dispatch])
 
     const onEditSubmit = (editedVault) => {
-        console.log("⭐️ editedVault", editedVault)
             if (editedVault.position === "T") setTop(editedVault);
             if (editedVault.position === "M") setMiddle(editedVault);
             if (editedVault.position === "B") setBottom(editedVault);

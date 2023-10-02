@@ -70,7 +70,6 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
         e.preventDefault();
       
         try {
-          // Step 1: Add a new customer if it doesn't exist
           const lowercaseCustomerName = customer_name.toLowerCase();
           let newCustomer;
       
@@ -98,9 +97,10 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
       
           const newVault = await dispatch(addVaultThunk(vaultData));
       
-          // Step 3: Update the warehouseVaults array in Redux state
           const updatedVault = await dispatch(addVaultToWarehouseThunk(newVault.id));
       
+
+          console.log("🔥 updatedVault", updatedVault)
           // Ensure that addVaultToWarehouseThunk returns the updated vault
           if (updatedVault && updatedVault.vault) {
             await updateTMB(updatedVault.vault);
