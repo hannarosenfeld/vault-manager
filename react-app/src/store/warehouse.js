@@ -173,13 +173,18 @@ const warehouseReducer = (state = initialState, action) => {
         warehouseRows: action.payload.warehouse_info.rows,
       };
     case ADD_VAULT_TO_WAREHOUSE:
-      // Ensure that action.payload.vault is an array
-      console.log("⭐️ action.payload ", action.payload)
-      const vaultToAdd = Array.isArray(action.payload) ? action.payload : [action.payload];
-      return {
-        ...state,
-        warehouseVaults: [...state.warehouseVaults, ...vaultToAdd],
-      };
+        // Ensure that action.payload is an array
+        console.log("⭐️ action.payload ", action.payload);
+        const vaultToAdd = Array.isArray(action.payload) ? action.payload : [action.payload];
+        console.log("⭐️ vaultToAdd", vaultToAdd)
+        console.log("🍋 return: ", {
+          ...state,
+          warehouseVaults: [...state.warehouseVaults, ...vaultToAdd],
+        })
+        return {
+          ...state,
+          warehouseVaults: [...state.warehouseVaults, ...vaultToAdd],
+        };
     case GET_ALL_WAREHOUSE_VAULTS:
       return {
         ...state,
