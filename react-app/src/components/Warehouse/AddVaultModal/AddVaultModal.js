@@ -65,53 +65,64 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
         setSuggestedCustomers([]);
     };
 
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
       
-        const lowercaseCustomerName = customer_name.toLowerCase();
-        const search = await customers.find(
-          (customer) => customer.name.toLowerCase() === lowercaseCustomerName
-        );
+        try {
+          // Step 1: Add a new customer if it doesn't exist
+          const lowercaseCustomerName = customer_name.toLowerCase();
+          let newCustomer;
       
-        if (search === undefined) {
-          const customerData = {
-            name: customer_name,
+          const search = customers.find(
+            (customer) => customer.name.toLowerCase() === lowercaseCustomerName
+          );
+      
+          if (!search) {
+            const customerData = {
+              name: customer_name,
+            };
+            newCustomer = await dispatch(addCustomerThunk(customerData));
+          }
+      
+          // Step 2: Add a new vault
+          const vaultData = {
+            customer_name: customer_name,
+            customer: newCustomer,
+            field_id: selectedField.id,
+            field_name: selectedField.field_id,
+            position: tmb,
+            vault_id: vault_id,
+            order_number: order_number,
           };
-          newCustomer = await dispatch(addCustomerThunk(customerData));
+      
+          const newVault = await dispatch(addVaultThunk(vaultData));
+      
+          // Step 3: Update the warehouseVaults array in Redux state
+          const updatedVault = await dispatch(addVaultToWarehouseThunk(newVault.id));
+      
+          // Ensure that addVaultToWarehouseThunk returns the updated vault
+          if (updatedVault && updatedVault.vault) {
+            await updateTMB(updatedVault.vault);
+            await updateSelectedFieldVaults(updatedVault.vault);
+          } else {
+            throw new Error('Error updating vault information.');
+          }
+      
+          // Step 4: Fetch other data (if needed)
+          const getAllWarehouseVaultsDispatch = await dispatch(getAllWarehouseVaultsThunk());
+          const getWarehouseInfoDispatch = await dispatch(getWarehouseInfoThunk());
+          const getAllVaultsDispatch = await dispatch(getAllVaultsThunk());
+      
+          console.log("🪴 getAllWarehouseVaultsDispatch: ", getAllWarehouseVaultsDispatch);
+          console.log("🪴 getWarehouseInfoDispatch", getWarehouseInfoDispatch);
+          console.log("🪴 getAllVaultsDispatch", getAllVaultsDispatch);
+      
+          onClose(newVault);
+        } catch (error) {
+          console.error('Error in handleSubmit:', error);
+          // Handle errors as needed
         }
-      
-        const vaultData = {
-          customer_name: customer_name,
-          customer: newCustomer,
-          field_id: selectedField.id,
-          field_name: selectedField.field_id,
-          position: tmb,
-          vault_id: vault_id,
-          order_number: order_number,
-        };
-      
-        const newVault = await dispatch(addVaultThunk(vaultData));
-      
-        // Update the warehouseVaults array in Redux state
-        const updatedVault = await dispatch(addVaultToWarehouseThunk(newVault.id));
-      
-        // Ensure that addVaultToWarehouseThunk returns the updated vault
-        if (updatedVault && updatedVault.vault) {
-          await updateTMB(updatedVault.vault);
-          await updateSelectedFieldVaults(updatedVault.vault);
-        } else {
-          console.error('Error updating vault information.');
-        }
-      
-        const getAllWarehouseVaultsDispatch = await dispatch(getAllWarehouseVaultsThunk());
-        const getWarehouseInfoDispatch = await dispatch(getWarehouseInfoThunk());
-        const getAllVaultsDispatch = await dispatch(getAllVaultsThunk());
-
-        console.log("🪴 getAllWarehouseVaultsDispatch: ", getAllWarehouseVaultsDispatch)
-        console.log("🪴 getWarehouseInfoDispatch", getWarehouseInfoDispatch)
-        console.log("🪴 getAllVaultsDispatch", getAllVaultsDispatch)
-
-        onClose(newVault);
       };
       
 
