@@ -67,38 +67,49 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+      
         const lowercaseCustomerName = customer_name.toLowerCase();
-        const search = await customers.find(customer => customer.name.toLowerCase() === lowercaseCustomerName);
-
+        const search = await customers.find(
+          (customer) => customer.name.toLowerCase() === lowercaseCustomerName
+        );
+      
         if (search === undefined) {
-            const customerData = {
-                name: customer_name
-            }
-            newCustomer = await dispatch(addCustomerThunk(customerData))
+          const customerData = {
+            name: customer_name,
+          };
+          newCustomer = await dispatch(addCustomerThunk(customerData));
         }
-        
+      
         const vaultData = {
-            customer_name: customer_name,
-            customer: newCustomer,
-            field_id: selectedField.id,
-            field_name: selectedField.field_id,
-            position: tmb,
-            vault_id: vault_id,
-            order_number: order_number
+          customer_name: customer_name,
+          customer: newCustomer,
+          field_id: selectedField.id,
+          field_name: selectedField.field_id,
+          position: tmb,
+          vault_id: vault_id,
+          order_number: order_number,
         };
-
+      
         const newVault = await dispatch(addVaultThunk(vaultData));
-        const warehouseVault = await dispatch(addVaultToWarehouseThunk(newVault.id));
-        updateTMB(newVault);
-        await dispatch(getAllWarehouseVaultsThunk())
-        await dispatch(getWarehouseInfoThunk())
-        const allVaults = await dispatch(getAllVaultsThunk())
-
-        updateSelectedFieldVaults(newVault);
-
+      
+        // Update the warehouseVaults array in Redux state
+        const updatedVault = await dispatch(addVaultToWarehouseThunk(newVault.id));
+      
+        // Ensure that addVaultToWarehouseThunk returns the updated vault
+        if (updatedVault && updatedVault.vault) {
+          updateTMB(updatedVault.vault);
+          updateSelectedFieldVaults(updatedVault.vault);
+        } else {
+          console.error('Error updating vault information.');
+        }
+      
+        await dispatch(getAllWarehouseVaultsThunk());
+        await dispatch(getWarehouseInfoThunk());
+        await dispatch(getAllVaultsThunk());
+      
         onClose(newVault);
-    };
+      };
+      
 
     return (
         <Box className="add-vault-container">
