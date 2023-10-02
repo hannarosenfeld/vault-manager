@@ -175,15 +175,13 @@ const warehouseReducer = (state = initialState, action) => {
     case ADD_VAULT_TO_WAREHOUSE:
         // Ensure that action.payload is an array
         console.log("⭐️ action.payload ", action.payload);
-        const vaultToAdd = Array.isArray(action.payload) ? action.payload : [action.payload];
-        console.log("⭐️ vaultToAdd", vaultToAdd)
         console.log("🍋 return: ", {
           ...state,
-          warehouseVaults: [...state.warehouseVaults, ...vaultToAdd],
+          warehouseVaults: [...state.warehouseVaults, ...action.payload],
         })
         return {
           ...state,
-          warehouseVaults: [...state.warehouseVaults, ...vaultToAdd],
+          warehouseVaults: [...state.warehouseVaults, ...action.payload],
         };
     case GET_ALL_WAREHOUSE_VAULTS:
       return {
