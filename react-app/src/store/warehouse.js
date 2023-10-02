@@ -10,7 +10,7 @@ export const getWarehouseInfoAction = (warehouseInfo) => ({
 
 export const addVaultToWarehouseAction = (vault) => ({
   type: ADD_VAULT_TO_WAREHOUSE,
-  vault
+  payload: vault
 });
 
 export const removeVaultFromWarehouse = (vaultId) => ({
