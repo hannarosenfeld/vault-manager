@@ -27,7 +27,7 @@ const getAllVaultsAction = (vaults) => ({
 
 const addVaultAction = (vault) => ({
   type: ADD_VAULT,
-  payload: vault
+  vault
 });
 
 
