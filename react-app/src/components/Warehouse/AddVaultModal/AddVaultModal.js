@@ -16,6 +16,13 @@ import MiniWareHouse from './MiniWareHouse';
 
 
 export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, updateSelectedFieldVaults}) {
+    console.log("🌱 enter AddVaultModal",
+        "selectedFIeld: ", selectedField,
+        "tmb", tmb,
+        "updateTMB", updateTMB,
+        "updateSelectedField", updateSelectedFieldVaults
+    )
+
     const dispatch = useDispatch();
     const history = useHistory();
     const customersObj = useSelector(state => state.customer.customers)
@@ -97,16 +104,20 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
       
         // Ensure that addVaultToWarehouseThunk returns the updated vault
         if (updatedVault && updatedVault.vault) {
-          updateTMB(updatedVault.vault);
-          updateSelectedFieldVaults(updatedVault.vault);
+          await updateTMB(updatedVault.vault);
+          await updateSelectedFieldVaults(updatedVault.vault);
         } else {
           console.error('Error updating vault information.');
         }
       
-        await dispatch(getAllWarehouseVaultsThunk());
-        await dispatch(getWarehouseInfoThunk());
-        await dispatch(getAllVaultsThunk());
-      
+        const getAllWarehouseVaultsDispatch = await dispatch(getAllWarehouseVaultsThunk());
+        const getWarehouseInfoDispatch = await dispatch(getWarehouseInfoThunk());
+        const getAllVaultsDispatch = await dispatch(getAllVaultsThunk());
+
+        console.log("🪴 getAllWarehouseVaultsDispatch: ", getAllWarehouseVaultsDispatch)
+        console.log("🪴 getWarehouseInfoDispatch", getWarehouseInfoDispatch)
+        console.log("🪴 getAllVaultsDispatch", getAllVaultsDispatch)
+
         onClose(newVault);
       };
       
