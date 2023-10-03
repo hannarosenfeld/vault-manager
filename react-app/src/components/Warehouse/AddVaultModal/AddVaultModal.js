@@ -101,7 +101,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
       
           console.log("🔥 updatedVault", updatedVault)
           // Ensure that addVaultToWarehouseThunk returns the updated vault
-          if (updatedVault && updatedVault.vault) {
+          if (updatedVault) {
             const updateTMBThing = await updateTMB(updatedVault.vault);
             const updateSelectedFieldVaultsThing = await updateSelectedFieldVaults(updatedVault.vault);
             console.log("🍄 updatedTMB: ", updateTMBThing, "updatedSelectedFieldVaults: ", updateSelectedFieldVaultsThing)
