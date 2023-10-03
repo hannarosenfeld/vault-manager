@@ -24,20 +24,15 @@ def add_vault_to_warehouse(vault_id):
     """
     Add a vault back to the warehouse with a new field_id and position
     """
-    print("🍥 entered route")
     warehouse = Warehouse.query.get(1)
     vault = Vault.query.get(vault_id)
     stage = Stage.query.get(1)
 
     if not vault:
         return jsonify({'errors': 'Vault not found'}), 404
-    
-    print("🍰", vault.to_dict())
-    
+
     # if vault is in storage, set values according to selected warehouse position and move it
     if vault in stage.staged_vaults:
-        print("🍶", vault)
-
         new_field_id = request.json.get('fieldId')
         new_field_name = request.json.get('fieldName')
         position = request.json.get('position')
@@ -48,19 +43,13 @@ def add_vault_to_warehouse(vault_id):
         vault.staged = False
         vault.warehouse_id = 1
         vault.stage_id = None
-        print("🍶", vault)
 
         if vault in stage.staged_vaults:
             stage.staged_vaults.remove(vault)        
 
     try:
         warehouse.warehouse_vaults.append(vault)
-
         db.session.commit()
-
-        print("🥐 : ", warehouse.warehouse_vaults)
-        print("🥐 return: ", vault.to_dict())
-
         return vault.to_dict()
 
     except Exception as e:
