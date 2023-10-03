@@ -83,6 +83,8 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
             };
             newCustomer = await dispatch(addCustomerThunk(customerData));
           }
+
+          console.log("🖋️ selected field id",selectedField)
       
           // Step 2: Add a new vault
           const vaultData = {

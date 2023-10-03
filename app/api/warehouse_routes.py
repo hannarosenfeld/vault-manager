@@ -32,7 +32,7 @@ def add_vault_to_warehouse(vault_id):
     if not vault:
         return jsonify({'errors': 'Vault not found'}), 404
     
-    print("🍰")
+    print("🍰", vault.to_dict())
     
     # if vault is in storage, set values according to selected warehouse position and move it
     if vault in stage.staged_vaults:

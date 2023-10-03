@@ -52,7 +52,7 @@ export default function Warehouse () {
     }
 
     const updateSelectedFieldVaults = async (newVault) => {
-    if (selectedField && newVault.field_id === selectedField.id) {
+    if (selectedField && newVault?.field_id === selectedField.id) {
         const updatedTop = newVault.position === "T" ? newVault : top;
         const updatedMiddle = newVault.position === "M" ? newVault : middle;
         const updatedBottom = newVault.position === "B" ? newVault : bottom;
