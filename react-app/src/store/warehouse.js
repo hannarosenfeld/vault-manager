@@ -10,7 +10,7 @@ export const getWarehouseInfoAction = (warehouseInfo) => ({
 
 export const addVaultToWarehouseAction = (vault) => ({
   type: ADD_VAULT_TO_WAREHOUSE,
-  payload: vault
+  payload: vault,
 });
 
 export const removeVaultFromWarehouse = (vaultId) => ({
@@ -70,9 +70,7 @@ export const getAllWarehouseVaultsThunk = () => async (dispatch) => {
     }
   };
 
-
   export const addVaultToWarehouseThunk = (vaultId) => async (dispatch) => {
-    console.log("🦔 in thunk")
     try {
       const response = await fetch(`/api/warehouse/vaults/${vaultId}`, {
         method: 'PUT',
@@ -83,19 +81,8 @@ export const getAllWarehouseVaultsThunk = () => async (dispatch) => {
   
       if (response.ok) {
         const updatedVault = await response.json();
-  
-        // Check if updatedVault contains a 'vault' property
-        if (updatedVault && updatedVault.vault) {
-          const addVaultDispatch = dispatch(addVaultToWarehouseAction(updatedVault.vault));
-          console.log("🦔 response.ok: ",
-          "updatedVault: ", updatedVault,
-          "addVaultDispatch: ", addVaultDispatch
-          )
-          return updatedVault;
-        } else {
-          console.error('Error adding vault to warehouse: Response does not contain vault data.');
-          return null; // Return null or handle the error as needed
-        }
+        dispatch(addVaultToWarehouseAction(updatedVault));
+        return updatedVault;
       } else {
         const errorData = await response.json();
         console.error('Error adding vault to warehouse:', errorData.errors);
@@ -105,8 +92,7 @@ export const getAllWarehouseVaultsThunk = () => async (dispatch) => {
       console.error('Error adding vault to warehouse:', error);
       return error;
     }
-  };
-  
+  }; 
 
   export const moveVaultFromStageToWarehouseThunk = (vaultId, fieldId, fieldName, position) => async (dispatch) => {
     try {
@@ -172,35 +158,26 @@ const warehouseReducer = (state = initialState, action) => {
         warehouseFields: action.payload.warehouse_info.fields,
         warehouseRows: action.payload.warehouse_info.rows,
       };
-      case ADD_VAULT_TO_WAREHOUSE:
-        let payloadArray;
-        
-        if (Array.isArray(action.payload)) {
-          payloadArray = action.payload;
-        } else {
-          payloadArray = [action.payload];
-        }
-
-        console.log("🍐", payloadArray)
-        
-        return {
-          ...state,
-          warehouseVaults: [...state.warehouseVaults, ...payloadArray],
-        };
-      
-    case GET_ALL_WAREHOUSE_VAULTS:
+    case ADD_VAULT_TO_WAREHOUSE:
+      // Add the vault to the warehouseVaults array in state
       return {
+        ...state,
+        warehouseVaults: [...state.warehouseVaults, action.vaultId],
+      };
+    case GET_ALL_WAREHOUSE_VAULTS:
+    return {
         ...state,
         warehouseVaults: action.vaults,
-      };
+    };
     case REMOVE_VAULT_FROM_WAREHOUSE:
-      // Remove the vaultId from the warehouseVaults array in state
-      return {
-        ...state,
-        warehouseVaults: state.warehouseVaults.filter(
-          (vault) => vault !== action.vaultId
-        ),
-      };
+        // Remove the vaultId from the warehouseVaults array in state
+        return {
+          ...state,
+          warehouseVaults: state.warehouseVaults.filter(
+            (vault) => vault !== action.vaultId
+          ),
+        };
+  
     default:
       return state;
   }

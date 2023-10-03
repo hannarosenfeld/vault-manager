@@ -106,7 +106,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
             const updateSelectedFieldVaultsThing = await updateSelectedFieldVaults(updatedVault.vault);
             console.log("🍄 updatedTMB: ", updateTMBThing, "updatedSelectedFieldVaults: ", updateSelectedFieldVaultsThing)
           } else {
-            throw new Error('Error updating vault information.');
+            console.error('updatedVault is null or undefined');
           }
       
           // Step 4: Fetch other data (if needed)
