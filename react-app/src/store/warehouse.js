@@ -160,6 +160,7 @@ const warehouseReducer = (state = initialState, action) => {
     case ADD_VAULT_TO_WAREHOUSE:
       // Add the vault to the warehouseVaults array in state
       console.log("🦔 in reducer: ", action.payload)
+      console.log("🦔 state.warehouseVaults: ", state.warehouseVaults)
       return {
         ...state,
         warehouseVaults: [...state.warehouseVaults, action.payload],
