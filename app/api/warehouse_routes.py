@@ -37,7 +37,6 @@ def add_vault_to_warehouse(vault_id):
     # if vault is in storage, set values according to selected warehouse position and move it
     if vault in stage.staged_vaults:
         print("🍶", vault)
-        print("🍶", stage.staged_vaults)
 
         new_field_id = request.json.get('fieldId')
         new_field_name = request.json.get('fieldName')
@@ -49,6 +48,7 @@ def add_vault_to_warehouse(vault_id):
         vault.staged = False
         vault.warehouse_id = 1
         vault.stage_id = None
+        print("🍶", vault)
 
         if vault in stage.staged_vaults:
             stage.staged_vaults.remove(vault)        
@@ -61,7 +61,7 @@ def add_vault_to_warehouse(vault_id):
         print("🥐 : ", warehouse.warehouse_vaults)
         print("🥐 return: ", {'vault': vault.to_dict()})
 
-        return {'vault': vault.to_dict()}
+        return vault.to_dict()
 
     except Exception as e:
         db.session.rollback()

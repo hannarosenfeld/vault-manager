@@ -8,11 +8,6 @@ export const getWarehouseInfoAction = (warehouseInfo) => ({
   payload: warehouseInfo,
 });
 
-export const addVaultToWarehouseAction = (vault) => ({
-  type: ADD_VAULT_TO_WAREHOUSE,
-  payload: vault,
-});
-
 export const removeVaultFromWarehouse = (vaultId) => ({
     type: REMOVE_VAULT_FROM_WAREHOUSE,
     payload: vaultId,
@@ -22,7 +17,35 @@ export const getAllWarehouseVaultsAction = (vaults) => ({
     type: GET_ALL_WAREHOUSE_VAULTS,
     vaults,
 });
+
+export const addVaultToWarehouseAction = (vault) => ({
+  type: ADD_VAULT_TO_WAREHOUSE,
+  payload: vault,
+});
   
+export const addVaultToWarehouseThunk = (vaultId) => async (dispatch) => {
+  try {
+    const response = await fetch(`/api/warehouse/vaults/${vaultId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      const updatedVault = await response.json();
+      dispatch(addVaultToWarehouseAction(updatedVault));
+      return updatedVault;
+    } else {
+      const errorData = await response.json();
+      console.error('Error adding vault to warehouse:', errorData.errors);
+      return errorData;
+    }
+  } catch (error) {
+    console.error('Error adding vault to warehouse:', error);
+    return error;
+  }
+}; 
 
 export const getWarehouseInfoThunk = () => async (dispatch) => {
   try {
@@ -69,30 +92,6 @@ export const getAllWarehouseVaultsThunk = () => async (dispatch) => {
       return error;
     }
   };
-
-  export const addVaultToWarehouseThunk = (vaultId) => async (dispatch) => {
-    try {
-      const response = await fetch(`/api/warehouse/vaults/${vaultId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-  
-      if (response.ok) {
-        const updatedVault = await response.json();
-        dispatch(addVaultToWarehouseAction(updatedVault));
-        return updatedVault;
-      } else {
-        const errorData = await response.json();
-        console.error('Error adding vault to warehouse:', errorData.errors);
-        return errorData;
-      }
-    } catch (error) {
-      console.error('Error adding vault to warehouse:', error);
-      return error;
-    }
-  }; 
 
   export const moveVaultFromStageToWarehouseThunk = (vaultId, fieldId, fieldName, position) => async (dispatch) => {
     try {
