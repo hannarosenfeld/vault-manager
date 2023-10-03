@@ -162,7 +162,7 @@ const warehouseReducer = (state = initialState, action) => {
       console.log("🦔 in reducer: ", action.payload)
       return {
         ...state,
-        warehouseVaults: [...state.warehouseVaults, action.payload.vault],
+        warehouseVaults: [...state.warehouseVaults, action.payload],
       };
     case GET_ALL_WAREHOUSE_VAULTS:
     return {
