@@ -49,6 +49,7 @@ def add_vault_to_warehouse(vault_id):
 
     try:
         warehouse.warehouse_vaults.append(vault)
+        db.session.add(vault)
         db.session.commit()
         return vault.to_dict()
 
