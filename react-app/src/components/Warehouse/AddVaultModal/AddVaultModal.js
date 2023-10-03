@@ -68,25 +68,18 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
     
     const handleSubmit = async (e) => {
         e.preventDefault();
-      
         try {
           const lowercaseCustomerName = customer_name.toLowerCase();
           let newCustomer;
-      
           const search = customers.find(
             (customer) => customer.name.toLowerCase() === lowercaseCustomerName
           );
-      
           if (!search) {
             const customerData = {
               name: customer_name,
             };
             newCustomer = await dispatch(addCustomerThunk(customerData));
           }
-
-          console.log("🖋️ selected field id",selectedField)
-      
-          // Step 2: Add a new vault
           const vaultData = {
             customer_name: customer_name,
             customer: newCustomer,
@@ -96,17 +89,14 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
             vault_id: vault_id,
             order_number: order_number,
           };
-      
           const newVault = await dispatch(addVaultThunk(vaultData));
-      
           const updatedVault = await dispatch(addVaultToWarehouseThunk(newVault.id));
       
           console.log("🔥 updatedVault", updatedVault)
           // Ensure that addVaultToWarehouseThunk returns the updated vault
           if (updatedVault) {
             const updateTMBThing = await updateTMB(updatedVault.vault);
-            const updateSelectedFieldVaultsThing = await updateSelectedFieldVaults(updatedVault.vault);
-            console.log("🍄 updatedTMB: ", updateTMBThing, "updatedSelectedFieldVaults: ", updateSelectedFieldVaultsThing)
+            // const updateSelectedFieldVaultsThing = await updateSelectedFieldVaults(updatedVault.vault);
           } else {
             console.error('updatedVault is null or undefined');
           }

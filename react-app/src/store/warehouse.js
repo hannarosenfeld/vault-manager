@@ -150,7 +150,7 @@ const initialState = {
 const warehouseReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_WAREHOUSE_INFO:
-      // Update the state with the complete warehouse information
+      console.log("", action.payload.warehouse_info.vaults)
       return {
         ...state,
         warehouseVaults: action.payload.warehouse_info.vaults,
