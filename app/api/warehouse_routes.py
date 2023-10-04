@@ -49,14 +49,13 @@ def add_vault_to_warehouse(vault_id):
 
     try:
         warehouse.warehouse_vaults.append(vault)
-        db.session.add(vault)
+        db.session.add(vault) # not sure if this is needed?
         db.session.commit()
         return vault.to_dict()
 
     except Exception as e:
         db.session.rollback()
         return jsonify({'errors': str(e)}), 500
-
 
 
 @warehouse_routes.route('/vaults', methods=['GET'])
