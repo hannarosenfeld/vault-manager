@@ -32,7 +32,6 @@ const addVaultAction = (vault) => ({
 
 
 export const editVaultThunk = (vaultId, vaultData) => async (dispatch) => {
-  console.log("🌹 in thunk", vaultData)
   try {
     const res = await fetch(`/api/vaults/${vaultId}`, {
       method: 'PUT',
@@ -44,7 +43,6 @@ export const editVaultThunk = (vaultId, vaultData) => async (dispatch) => {
 
     if (res.ok) {
       const data = await res.json();
-      console.log("🌹", data)
       dispatch(editVaultAction(data)); // Update the state with the edited vault
       return data;
     } else {

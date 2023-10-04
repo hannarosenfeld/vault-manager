@@ -93,6 +93,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
           const updatedVault = await dispatch(addVaultToWarehouseThunk(newVault.id));
       
           console.log("🔥 updatedVault", updatedVault)
+          
           // Ensure that addVaultToWarehouseThunk returns the updated vault
           if (updatedVault) {
             const updateTMBThing = await updateTMB(updatedVault.vault);
