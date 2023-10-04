@@ -1,4 +1,38 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { useState, useEffect } from "react";
+import { getFieldThunk } from "../../store/field";
+
 const VaultInstance = ({ vault, position, handleStageClick, handleEditClick }) => {
+  const field = useSelector(state => state.field.currentField);
+  const dispatch = useDispatch();
+  const [topmostPosition, setTopmostPosition] = useState(""); // State variable to track topmost position
+
+  useEffect(() => {
+    dispatch(getFieldThunk(vault.field_id));
+  }, []);
+
+  useEffect(() => {
+    console.log("🧼 in VaultInstance: ", field);
+  }, [field]);
+
+  useEffect(() => {
+    if (field && field.vaults && field.vaults.length > 0) {
+      console.log("🧼 FieldVaults: ", field.vaults);
+
+      // Find the topmost vault by comparing positions as strings
+      const newTopmostPosition = field.vaults.reduce((maxPosition, currentVault) => {
+        console.log("maxPosition:", maxPosition);
+        console.log("currentVault.position:", currentVault.position);
+        return currentVault.position > maxPosition ? currentVault.position : maxPosition;
+      }, field.vaults[0].position); // Initialize with the position of the first vault
+
+      console.log("New Topmost Position:", newTopmostPosition);
+
+      // Update the topmost position state variable
+      setTopmostPosition(newTopmostPosition);
+    }
+  }, [field]);
+
   return (
     <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
       <div style={{ display: "flex", width: "60%", gap: "5px" }}>
@@ -8,7 +42,7 @@ const VaultInstance = ({ vault, position, handleStageClick, handleEditClick }) =
       <div className="edit-symbols">
         <span
           onClick={() => handleStageClick(vault, position)}
-          style={{ color: "#FFA500" }}
+          style={{ color: position === topmostPosition ? "#FFA500" : "#CCCCCC" }}
           className="material-symbols-outlined"
         >
           forklift
@@ -20,11 +54,9 @@ const VaultInstance = ({ vault, position, handleStageClick, handleEditClick }) =
         >
           edit
         </span>
-        {/* <span onClick={handleDeleteClick} style={{ color: "var(--delete)" }} className="material-symbols-outlined">delete</span> */}
       </div>
     </div>
   );
 };
 
 export default VaultInstance;
-

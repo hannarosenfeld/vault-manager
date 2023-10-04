@@ -90,11 +90,8 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
             order_number: order_number,
           };
           const newVault = await dispatch(addVaultThunk(vaultData));
-          console.log("🔥 addVaultDispatch", newVault )
 
           const updatedVault = await dispatch(addVaultToWarehouseThunk(newVault.id));
-      
-          console.log("🔥 addVaultToWareHouse", updatedVault)
 
           // Ensure that addVaultToWarehouseThunk returns the updated vault
           if (updatedVault) {
@@ -108,10 +105,6 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
           const getAllWarehouseVaultsDispatch = await dispatch(getAllWarehouseVaultsThunk());
           const getWarehouseInfoDispatch = await dispatch(getWarehouseInfoThunk());
           const getAllVaultsDispatch = await dispatch(getAllVaultsThunk());
-      
-          console.log("🪴 getAllWarehouseVaultsDispatch: ", getAllWarehouseVaultsDispatch);
-          console.log("🪴 getWarehouseInfoDispatch", getWarehouseInfoDispatch);
-          console.log("🪴 getAllVaultsDispatch", getAllVaultsDispatch);
       
           onClose(newVault);
         } catch (error) {

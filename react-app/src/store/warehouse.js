@@ -24,7 +24,6 @@ export const addVaultToWarehouseAction = (vault) => ({
 });
   
 export const addVaultToWarehouseThunk = (vaultId) => async (dispatch) => {
-  console.log("🦄 in ddVaultToWarehouseThunk. vaultId: ", vaultId)
   try {
     const response = await fetch(`/api/warehouse/vaults/${vaultId}`, {
       method: 'PUT',
@@ -35,9 +34,7 @@ export const addVaultToWarehouseThunk = (vaultId) => async (dispatch) => {
 
     if (response.ok) {
       const updatedVault = await response.json();
-      console.log("🍋 response.ok, updatedVault: ", updatedVault)
       const addDispatch = dispatch(addVaultToWarehouseAction(updatedVault));
-      console.log("🍋 dispatch: ", addDispatch)
       return updatedVault;
     } else {
       const errorData = await response.json();
@@ -153,7 +150,6 @@ const initialState = {
 const warehouseReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_WAREHOUSE_INFO:
-      console.log("🐝 in GET_WAREHOUSE_INFO, action.payload.warehouse_info.vaults: ", action.payload.warehouse_info.vaults)
       return {
         ...state,
         warehouseVaults: action.payload.warehouse_info.vaults,
@@ -162,9 +158,6 @@ const warehouseReducer = (state = initialState, action) => {
       };
     case ADD_VAULT_TO_WAREHOUSE:
       // Add the vault to the warehouseVaults array in state
-      console.log("🦔 in reducer: ", action.payload)
-      console.log("🦔 state.warehouseVaults: ", state.warehouseVaults)
-      console.log("🦔 warehouseVaults", [...state.warehouseVaults, action.payload])
       const newVaults = Array.isArray(action.payload) ? action.payload : [];
 
       return {

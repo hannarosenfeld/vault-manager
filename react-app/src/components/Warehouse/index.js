@@ -95,15 +95,8 @@ export default function Warehouse () {
 
     // Function to open the modal and log the statement
     const handleOpenModal = async (position) => {
-    console.log("🌱 enter AddVaultModal",
-        "selectedField: ", selectedField,
-        "tmb", position, // Use the 'position' argument instead of 'tmb'
-        "updateTMB", setUpdatedVault,
-        "updateSelectedField", updateSelectedFieldVaults
-    );
-
-    await setPosition(position);
-    setIsModalOpen(true);
+        await setPosition(position);
+        setIsModalOpen(true);
     };
 
     const handleCloseModal = () => {

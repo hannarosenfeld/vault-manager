@@ -114,8 +114,6 @@ export const getAllVaultsThunk = () => async (dispatch) => {
 
 export const addVaultThunk = (vaultData) => async (dispatch) => {
   try {
-    console.log("🌼 in addVaultThunk", vaultData); // Add a log here to check the input data
-
     const res = await fetch('/api/vaults/', {
       method: 'POST',
       headers: {
@@ -126,8 +124,6 @@ export const addVaultThunk = (vaultData) => async (dispatch) => {
 
     if (res.ok) {
       const data = await res.json();
-      console.log("🌼 data after successful POST request:", data); // Log the response data
-
       dispatch(addVaultAction(data)); // Update the state with the new vault
       return data;
     } else {

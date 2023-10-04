@@ -4,7 +4,7 @@ import session from './session'
 import userReducer from './user';
 import vaultReducer from './vault'
 // import rowReducer from './rows';
-// import fieldReducer from './field';
+import fieldReducer from './field';
 import customerReducer from './customer';
 import stageReducer from './stage';
 import warehouseReducer from './warehouse';
@@ -14,7 +14,7 @@ const rootReducer = combineReducers({
   user: userReducer,
   vault: vaultReducer,
   // row: rowReducer,
-  // field: fieldReducer,
+  field: fieldReducer,
   customer: customerReducer,
   stage: stageReducer,
   warehouse: warehouseReducer

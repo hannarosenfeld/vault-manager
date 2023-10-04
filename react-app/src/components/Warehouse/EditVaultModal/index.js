@@ -15,9 +15,7 @@ const EditVaultModal = ({ vault, onClose, onEditSubmit }) => {
 
   const handleSave = async (e) => {
     e.preventDefault();
-
-    console.log("🥞", vault.customer.id, formData.customer_name)
-
+    
     try {
       await dispatch(updateCustomerNameThunk(vault.customer.id, formData.customer_name))
       const editedVault = await dispatch(editVaultThunk(vault.id, formData));
