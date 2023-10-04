@@ -51,11 +51,15 @@ def add_vault_to_warehouse(vault_id):
             stage.staged_vaults.remove(vault)        
 
     try:
+        print("🍋 in try block.")
         warehouse.warehouse_vaults.append(vault)
-        print("🍋 in try block. warehouse.warehouse_vaults: ",  warehouse.warehouse_vaults.to_dict())
+        print("🍋 warehouse_vaults:")
+        for vault in warehouse.warehouse_vaults:
+            print(vault.to_dict())
+        print("🍋 db.session.add(vault)", db.session.add(vault))
         db.session.add(vault) # not sure if this is needed?
-        print("🍋 db.session", db.session.to_dict())
         db.session.commit()
+        print("🍋 after add and commit")
         return jsonify(vault.to_dict())
 
     except Exception as e:

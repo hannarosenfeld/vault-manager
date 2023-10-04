@@ -35,9 +35,9 @@ export const addVaultToWarehouseThunk = (vaultId) => async (dispatch) => {
 
     if (response.ok) {
       const updatedVault = await response.json();
-      console.log("🦄 response.ok, updatedVault: ", updatedVault)
+      console.log("🍋 response.ok, updatedVault: ", updatedVault)
       const addDispatch = dispatch(addVaultToWarehouseAction(updatedVault));
-      console.log("🦄 dispatch: ", addDispatch)
+      console.log("🍋 dispatch: ", addDispatch)
       return updatedVault;
     } else {
       const errorData = await response.json();
@@ -163,11 +163,11 @@ const warehouseReducer = (state = initialState, action) => {
     case ADD_VAULT_TO_WAREHOUSE:
       // Add the vault to the warehouseVaults array in state
       console.log("🦔 in reducer: ", action.payload)
-      console.log("🦔 state.warehouseVaults: ", state.warehouseVaults.warehouse_vaults)
-      console.log("🦔 warehouseVaults", [...state.warehouseVaults.warehouse_vaults, action.payload])
+      console.log("🦔 state.warehouseVaults: ", state.warehouseVaults)
+      console.log("🦔 warehouseVaults", [...state.warehouseVaults, action.payload])
       return {
         ...state,
-        warehouseVaults: [...state.warehouseVaults.warehouse_vaults, action.payload],
+        warehouseVaults: [...state.warehouseVaults, action.payload],
       };
     case GET_ALL_WAREHOUSE_VAULTS:
     return {
