@@ -166,7 +166,7 @@ const warehouseReducer = (state = initialState, action) => {
       console.log("🦔 state.warehouseVaults: ", state.warehouseVaults)
       return {
         ...state,
-        warehouseVaults: [...state.warehouseVaults, action.payload],
+        warehouseVaults: [...state.warehouseVaults.warehouse_vaults, action.payload],
       };
     case GET_ALL_WAREHOUSE_VAULTS:
     return {
