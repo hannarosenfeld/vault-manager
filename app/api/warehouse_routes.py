@@ -79,7 +79,7 @@ def get_warehouse_vaults():
         return {'errors': 'Warehouse not found'}, 404
 
     warehouse_vaults = warehouse.warehouse_vaults
-    return {'warehouse_vaults': [vault.to_dict() for vault in warehouse_vaults]}
+    return [vault.to_dict() for vault in warehouse_vaults]
 
 
 @warehouse_routes.route('/vaults/<int:vault_id>', methods=['DELETE'])
