@@ -148,6 +148,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
                         type="text"
                         value={customer_name}
                         onChange={handleCustomerNameChange}
+                        required
                     />
                     {suggestedCustomers?.length > 0 && customer_name && (
                         <div className="suggested-customers-container">
@@ -175,6 +176,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
                         type="text"
                         value={vault_id}
                         onChange={(e) => setVaultId(e.target.value)}
+                        required
                     />  
                 </FormGroup>
                 <FormGroup className="vault-order-number-item">
@@ -183,6 +185,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
                         type="text"
                         value={order_number}
                         onChange={(e) => setOrderNumber(e.target.value)}
+                        required
                     />  
                 </FormGroup>
                 </div>
