@@ -7,15 +7,14 @@ import { removeVaultFromFieldThunk } from '../../../store/field';
 import "./ConfirmStaging.css"
 
 
-export default function ConfirmStaging({ vaultCustomer, vaultNumber, vaultId, onClose, fieldId, updateVaultPosition, tmb}) {
+export default function ConfirmStaging({ vault, vaultCustomer, vaultNumber, vaultId, onClose, fieldId, updateVaultPosition, tmb}) {
     const dispatch = useDispatch();
  
     const handleSubmit = async (e) => {
         e.preventDefault();
+        updateVaultPosition(vault.position);
         const removeVault = await dispatch(removeVaultFromWarehouseThunk(vaultId))        
         const addVaultToStage = await dispatch(addVaultToStageThunk(vaultId));
-
-        await dispatch(getWarehouseInfoThunk());
 
         onClose();
     }

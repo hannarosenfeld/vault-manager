@@ -58,14 +58,12 @@ export default function Warehouse () {
     };
 
     function findTopmostVault(vaults) {
-
         for (const vault of vaults) {
           if (!topmostVault || vault.position < topmostVault.position) {
             setTopmostVault(vault)
           }
         }
       }
-      
       
     const handleFieldClick = async (field, row, index) => {
         await setSelectedField(field);
@@ -212,6 +210,7 @@ export default function Warehouse () {
             <Modal open={isConfirmStagingModalOpen} onClose={setIsConfirmStagingModalOpen}>                
             <>
                 <ConfirmStaging 
+                    vault={selectedVaultToStage}
                     vaultCustomer={selectedVaultToStage?.customer.name}
                     vaultNumber={selectedVaultToStage?.vault_id}
                     vaultId={selectedVaultToStage?.id}
