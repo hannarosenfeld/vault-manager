@@ -56,7 +56,7 @@ def add_vault_to_warehouse(vault_id):
         db.session.add(vault) # not sure if this is needed?
         print("🍋 db.session", db.session.to_dict())
         db.session.commit()
-        return vault.to_dict()
+        return jsonify(vault.to_dict())
 
     except Exception as e:
         db.session.rollback()
