@@ -16,12 +16,6 @@ export default function Warehouse () {
     const rows = useSelector(state => state.warehouse.warehouseRows);
     const vaults = useSelector(state => state.warehouse.warehouseVaults)
     const rowsArr = Object.values(rows);
-    let vaultsArr;
-
-    useEffect(() => {
-        if (vaults) vaultsArr = Object.values(vaults);
-    },[vaults])
-
     const [selectedField, setSelectedField] = useState(null);
     const [selectedRow, setSelectedRow] = useState(null)
     const [selectedFieldIndex, setSelectedFieldIndex] = useState(0);
@@ -112,9 +106,6 @@ export default function Warehouse () {
     setIsModalOpen(true);
     };
 
-// Rest of the Warehouse component...
-
-
     const handleCloseModal = () => {
         setIsModalOpen(false);
     };
@@ -133,13 +124,10 @@ export default function Warehouse () {
         }
       };
 
- 
-
     const handleEditClick = (vault) => {
         setEditedVault(vault);
         setIsEditModalOpen(true);
       };
-      
       
     // Add a new useEffect to open the modal when selectedVaultToStage changes
     useEffect(() => {

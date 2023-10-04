@@ -98,8 +98,8 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
 
           // Ensure that addVaultToWarehouseThunk returns the updated vault
           if (updatedVault) {
-            const updateTMBThing = await updateTMB(updatedVault.vault);
-            const updateSelectedFieldVaultsThing = await updateSelectedFieldVaults(updatedVault.vault);
+            const updateTMBThing = await updateTMB(updatedVault);
+            const updateSelectedFieldVaultsThing = await updateSelectedFieldVaults(updatedVault);
           } else {
             console.error('updatedVault is null or undefined');
           }
