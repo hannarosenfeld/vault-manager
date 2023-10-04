@@ -60,7 +60,7 @@ const EditVaultModal = ({ vault, onClose, onEditSubmit }) => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="vault_id">Vault ID</label>
+              <label htmlFor="vault_id">Vault #</label>
               <input
                 type="text"
                 id="vault_id"
@@ -74,7 +74,7 @@ const EditVaultModal = ({ vault, onClose, onEditSubmit }) => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="order_number">Vault ID</label>
+              <label htmlFor="order_number">Order #</label>
               <input
                 type="text"
                 id="order_number"
