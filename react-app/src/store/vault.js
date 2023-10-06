@@ -78,6 +78,7 @@ export const deleteVaultThunk = (vaultId) => async (dispatch) => {
 
 
 export const getVaultThunk = (vaultId) => async (dispatch) => {
+  console.log("🪴 in thunk!")
   try {
     const res = await fetch(`/api/vaults/${vaultId}`); // Adjust the API endpoint
     if (res.ok) {
@@ -146,13 +147,14 @@ const initialState = {
 const vaultReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_VAULT:
+      console.log("🍋 in reducer. action: ", action)
       return {
         ...state,
         vaults: {
           ...state.vaults,
-          [action.vault.vaultId]: action.vault
+          [action.payload.id]: action.payload
         },
-        currentVault: action.vault
+        currentVault: action.payload
       };
     case GET_ALL_VAULTS:
       return {

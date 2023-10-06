@@ -1,6 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from "react";
 import { getFieldThunk } from "../../store/field";
+import { Link } from "react-router-dom"
+// import DeleteVaultModal from "./DeleteVaultModal";
 
 const VaultInstance = ({ vault, position, handleStageClick, handleEditClick }) => {
   const field = useSelector(state => state.field.currentField);
@@ -47,13 +49,15 @@ const VaultInstance = ({ vault, position, handleStageClick, handleEditClick }) =
         >
           forklift
         </span>
+        <Link to={`/vaults/${vault.id}/edit`} className="edit-link">
         <span
-          onClick={() => handleEditClick(vault)}
+          // onClick={() => handleEditClick(vault)}
           style={{ color: "#0074D9" }}
           className="material-symbols-outlined"
         >
           edit
         </span>
+        </Link>
       </div>
     </div>
   );

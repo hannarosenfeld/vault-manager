@@ -8,6 +8,7 @@ import Navigation from "./components/Navigation";
 import Index from "./components/Index";
 import Warehouse from "./components/Warehouse";
 import StagedVaults from "./components/StagedVaults";
+import EditVaultPage from "./components/Warehouse/EditVaultPage";
 
 
 function App() {
@@ -36,6 +37,9 @@ function App() {
             </Route>
             <Route path="/warehouse">
               <Warehouse/>
+            </Route>
+            <Route path="/vaults/:vaultId/edit">
+              <EditVaultPage />
             </Route>
             <Route path="/stage">
               <StagedVaults />

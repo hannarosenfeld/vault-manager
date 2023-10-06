@@ -4,9 +4,7 @@ import Modal from '@mui/material/Modal';
 import { getAllWarehouseVaultsThunk, getWarehouseInfoThunk } from "../../store/warehouse";
 import { getAllVaultsThunk } from "../../store/vault"
 import AddVaultModal from "./AddVaultModal/AddVaultModal.js"
-// import DeleteVaultModal from "./DeleteVaultModal";
 import RenderTMB from "../RenderTMB";
-import EditVaultModal from "./EditVaultModal";
 import ConfirmStaging from "./ConfirmStaging";
 import "./Warehouse.css"
 
@@ -29,8 +27,8 @@ export default function Warehouse () {
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
     // const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     // const [selectedVaultToDelete, setSelectedVaultToDelete] = useState(null);    
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    const [editedVault, setEditedVault] = useState(null);
+    // const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    // const [editedVault, setEditedVault] = useState(null);
     const [topmostVault, setTopmostVault] = useState(null);
 
     useEffect(() => {
@@ -39,11 +37,11 @@ export default function Warehouse () {
         const getAllVaults = dispatch(getAllVaultsThunk())
     }, [dispatch])
 
-    const onEditSubmit = (editedVault) => {
-            if (editedVault.position === "T") setTop(editedVault);
-            if (editedVault.position === "M") setMiddle(editedVault);
-            if (editedVault.position === "B") setBottom(editedVault);
-    }
+    // const onEditSubmit = (editedVault) => {
+    //         if (editedVault.position === "T") setTop(editedVault);
+    //         if (editedVault.position === "M") setMiddle(editedVault);
+    //         if (editedVault.position === "B") setBottom(editedVault);
+    // }
 
     const updateSelectedFieldVaults = async (newVault) => {
     if (selectedField && newVault?.field_id === selectedField.id) {
@@ -115,10 +113,10 @@ export default function Warehouse () {
         }
       };
 
-    const handleEditClick = (vault) => {
-        setEditedVault(vault);
-        setIsEditModalOpen(true);
-      };
+    // const handleEditClick = (vault) => {
+    //     setEditedVault(vault);
+    //     setIsEditModalOpen(true);
+    //   };
       
     // Add a new useEffect to open the modal when selectedVaultToStage changes
     useEffect(() => {
@@ -128,7 +126,7 @@ export default function Warehouse () {
     }, [selectedVaultToStage]);
 
     const openConfirmStagingModal = () => {
-    setIsConfirmStagingModalOpen(true);
+        setIsConfirmStagingModalOpen(true);
     };
 
     // const openDeleteModal = () => {
@@ -154,7 +152,7 @@ export default function Warehouse () {
         <div className="warehouse-wrapper">
             <div className="field-info">
             {selectedField ? (
-                <RenderTMB top={top} middle={middle} bottom={bottom} handleStageClick={handleStageClick} handleOpenModal={handleOpenModal} handleEditClick={handleEditClick}/>
+                <RenderTMB top={top} middle={middle} bottom={bottom} handleStageClick={handleStageClick} handleOpenModal={handleOpenModal} />
           ) : (
                 <div>
                     Select a field to view its info
@@ -198,15 +196,6 @@ export default function Warehouse () {
                 />
                 </>
             </Modal>
-            {/* <Modal open={isDeleteModalOpen} onClose={closeDeleteModal}>
-                <DeleteVaultModal 
-                    open={isDeleteModalOpen} 
-                    onClose={closeDeleteModal} 
-                    vaultId={selectedVaultToDelete?.vault.id} 
-                    vaultCustomer={selectedVaultToDelete?.vault.customer.name}
-                    vaultNumber={selectedVaultToDelete?.vault.vault_id}
-                />
-            </Modal> */}
             <Modal open={isConfirmStagingModalOpen} onClose={setIsConfirmStagingModalOpen}>                
             <>
                 <ConfirmStaging 
@@ -221,13 +210,6 @@ export default function Warehouse () {
                 />
                 </>
             </Modal>
-                {editedVault && isEditModalOpen && (
-                    <EditVaultModal
-                        vault={editedVault}
-                        onClose={() => setIsEditModalOpen(false)}
-                        onEditSubmit={onEditSubmit}
-                    />
-                )}
         </div>
     )
 }
