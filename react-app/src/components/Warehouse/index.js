@@ -146,7 +146,7 @@ export default function Warehouse () {
         if (position === "T") setTop(null);
         if (position === "M") setMiddle(null);
         if (position === "B") setBottom(null);
-      };
+    };
 
     return (
         <div className="warehouse-wrapper">

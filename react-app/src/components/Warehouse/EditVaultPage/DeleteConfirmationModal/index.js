@@ -11,7 +11,7 @@ const DeleteConfirmationModal = ({ isOpen, onClose, onDelete, vault }) => {
       <DialogTitle id="delete-confirmation-modal">Confirm Deletion</DialogTitle>
       <DialogContent>
         <p>
-          Are you sure you want to delete Vault #{vault?.vault_id} from Order #{vault?.order_id}?
+          Are you sure you want to delete Vault <b>#{vault?.vault_id}</b> from Order <b>#{vault?.order_number}</b>?
         </p>
       </DialogContent>
       <DialogActions>

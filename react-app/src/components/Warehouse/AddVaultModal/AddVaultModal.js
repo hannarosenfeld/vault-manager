@@ -14,7 +14,6 @@ import "./AddVaultModal.css"
 import MiniWareHouse from './MiniWareHouse';
 
 
-
 export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, updateSelectedFieldVaults}) {
     const dispatch = useDispatch();
     const history = useHistory();
@@ -89,6 +88,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
             vault_id: vault_id,
             order_number: order_number,
           };
+
           const newVault = await dispatch(addVaultThunk(vaultData));
 
           const updatedVault = await dispatch(addVaultToWarehouseThunk(newVault.id));

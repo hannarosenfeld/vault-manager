@@ -171,7 +171,6 @@ const warehouseReducer = (state = initialState, action) => {
     };
     case REMOVE_VAULT_FROM_WAREHOUSE:
         // Remove the vaultId from the warehouseVaults array in state
-        console.log("🐳",action.payload)
         return {
           ...state,
           warehouseVaults: state.warehouseVaults.filter(

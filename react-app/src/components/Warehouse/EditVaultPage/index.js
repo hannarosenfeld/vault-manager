@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import './EditVaultPage.css'; // Make sure to include your CSS file
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { editVaultThunk, getVaultThunk } from '../../../store/vault';
 import { updateCustomerNameThunk } from '../../../store/customer';
-import { deleteVaultThunk } from '../../../store/vault';
+import { deleteVaultThunk, getVaultAction } from '../../../store/vault';
 import Button from '@mui/material/Button';
 import { useParams } from 'react-router-dom';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 const EditVaultPage = ({ onEditSubmit }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { vaultId } = useParams();
   const vaultObj = useSelector((state) => state.vault.currentVault);
   const vaultIdNumber = parseInt(vaultId);
@@ -17,36 +19,39 @@ const EditVaultPage = ({ onEditSubmit }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // State for managing modal visibility
 
   useEffect(() => {
+    dispatch(getVaultAction({}));
     dispatch(getVaultThunk(vaultIdNumber));
   }, [vaultIdNumber]);
 
+  useEffect(() => {
+    console.log("⭐️", vaultObj?.customer?.name)
+  }, [vaultObj])
+  
   const [formData, setFormData] = useState({
-    customer_name: vault?.customer?.name || '',
-    vault_id: vault?.vault_id || '',
-    order_number: vault?.order_number || ''
+    customer_name: vaultObj?.customer?.name || '',
+    vault_id: vaultObj?.vault_id || '',
+    order_number: vaultObj?.order_number || ''
   });
 
   const handleSave = async (e) => {
     e.preventDefault();
 
     try {
-      await dispatch(updateCustomerNameThunk(vault.customer.id, formData.customer_name));
-      const editedVault = await dispatch(editVaultThunk(vault.id, formData));
-
-      // Handle the editedVault response as needed
-
+      await dispatch(updateCustomerNameThunk(vaultObj.customer.id, formData.customer_name));
+      const editedVault = await dispatch(editVaultThunk(vaultObj.id, formData));
     } catch (error) {
       console.error('Error saving vault:', error);
     }
   };
 
   const handleDelete = () => {
-    setIsDeleteModalOpen(true); // Open the delete confirmation modal
+    setIsDeleteModalOpen(true);
   };
 
-  const confirmDelete = () => {
-    dispatch(deleteVaultThunk(vault.id));
-    setIsDeleteModalOpen(false); // Close the delete confirmation modal
+  const confirmDelete = async () => {
+    await dispatch(deleteVaultThunk(vaultObj.id));
+    await setIsDeleteModalOpen(false);
+    history.push("/");
   };
 
   const closeDeleteModal = () => {
@@ -101,7 +106,7 @@ const EditVaultPage = ({ onEditSubmit }) => {
                 }
                 required
                 className="form-control"
-              />
+              ></input>
             </div>
             <div className="form-buttons">
               <Button onClick={handleDelete} color="error" variant="outlined">DELETE</Button>

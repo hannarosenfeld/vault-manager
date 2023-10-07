@@ -3,8 +3,10 @@ import { useState, useEffect } from "react";
 import { getFieldThunk } from "../../store/field";
 import { Link } from "react-router-dom"
 // import DeleteVaultModal from "./DeleteVaultModal";
+import { useHistory } from 'react-router-dom';
 
 const VaultInstance = ({ vault, position, handleStageClick, handleEditClick }) => {
+  const history = useHistory();
   const field = useSelector(state => state.field.currentField);
   const dispatch = useDispatch();
   const [topmostPosition, setTopmostPosition] = useState(""); // State variable to track topmost position
@@ -14,21 +16,12 @@ const VaultInstance = ({ vault, position, handleStageClick, handleEditClick }) =
   }, []);
 
   useEffect(() => {
-    console.log("🧼 in VaultInstance: ", field);
-  }, [field]);
-
-  useEffect(() => {
     if (field && field.vaults && field.vaults.length > 0) {
-      console.log("🧼 FieldVaults: ", field.vaults);
 
       // Find the topmost vault by comparing positions as strings
       const newTopmostPosition = field.vaults.reduce((maxPosition, currentVault) => {
-        console.log("maxPosition:", maxPosition);
-        console.log("currentVault.position:", currentVault.position);
         return currentVault.position > maxPosition ? currentVault.position : maxPosition;
       }, field.vaults[0].position); // Initialize with the position of the first vault
-
-      console.log("New Topmost Position:", newTopmostPosition);
 
       // Update the topmost position state variable
       setTopmostPosition(newTopmostPosition);

@@ -15,7 +15,7 @@ const deleteVaultAction = (vaultId) => ({
   vaultId
 });
 
-const getVaultAction = (vault) => ({
+export const getVaultAction = (vault) => ({
   type: GET_VAULT,
   payload: vault,
 });
@@ -57,6 +57,7 @@ export const editVaultThunk = (vaultId, vaultData) => async (dispatch) => {
 };
 
 export const deleteVaultThunk = (vaultId) => async (dispatch) => {
+
   try {
     const res = await fetch(`/api/vaults/${vaultId}`, {
       method: 'DELETE'
@@ -78,7 +79,6 @@ export const deleteVaultThunk = (vaultId) => async (dispatch) => {
 
 
 export const getVaultThunk = (vaultId) => async (dispatch) => {
-  console.log("🪴 in thunk!")
   try {
     const res = await fetch(`/api/vaults/${vaultId}`); // Adjust the API endpoint
     if (res.ok) {
@@ -147,7 +147,6 @@ const initialState = {
 const vaultReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_VAULT:
-      console.log("🍋 in reducer. action: ", action)
       return {
         ...state,
         vaults: {
@@ -178,7 +177,8 @@ const vaultReducer = (state = initialState, action) => {
         vaults: {
           ...state.vaults,
           [action.vault.vaultId]: action.vault
-        }
+        },
+        currentVault: {}
       };
     case DELETE_VAULT:
       // Create a copy of the state.vaults object without the deleted vault
