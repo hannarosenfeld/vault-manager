@@ -17,28 +17,47 @@ const EditVaultPage = ({ onEditSubmit }) => {
   const vaultIdNumber = parseInt(vaultId);
   const vault = Object.values(vaultObj);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // State for managing modal visibility
+  const [isLoading, setIsLoading] = useState(true);
+  const [formData, setFormData] = useState({
+    customer_name: '',
+    vault_id: '',
+    order_number: '',
+  });
 
   useEffect(() => {
-    dispatch(getVaultAction({}));
-    dispatch(getVaultThunk(vaultIdNumber));
-  }, [vaultIdNumber]);
+    // Fetch the vault data
+    dispatch(getVaultThunk(vaultId))
+      .then((vaultData) => {
+        // Set the formData and mark loading as false
+        setFormData({
+          customer_name: vaultData?.customer?.name || '',
+          vault_id: vaultData?.vault_id || '',
+          order_number: vaultData?.order_number || '',
+        });
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching vault:', error);
+        setIsLoading(false); // Handle errors by setting isLoading to false
+      });
+  }, [dispatch, vaultId]);
+
+  // useEffect(() => {
+  //   dispatch(getVaultAction({}));
+  //   dispatch(getVaultThunk(vaultIdNumber));
+  // }, [vaultIdNumber]);
 
   useEffect(() => {
     console.log("⭐️", vaultObj?.customer?.name)
   }, [vaultObj])
   
-  const [formData, setFormData] = useState({
-    customer_name: vaultObj?.customer?.name || '',
-    vault_id: vaultObj?.vault_id || '',
-    order_number: vaultObj?.order_number || ''
-  });
-
   const handleSave = async (e) => {
     e.preventDefault();
 
     try {
       await dispatch(updateCustomerNameThunk(vaultObj.customer.id, formData.customer_name));
       const editedVault = await dispatch(editVaultThunk(vaultObj.id, formData));
+      history.push("/");
     } catch (error) {
       console.error('Error saving vault:', error);
     }
@@ -65,6 +84,11 @@ const EditVaultPage = ({ onEditSubmit }) => {
           <h2>Edit Vault</h2>
         </div>
         <div className="edit-page-content">
+        {isLoading ? (
+          // Display a loading indicator here
+          <p>Loading...</p>
+        ) : (
+          // Render the form when data is available
           <form onSubmit={handleSave} className="edit-vault-form">
             <div className="form-group">
               <label htmlFor="customer_name">Customer Name</label>
@@ -115,6 +139,7 @@ const EditVaultPage = ({ onEditSubmit }) => {
               </button>
             </div>
           </form>
+        )}          
         </div>
       </div>
       <DeleteConfirmationModal
