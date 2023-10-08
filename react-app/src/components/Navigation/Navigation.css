@@ -51,3 +51,12 @@
   max-width: 100%;
 }
 
+
+/* make the search bar take up the entire available space */
+.search-bar-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+
