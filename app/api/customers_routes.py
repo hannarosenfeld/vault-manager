@@ -68,15 +68,3 @@ def update_customer_name(id):
             return customer.to_dict()
 
     return jsonify({'error': 'Customer not found or name not provided'}), 400
-
-
-@customers_routes.route('/api/customers/search', methods=['GET'])
-def search_customers():
-    query = request.args.get('query', '')
-    customers = Customer.query.filter(Customer.name.ilike(f'%{query}%')).all()
-    # The ilike function performs a case-insensitive search for customer names containing the query string.
-
-    # Convert the matching customers to a list of dictionaries
-    customer_list = [customer.to_summary_dict() for customer in customers]
-
-    return jsonify(customer_list)

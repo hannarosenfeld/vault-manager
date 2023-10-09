@@ -5,19 +5,29 @@ import axios from 'axios'; // Import Axios for making API requests
 function SearchBar() {
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
+  const [customers, setCustomers] = useState([]);
+
+  useEffect(() => {
+    // Fetch all customers when the component mounts
+    axios.get('/api/customers')
+      .then((response) => {
+        setCustomers(response.data.customers);
+      })
+      .catch((error) => {
+        console.error('Error fetching customers:', error);
+      });
+  }, []);
 
   const handleInputChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
 
-    // Make an API request to fetch customer suggestions
-    axios.get(`/api/customers/search?query=${value}`)
-      .then((response) => {
-        setSuggestions(response.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching customer suggestions:', error);
-      });
+    // Filter customers based on the search term
+    const filteredCustomers = customers.filter((customer) =>
+      customer.name.toLowerCase().includes(value.toLowerCase())
+    );
+
+    setSuggestions(filteredCustomers);
   };
 
   const handleSearch = () => {
@@ -34,9 +44,7 @@ function SearchBar() {
         onChange={handleInputChange}
       />
       <button onClick={handleSearch}>
-      <span class="material-symbols-outlined">
-        search
-      </span>
+        <span className="material-symbols-outlined">search</span>
       </button>
       {suggestions.length > 0 && (
         <ul className="suggestion-box">

@@ -1,36 +1,66 @@
+/* Search bar container */
 .search-bar {
-    display: flex;
-    align-items: center;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 5px;
-    flex: 1; /* Add flex: 1 to make it take up available space */
-    max-width: 80%; /* Set a maximum width for the search bar */
-  }
-  
-  .search-bar input {
-    flex: 1;
-    border: none;
-    padding: 10px;
-    font-size: 16px;
-    outline: none;
-    width: 100%; /* Make the input take up all available space within the search bar */
-  }
-  
-  .search-bar button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    margin-left: 10px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .search-bar button:hover {
-    background-color: #0056b3;
-  }
-  
+  display: flex;
+  align-items: center;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
+  max-width: 80%; /* Set a maximum width for the search bar */
+  position: relative; /* Add relative positioning for the suggestions box */
+}
+
+/* Input styling */
+.search-bar input {
+  flex: 1;
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  outline: none;
+}
+
+/* Button styling */
+.search-bar button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin-left: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+/* Button hover styling */
+.search-bar button:hover {
+  background-color: #0056b3;
+}
+
+/* Suggestions box */
+.suggestion-box {
+  position: absolute;
+  top: 100%; /* Position below the input */
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-top: none; /* Remove top border to connect with input */
+  border-radius: 0 0 5px 5px;
+  max-height: 150px; /* Set a maximum height for the suggestions box */
+  overflow-y: auto; /* Enable vertical scrolling if needed */
+  z-index: 1; /* Ensure the suggestions box appears above other elements */
+}
+
+/* Individual suggestion item */
+.suggestion-box li {
+  list-style: none;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Highlight suggestion on hover */
+.suggestion-box li:hover {
+  background-color: #f0f0f0;
+}

@@ -123,3 +123,9 @@
 .add-vault-button {
     cursor: pointer;
 }
+
+/* Add a style for the selected fields */
+.selected-field {
+    border: 3px solid var(--blue); /* Blue border for selected fields */
+  }
+  
