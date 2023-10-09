@@ -50,6 +50,20 @@ def add_customer():
     return jsonify({'errors': validation_errors_to_error_messages(form.errors)}), 400
 
 
+@customers_routes.route('/<int:id>/selected', methods=['PUT'])
+def set_selected_customer_router(id):
+    """
+    Set the selected customer by ID and return the selected customer in a dictionary
+    """
+    customer = Customer.query.get(id)
+    if customer:
+        print("🍰 in router! : )", customer)
+
+        return customer.to_dict()
+
+    return jsonify({'error': 'Customer not found'}), 404
+
+
 @customers_routes.route('/<int:id>', methods=['PUT'])
 def update_customer_name(id):
     """

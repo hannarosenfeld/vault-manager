@@ -2,6 +2,7 @@ const GET_CUSTOMER = "customer/GET_CUSTOMER";
 const GET_ALL_CUSTOMERS = "customer/GET_ALL_CUSTOMERS";
 const ADD_CUSTOMER = "customer/ADD_CUSTOMER";
 const UPDATE_CUSTOMER_NAME = "customer/UPDATE_CUSTOMER_NAME";
+const SET_SELECTED_CUSTOMER = "/customer/SET_SELECTED_CUSTOMER";
 
 const updateCustomerNameAction = (customerId, newName) => ({
   type: UPDATE_CUSTOMER_NAME,
@@ -23,6 +24,36 @@ const addCustomerAction = (customer) => ({
   type: ADD_CUSTOMER,
   customer
 });
+
+export const setSelectedCustomerThunk = (customerId) => async (dispatch) => {
+  try {
+    const res = await fetch(`/api/customers/${customerId}/selected`, {
+      method: 'PUT', // Set the HTTP method to PUT
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      // If you need to send data in the request body, add it here:
+      // body: JSON.stringify({ /* your data */ }),
+    });
+
+    if (res.ok) {
+      const selectedCustomer = await res.json();
+      dispatch({
+        type: SET_SELECTED_CUSTOMER,
+        payload: selectedCustomer,
+      });
+      return selectedCustomer;
+    } else {
+      const err = await res.json();
+      console.error("Error setting selected customer:", err);
+      return err;
+    }
+  } catch (error) {
+    console.error("Error setting selected customer:", error);
+    return error;
+  }
+};
+
 
 export const updateCustomerNameThunk = (customerId, newName) => async (dispatch) => {
   try {
@@ -111,11 +142,17 @@ export const addCustomerThunk = (customerData) => async (dispatch) => {
 
 const initialState = {
   customers: {},
-  currentCustomer: {}
+  currentCustomer: {},
+  selectedCustomer: null,
 };
 
 const customerReducer = (state = initialState, action) => {
   switch (action.type) {
+    case SET_SELECTED_CUSTOMER:
+      return {
+        ...state,
+        selectedCustomer: action.payload,
+      };    
     case GET_CUSTOMER:
       return {
         ...state,

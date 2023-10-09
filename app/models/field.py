@@ -14,6 +14,8 @@ class Field(db.Model, UserMixin):
     row = db.relationship('Row', back_populates='fields')
     warehouse_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('warehouse.id')))
     warehouse = db.relationship('Warehouse', back_populates='warehouse_fields')
+    contains_searched_customer = db.Column(db.Boolean, default=False)
+
 
     def generate_field_id(self, row_id, numerical_identifier):
         return f"{row_id}{numerical_identifier:02d}"

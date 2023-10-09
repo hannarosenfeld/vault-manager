@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './SearchBar.css';
-import axios from 'axios'; // Import Axios for making API requests
+import axios from 'axios';
+import { useDispatch } from 'react-redux'; // Import useDispatch from react-redux
+import { setSelectedCustomerThunk } from '../../../store/customer';
 
 function SearchBar() {
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [customers, setCustomers] = useState([]);
+  const dispatch = useDispatch(); // Get the dispatch function from Redux
 
   useEffect(() => {
     // Fetch all customers when the component mounts
@@ -30,6 +33,11 @@ function SearchBar() {
     setSuggestions(filteredCustomers);
   };
 
+  const handleSelectCustomer = (customer) => {
+    // Dispatch the setSelectedCustomerThunk with the selected customer's ID
+    dispatch(setSelectedCustomerThunk(customer.id));
+  };
+
   const handleSearch = () => {
     // Implement your search logic here using searchTerm
     console.log('Searching for:', searchTerm);
@@ -49,7 +57,9 @@ function SearchBar() {
       {suggestions.length > 0 && (
         <ul className="suggestion-box">
           {suggestions.map((customer) => (
-            <li key={customer.id}>{customer.name}</li>
+            <li key={customer.id} onClick={() => handleSelectCustomer(customer)}>
+              {customer.name}
+            </li>
           ))}
         </ul>
       )}
