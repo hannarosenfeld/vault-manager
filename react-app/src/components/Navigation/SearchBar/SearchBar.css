@@ -7,6 +7,7 @@
   border-radius: 5px;
   padding: 5px;
   max-width: 80%; /* Set a maximum width for the search bar */
+  width: 400px; /* Fixed width for the search bar */
   position: relative; /* Add relative positioning for the suggestions box */
 }
 
@@ -17,9 +18,17 @@
   padding: 10px;
   font-size: 16px;
   outline: none;
+  width: 100%; /* Make the input field take up all available space */
 }
 
-/* Button styling */
+.selected-customer {
+  display: flex; /* Display customer name and "X" button in a row */
+  align-items: center; /* Vertically align them */
+  gap: 10px; /* Add space between customer name and "X" button */
+  width: 100%;
+  justify-content: space-between;
+}
+
 .search-bar button {
   background-color: #007bff;
   color: #fff;

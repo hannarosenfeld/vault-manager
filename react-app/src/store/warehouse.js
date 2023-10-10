@@ -2,6 +2,12 @@ const ADD_VAULT_TO_WAREHOUSE = 'warehouse/ADD_VAULT_TO_WAREHOUSE';
 const REMOVE_VAULT_FROM_WAREHOUSE = 'warehouse/REMOVE_VAULT_FROM_WAREHOUSE';
 const GET_ALL_WAREHOUSE_VAULTS = 'warehouse/GET_ALL_WAREHOUSE_VAULTS'; // New action type
 export const GET_WAREHOUSE_INFO = 'warehouse/GET_ALL_WAREHOUSE_INFO';
+export const SET_WAREHOUSE_SEARCH_MODE = 'warehouse/SET_WAREHOUSE_SEARCH_MODE';
+
+export const setWarehouseSearchModeAction = (searchmode) => ({
+  type: SET_WAREHOUSE_SEARCH_MODE,
+  searchmode,
+});
 
 export const getWarehouseInfoAction = (warehouseInfo) => ({
   type: GET_WAREHOUSE_INFO,
@@ -144,17 +150,20 @@ const initialState = {
   warehouseVaults: [],
   warehouseFields: [],
   warehouseRows: [],
+  searchmode: null
 };
   
 
 const warehouseReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_WAREHOUSE_INFO:
+      console.log("🍋 in reducer, ", action.payload.warehouse_info)
       return {
         ...state,
         warehouseVaults: action.payload.warehouse_info.vaults,
         warehouseFields: action.payload.warehouse_info.fields,
         warehouseRows: action.payload.warehouse_info.rows,
+        searchmode: action.payload.warehouse_info.searchmode
       };
     case ADD_VAULT_TO_WAREHOUSE:
       // Add the vault to the warehouseVaults array in state
@@ -177,7 +186,12 @@ const warehouseReducer = (state = initialState, action) => {
             (vault) => vault.id !== action.payload            
           ),
         };
-  
+    case SET_WAREHOUSE_SEARCH_MODE:
+      console.log("🍉 in searchmode reducer", action.searchmode)
+      return {
+        ...state,
+        searchmode: action.searchmode,
+      };  
     default:
       return state;
   }

@@ -1,3 +1,4 @@
+import { setWarehouseSearchModeAction } from './warehouse'; // Import the action creator for changing searchmode in your warehouse actions
 const GET_CUSTOMER = "customer/GET_CUSTOMER";
 const GET_ALL_CUSTOMERS = "customer/GET_ALL_CUSTOMERS";
 const ADD_CUSTOMER = "customer/ADD_CUSTOMER";
@@ -25,6 +26,7 @@ const addCustomerAction = (customer) => ({
   customer
 });
 
+
 export const setSelectedCustomerThunk = (customerId) => async (dispatch) => {
   try {
     const res = await fetch(`/api/customers/${customerId}/selected`, {
@@ -42,6 +44,9 @@ export const setSelectedCustomerThunk = (customerId) => async (dispatch) => {
         type: SET_SELECTED_CUSTOMER,
         payload: selectedCustomer,
       });
+
+      dispatch(setWarehouseSearchModeAction(true));
+
       return selectedCustomer;
     } else {
       const err = await res.json();

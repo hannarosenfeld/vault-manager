@@ -12,7 +12,8 @@ import "./Warehouse.css"
 export default function Warehouse () {
     const dispatch = useDispatch();
     const rows = useSelector(state => state.warehouse.warehouseRows);
-    const vaults = useSelector(state => state.warehouse.warehouseVaults)
+    const vaults = useSelector(state => state.warehouse.warehouseVaults);
+    const searchmode = useSelector(state => state.warehouse.searchmode);
     const rowsArr = Object.values(rows);
     const [selectedField, setSelectedField] = useState(null);
     const [selectedRow, setSelectedRow] = useState(null)
@@ -25,10 +26,6 @@ export default function Warehouse () {
     const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] = useState(false);
     const [updatedVault, setUpdatedVault] = useState(null);
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
-    // const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    // const [selectedVaultToDelete, setSelectedVaultToDelete] = useState(null);    
-    // const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    // const [editedVault, setEditedVault] = useState(null);
     const [topmostVault, setTopmostVault] = useState(null);
 
     useEffect(() => {
@@ -37,11 +34,15 @@ export default function Warehouse () {
         const getAllVaults = dispatch(getAllVaultsThunk())
     }, [dispatch])
 
-    // const onEditSubmit = (editedVault) => {
-    //         if (editedVault.position === "T") setTop(editedVault);
-    //         if (editedVault.position === "M") setMiddle(editedVault);
-    //         if (editedVault.position === "B") setBottom(editedVault);
-    // }
+    useEffect(() => {
+        if (selectedVaultToStage) {
+            openConfirmStagingModal();
+        }
+        }, [selectedVaultToStage]);
+
+    useEffect(() => {
+        console.log("🐓", searchmode)
+    }, [searchmode])
 
     const updateSelectedFieldVaults = async (newVault) => {
     if (selectedField && newVault?.field_id === selectedField.id) {
@@ -113,29 +114,9 @@ export default function Warehouse () {
         }
       };
 
-    // const handleEditClick = (vault) => {
-    //     setEditedVault(vault);
-    //     setIsEditModalOpen(true);
-    //   };
-      
-    // Add a new useEffect to open the modal when selectedVaultToStage changes
-    useEffect(() => {
-    if (selectedVaultToStage) {
-        openConfirmStagingModal();
-    }
-    }, [selectedVaultToStage]);
-
     const openConfirmStagingModal = () => {
         setIsConfirmStagingModalOpen(true);
     };
-
-    // const openDeleteModal = () => {
-    //     setIsDeleteModalOpen(true);
-    // };
-
-    // const closeDeleteModal = () => {
-    //     setIsDeleteModalOpen(false);
-    // };
 
     const closeConfirmStagingModal = () => {
         setSelectedVaultToStage(null);
@@ -162,26 +143,54 @@ export default function Warehouse () {
             <div className="warehouse">
             {rowsArr.map((row) => (
                  <div className="row" key={row.id}>
+                {!searchmode && (
                  <div className="fields">
                  {row.fields.map((field, index) => (
-                 <div
-                    className="field"
-                    key={field.id}
-                    style={{
-                        backgroundColor: `${
-                          field.vaults.length === 3 ? "#ea373d" :
-                          field.vaults.length === 2 ? "var(--yellow)":
-                          field.vaults.length === 1 ? "var(--green)" :
-                          "var(--lightgrey)"
-                        }`,
-                        border: `${selectedField?.id === field?.id ? "3px solid var(--blue)" : "blue"}`,
-                      }}                      
-                    onClick={() => handleFieldClick(field, row, index)}
-                >
-                    <div className="field-number">{row.id}{index + 1}</div>
-                </div>
+                    <div
+                        className="field"
+                        key={field.id}
+                        style={{
+                            backgroundColor: `${
+                            field.vaults.length === 3 ? "#ea373d" :
+                            field.vaults.length === 2 ? "var(--yellow)":
+                            field.vaults.length === 1 ? "var(--green)" :
+                            "var(--lightgrey)"
+                            }`,
+                            border: `${selectedField?.id === field?.id ? "3px solid var(--blue)" : "blue"}`,
+                        }}                      
+                        onClick={() => handleFieldClick(field, row, index)}
+                    >
+                        <div className="field-number">{row.id}{index + 1}</div>
+                    </div>
                 ))}
                  </div>
+                )}
+                {searchmode && (
+                 <div className="fields">
+                 {row.fields.map((field, index) => (
+                    <div
+                        className="field"
+                        key={field.id}
+                        style={{
+                            backgroundColor: `${
+                                field.vaults.length === 3 && field.contains_searched_customer ? "var(--red)" :
+                                field.vaults.length === 3 && !field.contains_searched_customer ? "rgba(234, 55, 61, 0.8)" :
+                                field.vaults.length === 2 && field.contains_searched_customer ? "var(--yellow)" :
+                                field.vaults.length === 2 && !field.contains_searched_customer ? "rgba(255, 209, 102, 0.8)" :
+                                field.vaults.length === 1 && field.contains_searched_customer ? "var(--green)" :
+                                field.vaults.length === 1 && !field.contains_searched_customer ? "rgba(75, 181, 67, 0.8)" : 
+                                "rgba(203,203,203,0.8)"
+                              }`,
+                              filter:!field.contains_searched_customer ? "brightness(25%)" : "brightness(120%)",
+                            border: `${selectedField?.id === field?.id ? "3px solid var(--blue)" : "blue"}`,
+                        }}                      
+                        onClick={() => handleFieldClick(field, row, index)}
+                    >
+                        <div className="field-number">{row.id}{index + 1}</div>
+                    </div>
+                ))}
+                 </div>
+                )}                
              </div>
             ))}
             </div>

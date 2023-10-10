@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from app.models import Customer, Field, db
+from app.models import Customer, Field, Warehouse, db
 from app.forms import CustomerForm
 
 customers_routes = Blueprint('customers', __name__)
@@ -58,16 +58,15 @@ def set_selected_customer_router(id):
     customer = Customer.query.get(id)
     if customer:
         customer_vaults = [vault.to_dict() for vault in customer.vaults]
-        print("🍰 in router! : )", customer_vaults)
 
         for vault in customer_vaults:
-            print("🥞 vault: ", vault)
             field_id = vault['field_id']  # Access 'field_id' from the dictionary
-            print("🍉 field_id: ", field_id)
             field = Field.query.get(field_id)
-            print("👑 field: ", field.to_dict())
             field.contains_searched_customer = True
-            
+            warehouse = Warehouse.query.get(1)
+            warehouse.searchmode = True
+            db.session.commit()
+
         return customer.to_dict()
 
     return jsonify({'error': 'Customer not found'}), 404

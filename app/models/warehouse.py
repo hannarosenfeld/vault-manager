@@ -14,7 +14,7 @@ class Warehouse(db.Model):
 #    TODO: add relationships to fields ands rows. access vaults through warehouse.fields/rows
     warehouse_fields = db.relationship('Field', back_populates='warehouse', foreign_keys='Field.warehouse_id')
     warehouse_rows = db.relationship('Row', back_populates='warehouse', foreign_keys='Row.warehouse_id')
-
+    searchmode = db.Column(db.Boolean, default=False)
 
     def to_dict(self):
         return {
@@ -22,4 +22,5 @@ class Warehouse(db.Model):
             'vaults': [vault.to_dict() for vault in self.warehouse_vaults],
             'fields': [field.to_dict() for field in self.warehouse_fields],
             'rows': [row.to_dict() for row in self.warehouse_rows],
+            'searchmode' : self.searchmode
         }

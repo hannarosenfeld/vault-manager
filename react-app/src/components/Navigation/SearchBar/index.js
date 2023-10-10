@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import './SearchBar.css';
 import axios from 'axios';
-import { useDispatch } from 'react-redux'; // Import useDispatch from react-redux
+import { useDispatch } from 'react-redux';
 import { setSelectedCustomerThunk } from '../../../store/customer';
+import { getWarehouseInfoThunk } from '../../../store/warehouse';
 
 function SearchBar() {
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [customers, setCustomers] = useState([]);
-  const dispatch = useDispatch(); // Get the dispatch function from Redux
+  const [selectedCustomer, setSelectedCustomer] = useState(null); // State to store the selected customer
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    // Fetch all customers when the component mounts
     axios.get('/api/customers')
       .then((response) => {
         setCustomers(response.data.customers);
@@ -25,7 +26,6 @@ function SearchBar() {
     const value = e.target.value;
     setSearchTerm(value);
 
-    // Filter customers based on the search term
     const filteredCustomers = customers.filter((customer) =>
       customer.name.toLowerCase().includes(value.toLowerCase())
     );
@@ -33,35 +33,55 @@ function SearchBar() {
     setSuggestions(filteredCustomers);
   };
 
-  const handleSelectCustomer = (customer) => {
+  const handleSelectCustomer = async (customer) => {
+    // Set the selected customer and clear the search term
+    setSelectedCustomer(customer);
+    setSearchTerm('');
+
     // Dispatch the setSelectedCustomerThunk with the selected customer's ID
-    dispatch(setSelectedCustomerThunk(customer.id));
+    await dispatch(setSelectedCustomerThunk(customer.id));
+  };
+
+  const handleClearSelectedCustomer = () => {
+    // Clear the selected customer and dispatch the necessary thunk
+    setSelectedCustomer(null);
+    // You can dispatch any necessary action here if needed.
   };
 
   const handleSearch = () => {
-    // Implement your search logic here using searchTerm
     console.log('Searching for:', searchTerm);
   };
 
   return (
     <div className="search-bar">
-      <input
-        type="text"
-        placeholder="Search for customers..."
-        value={searchTerm}
-        onChange={handleInputChange}
-      />
-      <button onClick={handleSearch}>
-        <span className="material-symbols-outlined">search</span>
-      </button>
-      {suggestions.length > 0 && (
-        <ul className="suggestion-box">
-          {suggestions.map((customer) => (
-            <li key={customer.id} onClick={() => handleSelectCustomer(customer)}>
-              {customer.name}
-            </li>
-          ))}
-        </ul>
+      {selectedCustomer ? (
+        <div className="selected-customer">
+          {selectedCustomer.name}
+          <button className="clear-button" onClick={handleClearSelectedCustomer}>
+            X
+          </button>
+        </div>
+      ) : (
+        <>
+          <input
+            type="text"
+            placeholder="Search for customers..."
+            value={searchTerm}
+            onChange={handleInputChange}
+          />
+          <button onClick={handleSearch}>
+            <span className="material-symbols-outlined">search</span>
+          </button>
+          {suggestions.length > 0 && (
+            <ul className="suggestion-box">
+              {suggestions.map((customer) => (
+                <li key={customer.id} onClick={() => handleSelectCustomer(customer)}>
+                  {customer.name}
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
       )}
     </div>
   );

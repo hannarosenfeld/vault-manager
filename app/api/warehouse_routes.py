@@ -24,13 +24,9 @@ def add_vault_to_warehouse(vault_id):
     """
     Add a vault back to the warehouse with a new field_id and position
     """
-    print("🍋 in route.")
     warehouse = Warehouse.query.get(1)
     vault = Vault.query.get(vault_id)
     stage = Stage.query.get(1)
-    print("🍋 in route. warehouse: ", warehouse.to_dict())
-    print("🍋 vault: ", vault.to_dict())
-    print("🍋 stage ", stage.to_dict())
 
     if not vault:
         return jsonify({'errors': 'Vault not found'}), 404
@@ -51,15 +47,9 @@ def add_vault_to_warehouse(vault_id):
             stage.staged_vaults.remove(vault)        
 
     try:
-        print("🍋 in try block.")
         warehouse.warehouse_vaults.append(vault)
-        print("🍋 warehouse_vaults:")
-        for vault in warehouse.warehouse_vaults:
-            print(vault.to_dict())
-        print("🍋 db.session.add(vault)", db.session.add(vault))
         db.session.add(vault) # not sure if this is needed?
         db.session.commit()
-        print("🍋 after add and commit")
         return jsonify(vault.to_dict())
 
     except Exception as e:
