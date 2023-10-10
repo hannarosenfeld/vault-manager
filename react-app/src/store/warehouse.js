@@ -157,7 +157,6 @@ const initialState = {
 const warehouseReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_WAREHOUSE_INFO:
-      console.log("🍋 in reducer, ", action.payload.warehouse_info)
       return {
         ...state,
         warehouseVaults: action.payload.warehouse_info.vaults,
@@ -187,7 +186,6 @@ const warehouseReducer = (state = initialState, action) => {
           ),
         };
     case SET_WAREHOUSE_SEARCH_MODE:
-      console.log("🍉 in searchmode reducer", action.searchmode)
       return {
         ...state,
         searchmode: action.searchmode,

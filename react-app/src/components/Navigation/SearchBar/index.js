@@ -3,6 +3,7 @@ import './SearchBar.css';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setSelectedCustomerThunk, resetSelectedCustomerThunk} from '../../../store/customer';
+import { getWarehouseInfoThunk } from '../../../store/warehouse';
 
 
 function SearchBar() {
@@ -42,10 +43,12 @@ function SearchBar() {
 
     // Dispatch the setSelectedCustomerThunk with the selected customer's ID
     await dispatch(setSelectedCustomerThunk(customer.id));
+    await dispatch(getWarehouseInfoThunk());
   };
 
   const handleClearSelectedCustomer = async () => {
     await dispatch(resetSelectedCustomerThunk(selectedCustomer.id));
+    await dispatch(getWarehouseInfoThunk());
     setSelectedCustomer(null);
   };
   
@@ -66,7 +69,7 @@ function SearchBar() {
         <>
           <input
             type="text"
-            placeholder="Search for customers..."
+            placeholder="Search Customer/Order#..."
             value={searchTerm}
             onChange={handleInputChange}
           />
