@@ -71,6 +71,28 @@ def set_selected_customer_router(id):
 
     return jsonify({'error': 'Customer not found'}), 404
 
+@customers_routes.route('/<int:id>/reset-selected', methods=['PUT'])
+def reset_selected_customer_router(id):
+    """
+    Reset the selected customer and return a success message.
+    """
+    print("🧼 in router")
+    customer = Customer.query.get(id)
+    if customer:
+        customer_vaults = [vault.to_dict() for vault in customer.vaults]
+
+        for vault in customer_vaults:
+            field_id = vault['field_id']  # Access 'field_id' from the dictionary
+            field = Field.query.get(field_id)
+            field.contains_searched_customer = False
+            warehouse = Warehouse.query.get(1)
+            warehouse.searchmode = False
+            db.session.commit()
+
+        return customer.to_dict()
+
+    return jsonify({'error': 'Customer not found'}), 404
+
 
 @customers_routes.route('/<int:id>', methods=['PUT'])
 def update_customer_name(id):

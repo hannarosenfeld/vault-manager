@@ -4,6 +4,11 @@ const GET_ALL_CUSTOMERS = "customer/GET_ALL_CUSTOMERS";
 const ADD_CUSTOMER = "customer/ADD_CUSTOMER";
 const UPDATE_CUSTOMER_NAME = "customer/UPDATE_CUSTOMER_NAME";
 const SET_SELECTED_CUSTOMER = "/customer/SET_SELECTED_CUSTOMER";
+const RESET_SELECTED_CUSTOMER = "customer/RESET_SELECTED_CUSTOMER";
+
+const resetSelectedCustomerAction = () => ({
+  type: RESET_SELECTED_CUSTOMER,
+});
 
 const updateCustomerNameAction = (customerId, newName) => ({
   type: UPDATE_CUSTOMER_NAME,
@@ -25,7 +30,31 @@ const addCustomerAction = (customer) => ({
   type: ADD_CUSTOMER,
   customer
 });
+ 
 
+export const resetSelectedCustomerThunk = (customerId) => async (dispatch) => {
+  console.log("🧼 in thunk", customerId)
+  try {
+    const res = await fetch(`/api/customers/${customerId}/reset-selected`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (res.ok) {
+      dispatch(resetSelectedCustomerAction());
+      return { success: true };
+    } else {
+      const err = await res.json();
+      console.error("Error resetting selected customer:", err);
+      return { error: err };
+    }
+  } catch (error) {
+    console.error("Error resetting selected customer:", error);
+    return { error: error };
+  }
+};
 
 export const setSelectedCustomerThunk = (customerId) => async (dispatch) => {
   try {
@@ -153,6 +182,12 @@ const initialState = {
 
 const customerReducer = (state = initialState, action) => {
   switch (action.type) {
+    case RESET_SELECTED_CUSTOMER:
+      console.log("🧼 in reducer")
+      return {
+        ...state,
+        selectedCustomer: null, 
+      };    
     case SET_SELECTED_CUSTOMER:
       return {
         ...state,

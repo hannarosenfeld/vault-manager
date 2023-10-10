@@ -2,15 +2,17 @@ import React, { useState, useEffect } from 'react';
 import './SearchBar.css';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { setSelectedCustomerThunk } from '../../../store/customer';
-import { getWarehouseInfoThunk } from '../../../store/warehouse';
+import { setSelectedCustomerThunk, resetSelectedCustomerThunk} from '../../../store/customer';
+
 
 function SearchBar() {
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [customers, setCustomers] = useState([]);
-  const [selectedCustomer, setSelectedCustomer] = useState(null); // State to store the selected customer
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
   const dispatch = useDispatch();
+
+  console.log("⭐️", selectedCustomer)
 
   useEffect(() => {
     axios.get('/api/customers')
@@ -42,12 +44,11 @@ function SearchBar() {
     await dispatch(setSelectedCustomerThunk(customer.id));
   };
 
-  const handleClearSelectedCustomer = () => {
-    // Clear the selected customer and dispatch the necessary thunk
+  const handleClearSelectedCustomer = async () => {
+    await dispatch(resetSelectedCustomerThunk(selectedCustomer.id));
     setSelectedCustomer(null);
-    // You can dispatch any necessary action here if needed.
   };
-
+  
   const handleSearch = () => {
     console.log('Searching for:', searchTerm);
   };
