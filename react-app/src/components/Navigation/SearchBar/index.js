@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './SearchBar.css';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { setSelectedCustomerThunk, resetSelectedCustomerThunk} from '../../../store/customer';
+import { setSelectedCustomerThunk, resetSelectedCustomerThunk } from '../../../store/customer';
 import { getWarehouseInfoThunk } from '../../../store/warehouse';
-
 
 function SearchBar() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -12,8 +11,9 @@ function SearchBar() {
   const [customers, setCustomers] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const dispatch = useDispatch();
+  const suggestionBoxRef = useRef(null);
 
-  console.log("⭐️", selectedCustomer)
+  console.log("⭐️", selectedCustomer);
 
   useEffect(() => {
     axios.get('/api/customers')
@@ -24,6 +24,24 @@ function SearchBar() {
         console.error('Error fetching customers:', error);
       });
   }, []);
+
+  useEffect(() => {
+    // Add a click event listener to the window
+    window.addEventListener('click', handleWindowClick);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener('click', handleWindowClick);
+    };
+  }, []);
+
+  const handleWindowClick = (e) => {
+    // Check if the click event occurred outside the suggestion box
+    if (suggestionBoxRef.current && !suggestionBoxRef.current.contains(e.target)) {
+      // Close the suggestion box
+      setSuggestions([]);
+    }
+  };
 
   const handleInputChange = (e) => {
     const value = e.target.value;
@@ -51,7 +69,7 @@ function SearchBar() {
     await dispatch(getWarehouseInfoThunk());
     setSelectedCustomer(null);
   };
-  
+
   const handleSearch = () => {
     console.log('Searching for:', searchTerm);
   };
@@ -77,13 +95,13 @@ function SearchBar() {
             <span className="material-symbols-outlined">search</span>
           </button>
           {suggestions.length > 0 && (
-            <ul className="suggestion-box">
+            <div ref={suggestionBoxRef} className="suggestion-box">
               {suggestions.map((customer) => (
                 <li key={customer.id} onClick={() => handleSelectCustomer(customer)}>
                   {customer.name}
                 </li>
               ))}
-            </ul>
+            </div>
           )}
         </>
       )}
