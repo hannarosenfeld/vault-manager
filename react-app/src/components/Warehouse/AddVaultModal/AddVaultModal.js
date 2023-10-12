@@ -129,8 +129,8 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
                     <CloseIcon />
                 </IconButton>
             </div>
-            <div style={{marginBottom: "10px"}}>
-            <Typography style={{marginBottom: "5px"}} id="modal-modal-title" variant="h6" component="h2">Add Vault</Typography>
+            <div style={{marginBottom: "5px"}}>
+            <h2 style={{marginBottom: "5px"}} id="modal-modal-title">Add Vault</h2>
                 <div className="vault-info">
                     <div>Field: <span>{selectedField.field_id}</span></div>
                     <div>Position: <span>{tmb}</span></div>

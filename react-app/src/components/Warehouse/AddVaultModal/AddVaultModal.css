@@ -19,7 +19,7 @@
 }
 
 .add-vault-form label {
-  font-size: 0.8em;
+  font-size: 1em;
 }
 
 .add-vault-form button {
@@ -39,6 +39,8 @@
   flex-direction: column;
   gap: 5px;
   color: var(--grey);
+  padding: 0;
+  margin: 10px 0;
 }
 
 .vault-info span {
