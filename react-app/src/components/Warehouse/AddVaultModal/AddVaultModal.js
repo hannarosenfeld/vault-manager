@@ -24,6 +24,8 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
     const [vault_id, setVaultId] = useState('');
     const [order_number, setOrderNumber] = useState('');
     const [suggestedCustomers, setSuggestedCustomers] = useState([]);
+    const [vaultType, setVaultType] = useState('S'); // Default to 'Standard'
+
     let newCustomer;
 
     useEffect(() => {
@@ -85,6 +87,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
             field_id: selectedField.id,
             field_name: selectedField.field_id,
             position: tmb,
+            type: vaultType,
             vault_id: vault_id,
             order_number: order_number,
           };
@@ -134,34 +137,47 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
                 </div>
             </div>
             <form className="add-vault-form" onSubmit={handleSubmit}>
+                <div style={{display: "flex", gap: "1em", justifyContent: "space-between"}}>
                 <FormGroup>
-                <div className="customer-input-container">
-                    <FormLabel>Customer Name</FormLabel>
-                    <input
-                        type="text"
-                        value={customer_name}
-                        onChange={handleCustomerNameChange}
-                        required
-                    />
-                    {suggestedCustomers?.length > 0 && customer_name && (
-                        <div className="suggested-customers-container">
-                        <Paper elevation={3}>
-                            <ul className="suggested-customers-list">
-                            {suggestedCustomers.map((customer) => (
-                                <li
-                                key={customer.id}
-                                onClick={() => handleSuggestedCustomerClick(customer)}
-                                >
-                                {customer.name}
-                                </li>
-                            ))}
-                            </ul>
-                        </Paper>
-                        </div>
-                    )}
+                    <div className="customer-input-container">
+                        <FormLabel>Customer Name</FormLabel>
+                        <input
+                            type="text"
+                            value={customer_name}
+                            onChange={handleCustomerNameChange}
+                            required
+                        />
+                        {suggestedCustomers?.length > 0 && customer_name && (
+                            <div className="suggested-customers-container">
+                            <Paper elevation={3}>
+                                <ul className="suggested-customers-list">
+                                {suggestedCustomers.map((customer) => (
+                                    <li
+                                    key={customer.id}
+                                    onClick={() => handleSuggestedCustomerClick(customer)}
+                                    >
+                                    {customer.name}
+                                    </li>
+                                ))}
+                                </ul>
+                            </Paper>
+                            </div>
+                        )}
                     </div>
-
                 </FormGroup>
+
+                <FormGroup>
+                    <FormLabel>Vault Type</FormLabel>
+                    <select
+                        value={vaultType}
+                        onChange={(e) => setVaultType(e.target.value)}
+                    >
+                        <option value="S">Standard</option>
+                        <option value="T">Tall</option>
+                    </select>
+                </FormGroup>
+                </div>
+                
                 <div className="vault-order-number" >
                 <FormGroup className="vault-order-number-item">
                     <FormLabel>Vault#</FormLabel>

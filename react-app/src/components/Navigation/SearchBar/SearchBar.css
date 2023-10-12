@@ -1,4 +1,4 @@
-/* Search bar container */
+/* Default styles for larger screens */
 .search-bar {
   display: flex;
   align-items: center;
@@ -6,9 +6,9 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 5px;
-  max-width: 80%; /* Set a maximum width for the search bar */
-  width: 400px; /* Fixed width for the search bar */
-  position: relative; /* Add relative positioning for the suggestions box */
+  max-width: 80%;
+  width: 20em;
+  position: relative;
 }
 
 /* Input styling */
@@ -18,7 +18,7 @@
   padding: 10px;
   font-size: 16px;
   outline: none;
-  width: 100%; /* Make the input field take up all available space */
+  width: 100%;
 }
 
 .selected-customer {
@@ -73,3 +73,18 @@
 .suggestion-box li:hover {
   background-color: #f0f0f0;
 }
+
+
+@media screen and (max-width: 600px) {
+  .search-bar {
+    max-width: 100%; /* Take up the full width on mobile */
+    width: auto; /* Let it adjust based on content */
+  }
+
+  /* You can adjust the input padding and font size to make it more mobile-friendly */
+  .search-bar input {
+    padding: 5px; /* Adjust as needed */
+    font-size: 14px; /* Adjust as needed */
+  }
+  
+ }
