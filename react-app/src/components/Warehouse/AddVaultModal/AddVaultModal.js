@@ -137,8 +137,8 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
                 </div>
             </div>
             <form className="add-vault-form" onSubmit={handleSubmit}>
-                <div style={{display: "flex", gap: "1em", justifyContent: "space-between"}}>
-                <FormGroup>
+                <div style={{display: "flex", gap: "0.5em", justifyContent: "space-between"}}>
+                <FormGroup style={{width: "85%"}}>
                     <div className="customer-input-container">
                         <FormLabel>Customer Name</FormLabel>
                         <input
@@ -166,9 +166,10 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
                     </div>
                 </FormGroup>
 
-                <FormGroup>
+                <FormGroup >
                     <FormLabel>Vault Type</FormLabel>
                     <select
+                        style={{height: "5.5em"}}
                         value={vaultType}
                         onChange={(e) => setVaultType(e.target.value)}
                     >
