@@ -1,10 +1,10 @@
-from app.models import db, Orders, environment, SCHEMA
+from app.models import db, Order, environment, SCHEMA
 from sqlalchemy.sql import text
 
 def seed_orders():
-    o1 = Orders(order_number="000")
-    o2 = Orders(order_number="001")
-    o3 = Orders(order_number="002")
+    o1 = Order(order_number="000")
+    o2 = Order(order_number="001")
+    o3 = Order(order_number="002")
 
     db.session.add(o1)
     db.session.add(o2)

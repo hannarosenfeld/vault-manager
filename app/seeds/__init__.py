@@ -6,6 +6,7 @@ from .fields import seed_fields, undo_fields
 from .rows import seed_rows, undo_rows
 from .warehouse import seed_warehouse, undo_warehouse
 from .stage import seed_stage, undo_stage  # Import the seed_stage and undo_stage functions
+from .orders import seed_orders, undo_orders
 
 from app.models.db import db, environment, SCHEMA
 
@@ -25,11 +26,13 @@ def seed():
         undo_vaults()
         undo_fields()
         undo_rows()
+        undo_orders()
         undo_customers()
         undo_users()
         undo_warehouse()
     seed_users()
     seed_customers()
+    seed_orders()
     seed_rows()
     seed_fields()
     seed_vaults()

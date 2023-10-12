@@ -2,7 +2,7 @@ from .db import db, environment, SCHEMA, add_prefix_for_prod
 from flask_login import UserMixin
 
 
-class Order(db.Model):
+class Order(db.Model, UserMixin):
     __tablename__ = 'orders'
 
     if environment == "production":

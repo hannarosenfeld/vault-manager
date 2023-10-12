@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './SearchBar.css';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
@@ -9,11 +9,10 @@ function SearchBar() {
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [customers, setCustomers] = useState([]);
+  const [orders, setOrders] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const dispatch = useDispatch();
   const suggestionBoxRef = useRef(null);
-
-  console.log("⭐️", selectedCustomer);
 
   useEffect(() => {
     axios.get('/api/customers')
@@ -23,7 +22,17 @@ function SearchBar() {
       .catch((error) => {
         console.error('Error fetching customers:', error);
       });
+  
+    axios.get('/api/orders')
+      .then((response) => {
+        console.log('Orders:', response.data);
+        setOrders(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching orders:', error);
+      });
   }, []);
+  
 
   useEffect(() => {
     // Add a click event listener to the window
@@ -51,7 +60,20 @@ function SearchBar() {
       customer.name.toLowerCase().includes(value.toLowerCase())
     );
 
-    setSuggestions(filteredCustomers);
+    orders?.map(order => {
+      console.log("🍋 order: ", order)
+    })
+
+    const filteredOrders = orders.filter((order) =>
+      order.order_number.toLowerCase().includes(value.toLowerCase())
+    );
+
+    // Concatenate the filtered customers and orders for suggestions
+    const combinedSuggestions = [...filteredCustomers, ...filteredOrders];
+
+    setSuggestions(combinedSuggestions);
+
+    console.log("🧼", suggestions)
   };
 
   const handleSelectCustomer = async (customer) => {
@@ -96,11 +118,13 @@ function SearchBar() {
           </button>
           {suggestions.length > 0 && (
             <div ref={suggestionBoxRef} className="suggestion-box">
-              {suggestions.map((customer) => (
-                <li key={customer.id} onClick={() => handleSelectCustomer(customer)}>
-                  {customer.name}
-                </li>
-              ))}
+              <ul>
+                {suggestions.map((item) => (
+                  <li key={item.id} onClick={() => handleSelectCustomer(item)}>
+                    {item.name || item.order_number}
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
         </>
