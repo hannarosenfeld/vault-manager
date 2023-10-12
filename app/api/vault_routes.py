@@ -41,12 +41,9 @@ def add_vault():
     form = VaultForm()
     form['csrf_token'].data = request.cookies['csrf_token']
 
-    print("🐓 in route.")
     if form.validate_on_submit():
         customer_name = form.data['customer_name']
-        print("🐓 in route. customer_name: ", customer_name)
         customer = Customer.query.filter_by(name=customer_name).first()
-        print("🐓 in route. customer: ", customer.to_dict())
 
         new_vault = Vault(
             customer_name=form.data['customer_name'],
@@ -57,15 +54,14 @@ def add_vault():
             position=form.data['position'],
             vault_id=form.data['vault_id'],
             order_number=form.data['order_number'],
+            type=form.data['type'],
             warehouse_id=1
         )
 
-        print("🐓 in route, vault before add and commit: ", new_vault.to_dict())
         db.session.add(new_vault)
         db.session.commit()
 
         dict_new_vault = new_vault.to_dict()
-        print("🐓 in route, vault after add and commit: ",dict_new_vault)
 
         return dict_new_vault
 
