@@ -9,3 +9,4 @@ class VaultForm(FlaskForm):
     position = StringField('position', validators=[DataRequired()])
     vault_id = StringField('vault_id', validators=[DataRequired()])
     order_number= StringField('order_number', validators=[DataRequired()])
+    type = StringField('type', validators=[DataRequired()])

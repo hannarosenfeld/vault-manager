@@ -1,6 +1,7 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from flask_login import UserMixin
 
+
 class Vault(db.Model, UserMixin):
     __tablename__ = 'vaults'
 
@@ -16,6 +17,7 @@ class Vault(db.Model, UserMixin):
     staged = db.Column(db.Boolean, default=False)
     customer_name = db.Column(db.String(255))
     order_number = db.Column(db.String, nullable=False)
+    type = db.Column(db.String)
 
     customer = db.relationship('Customer', back_populates='vaults')
     
@@ -28,6 +30,9 @@ class Vault(db.Model, UserMixin):
     stage_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('stage.id'), ondelete='CASCADE'), nullable=True)
     stage = db.relationship('Stage', back_populates='staged_vaults')
 
+    order_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('orders.id'), ondelete='CASCADE'))
+    order = db.relationship('Order', back_populates='order_vaults')
+
     def to_dict(self):
         return {
             'id': self.id,
@@ -38,6 +43,7 @@ class Vault(db.Model, UserMixin):
             'vault_id': self.vault_id,
             'order_number': self.order_number,
             'staged': self.staged,
+            'type': self.type,
             'customer': self.customer.to_summary_dict() if self.customer else None,
         }
 

@@ -33,6 +33,7 @@ const VaultInstance = ({ vault, position, handleStageClick, handleEditClick }) =
       <div style={{ display: "flex", width: "60%", gap: "5px" }}>
         <div>{vault?.customer?.name}</div>
         <div>{vault?.vault_id}</div>
+        <div><b>{vault?.type}</b></div>
       </div>
       <div className="edit-symbols">
         <span

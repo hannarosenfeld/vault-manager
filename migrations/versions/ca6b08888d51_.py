@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: bc5b8f63b836
+Revision ID: ca6b08888d51
 Revises: 
-Create Date: 2023-10-09 18:57:08.693150
+Create Date: 2023-10-12 11:13:12.311227
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'bc5b8f63b836'
+revision = 'ca6b08888d51'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -22,6 +22,11 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=100), nullable=False),
     sa.Column('color', sa.String(length=100), nullable=True),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_table('orders',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('order_number', sa.String(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('stage',
@@ -69,11 +74,14 @@ def upgrade():
     sa.Column('staged', sa.Boolean(), nullable=True),
     sa.Column('customer_name', sa.String(length=255), nullable=True),
     sa.Column('order_number', sa.String(), nullable=False),
+    sa.Column('type', sa.String(), nullable=True),
     sa.Column('warehouse_id', sa.Integer(), nullable=True),
     sa.Column('stage_id', sa.Integer(), nullable=True),
+    sa.Column('order_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['customer_id'], ['customers.id'], ondelete='SET NULL'),
     sa.ForeignKeyConstraint(['field_id'], ['fields.id'], ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['field_name'], ['fields.field_id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['order_id'], ['orders.id'], ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['stage_id'], ['stage.id'], ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['warehouse_id'], ['warehouse.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
@@ -95,5 +103,6 @@ def downgrade():
     op.drop_table('warehouse')
     op.drop_table('users')
     op.drop_table('stage')
+    op.drop_table('orders')
     op.drop_table('customers')
     # ### end Alembic commands ###
