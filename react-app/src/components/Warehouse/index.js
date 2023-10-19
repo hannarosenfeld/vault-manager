@@ -7,10 +7,12 @@ import AddVaultModal from "./AddVaultModal/AddVaultModal.js"
 import RenderTMB from "../RenderTMB";
 import ConfirmStaging from "./ConfirmStaging";
 import "./Warehouse.css"
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 
 export default function Warehouse () {
     const dispatch = useDispatch();
+    const history = useHistory();
     const rows = useSelector(state => state.warehouse.warehouseRows);
     const vaults = useSelector(state => state.warehouse.warehouseVaults);
     const searchmode = useSelector(state => state.warehouse.searchmode);

@@ -108,7 +108,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
           const getAllWarehouseVaultsDispatch = await dispatch(getAllWarehouseVaultsThunk());
           const getWarehouseInfoDispatch = await dispatch(getWarehouseInfoThunk());
           const getAllVaultsDispatch = await dispatch(getAllVaultsThunk());
-      
+
           onClose(newVault);
         } catch (error) {
           console.error('Error in handleSubmit:', error);

@@ -58,18 +58,16 @@ def add_vault():
             warehouse_id=1,
         )
         
-        print("🌸", new_vault.to_dict())
         field = Field.query.get(new_vault.field_id)
-        print("🍰 field", field.to_dict())
 
         if field.vaults.count() > 0:
             for vault in field.vaults:
-                print("🍙 vault:", vault.to_dict())
                 if vault.type == "T":
-                    print("🥎 there is a vault.type of T")
                     field.full = True
-        else:
-            print("💔 no vaults yet")
+                    
+        if field.vaults.count() == 1:
+            if new_vault.type == "T":
+                field.full = True
 
 
         db.session.add(new_vault)
