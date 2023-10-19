@@ -33,7 +33,6 @@ const addCustomerAction = (customer) => ({
  
 
 export const resetSelectedCustomerThunk = (customerId) => async (dispatch) => {
-  console.log("🧼 in thunk", customerId)
   try {
     const res = await fetch(`/api/customers/${customerId}/reset-selected`, {
       method: 'PUT',
@@ -183,7 +182,6 @@ const initialState = {
 const customerReducer = (state = initialState, action) => {
   switch (action.type) {
     case RESET_SELECTED_CUSTOMER:
-      console.log("🧼 in reducer")
       return {
         ...state,
         selectedCustomer: null, 

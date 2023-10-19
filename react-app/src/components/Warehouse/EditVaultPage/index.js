@@ -42,15 +42,6 @@ const EditVaultPage = ({ onEditSubmit }) => {
       });
   }, [dispatch, vaultId]);
 
-  // useEffect(() => {
-  //   dispatch(getVaultAction({}));
-  //   dispatch(getVaultThunk(vaultIdNumber));
-  // }, [vaultIdNumber]);
-
-  useEffect(() => {
-    console.log("⭐️", vaultObj?.customer?.name)
-  }, [vaultObj])
-  
   const handleSave = async (e) => {
     e.preventDefault();
 

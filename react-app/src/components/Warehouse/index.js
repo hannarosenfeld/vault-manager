@@ -40,10 +40,6 @@ export default function Warehouse () {
         }
         }, [selectedVaultToStage]);
 
-    useEffect(() => {
-        console.log("🐓", searchmode)
-    }, [searchmode])
-
     const updateSelectedFieldVaults = async (newVault) => {
     if (selectedField && newVault?.field_id === selectedField.id) {
         const updatedTop = newVault.position === "T" ? newVault : top;
@@ -133,7 +129,7 @@ export default function Warehouse () {
         <div className="warehouse-wrapper">
             <div className="field-info">
             {selectedField ? (
-                <RenderTMB top={top} middle={middle} bottom={bottom} handleStageClick={handleStageClick} handleOpenModal={handleOpenModal} />
+                <RenderTMB field={selectedField} top={top} middle={middle} bottom={bottom} handleStageClick={handleStageClick} handleOpenModal={handleOpenModal} />
           ) : (
                 <div>
                     Select a field to view its info
@@ -145,7 +141,8 @@ export default function Warehouse () {
                  <div className="row" key={row.id}>
                 {!searchmode && (
                  <div className="fields">
-                 {row.fields.map((field, index) => (
+                 {row.fields.map((field, index) => {
+                    return (
                     <div
                         className="field"
                         key={field.id}
@@ -162,7 +159,7 @@ export default function Warehouse () {
                     >
                         <div className="field-number">{row.id}{index + 1}</div>
                     </div>
-                ))}
+                )})}
                  </div>
                 )}
                 {searchmode && (

@@ -125,7 +125,7 @@ export const addVaultThunk = (vaultData) => async (dispatch) => {
 
     if (res.ok) {
       const data = await res.json();
-      dispatch(addVaultAction(data)); // Update the state with the new vault
+      dispatch(addVaultAction(data));
       return data;
     } else {
       const err = await res.json();

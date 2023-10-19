@@ -2,19 +2,20 @@ import React from "react";
 import AddVaultButton from "./AddVaultButton";
 import VaultInstance from "../VaultInstance";
 
-const RenderTMB = ({ top, middle, bottom, handleStageClick, handleOpenModal, handleEditClick }) => {
+const RenderTMB = ({ field, top, middle, bottom, handleStageClick, handleOpenModal, handleEditClick }) => {
   const onlyBottom = !top && !middle && !bottom;
   const onlyMiddle = !top && !middle && bottom;
   const onlyTop = !top && middle && bottom;
+
+  console.log("🍋 ", field)
 
   return (
     <>
       <div className="selected-field-vaults-tmb">
         <div className="top">
           <span className="position">T</span>
-          {onlyTop ? (
+          {onlyTop && !field.full ? (
             <AddVaultButton position="T" handleOpenModal={handleOpenModal} />
-
           ) : top ? (
             <VaultInstance position="T" vault={top} handleStageClick={handleStageClick} handleEditClick={handleEditClick}/>
           ) : (

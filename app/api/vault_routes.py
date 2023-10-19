@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required
-from app.models import Customer, Vault, db
+from app.models import Customer, Vault, Field, db
 from app.forms import VaultForm, EditVaultForm
 
 vault_routes = Blueprint('vaults', __name__)
@@ -55,10 +55,25 @@ def add_vault():
             vault_id=form.data['vault_id'],
             order_number=form.data['order_number'],
             type=form.data['type'],
-            warehouse_id=1
+            warehouse_id=1,
         )
+        
+        print("🌸", new_vault.to_dict())
+        field = Field.query.get(new_vault.field_id)
+        print("🍰 field", field.to_dict())
+
+        if field.vaults.count() > 0:
+            for vault in field.vaults:
+                print("🍙 vault:", vault.to_dict())
+                if vault.type == "T":
+                    print("🥎 there is a vault.type of T")
+                    field.full = True
+        else:
+            print("💔 no vaults yet")
+
 
         db.session.add(new_vault)
+                    
         db.session.commit()
 
         dict_new_vault = new_vault.to_dict()

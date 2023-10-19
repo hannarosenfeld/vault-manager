@@ -2,7 +2,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from "react";
 import { getFieldThunk } from "../../store/field";
 import { Link } from "react-router-dom"
-// import DeleteVaultModal from "./DeleteVaultModal";
 import { useHistory } from 'react-router-dom';
 
 const VaultInstance = ({ vault, position, handleStageClick, handleEditClick }) => {
