@@ -6,6 +6,7 @@ import { getAllCustomersThunk, addCustomerThunk } from '../../../store/customer'
 import { addVaultThunk, getAllVaultsThunk } from '../../../store/vault';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { FormGroup, FormLabel, keyframes } from '@mui/material';
@@ -16,8 +17,7 @@ import MiniWareHouse from './MiniWareHouse';
 export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, updateSelectedFieldVaults}) {
     const dispatch = useDispatch();
     const history = useHistory();
-    const customersObj = useSelector(state => state.customer.customers);
-    const vaultObj = useSelector(state => state.vault.vaults);
+    const customersObj = useSelector(state => state.customer.customers)
     const [customers, setCustomers] = useState([]);
     const [customer_name, setCustomerName] = useState('');
     const [position, setPosition] = useState('');
@@ -25,13 +25,8 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
     const [order_number, setOrderNumber] = useState('');
     const [suggestedCustomers, setSuggestedCustomers] = useState([]);
     const [vaultType, setVaultType] = useState('S'); // Default to 'Standard'
-    const [errors, setErrors] = useState([]);
+
     let newCustomer;
-
-    useEffect(() => {
-        console.log("🐚", errors);
-    }, [errors])
-
 
     useEffect(() => {
         if (customersObj && customersObj.customers) {
@@ -40,8 +35,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
     }, [customersObj]);
 
     useEffect(() => {
-        dispatch(getAllCustomersThunk());
-        dispatch(getAllVaultsThunk());
+        dispatch(getAllCustomersThunk())
     }, [dispatch]);
     
     useEffect(() => {
@@ -87,25 +81,6 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
             };
             newCustomer = await dispatch(addCustomerThunk(customerData));
           }
-
-          const doesVaultNumberAlreadyExists = (vaultNumber) => {
-            if (vaultObj && vaultObj.vaults) {
-              console.log(vaultObj.vaults, vault_id)
-              return vaultObj.vaults.some((vault) => vault.vault_id === vaultNumber);
-            }
-            return false;
-          };
-          
-          const vaultNumberExists = doesVaultNumberAlreadyExists(vault_id);
-          
-          if (vaultNumberExists) {
-            console.log(`Vault number ${vault_id} already exists.`);
-            setErrors({ vault_id: `Vault number ${vault_id} already exists.` })
-            return
-          } else {
-            console.log(`Vault number ${vault_id} is unique.`);
-          }
-          
           const vaultData = {
             customer_name: customer_name,
             customer: newCustomer,
@@ -121,6 +96,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
 
           const updatedVault = await dispatch(addVaultToWarehouseThunk(newVault.id));
 
+          // Ensure that addVaultToWarehouseThunk returns the updated vault
           if (updatedVault) {
             const updateTMBThing = await updateTMB(updatedVault);
             const updateSelectedFieldVaultsThing = await updateSelectedFieldVaults(updatedVault);
@@ -129,8 +105,6 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
           }
       
           // Step 4: Fetch other data (if needed)
-          const updateTMBThingAgain = await updateTMB(updatedVault);
-          const updateSelectedFieldVaultsThingAgain = await updateSelectedFieldVaults(updatedVault);
           const getAllWarehouseVaultsDispatch = await dispatch(getAllWarehouseVaultsThunk());
           const getWarehouseInfoDispatch = await dispatch(getWarehouseInfoThunk());
           const getAllVaultsDispatch = await dispatch(getAllVaultsThunk());
@@ -213,7 +187,6 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
                         onChange={(e) => setVaultId(e.target.value)}
                         required
                     />  
-                    {errors.vault_id ? <div style={{color: "red", marginTop: "-0.5em"}}>{errors.vault_id}</div> : ''}
                 </FormGroup>
                 <FormGroup className="vault-order-number-item">
                     <FormLabel>Order#</FormLabel>
@@ -222,7 +195,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
                         value={order_number}
                         onChange={(e) => setOrderNumber(e.target.value)}
                         required
-                    />
+                    />  
                 </FormGroup>
                 </div>
                 <div style={{height: "63%", marginBottom: "1em"}}>
