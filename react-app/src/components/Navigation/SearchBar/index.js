@@ -25,7 +25,6 @@ function SearchBar() {
   
     axios.get('/api/orders')
       .then((response) => {
-        console.log('Orders:', response.data);
         setOrders(response.data);
       })
       .catch((error) => {

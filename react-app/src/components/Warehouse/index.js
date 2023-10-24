@@ -148,7 +148,6 @@ export default function Warehouse () {
                 {!searchmode && (
                  <div className="fields">
                  {row.fields.map((field, index) => {
-                    console.log(field)
                     return (
                     <div
                         className="field"
