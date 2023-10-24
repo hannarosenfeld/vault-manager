@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import Modal from '@mui/material/Modal';
 import { getAllWarehouseVaultsThunk, getWarehouseInfoThunk } from "../../store/warehouse";
 import { getAllVaultsThunk } from "../../store/vault"
@@ -7,7 +8,6 @@ import AddVaultModal from "./AddVaultModal/AddVaultModal.js"
 import RenderTMB from "../RenderTMB";
 import ConfirmStaging from "./ConfirmStaging";
 import "./Warehouse.css"
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 
 export default function Warehouse () {
@@ -35,6 +35,10 @@ export default function Warehouse () {
         const getAllWarehouseVaults = dispatch(getAllWarehouseVaultsThunk());
         const getAllVaults = dispatch(getAllVaultsThunk())
     }, [dispatch])
+
+    useEffect(() => {
+        console.log("🪻 in warehouse. vaults: ", vaults)
+    }, [vaults])
 
     useEffect(() => {
         if (selectedVaultToStage) {
@@ -196,27 +200,27 @@ export default function Warehouse () {
             </div>
             <Modal open={isModalOpen}>
                 <>
-                <AddVaultModal
-                    onClose={handleCloseModal}
-                    selectedField={selectedField}
-                    tmb={position}
-                    updateTMB={setUpdatedVault}
-                    updateSelectedFieldVaults={updateSelectedFieldVaults} // Pass the function here
-                />
+                    <AddVaultModal
+                        onClose={handleCloseModal}
+                        selectedField={selectedField}
+                        tmb={position}
+                        updateTMB={setUpdatedVault}
+                        updateSelectedFieldVaults={updateSelectedFieldVaults} // Pass the function here
+                    />
                 </>
             </Modal>
             <Modal open={isConfirmStagingModalOpen} onClose={setIsConfirmStagingModalOpen}>                
-            <>
-                <ConfirmStaging 
-                    vault={selectedVaultToStage}
-                    vaultCustomer={selectedVaultToStage?.customer.name}
-                    vaultNumber={selectedVaultToStage?.vault_id}
-                    vaultId={selectedVaultToStage?.id}
-                    onClose={closeConfirmStagingModal}
-                    fieldId={selectedField?.id}
-                    updateVaultPosition={updateVaultPosition}
-                    tmb={position}
-                />
+                <>
+                    <ConfirmStaging 
+                        vault={selectedVaultToStage}
+                        vaultCustomer={selectedVaultToStage?.customer.name}
+                        vaultNumber={selectedVaultToStage?.vault_id}
+                        vaultId={selectedVaultToStage?.id}
+                        onClose={closeConfirmStagingModal}
+                        fieldId={selectedField?.id}
+                        updateVaultPosition={updateVaultPosition}
+                        tmb={position}
+                    />
                 </>
             </Modal>
         </div>
