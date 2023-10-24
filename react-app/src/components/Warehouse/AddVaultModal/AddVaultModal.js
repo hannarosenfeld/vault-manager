@@ -18,13 +18,16 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
     const dispatch = useDispatch();
     const history = useHistory();
     const customersObj = useSelector(state => state.customer.customers)
+    const vaultObj = useSelector(state => state.vault.vaults);
+
     const [customers, setCustomers] = useState([]);
     const [customer_name, setCustomerName] = useState('');
     const [position, setPosition] = useState('');
     const [vault_id, setVaultId] = useState('');
     const [order_number, setOrderNumber] = useState('');
     const [suggestedCustomers, setSuggestedCustomers] = useState([]);
-    const [vaultType, setVaultType] = useState('S'); // Default to 'Standard'
+    const [vaultType, setVaultType] = useState('S');
+    const [errors, setErrors] = useState([]);
 
     let newCustomer;
 
@@ -86,6 +89,25 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
             };
             newCustomer = await dispatch(addCustomerThunk(customerData));
           }
+
+          const doesVaultNumberAlreadyExists = (vaultNumber) => {
+            if (vaultObj && vaultObj.vaults) {
+              console.log(vaultObj.vaults, vault_id)
+              return vaultObj.vaults.some((vault) => vault.vault_id === vaultNumber);
+            }
+            return false;
+          };
+
+          const vaultNumberExists = doesVaultNumberAlreadyExists(vault_id);
+
+          if (vaultNumberExists) {
+            console.log(`Vault number ${vault_id} already exists.`);
+            setErrors({ vault_id: `Vault number ${vault_id} already exists.` })
+            return
+          } else {
+            console.log(`Vault number ${vault_id} is unique.`);
+          }
+
           const vaultData = {
             customer_name: customer_name,
             customer: newCustomer,
@@ -197,6 +219,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
                         onChange={(e) => setVaultId(e.target.value)}
                         required
                     />  
+                    {errors.vault_id ? <div style={{color: "red", marginTop: "-0.5em"}}>{errors.vault_id}</div> : ''}
                 </FormGroup>
                 <FormGroup className="vault-order-number-item">
                     <FormLabel>Order#</FormLabel>
