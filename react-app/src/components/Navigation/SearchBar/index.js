@@ -60,10 +60,6 @@ function SearchBar() {
       customer.name.toLowerCase().includes(value.toLowerCase())
     );
 
-    orders?.map(order => {
-      console.log("🍋 order: ", order)
-    })
-
     const filteredOrders = orders.filter((order) =>
       order.order_number.toLowerCase().includes(value.toLowerCase())
     );
@@ -72,8 +68,6 @@ function SearchBar() {
     const combinedSuggestions = [...filteredCustomers, ...filteredOrders];
 
     setSuggestions(combinedSuggestions);
-
-    console.log("🧼", suggestions)
   };
 
   const handleSelectCustomer = async (customer) => {

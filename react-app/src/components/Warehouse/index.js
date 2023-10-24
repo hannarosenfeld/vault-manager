@@ -150,7 +150,7 @@ export default function Warehouse () {
                         key={field.id}
                         style={{
                             backgroundColor: `${
-                            field.vaults.length === 3 ? "#ea373d" :
+                            field.full || field.vaults.length === 3 ? "var(--red)" :
                             field.vaults.length === 2 ? "var(--yellow)":
                             field.vaults.length === 1 ? "var(--green)" :
                             "var(--lightgrey)"
