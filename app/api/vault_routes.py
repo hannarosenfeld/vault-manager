@@ -62,7 +62,7 @@ def add_vault():
 
         print("🌸 field", field.to_dict())
 
-        if field.vaults.count() == 1:
+        if field.vaults.count() == 2:
             for vault in field.vaults:
                 print("🌸 vault: ", vault.to_dict())
                 if vault.type == "T" or new_vault.type == "T":
