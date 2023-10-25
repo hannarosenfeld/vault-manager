@@ -19,6 +19,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
     const customersObj = useSelector(state => state.customer.customers)
     const vaultObj = useSelector(state => state.vault.vaults);
 
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [customers, setCustomers] = useState([]);
     const [customer_name, setCustomerName] = useState('');
     const [vault_id, setVaultId] = useState('');
@@ -73,6 +74,9 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
     
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        setIsSubmitting(true);
+
         try {
           const lowercaseCustomerName = customer_name.toLowerCase();
           let newCustomer;
@@ -133,8 +137,10 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
           const getAllVaultsDispatch = await dispatch(getAllVaultsThunk());
 
         onClose(newVault);
+        setIsSubmitting(false);
         } catch (error) {
           console.error('Error in handleSubmit:', error);
+          setIsSubmitting(false);
         }
       };
       
@@ -225,7 +231,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
                 <div style={{height: "63%", marginBottom: "1em"}}>
                     <MiniWareHouse selectedField={selectedField}/>
                 </div>
-                <button type="submit">Submit</button>
+                <button type="submit" disabled={isSubmitting}>Submit</button>
             </form>
         </Box>
     )
