@@ -6,10 +6,9 @@ import { getAllCustomersThunk, addCustomerThunk } from '../../../store/customer'
 import { addVaultThunk, getAllVaultsThunk } from '../../../store/vault';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import { FormGroup, FormLabel, keyframes } from '@mui/material';
+import { FormGroup, FormLabel } from '@mui/material';
 import "./AddVaultModal.css"
 import MiniWareHouse from './MiniWareHouse';
 
@@ -22,14 +21,11 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
 
     const [customers, setCustomers] = useState([]);
     const [customer_name, setCustomerName] = useState('');
-    const [position, setPosition] = useState('');
     const [vault_id, setVaultId] = useState('');
     const [order_number, setOrderNumber] = useState('');
     const [suggestedCustomers, setSuggestedCustomers] = useState([]);
     const [vaultType, setVaultType] = useState('S');
     const [errors, setErrors] = useState([]);
-
-    let newCustomer;
 
     console.log("🌷 in AddVaultModal.")
     console.log("🌷 selectedField: ", selectedField)
