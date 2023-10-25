@@ -135,6 +135,8 @@ export default function Warehouse () {
         if (position === "B") setBottom(null);
     };
 
+    console.log("🧼 rowsArr", rowsArr)
+
     return (
         <div className="warehouse-wrapper">
             <div className="field-info">
@@ -151,7 +153,7 @@ export default function Warehouse () {
                  <div className="row" key={row.id}>
                 {!searchmode && (
                  <div className="fields">
-                 {row.fields.map((field, index) => {
+                 {row.fields.sort((a,b) => a.field_id < b.field_id).map((field, index) => {
                     return (
                     <div
                         className="field"
