@@ -13,6 +13,20 @@ export default function MiniWareHouse({ selectedField }) {
         dispatch(getAllWarehouseVaultsThunk());
     }, [dispatch])
 
+    const sortFields = (fields) => {
+        const sortedFields = {};
+        let sortedFieldsArr;
+
+        for (let field of fields) {
+            sortedFields[field.id] = field
+        }
+
+        sortedFieldsArr = Object.values(sortedFields)
+
+        console.log("🐚",sortedFieldsArr)
+
+        return sortedFieldsArr
+    }
     return(
         <div className="warehouse-wrapper" style={{height: "100%", padding:"0"}}>
         <div className="warehouse" style={{height: "100%"}}>
@@ -20,7 +34,7 @@ export default function MiniWareHouse({ selectedField }) {
                 <div key={row.id} className="row">
                 {/* <div className="row-id">{row.id}</div> */}
                 <div className="fields">
-                {row.fields.map((field, index) => (
+                {sortFields(row.fields).map((field, index) => (
                     <div
                         className="field"
                         key={field.id}
