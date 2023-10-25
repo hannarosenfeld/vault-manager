@@ -60,10 +60,10 @@ def add_vault():
         
         field = Field.query.get(new_vault.field_id)
 
-        # if field.vaults.count() > 0:
-        #     for vault in field.vaults:
-        #         if vault.type == "T":
-        #             field.full = True
+        if field.vaults.count() > 0:
+            for vault in field.vaults:
+                if vault.type == "T" or new_vault.type == "T":
+                    field.full = True
                     
         # if field.vaults.count() == 1:
         #     if new_vault.type == "T":
