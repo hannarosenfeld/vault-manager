@@ -60,8 +60,12 @@ def add_vault():
         
         field = Field.query.get(new_vault.field_id)
 
+        print("🌸 field", field.to_dict())
+
+        # BUG ORIGINATES HERE!!!
         if field.vaults.count() > 0:
             for vault in field.vaults:
+                print("🌸 vault: ", vault.to_dict())
                 if vault.type == "T" or new_vault.type == "T":
                     field.full = True
                     

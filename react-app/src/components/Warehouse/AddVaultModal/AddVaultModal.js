@@ -115,16 +115,16 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
             order_number: order_number,
           };
 
-          console.log("🌹 in AddVaultModal, handleSubmit.");
-          console.log("🌹 vaultData: ", vaultData);
+          console.log("🌕 in AddVaultModal, handleSubmit.");
+          console.log("🌕 vaultData: ", vaultData);
 
           const newVault = await dispatch(addVaultThunk(vaultData));
-          console.log("🌹 return of dispatch(addVaultThunk(vaultData)): ", newVault);
+          console.log("🌕 return of dispatch(addVaultThunk(vaultData)): ", newVault);
 
           const updatedVault = await dispatch(addVaultToWarehouseThunk(newVault.id));
-          console.log("🌹 return of dispatch(addVaultToWarehouseThunk(newVault.id)): ", updatedVault);
+          console.log("🌕 return of dispatch(addVaultToWarehouseThunk(newVault.id)): ", updatedVault);
 
-          // Ensure that addVaultToWarehouseThunk returns the updated vault
+        // Ensure that addVaultToWarehouseThunk returns the updated vault
           if (updatedVault) {
             const updateTMBThing = await updateTMB(updatedVault);
             const updateSelectedFieldVaultsThing = await updateSelectedFieldVaults(updatedVault);
@@ -137,7 +137,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
           const getWarehouseInfoDispatch = await dispatch(getWarehouseInfoThunk());
           const getAllVaultsDispatch = await dispatch(getAllVaultsThunk());
 
-          onClose(newVault);
+        onClose(newVault);
         } catch (error) {
           console.error('Error in handleSubmit:', error);
         }
@@ -201,7 +201,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
                         onChange={(e) => setVaultType(e.target.value)}
                     >
                         <option value="S">Standard</option>
-                        {selectedField.vaults.length === 2 ? '' : <option value="T">Tall</option>}
+                        <option value="T">Tall</option>
                     </select>
                 </FormGroup>
                 </div>

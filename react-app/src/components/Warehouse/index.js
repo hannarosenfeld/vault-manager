@@ -159,7 +159,7 @@ export default function Warehouse () {
                             field.vaults.length === 1 ? "var(--green)" :
                             "var(--lightgrey)"
                             }`,
-                            border: `${selectedField?.id === field?.id ? "3px solid var(--blue)" : "blue"}`,
+                            border: `${selectedField?.id === field?.id ? "3px solid var(--blue)" : "none"}`,
                         }}                      
                         onClick={() => handleFieldClick(field, row, index)}
                     >
