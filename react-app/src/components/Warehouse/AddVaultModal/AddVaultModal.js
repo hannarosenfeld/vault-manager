@@ -15,7 +15,6 @@ import MiniWareHouse from './MiniWareHouse';
 
 export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, updateSelectedFieldVaults}) {
     const dispatch = useDispatch();
-    const history = useHistory();
     const customersObj = useSelector(state => state.customer.customers)
     const vaultObj = useSelector(state => state.vault.vaults);
 
@@ -97,7 +96,8 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
 
           if (vaultNumberExists) {
             console.log(`Vault number ${vault_id} already exists.`);
-            setErrors({ vault_id: `Vault number ${vault_id} already exists.` })
+            setErrors({ vault_id: `Vault number ${vault_id} already exists.` });
+            setIsSubmitting(false);
             return
           } else {
             console.log(`Vault number ${vault_id} is unique.`);
@@ -113,7 +113,6 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
             vault_id: vault_id,
             order_number: order_number,
           };
-
 
           const newVault = await dispatch(addVaultThunk(vaultData));
           const updatedVault = await dispatch(addVaultToWarehouseThunk(newVault.id));
@@ -139,7 +138,13 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
         }
       };
       
+    const handleVaultIdChange = (e) => {
+        const enteredVaultId = e.target.value;
+        setVaultId(enteredVaultId);
 
+        setErrors({});
+    };
+    
     return (
         <Box className="add-vault-container">
             <div className="close-icon-container">
@@ -197,6 +202,8 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
                         onChange={(e) => setVaultType(e.target.value)}
                     >
                         <option value="S">Standard</option>
+                        {console.log("🐥 selectedField", selectedField)}
+                        {console.log("🐥 vaults", selectedField.vaults.length)} 
                         {selectedField.vaults.length < 2 ? <option value="T">Tall</option> : ''}
                     </select>
                 </FormGroup>
@@ -208,7 +215,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
                     <input
                         type="text"
                         value={vault_id}
-                        onChange={(e) => setVaultId(e.target.value)}
+                        onChange={(e) => handleVaultIdChange(e)}
                         required
                     />  
                     {errors.vault_id ? <div style={{color: "red", marginTop: "-0.5em"}}>{errors.vault_id}</div> : ''}

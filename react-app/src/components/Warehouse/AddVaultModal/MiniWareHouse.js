@@ -23,8 +23,6 @@ export default function MiniWareHouse({ selectedField }) {
 
         sortedFieldsArr = Object.values(sortedFields)
 
-        console.log("🐚",sortedFieldsArr)
-
         return sortedFieldsArr
     }
     return(
