@@ -197,7 +197,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
                         onChange={(e) => setVaultType(e.target.value)}
                     >
                         <option value="S">Standard</option>
-                        {selectedField.vaults.length > 2 ? <option value="T">Tall</option> : ''}
+                        {selectedField.vaults.length < 2 ? <option value="T">Tall</option> : ''}
                     </select>
                 </FormGroup>
                 </div>
