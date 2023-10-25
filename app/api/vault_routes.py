@@ -63,6 +63,7 @@ def add_vault():
         print("🌸 field", field.to_dict())
 
         # BUG ORIGINATES HERE!!!
+        # dict in python are not sorted! 
         if field.vaults.count() > 0:
             for vault in field.vaults:
                 print("🌸 vault: ", vault.to_dict())

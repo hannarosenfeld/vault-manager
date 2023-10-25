@@ -36,6 +36,18 @@ export default function Warehouse () {
         const getAllVaults = dispatch(getAllVaultsThunk())
     }, [dispatch])
 
+    // useEffect(() => {
+    //     for (let row of rowsArr) {
+    //         for (let field of row.fields) {
+    //             sortedFields[field.id] = field
+    //         }
+    //     }
+
+    //     sortedFieldsArr = Object.values(sortedFields)
+
+    //     console.log("🐚",sortedFieldsArr)
+    // }, [rowsArr])
+
     useEffect(() => {
         console.log("🪻 in warehouse. vaults: ", vaults)
     }, [vaults])
@@ -135,7 +147,20 @@ export default function Warehouse () {
         if (position === "B") setBottom(null);
     };
 
-    console.log("🧼 rowsArr", rowsArr)
+    const sortFields = (fields) => {
+        const sortedFields = {};
+        let sortedFieldsArr;
+
+        for (let field of fields) {
+            sortedFields[field.id] = field
+        }
+
+        sortedFieldsArr = Object.values(sortedFields)
+
+        console.log("🐚",sortedFieldsArr)
+
+        return sortedFieldsArr
+    }
 
     return (
         <div className="warehouse-wrapper">
@@ -153,25 +178,27 @@ export default function Warehouse () {
                  <div className="row" key={row.id}>
                 {!searchmode && (
                  <div className="fields">
-                 {row.fields.sort((a,b) => a.field_id < b.field_id).map((field, index) => {
+                {sortFields(row.fields).map((field, index) => {
                     return (
-                    <div
-                        className="field"
-                        key={field.id}
-                        style={{
-                            backgroundColor: `${
-                            field.vaults.length === 3 ? "var(--red)" :
-                            field.vaults.length === 2 ? "var(--yellow)":
-                            field.vaults.length === 1 ? "var(--green)" :
-                            "var(--lightgrey)"
-                            }`,
-                            border: `${selectedField?.id === field?.id ? "3px solid var(--blue)" : "none"}`,
-                        }}                      
-                        onClick={() => handleFieldClick(field, row, index)}
-                    >
-                        <div className="field-number">{row.id}{index + 1}</div>
-                    </div>
-                )})}
+                        <div
+                            className="field"
+                            key={field.id}
+                            style={{
+                                backgroundColor: `${
+                                    field?.vaults?.length === 3 ? "var(--red)" :
+                                    field?.vaults?.length === 2 ? "var(--yellow)" :
+                                    field?.vaults?.length === 1 ? "var(--green)" :
+                                    "var(--lightgrey)"
+                                }`,
+                                border: `${selectedField?.id === field?.id ? "3px solid var(--blue)" : "none"}`,
+                            }}                      
+                            onClick={() => handleFieldClick(field, row, index)}
+                        >
+                            <div className="field-number">{row.id}{index + 1}</div>
+                        </div>
+                    );
+                })}
+
                  </div>
                 )}
                 {searchmode && (
@@ -195,7 +222,7 @@ export default function Warehouse () {
                         }}                      
                         onClick={() => handleFieldClick(field, row, index)}
                     >
-                        <div className="field-number">{row.id}{index + 1}</div>
+                        <div className="field-number">{field.field_id}</div>
                     </div>
                 ))}
                  </div>
