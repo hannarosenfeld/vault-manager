@@ -114,8 +114,8 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
             order_number: order_number,
           };
 
-          const newVault = await dispatch(addVaultThunk(vaultData));
-          const updatedVault = await dispatch(addVaultToWarehouseThunk(newVault.id));
+        const newVault = await dispatch(addVaultThunk(vaultData));
+        const updatedVault = await dispatch(addVaultToWarehouseThunk(newVault.id));
 
         // Ensure that addVaultToWarehouseThunk returns the updated vault
           if (updatedVault) {
@@ -125,10 +125,10 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
             console.error('updatedVault is null or undefined');
           }
       
-          // Step 4: Fetch other data (if needed)
-          const getAllWarehouseVaultsDispatch = await dispatch(getAllWarehouseVaultsThunk());
-          const getWarehouseInfoDispatch = await dispatch(getWarehouseInfoThunk());
-          const getAllVaultsDispatch = await dispatch(getAllVaultsThunk());
+        // Step 4: Fetch other data (if needed)
+        const getAllWarehouseVaultsDispatch = await dispatch(getAllWarehouseVaultsThunk());
+        const getWarehouseInfoDispatch = await dispatch(getWarehouseInfoThunk());
+        const getAllVaultsDispatch = await dispatch(getAllVaultsThunk());
 
         onClose(newVault);
         setIsSubmitting(false);
