@@ -7,7 +7,7 @@ const RenderTMB = ({ field, top, middle, bottom, handleStageClick, handleOpenMod
   const onlyMiddle = !top && !middle && bottom;
   const onlyTop = !top && middle && bottom;
 
-  console.log("🍋 ", field)
+  // console.log("🍋 ", field)
 
   return (
     <>

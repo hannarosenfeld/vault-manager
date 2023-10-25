@@ -41,6 +41,10 @@ export default function Warehouse () {
     }, [vaults])
 
     useEffect(() => {
+        console.log("🌸 selected field: ", selectedField)
+    }, [selectedField])
+
+    useEffect(() => {
         if (selectedVaultToStage) {
             openConfirmStagingModal();
         }
