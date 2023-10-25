@@ -171,7 +171,7 @@ export default function Warehouse () {
                             key={field.id}
                             style={{
                                 backgroundColor: `${
-                                    field?.vaults?.length === 3 ? "var(--red)" :
+                                    field?.vaults?.length === 3 || field.full ? "var(--red)" :
                                     field?.vaults?.length === 2 ? "var(--yellow)" :
                                     field?.vaults?.length === 1 ? "var(--green)" :
                                     "var(--lightgrey)"
@@ -195,8 +195,8 @@ export default function Warehouse () {
                         key={field.id}
                         style={{
                             backgroundColor: `${
-                                field.vaults.length === 3 && field.contains_searched_customer ? "var(--red)" :
-                                field.vaults.length === 3 && !field.contains_searched_customer ? "rgba(234, 55, 61, 0.8)" :
+                                field.vaults.length === 3 || field.full && field.contains_searched_customer ? "var(--red)" :
+                                field.vaults.length === 3 || field.full && !field.contains_searched_customer ? "rgba(234, 55, 61, 0.8)" :
                                 field.vaults.length === 2 && field.contains_searched_customer ? "var(--yellow)" :
                                 field.vaults.length === 2 && !field.contains_searched_customer ? "rgba(255, 209, 102, 0.8)" :
                                 field.vaults.length === 1 && field.contains_searched_customer ? "var(--green)" :
