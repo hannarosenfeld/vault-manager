@@ -36,18 +36,6 @@ export default function Warehouse () {
         const getAllVaults = dispatch(getAllVaultsThunk())
     }, [dispatch])
 
-    // useEffect(() => {
-    //     for (let row of rowsArr) {
-    //         for (let field of row.fields) {
-    //             sortedFields[field.id] = field
-    //         }
-    //     }
-
-    //     sortedFieldsArr = Object.values(sortedFields)
-
-    //     console.log("🐚",sortedFieldsArr)
-    // }, [rowsArr])
-
     useEffect(() => {
         console.log("🪻 in warehouse. vaults: ", vaults)
     }, [vaults])
@@ -156,8 +144,6 @@ export default function Warehouse () {
         }
 
         sortedFieldsArr = Object.values(sortedFields)
-
-        console.log("🐚",sortedFieldsArr)
 
         return sortedFieldsArr
     }

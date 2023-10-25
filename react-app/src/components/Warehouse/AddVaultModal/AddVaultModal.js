@@ -27,11 +27,6 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
     const [vaultType, setVaultType] = useState('S');
     const [errors, setErrors] = useState([]);
 
-    console.log("🌷 in AddVaultModal.")
-    console.log("🌷 selectedField: ", selectedField)
-    console.log("🌷 position: ", tmb)
-
-
     useEffect(() => {
         if (customersObj && customersObj.customers) {
             setCustomers(Object.values(customersObj.customers));
@@ -88,7 +83,6 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
 
           const doesVaultNumberAlreadyExists = (vaultNumber) => {
             if (vaultObj && vaultObj.vaults) {
-              console.log(vaultObj.vaults, vault_id)
               return vaultObj.vaults.some((vault) => vault.vault_id === vaultNumber);
             }
             return false;
@@ -115,14 +109,8 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
             order_number: order_number,
           };
 
-          console.log("🧼 in AddVaultModal, handleSubmit.");
-          console.log("🧼 vaultData: ", vaultData);
-
           const newVault = await dispatch(addVaultThunk(vaultData));
-          console.log("🧼 return of dispatch(addVaultThunk(vaultData)): ", newVault);
-
           const updatedVault = await dispatch(addVaultToWarehouseThunk(newVault.id));
-          console.log("🧼 return of dispatch(addVaultToWarehouseThunk(newVault.id)): ", updatedVault);
 
         // Ensure that addVaultToWarehouseThunk returns the updated vault
           if (updatedVault) {
