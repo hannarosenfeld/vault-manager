@@ -84,7 +84,11 @@ function SearchBar() {
     await dispatch(getWarehouseInfoThunk());
     setSelectedCustomer(null);
   };
-  
+
+  const handleSearch = () => {
+    console.log('Searching for:', searchTerm);
+  };
+
   return (
     <div className="search-bar">
       {selectedCustomer ? (
