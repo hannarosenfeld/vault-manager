@@ -87,9 +87,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
 
           // Check if Vault # already exists
           const doesVaultNumberAlreadyExists = (vaultNumber) => {
-            console.log("🍿 vaultObj", vaultObj)
             if (vaultObj && vaultObj.vaults) {
-              console.log("🌭", vaultObj.vaults, vault_id)
               return vaultObj.vaults.some((vault) => vault.vault_id === vaultNumber);
             }
             return false;
@@ -203,7 +201,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
                         onChange={(e) => setVaultType(e.target.value)}
                     >
                         <option value="S">Standard</option>
-                        {selectedField.vaults.length < 2 ? <option value="T">Tall</option> : ''}
+                        {selectedField.vaults.length == 2 ? '' : <option value="T">Tall</option>}
                     </select>
                 </FormGroup>
                 </div>
