@@ -101,11 +101,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
           
           const orderNumberExists = doesOrderNumberAlreadyExist(order_number);
           
-          if (orderNumberExists) {
-            console.log(`Order number ${order_number} already exists.`);
-            setIsSubmitting(false);
-            return;
-          } else {
+          if (!orderNumberExists) {
             console.log(`Order number ${order_number} is unique.`);
             const orderData = {
               order_number: order_number,
