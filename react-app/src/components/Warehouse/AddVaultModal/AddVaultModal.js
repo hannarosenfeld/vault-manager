@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { addVaultToWarehouseThunk, getAllWarehouseVaultsThunk, getWarehouseInfoThunk} from '../../../store/warehouse';
 import { getAllCustomersThunk, addCustomerThunk } from '../../../store/customer'
-import { addVaultThunk, getAllVaultsThunk } from '../../../store/vault';
+import { addVaultThunk, getAllVaultsThunk, getVaultThunk } from '../../../store/vault';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -18,8 +18,6 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
     const dispatch = useDispatch();
     const customersObj = useSelector(state => state.customer.customers)
     const vaultObj = useSelector(state => state.vault.vaults);
-    const fields = useSelector(state => state.field.fields)
-    const field = useSelector(state => state.field.currentField)
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [customers, setCustomers] = useState([]);
@@ -37,13 +35,8 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
     }, [customersObj]);
 
     useEffect(() => {
-        console.log("🎂 field", field)
-    }, [field])
-
-    useEffect(() => {
-        dispatch(getAllCustomersThunk())
-        dispatch(getAllFieldsThunk())
-        dispatch(getFieldThunk(selectedField.id))
+        dispatch(getAllCustomersThunk());
+        dispatch(getAllVaultsThunk());
     }, [dispatch]);
     
     useEffect(() => {
@@ -77,7 +70,6 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
     
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         setIsSubmitting(true);
 
         try {
@@ -93,9 +85,11 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
             newCustomer = await dispatch(addCustomerThunk(customerData));
           }
 
+          // Check if Vault # already exists
           const doesVaultNumberAlreadyExists = (vaultNumber) => {
+            console.log("🍿 vaultObj", vaultObj)
             if (vaultObj && vaultObj.vaults) {
-              console.log(vaultObj.vaults, vault_id)
+              console.log("🌭", vaultObj.vaults, vault_id)
               return vaultObj.vaults.some((vault) => vault.vault_id === vaultNumber);
             }
             return false;
