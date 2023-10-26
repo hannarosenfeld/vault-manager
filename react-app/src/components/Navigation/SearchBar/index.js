@@ -1,18 +1,25 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './SearchBar.css';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedCustomerThunk, resetSelectedCustomerThunk } from '../../../store/customer';
 import { getWarehouseInfoThunk } from '../../../store/warehouse';
+import { getAllOrdersThunk } from '../../../store/order';
 
 function SearchBar() {
+  const dispatch = useDispatch();
+  const suggestionBoxRef = useRef(null);
+  const ordersState = useSelector(state => state.order.orders);
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [customers, setCustomers] = useState([]);
   const [orders, setOrders] = useState([]);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
-  const dispatch = useDispatch();
-  const suggestionBoxRef = useRef(null);
+
+
+  useEffect(() => {
+    dispatch(getAllOrdersThunk())
+  }, [])
 
   useEffect(() => {
     axios.get('/api/customers')
@@ -114,7 +121,10 @@ function SearchBar() {
               <ul>
                 {suggestions.map((item) => (
                   <li key={item.id} onClick={() => handleSelectCustomer(item)}>
-                    {item.name || item.order_number}
+                    {
+                    item.name ? <div style={{display: "flex", alignContent: "center", alignItems: "center"}}><span style={{marginRight: "0.5em"}} class="material-symbols-outlined">person</span> {item.name}</div> : 
+                    item.order_number ? <div style={{display: "flex", alignContent: "center", alignItems: "center"}}><span style={{marginRight: "0.5em"}} class="material-symbols-outlined">order_approve</span> {item.order_number}</div> : ''
+                    }
                   </li>
                 ))}
               </ul>

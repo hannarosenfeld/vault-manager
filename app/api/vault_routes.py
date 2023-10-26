@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required
-from app.models import Customer, Vault, Field, db
+from app.models import Customer, Vault, Field, Order, db
 from app.forms import VaultForm, EditVaultForm
 
 vault_routes = Blueprint('vaults', __name__)

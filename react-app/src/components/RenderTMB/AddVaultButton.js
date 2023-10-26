@@ -6,11 +6,6 @@ const AddVaultButton = ({ field, position, handleOpenModal }) => {
   const dispatch = useDispatch();
   const fieldState = useSelector(state => state.field.fields);
 
-  // console.log("🍧", field)
-  // useEffect(() => {
-  //   dispatch(getFieldThunk(field.id));
-  // }, [dispatch])
-
     return (
       <div className="add-vault-button" onClick={() => handleOpenModal(position)}>
         <i className="fa-solid fa-plus" />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect  } from 'react';
+import { useState, useEffect  } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { addVaultToWarehouseThunk, getAllWarehouseVaultsThunk, getWarehouseInfoThunk} from '../../../store/warehouse';
@@ -12,6 +12,8 @@ import { FormGroup, FormLabel } from '@mui/material';
 import "./AddVaultModal.css"
 import MiniWareHouse from './MiniWareHouse';
 import { getAllFieldsThunk, getFieldThunk } from '../../../store/field';
+import { addOrderThunk } from '../../../store/order';
+
 
 
 export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, updateSelectedFieldVaults}) {
@@ -76,6 +78,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
         setIsSubmitting(true);
 
         try {
+        // Add Cusomter instance if name can't be found in my db
           const lowercaseCustomerName = customer_name.toLowerCase();
           let newCustomer;
           const search = customers.find(
@@ -86,6 +89,28 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
               name: customer_name,
             };
             newCustomer = await dispatch(addCustomerThunk(customerData));
+          }
+
+        // Add Order instance if Order # can't be found in my db
+          const doesOrderNumberAlreadyExist = (orderNumber) => {
+            if (vaultObj && vaultObj.vaults) {
+              return vaultObj.vaults.some((vault) => vault.order_number === orderNumber);
+            }
+            return false;
+          };
+          
+          const orderNumberExists = doesOrderNumberAlreadyExist(order_number);
+          
+          if (orderNumberExists) {
+            console.log(`Order number ${order_number} already exists.`);
+            setIsSubmitting(false);
+            return;
+          } else {
+            console.log(`Order number ${order_number} is unique.`);
+            const orderData = {
+              order_number: order_number,
+            };
+            await dispatch(addOrderThunk(orderData));
           }
 
           // Check if Vault # already exists
@@ -119,21 +144,21 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
           };
 
         const newVault = await dispatch(addVaultThunk(vaultData));
-        const updatedVault = await dispatch(addVaultToWarehouseThunk(newVault.id));
+        // const updatedVault = await dispatch(addVaultToWarehouseThunk(newVault.id));
 
-        // Ensure that addVaultToWarehouseThunk returns the updated vault
-          if (updatedVault) {
-            const updateTMBThing = await updateTMB(updatedVault);
-            const updateSelectedFieldVaultsThing = await updateSelectedFieldVaults(updatedVault);
-          } else {
-            console.error('updatedVault is null or undefined');
-          }
+        // // Ensure that addVaultToWarehouseThunk returns the updated vault
+        //   if (updatedVault) {
+        //     const updateTMBThing = await updateTMB(updatedVault);
+        //     const updateSelectedFieldVaultsThing = await updateSelectedFieldVaults(updatedVault);
+        //   } else {
+        //     console.error('updatedVault is null or undefined');
+        //   }
       
-        // Step 4: Fetch other data (if needed)
-        const getWarehouseInfoDispatch = await dispatch(getWarehouseInfoThunk());
+        // // Step 4: Fetch other data (if needed)
+        // const getWarehouseInfoDispatch = await dispatch(getWarehouseInfoThunk());
 
-        onClose(newVault);
-        setIsSubmitting(false);
+        // onClose(newVault);
+        // setIsSubmitting(false);
         } catch (error) {
           console.error('Error in handleSubmit:', error);
           setIsSubmitting(false);

@@ -1,17 +1,17 @@
 const GET_ORDER = "order/GET_ORDER";
 const GET_ALL_ORDERS = "order/GET_ALL_ORDERS";
 const ADD_ORDER = "order/ADD_ORDER";
-const UPDATE_ORDER_NUMBER = "order/UPDATE_ORDER_NUMBER";
+// const UPDATE_ORDER_NUMBER = "order/UPDATE_ORDER_NUMBER";
 
-// const getOrderAction = (order) => ({
-//   type: GET_ORDER,
-//   order,
-// });
+const getOrderAction = (order) => ({
+  type: GET_ORDER,
+  order,
+});
 
-// const addOrderAction = (order) => ({
-//   type: ADD_ORDER,
-//   order,
-// });
+const addOrderAction = (order) => ({
+  type: ADD_ORDER,
+  order,
+});
 
 // const updateOrderNumberAction = (orderId, newOrderNumber) => ({
 //   type: UPDATE_ORDER_NUMBER,
@@ -67,47 +67,51 @@ export const getAllOrdersThunk = () => async (dispatch) => {
 //   }
 // };
 
-// export const getOrderThunk = (orderId) => async (dispatch) => {
-//   try {
-//     const res = await fetch(`/api/orders/${orderId}`); // Adjust the API endpoint
-//     if (res.ok) {
-//       const data = await res.json();
-//       dispatch(getOrderAction(data));
-//       return data;
-//     } else {
-//       const err = await res.json();
-//       return err;
-//     }
-//   } catch (error) {
-//     console.error("Error fetching order:", error);
-//     return error;
-//   }
-// };
+export const getOrderThunk = (orderId) => async (dispatch) => {
+  try {
+    const res = await fetch(`/api/orders/${orderId}`); // Adjust the API endpoint
+    if (res.ok) {
+      const data = await res.json();
+      dispatch(getOrderAction(data));
+      return data;
+    } else {
+      const err = await res.json();
+      return err;
+    }
+  } catch (error) {
+    console.error("Error fetching order:", error);
+    return error;
+  }
+};
 
-// export const addOrderThunk = (orderData) => async (dispatch) => {
-//   try {
-//     const res = await fetch('/api/orders/', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify(orderData),
-//     });
+export const addOrderThunk = (orderData) => async (dispatch) => {
+  console.log("🎾 in order thunk", orderData)
+  try {
+    const res = await fetch('/api/orders/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(orderData),
+    });
 
-//     if (res.ok) {
-//       const data = await res.json();
-//       dispatch(addOrderAction(data)); // Update the state with the new order
-//       return data;
-//     } else {
-//       const err = await res.json();
-//       console.error("Error adding order:", err);
-//       return err;
-//     }
-//   } catch (error) {
-//     console.error("Error adding order:", error);
-//     return error;
-//   }
-// };
+    if (res.ok) {
+      const data = await res.json();
+      console.log("⚾️ res ok", data)
+      dispatch(addOrderAction(data)); // Update the state with the new order
+      return data;
+    } else {
+      const err = await res.json();
+      console.log("🏀 res not ok", err)
+
+      console.error("Error adding order:", err);
+      return err;
+    }
+  } catch (error) {
+    console.error("Error adding order:", error);
+    return error;
+  }
+};
 
 const initialState = {
   orders: {},
@@ -133,14 +137,14 @@ const orderReducer = (state = initialState, action) => {
     //     },
     //     currentOrder: action.order,
     //   };
-    // case ADD_ORDER:
-    //   return {
-    //     ...state,
-    //     orders: {
-    //       ...state.orders,
-    //       [action.order.id]: action.order,
-    //     },
-    //   };
+    case ADD_ORDER:
+      return {
+        ...state,
+        orders: {
+          ...state.orders,
+          [action.order.id]: action.order,
+        },
+      };
     // case UPDATE_ORDER_NUMBER:
     //   const updatedOrder = { ...state.orders[action.orderId], orderNumber: action.newOrderNumber };
     //   return {
