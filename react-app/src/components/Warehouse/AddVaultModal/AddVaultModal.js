@@ -18,7 +18,8 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
     const dispatch = useDispatch();
     const customersObj = useSelector(state => state.customer.customers)
     const vaultObj = useSelector(state => state.vault.vaults);
-
+    const fields = useSelector(state => state.field.fields)
+    const field = useSelector(state => state.field.currentField)
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [customers, setCustomers] = useState([]);
     const [customer_name, setCustomerName] = useState('');
@@ -37,6 +38,8 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
     useEffect(() => {
         dispatch(getAllCustomersThunk());
         dispatch(getAllVaultsThunk());
+        dispatch(getAllFieldsThunk());
+        dispatch(getFieldThunk(selectedField.id));
     }, [dispatch]);
     
     useEffect(() => {
@@ -201,7 +204,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
                         onChange={(e) => setVaultType(e.target.value)}
                     >
                         <option value="S">Standard</option>
-                        {selectedField.vaults.length == 2 ? '' : <option value="T">Tall</option>}
+                        {field.vaults.length == 2 ? '' : <option value="T">Tall</option>}
                     </select>
                 </FormGroup>
                 </div>
