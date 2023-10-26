@@ -1,21 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AddVaultButton from "./AddVaultButton";
 import VaultInstance from "../VaultInstance";
+import { useDispatch, useSelector } from "react-redux";
 
-const RenderTMB = ({ field, top, middle, bottom, handleStageClick, handleOpenModal, handleEditClick }) => {
+import { getFieldThunk } from "../../store/field";
+
+const RenderTMB = ({ selectedField, top, middle, bottom, handleStageClick, handleOpenModal, handleEditClick }) => {
+  const dispatch = useDispatch();
+  const fieldState = useSelector(state => state.field.currentField)
   const onlyBottom = !top && !middle && !bottom;
   const onlyMiddle = !top && !middle && bottom;
   const onlyTop = !top && middle && bottom;
 
-  // console.log("🍋 ", field)
+  useEffect(() => {
+    dispatch(getFieldThunk(selectedField.id));
+  }, [dispatch])
+
+  useEffect(() => {
+    console.log("🫖 fieldState", fieldState)
+  }, [fieldState])
 
   return (
     <>
       <div className="selected-field-vaults-tmb">
         <div className="top">
           <span className="position">T</span>
-          {onlyTop && !field.full ? (
-            <AddVaultButton position="T" handleOpenModal={handleOpenModal} />
+          {onlyTop && fieldState && !fieldState.full ? (
+            <AddVaultButton field={fieldState} position="T" handleOpenModal={handleOpenModal} />
           ) : top ? (
             <VaultInstance position="T" vault={top} handleStageClick={handleStageClick} handleEditClick={handleEditClick}/>
           ) : (

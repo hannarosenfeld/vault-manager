@@ -11,12 +11,15 @@ import CloseIcon from '@mui/icons-material/Close';
 import { FormGroup, FormLabel } from '@mui/material';
 import "./AddVaultModal.css"
 import MiniWareHouse from './MiniWareHouse';
+import { getAllFieldsThunk, getFieldThunk } from '../../../store/field';
 
 
 export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, updateSelectedFieldVaults}) {
     const dispatch = useDispatch();
     const customersObj = useSelector(state => state.customer.customers)
     const vaultObj = useSelector(state => state.vault.vaults);
+    const fields = useSelector(state => state.field.fields)
+    const field = useSelector(state => state.field.currentField)
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [customers, setCustomers] = useState([]);
@@ -34,7 +37,13 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
     }, [customersObj]);
 
     useEffect(() => {
+        console.log("🎂 field", field)
+    }, [field])
+
+    useEffect(() => {
         dispatch(getAllCustomersThunk())
+        dispatch(getAllFieldsThunk())
+        dispatch(getFieldThunk(selectedField.id))
     }, [dispatch]);
     
     useEffect(() => {
@@ -126,9 +135,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
           }
       
         // Step 4: Fetch other data (if needed)
-        const getAllWarehouseVaultsDispatch = await dispatch(getAllWarehouseVaultsThunk());
         const getWarehouseInfoDispatch = await dispatch(getWarehouseInfoThunk());
-        const getAllVaultsDispatch = await dispatch(getAllVaultsThunk());
 
         onClose(newVault);
         setIsSubmitting(false);
@@ -202,8 +209,6 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
                         onChange={(e) => setVaultType(e.target.value)}
                     >
                         <option value="S">Standard</option>
-                        {console.log("🐥 selectedField", selectedField)}
-                        {console.log("🐥 vaults", selectedField.vaults.length)} 
                         {selectedField.vaults.length < 2 ? <option value="T">Tall</option> : ''}
                     </select>
                 </FormGroup>

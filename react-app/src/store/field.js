@@ -24,7 +24,7 @@ const getAllFieldsAction = (fields) => ({
 // Thunk action creator for getting a single field
 export const getFieldThunk = (fieldId) => async (dispatch) => {
   try {
-    const res = await fetch(`/api/fields/${fieldId}`); // Adjust the API endpoint
+    const res = await fetch(`/api/fields/${fieldId}`);
     if (res.ok) {
       const data = await res.json();
       dispatch(getFieldAction(data));

@@ -152,7 +152,7 @@ export default function Warehouse () {
         <div className="warehouse-wrapper">
             <div className="field-info">
             {selectedField ? (
-                <RenderTMB field={selectedField} top={top} middle={middle} bottom={bottom} handleStageClick={handleStageClick} handleOpenModal={handleOpenModal} />
+                <RenderTMB selectedField={selectedField} top={top} middle={middle} bottom={bottom} handleStageClick={handleStageClick} handleOpenModal={handleOpenModal} />
           ) : (
                 <div>
                     Select a field to view its info
