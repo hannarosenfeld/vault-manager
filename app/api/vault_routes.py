@@ -109,5 +109,7 @@ def manage_vault(id):
 
     if request.method == 'DELETE':
         db.session.delete(vault)
+        field = Field.query.get(vault.field_id)
+        field.full = False
         db.session.commit()
         return {'message': 'Vault deleted successfully'}
