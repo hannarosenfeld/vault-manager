@@ -58,9 +58,9 @@ def add_vault():
             warehouse_id=1,
         )
         
+        field = Field.query.get(new_vault.field_id)
         print("🌸 field", field.to_dict())
         
-        field = Field.query.get(new_vault.field_id)
         if field.vaults.count() == 1:
             for vault in field.vaults:
                 print("🌸 vault: ", vault.to_dict())
