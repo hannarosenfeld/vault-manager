@@ -104,9 +104,9 @@ export default function Warehouse () {
           (position === "M" && !top) ||
           (position === "B" && !middle) 
         ) {
-          await setSelectedVaultToStage(vault);
-          await setPosition(position)
           console.log("Staging Allowed!");
+          await setSelectedVaultToStage(vault);
+          await setPosition(position);
         } else {
           console.log("Staging not allowed for this vault position.");
         }
