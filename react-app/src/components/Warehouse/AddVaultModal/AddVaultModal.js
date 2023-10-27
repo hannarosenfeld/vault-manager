@@ -16,7 +16,7 @@ import { addOrderThunk } from '../../../store/order';
 
 
 
-export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, updateSelectedFieldVaults}) {
+export default function AddVaultModal({ onClose, selectedField, tmb, updateSelectedFieldVaults}) {
     const dispatch = useDispatch();
     const customersObj = useSelector(state => state.customer.customers)
     const vaultObj = useSelector(state => state.vault.vaults);
@@ -144,7 +144,6 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateTMB, 
 
         // Ensure that addVaultToWarehouseThunk returns the updated vault
           if (updatedVault) {
-            const updateTMBThing = await updateTMB(updatedVault);
             const updateSelectedFieldVaultsThing = await updateSelectedFieldVaults(updatedVault);
           } else {
             console.error('updatedVault is null or undefined');

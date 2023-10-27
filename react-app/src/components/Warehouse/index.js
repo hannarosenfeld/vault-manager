@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import Modal from '@mui/material/Modal';
 import { getAllWarehouseVaultsThunk, getWarehouseInfoThunk } from "../../store/warehouse";
 import { getAllVaultsThunk } from "../../store/vault"
@@ -12,21 +11,17 @@ import "./Warehouse.css"
 
 export default function Warehouse () {
     const dispatch = useDispatch();
-    const history = useHistory();
     const rows = useSelector(state => state.warehouse.warehouseRows);
     const vaults = useSelector(state => state.warehouse.warehouseVaults);
     const searchmode = useSelector(state => state.warehouse.searchmode);
     const rowsArr = Object.values(rows);
     const [selectedField, setSelectedField] = useState(null);
-    const [selectedRow, setSelectedRow] = useState(null)
-    const [selectedFieldIndex, setSelectedFieldIndex] = useState(0);
     let [top, setTop] = useState(null);
     let [middle, setMiddle] = useState(null);
     let [bottom, setBottom] = useState(null);
     const [position, setPosition] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] = useState(false);
-    const [updatedVault, setUpdatedVault] = useState(null);
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
     const [topmostVault, setTopmostVault] = useState(null);
 
@@ -72,9 +67,6 @@ export default function Warehouse () {
       
     const handleFieldClick = async (field, row, index) => {
         await setSelectedField(field);
-        await setSelectedRow(row.id);
-        await setSelectedFieldIndex(index + 1);
-
         await setTop(null)
         await setMiddle(null)
         await setBottom(null)
@@ -222,7 +214,6 @@ export default function Warehouse () {
                         onClose={handleCloseModal}
                         selectedField={selectedField}
                         tmb={position}
-                        updateTMB={setUpdatedVault}
                         updateSelectedFieldVaults={updateSelectedFieldVaults} // Pass the function here
                     />
                 </>
