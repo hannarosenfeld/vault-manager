@@ -83,6 +83,7 @@ def remove_vault_from_warehouse(vault_id):
         return {'errors': 'Warehouse not found'}, 404
 
     vault = Vault.query.get(vault_id)
+    field = Field.query.get(vault.field_id)
 
     if not vault:
         return {'errors': 'Vault not found'}, 404
@@ -91,6 +92,7 @@ def remove_vault_from_warehouse(vault_id):
         return {'errors': 'Vault is not in the warehouse'}, 400
 
     warehouse.warehouse_vaults.remove(vault)
+    field.full = False
     db.session.commit()
 
     return {'message': 'Vault removed from the warehouse successfully'}

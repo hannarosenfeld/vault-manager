@@ -3,18 +3,26 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { addVaultToStageThunk } from '../../../store/stage';
 import { removeVaultFromWarehouseThunk, getWarehouseInfoThunk, getAllWarehouseVaultsThunk } from '../../../store/warehouse';
-import { removeVaultFromFieldThunk } from '../../../store/field';
 import "./ConfirmStaging.css"
 
 
-export default function ConfirmStaging({ vault, vaultCustomer, vaultNumber, vaultId, onClose, fieldId, updateVaultPosition, tmb}) {
+export default function ConfirmStaging({ vault, vaultCustomer, vaultNumber, vaultId, onClose, fieldId, updateVaultPosition, tmb, updateSelectedFieldVaults}) {
     const dispatch = useDispatch();
  
     const handleSubmit = async (e) => {
         e.preventDefault();
         updateVaultPosition(vault.position);
         const removeVault = await dispatch(removeVaultFromWarehouseThunk(vaultId))        
-        const addVaultToStage = await dispatch(addVaultToStageThunk(vaultId));
+        const updatedVault = await dispatch(addVaultToStageThunk(vaultId));
+
+        // Ensure that addVaultToWarehouseThunk returns the updated vault
+          if (updatedVault) {
+            const updateSelectedFieldVaultsThing = await updateSelectedFieldVaults(updatedVault);
+          } else {
+            console.error('updatedVault is null or undefined');
+          }
+          
+        const getWarehouseInfoDispatch = await dispatch(getWarehouseInfoThunk());
 
         onClose();
     }
