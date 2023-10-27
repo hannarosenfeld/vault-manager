@@ -192,8 +192,5 @@
   .suggested-customers-container {
     max-width: 100%;
   }
-  .add-vault-container {
-   max-height: 80vh; /* Set a maximum height for the modal */
-  }
 }
 
