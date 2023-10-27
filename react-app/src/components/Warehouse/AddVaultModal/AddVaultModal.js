@@ -30,27 +30,6 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
     const [suggestedCustomers, setSuggestedCustomers] = useState([]);
     const [vaultType, setVaultType] = useState('S');
     const [errors, setErrors] = useState([]);
-    const [maxHeight, setMaxHeight] = useState(0);
-
-    useEffect(() => {
-      function updateMaxHeight() {
-        const windowHeight = window.innerHeight;
-        // You can adjust the percentage as needed (e.g., 0.8 for 80% of the window height)
-        const calculatedMaxHeight = windowHeight * 0.8;
-        setMaxHeight(calculatedMaxHeight);
-      }
-  
-      // Add an event listener to update max height when the window is resized
-      window.addEventListener("resize", updateMaxHeight);
-  
-      // Initial calculation
-      updateMaxHeight();
-  
-      // Remove the event listener when the component unmounts
-      return () => {
-        window.removeEventListener("resize", updateMaxHeight);
-      };
-    }, []);
 
     useEffect(() => {
         if (customersObj && customersObj.customers) {
@@ -190,7 +169,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
     
     return (
       <div className='add-vault-wrapper'>
-        <Box className="add-vault-container" style={{ maxHeight: `${maxHeight}px` }}>
+        <Box className="add-vault-container">
             <div className="close-icon-container">
                 <IconButton
                     edge="end"
