@@ -4,6 +4,7 @@ import { Redirect } from "react-router-dom";
 import { signUp } from "../../store/session";
 import './SignupForm.css';
 
+
 function SignupFormPage() {
   const dispatch = useDispatch();
   const sessionUser = useSelector((state) => state.session.user);
@@ -13,7 +14,7 @@ function SignupFormPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState([]);
 
-  if (sessionUser) return <Redirect to="/" />;
+  if (!sessionUser.username === "admin") return <Redirect to="/" />;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,6 +29,7 @@ function SignupFormPage() {
   };
 
   return (
+    <div className="signup-wrapper">
     <div className="signup-container">
       <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
@@ -72,6 +74,7 @@ function SignupFormPage() {
         </label>
         <button type="submit">Sign Up</button>
       </form>
+    </div>
     </div>
   );
 }

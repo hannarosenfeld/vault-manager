@@ -6,7 +6,7 @@ import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
 import { Drawer, List, ListItem, ListItemText, Button } from "@mui/material";
-
+import SignupFormPage from "../SignupFormPage";
 import "./Navigation.css";
 
 function ProfileButton({ user }) {
@@ -52,6 +52,16 @@ function ProfileButton({ user }) {
               {user.username === "admin" ? <span style={{fontSize: "1.5em"}} class="material-symbols-outlined">shield_person</span> : ''}
               <ListItemText primary={user.username}/>
               </ListItem>
+              <ListItem
+                button
+                onClick={closeDrawer}
+                component={NavLink}
+                to="/add-user"
+                style={{ display: "flex", gap: "5px" }}
+              >
+                <i class="fa-solid fa-plus"></i>
+                Add User
+              </ListItem>
               <ListItem 
                 button 
                 onClick={closeDrawer} // Close the drawer when "Stage" is clicked
@@ -69,7 +79,7 @@ function ProfileButton({ user }) {
                 {/* <i class="fa-solid fa-plus"></i> */}
                 <ListItemText primary="Stage" />
               </ListItem>           
-              <ListItem >
+              <ListItem>
                 <Button id="logout-button" variant="outlined" style={{color: "var(--lightgrey)", borderColor: "var(--lightgrey)"}} onClick={handleLogout}>Log Out</Button>
               </ListItem>
             </List>

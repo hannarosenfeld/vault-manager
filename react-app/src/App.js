@@ -44,11 +44,11 @@ function App() {
             <Route path="/stage">
               <StagedVaults />
             </Route>
+            <Route path="/add-user">
+              <SignupFormPage />
+            </Route>
             <Route path="/login" >
               <LoginFormPage />
-            </Route>
-            <Route path="/signup">
-              <SignupFormPage />
             </Route>
           </Switch>
         </>
