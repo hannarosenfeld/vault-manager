@@ -13,7 +13,7 @@ const RenderTMB = ({ selectedField, top, middle, bottom, handleStageClick, handl
   const onlyTop = !top && middle && bottom;
 
   useEffect(() => {
-    dispatch(getFieldThunk(selectedField.id));
+    dispatch(getFieldThunk(selectedField?.id));
   }, [dispatch])
 
   useEffect(() => {
