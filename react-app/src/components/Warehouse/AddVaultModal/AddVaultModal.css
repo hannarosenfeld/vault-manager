@@ -21,7 +21,8 @@
     max-width: 1000px;
     z-index: 0;
     font-size: 0.8em;
-    max-height: 1040px;
+    max-height: 80vh; /* Set a maximum height for the modal */
+    overflow-y: auto; /* Add scrollbars if content exceeds the maximum height */
 }
 
 .add-vault-form {
@@ -190,6 +191,9 @@
 @media (max-width: 768px) {
   .suggested-customers-container {
     max-width: 100%;
+  }
+  .add-vault-container {
+    max-height: 100vh; /* Adjust maximum height for smaller screens (full viewport height) */
   }
 }
 
