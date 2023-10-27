@@ -49,7 +49,8 @@ function ProfileButton({ user }) {
           {user ? (
             <List>
               <ListItem>
-                <ListItemText primary={user.username}/>
+              {user.username === "admin" ? <span style={{fontSize: "1.5em"}} class="material-symbols-outlined">shield_person</span> : ''}
+              <ListItemText primary={user.username}/>
               </ListItem>
               <ListItem 
                 button 
@@ -69,7 +70,7 @@ function ProfileButton({ user }) {
                 <ListItemText primary="Stage" />
               </ListItem>           
               <ListItem >
-                <Button variant="outlined" style={{color: "var(--lightgrey)", borderColor: "var(--lightgrey)"}} onClick={handleLogout}>Log Out</Button>
+                <Button id="logout-button" variant="outlined" style={{color: "var(--lightgrey)", borderColor: "var(--lightgrey)"}} onClick={handleLogout}>Log Out</Button>
               </ListItem>
             </List>
           ) : (
