@@ -1,14 +1,27 @@
+.add-vault-wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
+  align-content: center;
+}
+
 .add-vault-container {
     display: flex;
     flex-direction: column;
-    max-width: 800px;
     padding: 10px 20px;
     margin: 0 auto;
     border: 1px solid #ccc;
     background-color: #f5f5f5;
     height: 100vh;
+    min-width: 60%;
+    max-width: 1000px;
     z-index: 0;
     font-size: 0.8em;
+    max-height: 1040px;
 }
 
 .add-vault-form {

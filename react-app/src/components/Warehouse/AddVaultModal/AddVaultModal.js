@@ -168,6 +168,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
     };
     
     return (
+      <div className='add-vault-wrapper'>
         <Box className="add-vault-container">
             <div className="close-icon-container">
                 <IconButton
@@ -187,8 +188,8 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
                 </div>
             </div>
             <form className="add-vault-form" onSubmit={handleSubmit}>
-                <div style={{display: "flex", gap: "0.5em", justifyContent: "space-between"}}>
-                <FormGroup style={{width: "80%"}}>
+                <div style={{display: "flex", gap: "0.5em", justifyContent: "space-between", alignItems: "center", alignContent: "center"}}>
+                <FormGroup style={{width: "75%"}}>
                     <div className="customer-input-container">
                         <FormLabel>Customer Name</FormLabel>
                         <input
@@ -256,5 +257,6 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
                 <button type="submit" disabled={isSubmitting}>Submit</button>
             </form>
         </Box>
+        </div>
     )
 }

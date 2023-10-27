@@ -2,17 +2,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from "react";
 import { getFieldThunk } from "../../store/field";
 import { Link } from "react-router-dom"
-import { useHistory } from 'react-router-dom';
+
 
 const VaultInstance = ({ vault, position, handleStageClick, handleEditClick }) => {
-  const history = useHistory();
   const field = useSelector(state => state.field.currentField);
   const dispatch = useDispatch();
   const [topmostPosition, setTopmostPosition] = useState(""); // State variable to track topmost position
 
   useEffect(() => {
     dispatch(getFieldThunk(vault.field_id));
-  }, []);
+  }, [dispatch, handleStageClick]);
 
   useEffect(() => {
     if (field && field.vaults && field.vaults.length > 0) {
