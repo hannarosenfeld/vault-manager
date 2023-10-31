@@ -39,8 +39,8 @@ def single_vault(id):
 @login_required
 def add_vault():
     form = VaultForm()
-    form['csrf_token'].data = request.cookies['csrf_token']
-
+    form['csrf_token'].data = request.cookies['csrf_token'
+]
     if form.validate_on_submit():
         customer_name = form.data['customer_name']
         customer = Customer.query.filter_by(name=customer_name).first()
@@ -61,7 +61,7 @@ def add_vault():
         field = Field.query.get(new_vault.field_id)
         print("🌸 field", field.to_dict())
         
-        if field.vaults.count() == 1:
+        if field.vaults.count() == 2:
             print("🐓 field.vaults.count() == 1")
             for vault in field.vaults:
                 print("🌸 vault: ", vault.to_dict())

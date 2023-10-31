@@ -30,6 +30,7 @@ def seed():
         undo_customers()
         undo_users()
         undo_warehouse()
+        # when ready to go live, add conditional that checks of those rows exist, plus remove undo_.. commands
     seed_users()
     seed_customers()
     seed_orders()
