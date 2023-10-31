@@ -23,6 +23,7 @@
     font-size: 0.8em;
     max-height: 1040px;
     overflow-y: auto; /* Add scrollbars if content exceeds the maximum height */
+    margin-top: -4.5em;
 }
 
 .add-vault-form {
@@ -191,6 +192,14 @@
 @media (max-width: 768px) {
   .suggested-customers-container {
     max-width: 100%;
+  }
+}
+
+@media (min-width: 769px) {
+  .add-vault-container {
+    padding: 2em;
+    min-height: 99vh;
+    margin-top: 0;
   }
 }
 

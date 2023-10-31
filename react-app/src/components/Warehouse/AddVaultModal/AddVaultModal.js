@@ -36,7 +36,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
       function updateMaxHeight() {
         const windowHeight = window.innerHeight;
         // You can adjust the percentage as needed (e.g., 0.8 for 80% of the window height)
-        const calculatedMaxHeight = windowHeight * 0.8;
+        const calculatedMaxHeight = windowHeight * 0.9;
         setMaxHeight(calculatedMaxHeight);
       }
   
