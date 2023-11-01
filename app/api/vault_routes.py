@@ -66,7 +66,7 @@ def add_vault():
             print("🐓 field.vaults.count() == 1")
             for vault in field.vaults:
                 print("🌸 vault: ", vault.to_dict())
-                if vault.type == "T" or new_vault.type == "T":
+                if vault.type == "T" and new_vault.type == "T":
                     field.full = True
 
         db.session.add(new_vault)
