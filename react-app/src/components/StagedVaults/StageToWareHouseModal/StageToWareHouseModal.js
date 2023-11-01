@@ -108,7 +108,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
               <div className="warehouse-wrapper">
                 <div className="field-info">
                   {selectedField ? (
-                    <RenderTMB top={top} middle={middle} bottom={bottom} handleOpenModal={openConfirmationModal} />
+                    <RenderTMB top={top} middle={middle} bottom={bottom} handleOpenModal={openConfirmationModal} selectedField={selectedField}/>
                   ) : (
                     <div>
                       Select a field to view its info
