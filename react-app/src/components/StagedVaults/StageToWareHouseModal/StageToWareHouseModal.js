@@ -117,7 +117,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
             <div>
               <div className="vault-info">
                 <h3>Selected Vault Information</h3>
-                <p><b>Name:</b> {selectedVault.customer.name}</p>
+                <p><b>Customer:</b> {selectedVault.customer.name}</p>
                 <p><b>Vault ID:</b> {selectedVault.vault_id}</p>
               </div>
               <div className="warehouse-wrapper">
