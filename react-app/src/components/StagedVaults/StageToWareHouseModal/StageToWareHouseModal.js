@@ -91,7 +91,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
     let sortedFieldsArr;
 
     for (let field of fields) {
-        sortedFields[field.id] = field
+        sortedFields[id] = field
     }
 
     sortedFieldsArr = Object.values(sortedFields)
@@ -128,7 +128,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
                   )}
                 </div>
                 <div className="warehouse">
-                  {rowsArr?.map(row => (
+                {sortFields(row.fields).map((field, index) => (
                     <div className="row" key={row.id}>
                       <div className="fields">
                         {row.fields.map((field, index) => (
