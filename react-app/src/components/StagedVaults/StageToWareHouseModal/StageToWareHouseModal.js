@@ -85,7 +85,19 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
       </div>
     );
   };
+  
+  const sortFields = (fields) => {
+    const sortedFields = {};
+    let sortedFieldsArr;
 
+    for (let field of fields) {
+        sortedFields[field.id] = field
+    }
+
+    sortedFieldsArr = Object.values(sortedFields)
+
+    return sortedFieldsArr
+}
   return (
     <div className="stage-to-warehouse-modal-wrapper">
       <div className="stage-to-warehouse-modal-content">
@@ -119,7 +131,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
                   {rowsArr?.map(row => (
                     <div className="row" key={row.id}>
                       <div className="fields">
-                        {row.fields.map((field, index) => (
+                      {sortFields(row.fields).map((field, index) => (
                           <div
                             className="field"
                             key={field.id}
