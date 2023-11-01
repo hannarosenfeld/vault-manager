@@ -29,6 +29,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   let vaultsArr;
 
   useEffect(() => {
+    const getAllVaults = dispatch(getAllVaultsThunk())
     dispatch(getAllWarehouseVaultsThunk());
     dispatch(getWarehouseInfoThunk());
   }, []);
@@ -95,6 +96,8 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
     }
 
     sortedFieldsArr = Object.values(sortedFields)
+
+    console.log("🍧 sortedFieldsArr", sortedFieldsArr)
 
     return sortedFieldsArr
 }
