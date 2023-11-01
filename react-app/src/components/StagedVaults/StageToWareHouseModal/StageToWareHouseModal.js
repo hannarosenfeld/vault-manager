@@ -91,7 +91,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
     let sortedFieldsArr;
 
     for (let field of fields) {
-        sortedFields[id] = field
+        sortedFields[field.id] = field
     }
 
     sortedFieldsArr = Object.values(sortedFields)
