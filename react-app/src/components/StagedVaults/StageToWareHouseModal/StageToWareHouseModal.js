@@ -131,7 +131,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
                   {rowsArr?.map(row => (
                     <div className="row" key={row.id}>
                       <div className="fields">
-                      {sortFields(row.fields).map((field, index) => (
+                      {row.fields.map((field, index) => (
                           <div
                             className="field"
                             key={field.id}
