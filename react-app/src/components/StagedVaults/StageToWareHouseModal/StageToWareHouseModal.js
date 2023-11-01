@@ -128,10 +128,10 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
                   )}
                 </div>
                 <div className="warehouse">
-                {sortFields(row.fields).map((field, index) => (
+                  {rowsArr?.map(row => (
                     <div className="row" key={row.id}>
                       <div className="fields">
-                        {row.fields.map((field, index) => (
+                      {sortFields(row.fields).map((field, index) => (
                           <div
                             className="field"
                             key={field.id}
