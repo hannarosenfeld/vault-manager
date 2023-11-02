@@ -85,7 +85,6 @@ export const getOrderThunk = (orderId) => async (dispatch) => {
 };
 
 export const addOrderThunk = (orderData) => async (dispatch) => {
-  console.log("🎾 in order thunk", orderData)
   try {
     const res = await fetch('/api/orders/', {
       method: 'POST',
@@ -97,13 +96,10 @@ export const addOrderThunk = (orderData) => async (dispatch) => {
 
     if (res.ok) {
       const data = await res.json();
-      console.log("⚾️ res ok", data)
       dispatch(addOrderAction(data)); // Update the state with the new order
       return data;
     } else {
       const err = await res.json();
-      console.log("🏀 res not ok", err)
-
       console.error("Error adding order:", err);
       return err;
     }

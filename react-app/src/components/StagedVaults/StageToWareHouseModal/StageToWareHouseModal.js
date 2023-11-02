@@ -97,8 +97,6 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
 
     sortedFieldsArr = Object.values(sortedFields)
 
-    console.log("🍧 sortedFieldsArr", sortedFieldsArr)
-
     return sortedFieldsArr
 }
   return (

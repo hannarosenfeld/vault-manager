@@ -32,14 +32,6 @@ export default function Warehouse () {
     }, [dispatch])
 
     useEffect(() => {
-        console.log("🪻 in warehouse. vaults: ", vaults)
-    }, [vaults])
-
-    useEffect(() => {
-        console.log("🌸 selected field: ", selectedField)
-    }, [selectedField])
-
-    useEffect(() => {
         if (selectedVaultToStage) {
             openConfirmStagingModal();
         }
@@ -104,11 +96,11 @@ export default function Warehouse () {
           (position === "M" && !top) ||
           (position === "B" && !middle) 
         ) {
-          console.log("Staging Allowed!");
+          ("Staging Allowed!");
           await setSelectedVaultToStage(vault);
           await setPosition(position);
         } else {
-          console.log("Staging not allowed for this vault position.");
+          ("Staging not allowed for this vault position.");
         }
       };
 
