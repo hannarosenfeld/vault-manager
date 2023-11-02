@@ -20,41 +20,19 @@ const RenderTMB = ({ selectedField, top, middle, bottom, handleStageClick, handl
     console.log("🫖 fieldState", fieldState)
   }, [fieldState])
 
-  const RenderHelper = (fieldState, onlyTop, top) => {
-    if (fieldState.full) {
-      return (
-        <div style={{ color: "red", display: "flex", alignItems: "center" }}>
-        <span className="material-symbols-outlined">warning</span>
-        This field is full
-      </div>
-      )
-    }
-    if (onlyTop && !fieldState.full) {
-      return (
-        <AddVaultButton
-        field={selectedField}
-        position="T"
-        handleOpenModal={handleOpenModal}
-      />
-      )
-    }
-    if (top ) {
-      return (
-        <VaultInstance
-        position="T"
-        vault={top}
-        handleStageClick={handleStageClick}
-        handleEditClick={handleEditClick}
-      />
-      )
-    }
-  }
   return (
     <>
       <div className="selected-field-vaults-tmb">
         <div className="top">
           <span className="position">T</span>
-          <RenderHelper fieldState={fieldState} top={top} onlyTop={onlyTop}/>
+          {fieldState.full && <div style={{color: "red"}}><span class="material-symbols-outlined">warning</span>Field is full</div>}
+          {onlyTop && fieldState && !fieldState.full ? (
+            <AddVaultButton field={fieldState} position="T" handleOpenModal={handleOpenModal} />
+          ) : top ? (
+            <VaultInstance position="T" vault={top} handleStageClick={handleStageClick} handleEditClick={handleEditClick}/>
+          ) : (
+            ""
+          )}
         </div>
         <div className="middle">
           <span className="position">M</span>
