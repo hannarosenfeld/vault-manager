@@ -12,22 +12,24 @@ const RenderTMB = ({ selectedField, top, middle, bottom, handleStageClick, handl
   const onlyMiddle = !top && !middle && bottom;
   const onlyTop = !top && middle && bottom;
 
+  console.log("🍰", selectedField)
+
   useEffect(() => {
     dispatch(getFieldThunk(selectedField?.id));
   }, [dispatch])
 
-  useEffect(() => {
-    console.log("🫖 fieldState", fieldState)
-  }, [fieldState])
+  // useEffect(() => {
+  //   console.log("🫖 fieldState", fieldState)
+  // }, [fieldState])
 
   return (
     <>
       <div className="selected-field-vaults-tmb">
         <div className="top">
           <span className="position">T</span>
-          {fieldState.full && <div style={{color: "red", display: "flex", alignItems: "center"}}><span class="material-symbols-outlined">warning</span>This field is full</div>}
-          {onlyTop && fieldState && !fieldState.full ? (
-            <AddVaultButton field={fieldState} position="T" handleOpenModal={handleOpenModal} />
+          {selectedField.full && <div style={{color: "red", display: "flex", alignItems: "center"}}><span class="material-symbols-outlined">warning</span>This field is full</div>}
+          {onlyTop && selectedField && !selectedField.full ? (
+            <AddVaultButton field={selectedField} position="T" handleOpenModal={handleOpenModal} />
           ) : top ? (
             <VaultInstance position="T" vault={top} handleStageClick={handleStageClick} handleEditClick={handleEditClick}/>
           ) : (
