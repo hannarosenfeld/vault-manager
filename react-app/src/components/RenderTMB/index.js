@@ -18,6 +18,7 @@ const RenderTMB = ({ selectedField, top, middle, bottom, handleStageClick, handl
 
   useEffect(() => {
     console.log("🫖 fieldState", fieldState)
+    console.log("🌸 selectedField: ", selectedField)
   }, [fieldState])
 
   return (
