@@ -27,7 +27,7 @@ const RenderTMB = ({ selectedField, top, middle, bottom, handleStageClick, handl
         <div className="top">
           <span className="position">T</span>
           {selectedField.full && <div style={{color: "red"}}><span class="material-symbols-outlined">warning</span>Field is full</div>}
-          {onlyTop && !selectedField.full && selectedField === fieldState ? (
+          {onlyTop && !selectedField.full ? (
             <AddVaultButton field={fieldState} position="T" handleOpenModal={handleOpenModal} />
           ) : top ? (
             <VaultInstance position="T" vault={top} handleStageClick={handleStageClick} handleEditClick={handleEditClick}/>
