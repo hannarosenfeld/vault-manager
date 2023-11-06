@@ -246,7 +246,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
                         onChange={(e) => setVaultType(e.target.value)}
                     >
                         <option value="S">Standard</option>
-                        {field.vaults.length == 2 && field.vaults[0].type !== "S" && field.vaults[1].type !== "S" ? '' : <option value="T">Tall</option>}
+                        {field?.vaults?.length == 2 && field.vaults[0].type !== "S" && field.vaults[1].type !== "S" ? '' : <option value="T">Tall</option>}
                     </select>
                 </FormGroup>
                 </div>
