@@ -26,7 +26,7 @@ class Field(db.Model, UserMixin):
             'id': self.id,
             'row_id': self.row_id,
             'field_id': self.field_id,
-            'vaults': [vault.to_dict() for vault in self.vaults],
+            'vaults': [vault.id for vault in self.vaults],
             'contains_searched_customer': self.contains_searched_customer,
             'full': self.full
         }

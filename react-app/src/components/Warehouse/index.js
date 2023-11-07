@@ -9,12 +9,34 @@ import ConfirmStaging from "./ConfirmStaging";
 import "./Warehouse.css"
 
 
+function RowCreator(fields) {
+    const RowArray = [];
+
+    for (let letter of "ABCDEFGHI") {
+        RowArray.push({ fields: [], id: letter })
+    }
+
+    fields.map(field => {
+        for (let row of RowArray) {
+            if (row.id === field.row_id) {
+                row.fields.push(field)
+            }
+        }
+    })
+
+    return RowArray;
+}
+
+// [{fields : [], id: A}, {fields : [], id: B}, {fields : [], id: C}]
+
+
+
 export default function Warehouse () {
     const dispatch = useDispatch();
-    const rows = useSelector(state => state.warehouse.warehouseRows);
+    const rowsArr = RowCreator(useSelector(state => state.warehouse.warehouseFields));
     const vaults = useSelector(state => state.warehouse.warehouseVaults);
     const searchmode = useSelector(state => state.warehouse.searchmode);
-    const rowsArr = Object.values(rows);
+    // const rowsArr = Object.values(rows);
     const [selectedField, setSelectedField] = useState(null);
     let [top, setTop] = useState(null);
     let [middle, setMiddle] = useState(null);

@@ -99,6 +99,8 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
         setIsSubmitting(true);
 
         try {
+        // TODO: Do all of this in the backend !!
+        
         // Add Cusomter instance if name can't be found in my db
           const lowercaseCustomerName = customer_name.toLowerCase();
           let newCustomer;
