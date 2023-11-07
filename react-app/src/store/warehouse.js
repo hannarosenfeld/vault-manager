@@ -147,9 +147,9 @@ export const removeVaultFromWarehouseThunk = (vaultId) => async (dispatch) => {
 };
   
 const initialState = {
-  warehouseVaults: [],
+  // warehouseVaults: [],
   warehouseFields: [],
-  warehouseRows: [],
+  // warehouseRows: [],
   searchmode: null
 };
   
@@ -159,7 +159,7 @@ const warehouseReducer = (state = initialState, action) => {
     case GET_WAREHOUSE_INFO:
       return {
         ...state,
-        warehouseVaults: action.payload.warehouse_info.vaults,
+        // warehouseVaults: action.payload.warehouse_info.vaults,
         warehouseFields: action.payload.warehouse_info.fields,
         // warehouseRows: action.payload.warehouse_info.rows,
         searchmode: action.payload.warehouse_info.searchmode

@@ -7,6 +7,7 @@ import { getFieldThunk } from "../../store/field";
 
 const RenderTMB = ({ selectedField, top, middle, bottom, handleStageClick, handleOpenModal, handleEditClick }) => {
   const dispatch = useDispatch();
+  
   const fieldState = useSelector(state => state.field.currentField)
   const onlyBottom = !top && !middle && !bottom;
   const onlyMiddle = !top && !middle && bottom;

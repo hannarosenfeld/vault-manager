@@ -9,7 +9,7 @@ import ConfirmStaging from "./ConfirmStaging";
 import "./Warehouse.css"
 
 
-function RowCreator(fields) {
+export function RowCreator(fields) {
     const RowArray = [];
 
     for (let letter of "ABCDEFGHI") {
@@ -27,14 +27,11 @@ function RowCreator(fields) {
     return RowArray;
 }
 
-// [{fields : [], id: A}, {fields : [], id: B}, {fields : [], id: C}]
-
-
 
 export default function Warehouse () {
     const dispatch = useDispatch();
     const rowsArr = RowCreator(useSelector(state => state.warehouse.warehouseFields));
-    const vaults = useSelector(state => state.warehouse.warehouseVaults);
+    const vaults = useSelector(state => state.vault.vaults);
     const searchmode = useSelector(state => state.warehouse.searchmode);
     // const rowsArr = Object.values(rows);
     const [selectedField, setSelectedField] = useState(null);
@@ -94,9 +91,10 @@ export default function Warehouse () {
         await setBottom(null)
         
         if (field.vaults.length > 0) {
-            await setTop(field.vaults.find(vault => vault.position === "T"))
-            await setMiddle(field.vaults.find(vault => vault.position === "M"))
-            await setBottom(field.vaults.find(vault => vault.position === "B"))
+
+            await setTop(field.vaults.find(vault => vaults[vault].position === "T"))
+            await setMiddle(field.vaults.find(vault => vaults[vault].position === "M"))
+            await setBottom(field.vaults.find(vault => vaults[vault].position === "B"))
         }
 
         if (field.vaults.length > 0) {
@@ -166,7 +164,7 @@ export default function Warehouse () {
         <div className="warehouse-wrapper">
             <div className="field-info">
             {selectedField ? (
-                <RenderTMB selectedField={selectedField} top={top} middle={middle} bottom={bottom} handleStageClick={handleStageClick} handleOpenModal={handleOpenModal} />
+                <RenderTMB selectedField={selectedField} top={vaults[top]} middle={vaults[middle]} bottom={vaults[bottom]} handleStageClick={handleStageClick} handleOpenModal={handleOpenModal} />
           ) : (
                 <div>
                     Select a field to view its info
