@@ -23,8 +23,7 @@ def all_vaults():
     Query for all vaults and returns them in a list of vault dictionaries
     """
     vaults = Vault.query.all()
-    return {'vaults': [vault.to_dict() for vault in vaults]}
-
+    return { vault.id : vault.to_dict() for vault in vaults }
 
 @vault_routes.route('/<int:id>')
 def single_vault(id):
