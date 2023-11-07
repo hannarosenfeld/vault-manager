@@ -10,6 +10,7 @@ const VaultInstance = ({ vault, position, handleStageClick, handleEditClick }) =
   const [topmostPosition, setTopmostPosition] = useState(""); // State variable to track topmost position
 
   useEffect(() => {
+    console.log("🪀",vault)
     dispatch(getFieldThunk(vault.field_id));
   }, [dispatch, handleStageClick]);
 
