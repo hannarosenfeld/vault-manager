@@ -16,21 +16,15 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
   };
 
   useEffect(() => {
-    console.log("💖", selectedField.id);
     dispatch(getFieldThunk(selectedField?.id));
   }, [dispatch, selectedField]);
-
-  console.log("fieldstate:", fieldState);
 
   if (fieldState.vaults && Object.keys(fieldState.vaults).length !== 0) {
     fieldState.vaults.forEach((vault) => {
       let vaultState = vaults[vault];
-      console.log("🫖 vaultState", vaultState);
       fieldVaults[vaultState.position] = vaultState;
     });
   }
-
-  console.log("🍻 fieldVaults: ", fieldVaults);
 
   const onlyBottom = !fieldVaults["T"] && !fieldVaults["M"] && !fieldVaults["B"];
   const onlyMiddle =
@@ -41,8 +35,6 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
     fieldVaults["B"] &&
     !fieldVaults["M"].isFilled &&
     !fieldVaults["B"].isFilled;
-
-  console.log("🍻  ", onlyBottom, onlyMiddle, onlyTop);
 
   return (
     <>

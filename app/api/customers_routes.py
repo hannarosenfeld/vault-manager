@@ -20,7 +20,6 @@ def all_customers():
     """
     Query for all customers and returns them in a list of customer dictionaries
     """
-    print("📬 in route")
     customers = Customer.query.all()
     return {'customers': [customer.to_dict() for customer in customers]}
 
@@ -76,7 +75,6 @@ def reset_selected_customer_router(id):
     """
     Reset the selected customer and return a success message.
     """
-    print("🧼 in router")
     customer = Customer.query.get(id)
     if customer:
         customer_vaults = [vault.to_dict() for vault in customer.vaults]

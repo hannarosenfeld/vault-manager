@@ -8,8 +8,6 @@ const VaultInstance = ({ vault, position, handleStageClick, handleEditClick }) =
   const [topmostPosition, setTopmostPosition] = useState('');
   const [field, setField] = useState(null);
 
-  console.log('🍿', vault);
-
   useEffect(() => {
     // Fetch field information when component mounts
     dispatch(getFieldThunk(vault.field_id))
@@ -19,8 +17,6 @@ const VaultInstance = ({ vault, position, handleStageClick, handleEditClick }) =
       .catch((error) => {
         console.error('Error fetching field:', error);
       });
-
-    console.log('🍰 in vaultinstance component!', vault);
   }, [dispatch, vault.field_id]);
 
   useEffect(() => {

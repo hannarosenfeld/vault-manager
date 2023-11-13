@@ -65,10 +65,6 @@ export default function Warehouse () {
         }, [selectedVaultToStage]);
 
     const updateSelectedFieldVaults = async (newVault) => {
-        console.log("🐓", updateSelectedFieldVaults)
-        console.log("🐓 newVault: ", newVault)
-        console.log("🪿 selectedField: ", selectedField)
-
         if (selectedField && newVault?.field_id === selectedField.id) {
         const updatedTop = newVault.position === "T" ? newVault : top;
         const updatedMiddle = newVault.position === "M" ? newVault : middle;

@@ -58,13 +58,10 @@ def add_vault():
         )
         
         field = Field.query.get(new_vault.field_id)
-        print("🌸 field", field.to_dict())
         
         # TODO check conditionally if production or local, if local field.vaults.count() == 1
         if field.vaults.count() == 2:
-            print("🐓 field.vaults.count() == 1")
             for vault in field.vaults:
-                print("🌸 vault: ", vault.to_dict())
                 if vault.type == "T" and new_vault.type == "T":
                     field.full = True
 

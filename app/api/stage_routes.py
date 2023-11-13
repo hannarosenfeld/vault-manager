@@ -50,8 +50,6 @@ def add_vault_to_stage(vault_id):
     vault.staged = True
     
     stage.staged_vaults.append(vault)
-
-    print("🍋", {'vault' : vault.to_dict()})
     db.session.commit()
 
     return vault.to_dict()
