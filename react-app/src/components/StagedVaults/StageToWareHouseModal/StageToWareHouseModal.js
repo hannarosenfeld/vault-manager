@@ -10,13 +10,15 @@ import {
 import { getAllStagedVaultsThunk } from "../../../store/stage";
 import { useDispatch, useSelector } from "react-redux";
 import RenderTMB from "../../RenderTMB";
+import { rowCreator } from "../../utility";
+
 import "./StageToWareHouseModal.css";
+
 
 export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   const dispatch = useDispatch();
-  const vaults = useSelector((state) => state.warehouse.warehouseVaults);
-  const rows = useSelector((state) => state.warehouse.warehouseRows);
-  const rowsArr = Object.values(rows);
+  const vaults = useSelector(state => state.vault.vaults);
+  const rowsArr = rowCreator(useSelector(state => state.warehouse.warehouseFields));
   const [selectedField, setSelectedField] = useState(null);
   const [selectedFieldIndex, setSelectedFieldIndex] = useState(0);
   const [selectedRow, setSelectedRow] = useState(null);
@@ -36,7 +38,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
 
   useEffect(() => {
     vaultsArr = Object.values(vaults);
-  }, [vaults, rows]);
+  }, [vaults]);
 
   const handleFieldClick = async (field, row, index) => {
     await setSelectedField(field);
