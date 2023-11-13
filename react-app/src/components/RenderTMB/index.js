@@ -22,19 +22,18 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
   if (fieldState.vaults && Object.keys(fieldState.vaults).length !== 0) {
     fieldState.vaults.forEach((vault) => {
       let vaultState = vaults[vault];
-      fieldVaults[vaultState.position] = vaultState;
+      fieldVaults[vaultState?.position] = vaultState;
     });
   }
 
   const onlyBottom = !fieldVaults["T"] && !fieldVaults["M"] && !fieldVaults["B"];
   const onlyMiddle =
-    !fieldVaults["T"] && !fieldVaults["M"] && fieldVaults["B"] && !fieldVaults["B"].isFilled;
+    !fieldVaults["T"] && !fieldVaults["M"] && fieldVaults["B"] && !fieldVaults["B"];
   const onlyTop =
     !fieldVaults["T"] &&
     fieldVaults["M"] &&
-    fieldVaults["B"] &&
-    !fieldVaults["M"].isFilled &&
-    !fieldVaults["B"].isFilled;
+    fieldVaults["B"]
+
 
   return (
     <>
