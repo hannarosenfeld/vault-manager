@@ -27,13 +27,8 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
   }
 
   const onlyBottom = !fieldVaults["T"] && !fieldVaults["M"] && !fieldVaults["B"];
-  const onlyMiddle =
-    !fieldVaults["T"] && !fieldVaults["M"] && fieldVaults["B"] && !fieldVaults["B"];
-  const onlyTop =
-    !fieldVaults["T"] &&
-    fieldVaults["M"] &&
-    fieldVaults["B"]
-
+  const onlyMiddle = !fieldVaults["T"] && !fieldVaults["M"] && fieldVaults["B"];
+  const onlyTop = !fieldVaults["T"] && fieldVaults["M"] && fieldVaults["B"];
 
   return (
     <>
