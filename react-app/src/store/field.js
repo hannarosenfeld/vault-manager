@@ -23,6 +23,7 @@ const getAllFieldsAction = (fields) => ({
 
 // Thunk action creator for getting a single field
 export const getFieldThunk = (fieldId) => async (dispatch) => {
+  console.log("💖 in thunk", typeof fieldId)
   try {
     const res = await fetch(`/api/fields/${fieldId}`);
     if (res.ok) {

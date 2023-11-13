@@ -9,12 +9,17 @@ def get_all_fields():
     fields = Field.query.all()
     return jsonify([field.to_dict() for field in fields])
 
+print("🪿 in route")
 @field_routes.route('/<field_id>')
 def get_field(field_id):
+    print("💖 in route", field_id, type(field_id))
+    field_id = int(field_id)
     field = Field.query.get(field_id)
+    print("🌸 field", field)
     if not field:
         return jsonify(message="Field not found"), 404
     return jsonify(field.to_dict())
+
 
 @field_routes.route('/<field_id>/row')
 def get_field_row(field_id):

@@ -65,7 +65,11 @@ export default function Warehouse () {
         }, [selectedVaultToStage]);
 
     const updateSelectedFieldVaults = async (newVault) => {
-    if (selectedField && newVault?.field_id === selectedField.id) {
+        console.log("🐓", updateSelectedFieldVaults)
+        console.log("🐓 newVault: ", newVault)
+        console.log("🪿 selectedField: ", selectedField)
+
+        if (selectedField && newVault?.field_id === selectedField.id) {
         const updatedTop = newVault.position === "T" ? newVault : top;
         const updatedMiddle = newVault.position === "M" ? newVault : middle;
         const updatedBottom = newVault.position === "B" ? newVault : bottom;
@@ -86,26 +90,26 @@ export default function Warehouse () {
       
     const handleFieldClick = async (field, row, index) => {
         await setSelectedField(field);
-        await setTop(null)
-        await setMiddle(null)
-        await setBottom(null)
+        // await setTop(null)
+        // await setMiddle(null)
+        // await setBottom(null)
         
-        if (field.vaults.length > 0) {
+        // if (field.vaults.length > 0) {
+            
+        //     await setTop(field.vaults.find(vault => vaults[vault].position === "T"))
+        //     await setMiddle(field.vaults.find(vault => vaults[vault].position === "M"))
+        //     await setBottom(field.vaults.find(vault => vaults[vault].position === "B"))
+        // }
 
-            await setTop(field.vaults.find(vault => vaults[vault].position === "T"))
-            await setMiddle(field.vaults.find(vault => vaults[vault].position === "M"))
-            await setBottom(field.vaults.find(vault => vaults[vault].position === "B"))
-        }
-
-        if (field.vaults.length > 0) {
-            const topmost = findTopmostVault(field.vaults);
-            if (topmost) {
-              setTopmostVault(topmost);
-              if (topmost.position === "T") await setTop(topmost);
-              if (topmost.position === "M") await setMiddle(topmost);
-              if (topmost.position === "B") await setBottom(topmost);
-            }
-          }
+        // if (field.vaults.length > 0) {
+        //     const topmost = findTopmostVault(field.vaults);
+        //     if (topmost) {
+        //       setTopmostVault(topmost);
+        //       if (topmost.position === "T") await setTop(topmost);
+        //       if (topmost.position === "M") await setMiddle(topmost);
+        //       if (topmost.position === "B") await setBottom(topmost);
+        //     }
+        //   }
     };
 
     // Function to open the modal and log the statement

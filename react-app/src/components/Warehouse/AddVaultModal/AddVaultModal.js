@@ -124,6 +124,8 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
           
           const orderNumberExists = doesOrderNumberAlreadyExist(order_number);
           
+
+        // TODO: right now it won't show the error and block submit
           if (!orderNumberExists) {
             console.log(`Order number ${order_number} is unique.`);
             const orderData = {
@@ -163,14 +165,17 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
           };
 
         const newVault = await dispatch(addVaultThunk(vaultData));
-        const updatedVault = await dispatch(addVaultToWarehouseThunk(newVault.id));
+
+        console.log("🥇", newVault)
+
+        // const updatedVault = await dispatch(addVaultToWarehouseThunk(newVault.id));
 
         // Ensure that addVaultToWarehouseThunk returns the updated vault
-          if (updatedVault) {
-            const updateSelectedFieldVaultsThing = await updateSelectedFieldVaults(updatedVault);
-          } else {
-            console.error('updatedVault is null or undefined');
-          }
+          // if (updatedVault) {
+          //   const updateSelectedFieldVaultsThing = await updateSelectedFieldVaults(updatedVault);
+          // } else {
+          //   console.error('updatedVault is null or undefined');
+          // }
       
         // Step 4: Fetch other data (if needed)
         const getWarehouseInfoDispatch = await dispatch(getWarehouseInfoThunk());
