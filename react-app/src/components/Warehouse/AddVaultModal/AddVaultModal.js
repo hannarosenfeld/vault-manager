@@ -1,7 +1,6 @@
 import { useState, useEffect  } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { addVaultToWarehouseThunk, getAllWarehouseVaultsThunk, getWarehouseInfoThunk} from '../../../store/warehouse';
+import { getWarehouseInfoThunk} from '../../../store/warehouse';
 import { getAllCustomersThunk, addCustomerThunk } from '../../../store/customer'
 import { addVaultThunk, getAllVaultsThunk, getVaultThunk } from '../../../store/vault';
 import Paper from '@mui/material/Paper';
@@ -13,7 +12,6 @@ import "./AddVaultModal.css"
 import MiniWareHouse from './MiniWareHouse';
 import { getAllFieldsThunk, getFieldThunk } from '../../../store/field';
 import { addOrderThunk } from '../../../store/order';
-
 
 
 export default function AddVaultModal({ onClose, selectedField, tmb, updateSelectedFieldVaults}) {
@@ -124,6 +122,8 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
           
           const orderNumberExists = doesOrderNumberAlreadyExist(order_number);
           
+
+        // TODO: right now it won't show the error and block submit
           if (!orderNumberExists) {
             console.log(`Order number ${order_number} is unique.`);
             const orderData = {
@@ -163,16 +163,13 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
           };
 
         const newVault = await dispatch(addVaultThunk(vaultData));
-        const updatedVault = await dispatch(addVaultToWarehouseThunk(newVault.id));
 
-        // Ensure that addVaultToWarehouseThunk returns the updated vault
-          if (updatedVault) {
-            const updateSelectedFieldVaultsThing = await updateSelectedFieldVaults(updatedVault);
-          } else {
-            console.error('updatedVault is null or undefined');
-          }
-      
-        // Step 4: Fetch other data (if needed)
+        if (newVault) {
+          const updateSelectedFieldVaultsThing = await updateSelectedFieldVaults(newVault);
+        } else {
+          console.error('updatedVault is null or undefined');
+        }
+
         const getWarehouseInfoDispatch = await dispatch(getWarehouseInfoThunk());
 
         onClose(newVault);

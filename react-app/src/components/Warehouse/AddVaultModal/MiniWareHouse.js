@@ -1,11 +1,11 @@
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { getWarehouseInfoThunk, getAllWarehouseVaultsThunk } from "../../../store/warehouse";
-import { RowCreator } from "../../Warehouse/index.js"
+import { rowCreator } from "../../utility"
 
 export default function MiniWareHouse({ selectedField }) {
     const dispatch = useDispatch();
-    const rowsArr = RowCreator(useSelector(state => state.warehouse.warehouseFields));
+    const rowsArr = rowCreator(useSelector(state => state.warehouse.warehouseFields));
 
     useEffect(() => {
         dispatch(getWarehouseInfoThunk());

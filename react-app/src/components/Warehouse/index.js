@@ -6,34 +6,18 @@ import { getAllVaultsThunk } from "../../store/vault"
 import AddVaultModal from "./AddVaultModal/AddVaultModal.js"
 import RenderTMB from "../RenderTMB";
 import ConfirmStaging from "./ConfirmStaging";
+import { rowCreator, sortFields } from "../utility";
 import "./Warehouse.css"
-
-
-export function RowCreator(fields) {
-    const RowArray = [];
-
-    for (let letter of "ABCDEFGHI") {
-        RowArray.push({ fields: [], id: letter })
-    }
-
-    fields.map(field => {
-        for (let row of RowArray) {
-            if (row.id === field.row_id) {
-                row.fields.push(field)
-            }
-        }
-    })
-
-    return RowArray;
-}
+import { getFieldThunk } from "../../store/field";
 
 
 export default function Warehouse () {
     const dispatch = useDispatch();
-    const rowsArr = RowCreator(useSelector(state => state.warehouse.warehouseFields));
+    const rowsArr = rowCreator(useSelector(state => state.warehouse.warehouseFields));
     const vaults = useSelector(state => state.vault.vaults);
     const searchmode = useSelector(state => state.warehouse.searchmode);
     // const rowsArr = Object.values(rows);
+    const fieldState = useSelector((state) => state.field.currentField);
     const [selectedField, setSelectedField] = useState(null);
     let [top, setTop] = useState(null);
     let [middle, setMiddle] = useState(null);
@@ -51,61 +35,39 @@ export default function Warehouse () {
     }, [dispatch])
 
     useEffect(() => {
-        console.log("🪻 in warehouse. vaults: ", vaults)
-    }, [vaults])
-
-    useEffect(() => {
-        console.log("🌸 selected field: ", selectedField)
-    }, [selectedField])
-
-    useEffect(() => {
         if (selectedVaultToStage) {
             openConfirmStagingModal();
         }
         }, [selectedVaultToStage]);
 
     const updateSelectedFieldVaults = async (newVault) => {
-    if (selectedField && newVault?.field_id === selectedField.id) {
+        if (selectedField && newVault?.field_id === selectedField.id) {
         const updatedTop = newVault.position === "T" ? newVault : top;
         const updatedMiddle = newVault.position === "M" ? newVault : middle;
         const updatedBottom = newVault.position === "B" ? newVault : bottom;
-    
-        await setTop(updatedTop);
-        await setMiddle(updatedMiddle);
-        await setBottom(updatedBottom);
     }
     };
 
-    function findTopmostVault(vaults) {
-        for (const vault of vaults) {
-          if (!topmostVault || vault.position < topmostVault.position) {
-            setTopmostVault(vault)
-          }
-        }
-      }
+    // function findTopmostVault(vaults) {
+    //     for (const vault of vaults) {
+    //       if (!topmostVault || vault.position < topmostVault.position) {
+    //         setTopmostVault(vault)
+    //       }
+    //     }
+    //   }
       
     const handleFieldClick = async (field, row, index) => {
         await setSelectedField(field);
-        await setTop(null)
-        await setMiddle(null)
-        await setBottom(null)
-        
-        if (field.vaults.length > 0) {
 
-            await setTop(field.vaults.find(vault => vaults[vault].position === "T"))
-            await setMiddle(field.vaults.find(vault => vaults[vault].position === "M"))
-            await setBottom(field.vaults.find(vault => vaults[vault].position === "B"))
-        }
-
-        if (field.vaults.length > 0) {
-            const topmost = findTopmostVault(field.vaults);
-            if (topmost) {
-              setTopmostVault(topmost);
-              if (topmost.position === "T") await setTop(topmost);
-              if (topmost.position === "M") await setMiddle(topmost);
-              if (topmost.position === "B") await setBottom(topmost);
-            }
-          }
+        // if (field.vaults.length > 0) {
+        //     const topmost = findTopmostVault(field.vaults);
+        //     if (topmost) {
+        //       setTopmostVault(topmost);
+        //       if (topmost.position === "T") await setTop(topmost);
+        //       if (topmost.position === "M") await setMiddle(topmost);
+        //       if (topmost.position === "B") await setBottom(topmost);
+        //     }
+        //   }
     };
 
     // Function to open the modal and log the statement
@@ -142,29 +104,16 @@ export default function Warehouse () {
     }
 
     const updateVaultPosition = (position) => {
-        if (position === "T") setTop(null);
-        if (position === "M") setMiddle(null);
-        if (position === "B") setBottom(null);
+        // if (position === "T") setTop(null);
+        // if (position === "M") setMiddle(null);
+        // if (position === "B") setBottom(null);
     };
-
-    const sortFields = (fields) => {
-        const sortedFields = {};
-        let sortedFieldsArr;
-
-        for (let field of fields) {
-            sortedFields[field.id] = field
-        }
-
-        sortedFieldsArr = Object.values(sortedFields)
-
-        return sortedFieldsArr
-    }
 
     return (
         <div className="warehouse-wrapper">
             <div className="field-info">
             {selectedField ? (
-                <RenderTMB selectedField={selectedField} top={vaults[top]} middle={vaults[middle]} bottom={vaults[bottom]} handleStageClick={handleStageClick} handleOpenModal={handleOpenModal} />
+                <RenderTMB selectedField={selectedField} handleStageClick={handleStageClick} handleOpenModal={handleOpenModal} />
           ) : (
                 <div>
                     Select a field to view its info

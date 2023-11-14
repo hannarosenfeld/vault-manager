@@ -1,3 +1,5 @@
+import { GET_WAREHOUSE_INFO } from "./warehouse";
+
 const GET_FIELD = "field/GET_FIELD";
 const GET_ALL_FIELDS = "field/GET_ALL_FIELDS"; // Add this new action type
 // const REMOVE_VAULT_FROM_FIELD = "field/REMOVE_VAULT_FROM_FIELD"; // New action type for removing a vault from a field
@@ -100,6 +102,14 @@ const fieldReducer = (state = initialState, action) => {
         ...state,
         fields: action.fields
       };
+    case GET_WAREHOUSE_INFO:
+      return {
+        ...state,
+        fields: {
+          ...state.fields,
+          ...action.payload.warehouse_info.fields
+        },
+      }
     // case REMOVE_VAULT_FROM_FIELD:
     // // Check if the field exists in the state
     // if (!state.fields[action.fieldId]) {

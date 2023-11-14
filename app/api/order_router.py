@@ -8,16 +8,10 @@ def get_all_rows():
     orders = Order.query.all()
     return jsonify([order.to_dict() for order in orders])
 
-print("🥇 in router")
-
 @order_routes.route('/', methods=['POST'])
 def add_order():
     data = request.get_json()
     order_number = data.get('order_number')  # Assuming you send the order_number in the JSON data
-    print("🏆 in route")
-    print("🏆 data: ", data)
-    print("🏆 order_number: ", order_number)
-
     # Check if the order number already exists
     existing_order = Order.query.filter_by(order_number=order_number).first()
     if existing_order:
