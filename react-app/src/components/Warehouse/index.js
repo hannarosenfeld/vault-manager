@@ -8,6 +8,7 @@ import RenderTMB from "../RenderTMB";
 import ConfirmStaging from "./ConfirmStaging";
 import { rowCreator, sortFields } from "../utility";
 import "./Warehouse.css"
+import { getFieldThunk } from "../../store/field";
 
 
 export default function Warehouse () {
@@ -16,6 +17,7 @@ export default function Warehouse () {
     const vaults = useSelector(state => state.vault.vaults);
     const searchmode = useSelector(state => state.warehouse.searchmode);
     // const rowsArr = Object.values(rows);
+    const fieldState = useSelector((state) => state.field.currentField);
     const [selectedField, setSelectedField] = useState(null);
     let [top, setTop] = useState(null);
     let [middle, setMiddle] = useState(null);
@@ -33,29 +35,17 @@ export default function Warehouse () {
     }, [dispatch])
 
     useEffect(() => {
-        console.log("🪻 in warehouse. vaults: ", vaults)
-    }, [vaults])
-
-    useEffect(() => {
-        console.log("🌸 selected field: ", selectedField)
-    }, [selectedField])
-
-    useEffect(() => {
         if (selectedVaultToStage) {
             openConfirmStagingModal();
         }
         }, [selectedVaultToStage]);
 
     const updateSelectedFieldVaults = async (newVault) => {
-        console.log("🐓", updateSelectedFieldVaults)
-        console.log("🐓 newVault: ", newVault)
-        console.log("🪿 selectedField: ", selectedField)
-
-    //     if (selectedField && newVault?.field_id === selectedField.id) {
-    //     const updatedTop = newVault.position === "T" ? newVault : top;
-    //     const updatedMiddle = newVault.position === "M" ? newVault : middle;
-    //     const updatedBottom = newVault.position === "B" ? newVault : bottom;
-    // }
+        if (selectedField && newVault?.field_id === selectedField.id) {
+        const updatedTop = newVault.position === "T" ? newVault : top;
+        const updatedMiddle = newVault.position === "M" ? newVault : middle;
+        const updatedBottom = newVault.position === "B" ? newVault : bottom;
+    }
     };
 
     // function findTopmostVault(vaults) {
@@ -123,7 +113,7 @@ export default function Warehouse () {
         <div className="warehouse-wrapper">
             <div className="field-info">
             {selectedField ? (
-                <RenderTMB selectedField={selectedField} top={vaults[top]} middle={vaults[middle]} bottom={vaults[bottom]} handleStageClick={handleStageClick} handleOpenModal={handleOpenModal} />
+                <RenderTMB selectedField={selectedField} handleStageClick={handleStageClick} handleOpenModal={handleOpenModal} />
           ) : (
                 <div>
                     Select a field to view its info

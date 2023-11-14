@@ -168,7 +168,7 @@ const vaultReducer = (state = initialState, action) => {
         ...state,
         vaults: {
           ...state.vaults,
-          [action.vault.vaultId]: action.vault
+          [action.vault.id]: action.vault
         }
       };
     case EDIT_VAULT:
@@ -176,7 +176,7 @@ const vaultReducer = (state = initialState, action) => {
         ...state,
         vaults: {
           ...state.vaults,
-          [action.vault.vaultId]: action.vault
+          [action.vault.id]: action.vault
         },
         currentVault: {}
       };

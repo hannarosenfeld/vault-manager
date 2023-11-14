@@ -7,7 +7,8 @@ field_routes = Blueprint('fields', __name__)
 @field_routes.route('/')
 def get_all_fields():
     fields = Field.query.all()
-    return jsonify([field.to_dict() for field in fields])
+    return jsonify({ field.id : field.to_dict() for field in fields })
+
 
 @field_routes.route('/<field_id>')
 def get_field(field_id):

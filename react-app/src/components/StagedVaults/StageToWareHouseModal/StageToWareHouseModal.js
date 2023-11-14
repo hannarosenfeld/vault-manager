@@ -31,7 +31,6 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   let vaultsArr;
 
   useEffect(() => {
-    
     dispatch(getAllWarehouseVaultsThunk());
     dispatch(getWarehouseInfoThunk());
   }, []);

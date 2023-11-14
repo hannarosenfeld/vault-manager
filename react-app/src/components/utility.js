@@ -6,7 +6,7 @@ export function rowCreator(fields) {
         RowArray.push({ fields: [], id: letter })
     }
 
-    fields.map(field => {
+    Object.values(fields).map(field => {
         for (let row of RowArray) {
             if (row.id === field.row_id) {
                 row.fields.push(field)
@@ -29,3 +29,4 @@ export const sortFields = (fields) => {
 
     return sortedFieldsArr
 }
+

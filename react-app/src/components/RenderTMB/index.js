@@ -3,28 +3,30 @@ import { useDispatch, useSelector } from "react-redux";
 import { getFieldThunk } from "../../store/field";
 import AddVaultButton from "./AddVaultButton";
 import VaultInstance from "../VaultInstance";
-
+import { useState } from "react";
 
 const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEditClick }) => {
   const dispatch = useDispatch();
   const vaults = useSelector((state) => state.vault.vaults);
-  const fieldState = useSelector((state) => state.field.currentField);
-  const fieldVaults = {
+  const fieldState = useSelector((state) => state.warehouse.warehouseFields[parseInt(selectedField.id)]);
+  const [fieldVaults, setFieldVaults] = useState({
     T: undefined,
     M: undefined,
     B: undefined,
-  };
+  })
 
   useEffect(() => {
-    dispatch(getFieldThunk(selectedField?.id));
-  }, [dispatch, selectedField]);
-
-  if (fieldState.vaults && Object.keys(fieldState.vaults).length !== 0) {
-    fieldState.vaults.forEach((vault) => {
-      let vaultState = vaults[vault];
-      fieldVaults[vaultState?.position] = vaultState;
-    });
-  }
+    setFieldVaults( fs => {
+      let res = {}
+      if (fieldState.vaults && fieldState.vaults.length !== 0) {
+        fieldState.vaults.forEach((vault) => {
+          let vaultState = vaults[vault];
+          res[vaultState?.position] = vaultState;
+        })
+      }
+      return res
+    })
+  }, [selectedField, fieldState])
 
   const onlyBottom = !fieldVaults["T"] && !fieldVaults["M"] && !fieldVaults["B"];
   const onlyMiddle = !fieldVaults["T"] && !fieldVaults["M"] && fieldVaults["B"];
