@@ -46,7 +46,7 @@ const VaultInstance = ({ topmostVault, vault, position, handleStageClick, handle
       <div className="edit-symbols">
         <span
           onClick={() => handleStageClick(vault, position)}
-          style={{ color: topmostVault ? '#FFA500' : '#CCCCCC' }}
+          style={{ color: topmostVault ? '#FFA500' : '#CCCCCC', cursor: topmostVault ? 'pointer' : 'not-allowed' }}
           className="material-symbols-outlined"
         >
           forklift
