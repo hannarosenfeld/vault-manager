@@ -24,16 +24,14 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   const [selectedRow, setSelectedRow] = useState(null);
   const [position, setPosition] = useState(null);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
-  const [top, setTop] = useState(null);
-  const [middle, setMiddle] = useState(null);
-  const [bottom, setBottom] = useState(null);
+
   let fieldName = selectedRow && selectedFieldIndex ? selectedRow + selectedFieldIndex : null;
   let vaultsArr;
 
   useEffect(() => {
     dispatch(getAllWarehouseVaultsThunk());
     dispatch(getWarehouseInfoThunk());
-  }, []);
+  }, [selectedField]);
 
   useEffect(() => {
     vaultsArr = Object.values(vaults);
@@ -41,19 +39,8 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
 
   const handleFieldClick = async (field, row, index) => {
     await setSelectedField(field);
-
-    setSelectedRow(row.id);
-    setSelectedFieldIndex(index + 1);
-
-    setTop(null);
-    setMiddle(null);
-    setBottom(null);
-
-    if (field.vaults.length > 0) {
-      setTop(field.vaults.find((vault) => vault.position === "T"));
-      setMiddle(field.vaults.find((vault) => vault.position === "M"));
-      setBottom(field.vaults.find((vault) => vault.position === "B"));
-    }
+    await setSelectedRow(row.id);
+    await setSelectedFieldIndex(index + 1);
   };
 
   const openConfirmationModal = (position) => {
@@ -122,7 +109,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
               <div className="warehouse-wrapper">
                 <div className="field-info">
                   {selectedField ? (
-                    <RenderTMB top={top} middle={middle} bottom={bottom} handleOpenModal={openConfirmationModal} selectedField={selectedField}/>
+                    <RenderTMB handleOpenModal={openConfirmationModal} selectedField={selectedField}/>
                   ) : (
                     <div>
                       Select a field to view its info

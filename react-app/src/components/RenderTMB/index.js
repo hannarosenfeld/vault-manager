@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AddVaultButton from "./AddVaultButton";
 import VaultInstance from "../VaultInstance";
 import { useState } from "react";
+import { getAllVaultsThunk } from "../../store/vault";
 
 const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEditClick }) => {
   const dispatch = useDispatch();
@@ -18,17 +19,23 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
   })
 
   useEffect(() => {
-    console.log("🪺 vaults", vaults)
-  }, [vaults])
+    dispatch(getAllVaultsThunk())
+  }, [])
 
   useEffect(() => {
-    setIsLoaded(false);
-  
+    console.log("🌼", vaultsObj)
+    if (vaultsObj) setIsLoaded(true);
+  }, [vaultsObj])
+
+  useEffect(() => {
     const updateTopmostVault = () => {
       let topVault = null;
   
       for (let vaultId of vaults) {
+        console.log("🌷", vaults)
         const vault = vaultsObj[vaultId];
+        console.log("🌷", vault)
+
         if (!topVault || vault.position > topVault.position) {
           topVault = vault;
         }
@@ -40,8 +47,6 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
     if (vaults && vaults.length > 0) {
       updateTopmostVault();
     }
-  
-    setIsLoaded(true);
   }, [selectedField, vaults]);
   
 
