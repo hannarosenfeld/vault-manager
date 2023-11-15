@@ -28,10 +28,6 @@ export default function Warehouse () {
 
 
     useEffect(() => {
-        console.log("🐔 topmostVault", topmostVault);
-        }, [topmostVault])
-
-    useEffect(() => {
         const getWareHouseInfo = dispatch(getWarehouseInfoThunk());
         const getAllWarehouseVaults = dispatch(getAllWarehouseVaultsThunk());
         const getAllVaults = dispatch(getAllVaultsThunk())
@@ -52,17 +48,10 @@ export default function Warehouse () {
     };
 
     function findTopmostVault(vaults) {
-        console.log("🪼",vaults)
-        console.log("🪼",vaults[0])
-
         setTopmostVault(vaultsObj[vaults[0]])
 
         for (let vault of vaults) {
             vault = vaultsObj[vault];
-            console.log("🐤 vault", vault);
-            // console.log("🐤 topmostVault", topmostVault);
-            // console.log("🐤 vault.position", vault.position);
-
             if (vault.position > topmostVault) setTopmostVault(vault)
 
         }
@@ -200,10 +189,8 @@ export default function Warehouse () {
                         vaultNumber={selectedVaultToStage?.vault_id}
                         vaultId={selectedVaultToStage?.id}
                         onClose={closeConfirmStagingModal}
-                        fieldId={selectedField?.id}
                         updateVaultPosition={updateVaultPosition}
                         updateSelectedFieldVaults={updateSelectedFieldVaults} // Pass the function here
-                        tmb={position}
                     />
                 </>
             </Modal>

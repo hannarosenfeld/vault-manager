@@ -6,7 +6,15 @@ import { removeVaultFromWarehouseThunk, getWarehouseInfoThunk, getAllWarehouseVa
 import "./ConfirmStaging.css"
 
 
-export default function ConfirmStaging({ vault, vaultCustomer, vaultNumber, vaultId, onClose, fieldId, updateVaultPosition, tmb, updateSelectedFieldVaults}) {
+export default function ConfirmStaging({ 
+    vault, 
+    vaultCustomer, 
+    vaultNumber, 
+    vaultId, 
+    onClose, 
+    updateVaultPosition, 
+    updateSelectedFieldVaults
+  }) {
     const dispatch = useDispatch();
  
     const handleSubmit = async (e) => {
@@ -14,14 +22,6 @@ export default function ConfirmStaging({ vault, vaultCustomer, vaultNumber, vaul
         updateVaultPosition(vault.position);
         const removeVault = await dispatch(removeVaultFromWarehouseThunk(vaultId))        
         const updatedVault = await dispatch(addVaultToStageThunk(vaultId));
-
-        // Ensure that addVaultToWarehouseThunk returns the updated vault
-          if (updatedVault) {
-            const updateSelectedFieldVaultsThing = await updateSelectedFieldVaults(updatedVault);
-          } else {
-            console.error('updatedVault is null or undefined');
-          }
-          
         const getWarehouseInfoDispatch = await dispatch(getWarehouseInfoThunk());
 
         onClose();

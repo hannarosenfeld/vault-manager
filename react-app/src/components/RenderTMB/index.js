@@ -15,8 +15,6 @@ const RenderTMB = ({ topmostVault, selectedField, handleStageClick, handleOpenMo
     B: undefined,
   })
 
-  console.log("fieldVaults['B'] 🐴", fieldVaults["B"])
-
   useEffect(() => {
     setFieldVaults( fs => {
       let res = {}
@@ -84,7 +82,7 @@ const RenderTMB = ({ topmostVault, selectedField, handleStageClick, handleOpenMo
               vault={fieldVaults["B"]}
               handleStageClick={handleStageClick}
               handleEditClick={handleEditClick}
-              topmostVault={fieldVaults["B"].id === topmostVault.id ? true : false}
+              topmostVault={fieldVaults["B"]?.id === topmostVault?.id ? true : false}
             />
           ) : (
             ""
