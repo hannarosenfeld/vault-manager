@@ -7,10 +7,10 @@ import { useState } from "react";
 const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEditClick }) => {
   const dispatch = useDispatch();
   const vaultsObj = useSelector((state) => state.vault.vaults);
-  const vaults = selectedField.vaults;
   const [topmostVault, setTopmostVault] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const fieldState = useSelector((state) => state.warehouse.warehouseFields[parseInt(selectedField.id)]);
+  const vaults = fieldState.vaults;
   const [fieldVaults, setFieldVaults] = useState({
     T: undefined,
     M: undefined,
@@ -18,9 +18,8 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
   })
 
   useEffect(() => {
-    console.log("🌹", fieldVaults["B"])
-  }, [fieldVaults["B"]])
-
+    console.log("🪺 vaults", vaults)
+  }, [vaults])
 
   useEffect(() => {
     setIsLoaded(false);
@@ -43,7 +42,7 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
     }
   
     setIsLoaded(true);
-  }, [selectedField, vaultsObj]);
+  }, [selectedField, vaults]);
   
 
   useEffect(() => {
@@ -123,7 +122,6 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
     </>
   );
 };
-
 
 
 export default RenderTMB;
