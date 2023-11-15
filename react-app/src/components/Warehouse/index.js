@@ -24,8 +24,6 @@ export default function Warehouse () {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] = useState(false);
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
-    const [topmostVault, setTopmostVault] = useState(null);
-
 
     useEffect(() => {
         const getWareHouseInfo = dispatch(getWarehouseInfoThunk());
@@ -46,22 +44,8 @@ export default function Warehouse () {
         const updatedBottom = newVault.position === "B" ? newVault : bottom;
     }
     };
-
-    function findTopmostVault(vaults) {
-        setTopmostVault(vaultsObj[vaults[0]])
-
-        for (let vault of vaults) {
-            vault = vaultsObj[vault];
-            if (vault.position > topmostVault) setTopmostVault(vault)
-
-        }
-        
-        return topmostVault;
-    }    
-      
     const handleFieldClick = async (field, row, index) => {
         await setSelectedField(field);
-        findTopmostVault(field.vaults);
     };
 
     // Function to open the modal and log the statement
@@ -107,7 +91,7 @@ export default function Warehouse () {
         <div className="warehouse-wrapper">
             <div className="field-info">
             {selectedField ? (
-                <RenderTMB topmostVault={topmostVault} selectedField={selectedField} handleStageClick={handleStageClick} handleOpenModal={handleOpenModal} />
+                <RenderTMB selectedField={selectedField} handleStageClick={handleStageClick} handleOpenModal={handleOpenModal} />
           ) : (
                 <div>
                     Select a field to view its info
