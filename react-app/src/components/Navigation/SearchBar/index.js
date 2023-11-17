@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedCustomerThunk, resetSelectedCustomerThunk } from '../../../store/customer';
 import { getWarehouseInfoThunk } from '../../../store/warehouse';
 import { getAllOrdersThunk } from '../../../store/order';
+import { searchThunk } from '../../../store/search';
 
 function SearchBar() {
   const dispatch = useDispatch();
@@ -76,14 +77,19 @@ function SearchBar() {
     setSuggestions(combinedSuggestions);
   };
 
-  const handleSelectCustomer = async (customer) => {
+  const handleSelectCustomer = async (item) => {
     // Set the selected customer and clear the search term
-    setSelectedCustomer(customer);
-    setSearchTerm('');
+    // setSelectedCustomer(item);
+    // setSearchTerm('');
+
+    const order = item.order_number ? true : false
+    const customer = item.name ? true : false
+
+    await dispatch(searchThunk(item, order ? "order" : customer ? "customer" : "no type specified"));
 
     // Dispatch the setSelectedCustomerThunk with the selected customer's ID
-    await dispatch(setSelectedCustomerThunk(customer.id));
-    await dispatch(getWarehouseInfoThunk());
+    // await dispatch(setSelectedCustomerThunk(customer.id));
+    // await dispatch(getWarehouseInfoThunk());
   };
 
   const handleClearSelectedCustomer = async () => {

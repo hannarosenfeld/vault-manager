@@ -9,6 +9,7 @@ import customerReducer from './customer';
 import stageReducer from './stage';
 import warehouseReducer from './warehouse';
 import orderReducer from './order';
+import searchReducer from './search';
 
 const rootReducer = combineReducers({
   session,
@@ -19,7 +20,8 @@ const rootReducer = combineReducers({
   customer: customerReducer,
   stage: stageReducer,
   warehouse: warehouseReducer,
-  order: orderReducer
+  order: orderReducer,
+  search: searchReducer
 });
 
 
