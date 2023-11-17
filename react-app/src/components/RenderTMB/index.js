@@ -35,6 +35,7 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
       }
   
       setTopmostVault(topVault);
+      setIsLoaded(true);
     };
   
     if (vaults && vaults.length > 0) {

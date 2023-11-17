@@ -42,8 +42,6 @@ def search_warehouse(id, type):
                 return order.to_dict()
 
         return jsonify({'error': 'Item not found'}), 404
-
-
     
     elif request.method == 'PUT':
         if (type == "customer"):

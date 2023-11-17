@@ -114,7 +114,6 @@ export const getAllVaultsThunk = () => async (dispatch) => {
 };
 
 export const addVaultThunk = (vaultData) => async (dispatch) => {
-  console.log("🏓 in thunk", vaultData)
   try {
     const res = await fetch('/api/vaults/', {
       method: 'POST',
@@ -123,15 +122,12 @@ export const addVaultThunk = (vaultData) => async (dispatch) => {
       },
       body: JSON.stringify(vaultData)
     });
-    console.log("🍭", res)
     if (res.ok) {
       const data = await res.json();
-      console.log("🤾🏻‍♀️", data)
       dispatch(addVaultAction(data));
       return data;
     } else {
       const err = await res.json();
-      console.log("🫕🤾🏻", err)
       console.error("Error adding vault:", err); // Log the error
       return err;
     }

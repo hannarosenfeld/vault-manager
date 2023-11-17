@@ -8,6 +8,8 @@ const VaultInstance = ({ topmostVault, vault, position, handleStageClick, handle
   // const [topmostPosition, setTopmostPosition] = useState('');
   const [field, setField] = useState(null);
 
+  console.log("❤️‍🔥", topmostVault)
+
   useEffect(() => {
     // Fetch field information when component mounts
     dispatch(getFieldThunk(vault.field_id))
@@ -30,7 +32,7 @@ const VaultInstance = ({ topmostVault, vault, position, handleStageClick, handle
       </div>
       <div className="edit-symbols">
         <span
-          onClick={topmostVault ? () => handleStageClick(vault, position) : ''}
+          onClick={ topmostVault ? () => handleStageClick(vault, position) : '' }
           style={{ color: topmostVault ? '#FFA500' : '#CCCCCC', cursor: topmostVault ? 'pointer' : 'not-allowed' }}
           className="material-symbols-outlined"
         >
