@@ -56,7 +56,17 @@ def add_vault():
             type=form.data['type'],
             warehouse_id=1,
         )
-        
+
+        print("🍑 in route")
+        order_exists = Order.query.get(new_vault.order_number)
+
+        if (order_exists == None): 
+            new_order = Order(order_number=new_vault.order_number) # Create a new order
+            new_order.order_vaults.append(new_vault) # Add the created vault to the order
+            print("🍌", new_order.to_dict())
+            db.session.add(new_order)
+            db.session.commit()
+
         field = Field.query.get(new_vault.field_id)
         
         # TODO check conditionally if production or local, if local field.vaults.count() == 1

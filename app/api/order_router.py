@@ -15,19 +15,3 @@ def get_order(id):
     """
     order = Order.query.get(id)
     return order.to_dict()
-
-@order_routes.route('/', methods=['POST'])
-def add_order():
-    data = request.get_json()
-    order_number = data.get('order_number')  # Assuming you send the order_number in the JSON data
-    # Check if the order number already exists
-    existing_order = Order.query.filter_by(order_number=order_number).first()
-    if existing_order:
-        return jsonify({'error': 'Order number already exists'}), 400
-
-    # Create a new order
-    new_order = Order(order_number=order_number)
-    db.session.add(new_order)
-    db.session.commit()
-
-    return jsonify(new_order.to_dict()), 201
