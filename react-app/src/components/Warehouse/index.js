@@ -128,7 +128,7 @@ export default function Warehouse () {
                 )}
                 {searchmode && (
                  <div className="fields">
-                 {row.fields.map((field, index) => (
+                 {sortFields(row.fields).map((field, index) => (
                     <div
                         className="field"
                         key={field.id}
