@@ -6,6 +6,8 @@ import { setSelectedCustomerThunk, resetSelectedCustomerThunk } from '../../../s
 import { getWarehouseInfoThunk } from '../../../store/warehouse';
 import { getAllOrdersThunk } from '../../../store/order';
 import { searchThunk } from '../../../store/search';
+import { setSearchOffThunk } from '../../../store/search';
+
 
 function SearchBar() {
   const dispatch = useDispatch();
@@ -15,11 +17,12 @@ function SearchBar() {
   const [suggestions, setSuggestions] = useState([]);
   const [customers, setCustomers] = useState([]);
   const [orders, setOrders] = useState([]);
-  const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
 
 
   useEffect(() => {
     dispatch(getAllOrdersThunk())
+    // dispatch(setSearchOffThunk())
   }, [])
 
   useEffect(() => {
@@ -79,23 +82,27 @@ function SearchBar() {
 
   const handleSelectCustomer = async (item) => {
     // Set the selected customer and clear the search term
-    // setSelectedCustomer(item);
-    // setSearchTerm('');
+    setSelectedItem(item);
+    setSearchTerm('');
 
     const order = item.order_number ? true : false
     const customer = item.name ? true : false
 
     await dispatch(searchThunk(item, order ? "order" : customer ? "customer" : "no type specified"));
 
-    // Dispatch the setSelectedCustomerThunk with the selected customer's ID
-    // await dispatch(setSelectedCustomerThunk(customer.id));
+    // Dispatch the setSelectedItemThunk with the selected customer's ID
+    // await dispatch(setSelectedItemThunk(customer.id));
     // await dispatch(getWarehouseInfoThunk());
   };
 
-  const handleClearSelectedCustomer = async () => {
-    await dispatch(resetSelectedCustomerThunk(selectedCustomer.id));
+  const handleClearSelectedItem = async () => {
+    const order = selectedItem.order_number ? true : false
+    const customer = selectedItem.name ? true : false
+    console.log("❌ clear", selectedItem)
+    await dispatch(setSearchOffThunk(selectedItem, order ? "order" : customer ? "customer" : "no type specified"))
+    // await dispatch(resetSelectedItemThunk(selectedItem.id));
     await dispatch(getWarehouseInfoThunk());
-    setSelectedCustomer(null);
+    setSelectedItem(null);
   };
 
   const handleSearch = () => {
@@ -104,10 +111,10 @@ function SearchBar() {
 
   return (
     <div className="search-bar">
-      {selectedCustomer ? (
-        <div className="selected-customer">
-          {selectedCustomer.name}
-          <button className="clear-button" onClick={handleClearSelectedCustomer}>
+      {selectedItem ? (
+        <div className="selected-item">
+          { selectedItem.name }
+          <button className="clear-button" onClick={handleClearSelectedItem}>
             X
           </button>
         </div>
@@ -128,8 +135,8 @@ function SearchBar() {
                 {suggestions.map((item) => (
                   <li key={item.id} onClick={() => handleSelectCustomer(item)}>
                     {
-                    item.name ? <div style={{display: "flex", alignContent: "center", alignItems: "center"}}><span style={{marginRight: "0.5em"}} class="material-symbols-outlined">person</span> {item.name}</div> : 
-                    item.order_number ? <div style={{display: "flex", alignContent: "center", alignItems: "center"}}><span style={{marginRight: "0.5em"}} class="material-symbols-outlined">order_approve</span> {item.order_number}</div> : ''
+                    item.name ? <div style={{display: "flex", alignContent: "center", alignItems: "center"}}><span style={{marginRight: "0.5em"}} className="material-symbols-outlined">person</span> {item.name}</div> : 
+                    item.order_number ? <div style={{display: "flex", alignContent: "center", alignItems: "center"}}><span style={{marginRight: "0.5em"}} className="material-symbols-outlined">order_approve</span> {item.order_number}</div> : ''
                     }
                   </li>
                 ))}

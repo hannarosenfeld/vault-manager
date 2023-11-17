@@ -36,6 +36,7 @@ def single_vault(id):
 @vault_routes.route('/', methods=['POST'])
 @login_required
 def add_vault():
+    print("🍙 in route")
     form = VaultForm()
     form['csrf_token'].data = request.cookies['csrf_token'
 ]
@@ -58,12 +59,9 @@ def add_vault():
 
         # check if the order_number exists
         existent_order = Order.query.filter_by(order_number=new_vault.order_number).first()
-        print("🍋",existent_order.to_dict())
- 
+
         if (existent_order):
-            print("🍈 order does exist!!!!, adding ", new_vault.to_dict(), " to it!!!")
             existent_order.order_vaults.append(new_vault)
-            print("🍌", existent_order.order_vaults)
             db.session.commit()
 
         # if the order does not yet exists, create it and then add the new vault to it's list of vaults
