@@ -142,13 +142,13 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
 
         const newVault = await dispatch(addVaultThunk(vaultData));
 
-        // if (newVault) {
-        //   const updateSelectedFieldVaultsThing = await updateSelectedFieldVaults(newVault);
-        // } else {
-        //   console.error('updatedVault is null or undefined');
-        // }
+        if (newVault) {
+          const updateSelectedFieldVaultsThing = await updateSelectedFieldVaults(newVault);
+        } else {
+          console.error('updatedVault is null or undefined');
+        }
 
-        // const getWarehouseInfoDispatch = await dispatch(getWarehouseInfoThunk());
+        const getWarehouseInfoDispatch = await dispatch(getWarehouseInfoThunk());
 
         onClose(newVault);
         setIsSubmitting(false);

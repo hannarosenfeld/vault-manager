@@ -23,19 +23,12 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
   }, [])
 
   useEffect(() => {
-    console.log("🌼", vaultsObj)
-    if (vaultsObj) setIsLoaded(true);
-  }, [vaultsObj])
-
-  useEffect(() => {
     const updateTopmostVault = () => {
       let topVault = null;
   
       for (let vaultId of vaults) {
-        console.log("🌷", vaults)
         const vault = vaultsObj[vaultId];
-        console.log("🌷", vault)
-
+        
         if (!topVault || vault.position > topVault.position) {
           topVault = vault;
         }

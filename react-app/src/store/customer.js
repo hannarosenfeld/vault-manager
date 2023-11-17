@@ -56,7 +56,6 @@ export const resetSelectedCustomerThunk = (customerId) => async (dispatch) => {
 };
 
 export const setSelectedCustomerThunk = (customerId) => async (dispatch) => {
-  console.log("🌺 in thunk", customerId)
   try {
     const res = await fetch(`/api/customers/${customerId}/selected`, {
       method: 'PUT', // Set the HTTP method to PUT

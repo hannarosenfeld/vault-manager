@@ -14,8 +14,7 @@ export default function Warehouse () {
     const dispatch = useDispatch();
     const rowsArr = rowCreator(useSelector(state => state.warehouse.warehouseFields));
     const vaultsObj = useSelector(state => state.vault.vaults);
-    const vaultsArr = Object.values(vaultsObj);
-    const searchmode = useSelector(state => state.warehouse.searchmode);
+    const searchmode = useSelector(state => state.search.search);
     const [selectedField, setSelectedField] = useState(null);
     let [top, setTop] = useState(null);
     let [middle, setMiddle] = useState(null);
@@ -24,6 +23,11 @@ export default function Warehouse () {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] = useState(false);
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
+
+    useEffect(() => {
+        console.log("🧁", searchmode)
+    }, [searchmode])
+
 
     useEffect(() => {
         const getWareHouseInfo = dispatch(getWarehouseInfoThunk());
@@ -99,7 +103,7 @@ export default function Warehouse () {
             )}
             </div>
             <div className="warehouse">
-            {rowsArr.map((row) => (
+            { rowsArr.map((row) => (
                  <div className="row" key={row.id}>
                 {!searchmode && (
                  <div className="fields">
@@ -126,7 +130,7 @@ export default function Warehouse () {
 
                  </div>
                 )}
-                {searchmode && (
+                { searchmode && (
                  <div className="fields">
                  {sortFields(row.fields).map((field, index) => (
                     <div
@@ -134,15 +138,15 @@ export default function Warehouse () {
                         key={field.id}
                         style={{
                             backgroundColor: `${
-                                field.vaults.length === 3 || field.full && field.contains_searched_customer ? "var(--red)" :
-                                field.vaults.length === 3 || field.full && !field.contains_searched_customer ? "rgba(234, 55, 61, 0.8)" :
-                                field.vaults.length === 2 && field.contains_searched_customer ? "var(--yellow)" :
-                                field.vaults.length === 2 && !field.contains_searched_customer ? "rgba(255, 209, 102, 0.8)" :
-                                field.vaults.length === 1 && field.contains_searched_customer ? "var(--green)" :
-                                field.vaults.length === 1 && !field.contains_searched_customer ? "rgba(75, 181, 67, 0.8)" : 
+                                field.vaults.length === 3 || field.full && field.contains_searched_item ? "var(--red)" :
+                                field.vaults.length === 3 || field.full && !field.contains_searched_item ? "rgba(234, 55, 61, 0.8)" :
+                                field.vaults.length === 2 && field.contains_searched_item ? "var(--yellow)" :
+                                field.vaults.length === 2 && !field.contains_searched_item ? "rgba(255, 209, 102, 0.8)" :
+                                field.vaults.length === 1 && field.contains_searched_item ? "var(--green)" :
+                                field.vaults.length === 1 && !field.contains_searched_item ? "rgba(75, 181, 67, 0.8)" : 
                                 "rgba(203,203,203,0.8)"
                               }`,
-                              filter:!field.contains_searched_customer ? "brightness(25%)" : "brightness(120%)",
+                              filter:!field.contains_searched_item ? "brightness(25%)" : "brightness(120%)",
                             border: `${selectedField?.id === field?.id ? "3px solid var(--blue)" : "blue"}`,
                         }}                      
                         onClick={() => handleFieldClick(field, row, index)}

@@ -14,13 +14,7 @@ export const searchThunk = (item, type) => async (dispatch) => {
   console.log("🍊 type: ", type);
 
   try {
-    let res;
-    if (type === "customer") {
-        res = await fetch(`/api/customers/${item.id}`)
-    }
-    if (type === "order") {
-        res = await fetch(`/api/orders/${item.id}`)
-    }
+    let res = await fetch(`/api/search/${type}/${item.id}`)
     console.log("🍎", res)
     if (res.ok) {
         const data = await res.json();
