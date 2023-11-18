@@ -5,7 +5,7 @@ from app.models import Customer, Order, Field, Warehouse, db
 search_routes = Blueprint('search', __name__)
 
 
-@search_routes.route('/<string:type>/<int:id>', methods=['GET', 'PUT'])
+@search_routes.route('/<string:type>/<int:id>')
 @login_required
 def search_warehouse(id, type):
     if request.method == 'GET':

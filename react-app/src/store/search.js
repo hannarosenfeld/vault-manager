@@ -11,13 +11,8 @@ export const setSearchOffAction = () => ({
 });
 
 export const searchThunk = (item, type) => async (dispatch) => {
-  console.log("🍊 in thunk!!");
-  console.log("🍊 item: ", item);
-  console.log("🍊 type: ", type);
-
   try {
     let res = await fetch(`/api/search/${type}/${item.id}`)
-    console.log("🍎", res)
     if (res.ok) {
         const data = await res.json();
         dispatch(setSearchOnAction(data));
@@ -29,30 +24,6 @@ export const searchThunk = (item, type) => async (dispatch) => {
   } catch (error) {
     console.log("Error fetching searched item: ", error);
     return error;
-  }
-};
-
-export const setSearchOffThunk = (item, type) => async (dispatch) => {
-  console.log("🟣 search off thunk", item, type)
-  try {
-    const res = await fetch(`/api/search/${type}/${item.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (res.ok) {
-      dispatch(setSearchOffAction());
-      return { success: true };
-    } else {
-      const err = await res.json();
-      console.error("Error resetting selected customer:", err);
-      return { error: err };
-    }
-  } catch (error) {
-    console.error("Error resetting selected customer:", error);
-    return { error: error };
   }
 };
 

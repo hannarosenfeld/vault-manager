@@ -179,7 +179,6 @@ export default function Warehouse () {
                         vaultId={selectedVaultToStage?.id}
                         onClose={closeConfirmStagingModal}
                         updateVaultPosition={updateVaultPosition}
-                        updateSelectedFieldVaults={updateSelectedFieldVaults} // Pass the function here
                     />
                 </>
             </Modal>

@@ -13,7 +13,6 @@ export default function ConfirmStaging({
     vaultId, 
     onClose, 
     updateVaultPosition, 
-    updateSelectedFieldVaults
   }) {
     const dispatch = useDispatch();
  

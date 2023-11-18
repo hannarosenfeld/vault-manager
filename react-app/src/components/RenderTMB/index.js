@@ -18,6 +18,7 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
     B: undefined,
   })
 
+  console.log("🍎", selectedField)
   useEffect(() => {
     dispatch(getAllVaultsThunk())
   }, [])
@@ -118,6 +119,7 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
           )}
         </div>
       </div>
+      <div style={{fontSize: "2em", display: "flex", alignItems: "center", margin: "0 auto"}}>{selectedField.field_id}</div>
     </>
   );
 };
