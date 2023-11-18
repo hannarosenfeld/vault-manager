@@ -56,6 +56,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
     if (selectedField) {
       await dispatch(moveVaultFromStageToWarehouseThunk(vault.id, selectedField.id, fieldName, position));
       await dispatch(getAllStagedVaultsThunk());
+      await dispatch(getWarehouseInfoThunk());
       closeConfirmationModal();
       closeModal();
     }
