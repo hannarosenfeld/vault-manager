@@ -111,8 +111,8 @@ function SearchBar() {
   return (
     <div className="search-bar">
       {selectedItem ? (
-        <div className="selected-item">
-          { selectedItem.name }
+        <div className="selected-item" style={{display: "flex", alignContent: "center", alignItems: "center", flexGrow: "2"}}>
+          <div style={{width: "100%", padding: "5px"}}>{ selectedItem.name || selectedItem.order_number}</div>
           <button className="clear-button" onClick={handleClearSelectedItem}>
             X
           </button>

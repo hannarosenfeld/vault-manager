@@ -31,6 +31,7 @@ def add_vault_to_warehouse(vault_id):
     if not vault:
         return jsonify({'errors': 'Vault not found'}), 404
 
+    print("🌸 in route")
     # if vault is in storage, set values according to selected warehouse position and move it
     if vault in stage.staged_vaults:
         new_field_id = request.json.get('fieldId')
@@ -46,9 +47,9 @@ def add_vault_to_warehouse(vault_id):
         if vault in stage.staged_vaults:
             stage.staged_vaults.remove(vault)        
 
+    print("⭐️ vault:", vault.to_dict())
     try:
         warehouse.warehouse_vaults.append(vault)
-        db.session.add(vault) # not sure if this is needed?
         db.session.commit()
         return jsonify(vault.to_dict())
 
