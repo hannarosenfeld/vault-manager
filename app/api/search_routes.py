@@ -14,66 +14,26 @@ def search_warehouse(id, type):
 
             if customer:
                 customer_vaults = [vault.to_dict() for vault in customer.vaults]
-
+                fields_containing_searched_customer = []
                 for vault in customer_vaults:
-                    field_id = vault['field_id']  # Access 'field_id' from the dictionary
+                    field_id = vault['field_id']
                     field = Field.query.get(field_id)
-                    field.contains_searched_item = True
-                    warehouse = Warehouse.query.get(1)
-                    warehouse.searchmode = True
-                    db.session.commit()
+                    fields_containing_searched_customer.append(field.id)
 
-                return customer.to_dict()
+            return fields_containing_searched_customer
 
         if (type == "order"):
             order = Order.query.get(id)
 
             if order:
                 order_vaults = [vault.to_dict() for vault in order.order_vaults]
-
+                fields_containing_searched_order = []    
                 for vault in order_vaults:
                     field_id = vault['field_id']
                     field = Field.query.get(field_id)
-                    field.contains_searched_item = True
-                    warehouse = Warehouse.query.get(1)
-                    warehouse.searchmode = True
-                    db.session.commit()
+                    fields_containing_searched_order.append(field.id)
                     
-                return order.to_dict()
+            return fields_containing_searched_order
 
         return jsonify({'error': 'Item not found'}), 404
     
-    elif request.method == 'PUT':
-        if (type == "customer"):
-            customer = Customer.query.get(id)
-
-            if customer:
-                customer_vaults = [vault.to_dict() for vault in customer.vaults]
-
-                for vault in customer_vaults:
-                    field_id = vault['field_id']  # Access 'field_id' from the dictionary
-                    field = Field.query.get(field_id)
-                    field.contains_searched_item = False
-                    warehouse = Warehouse.query.get(1)
-                    warehouse.searchmode = False
-                    db.session.commit()
-
-                return customer.to_dict()
-
-        if (type == "order"):
-            order = Order.query.get(id)
-
-            if order:
-                order_vaults = [vault.to_dict() for vault in order.order_vaults]
-
-                for vault in order_vaults:
-                    field_id = vault['field_id']
-                    field = Field.query.get(field_id)
-                    field.contains_searched_item = False
-                    warehouse = Warehouse.query.get(1)
-                    warehouse.searchmode = False
-                    db.session.commit()
-
-                return order.to_dict()
-
-        return jsonify({'error': 'Item not found'}), 404

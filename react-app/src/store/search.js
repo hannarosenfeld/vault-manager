@@ -1,16 +1,13 @@
-// store/search.js
-
 export const SEARCH_ON = 'search/SEARCH_ON';
 export const SEARCH_OFF = 'search/SEARCH_OFF';
 
-export const setSearchOnAction = (item) => ({
+export const setSearchOnAction = (payload) => ({
   type: SEARCH_ON,
-  item
+  payload
 });
 
-export const setSearchOffAction = (item) => ({
-  type: SEARCH_ON,
-  item
+export const setSearchOffAction = () => ({
+  type: SEARCH_OFF,
 });
 
 export const searchThunk = (item, type) => async (dispatch) => {
@@ -60,22 +57,22 @@ export const setSearchOffThunk = (item, type) => async (dispatch) => {
 };
 
 const initialState = {
-  search: null
+  fields: null
 };
 
 const searchReducer = (state = initialState, action) => {
   switch (action.type) {
     case SEARCH_ON:
-        console.log("🥭", action.item)
+        console.log("🥭", action.payload)
         return {
             ...state,
-            search: action.item
+            fields: action.payload
         }
     case SEARCH_OFF:
-      console.log("🥭", action.item)
+      console.log("🥭", action.payload)
       return {
           ...state,
-          search: null
+          fields: null
       }  
     default:
       return state;

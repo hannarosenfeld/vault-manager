@@ -10,11 +10,11 @@ import { rowCreator, sortFields } from "../utility";
 import "./Warehouse.css"
 
 
+
 export default function Warehouse () {
     const dispatch = useDispatch();
     const rowsArr = rowCreator(useSelector(state => state.warehouse.warehouseFields));
-    const vaultsObj = useSelector(state => state.vault.vaults);
-    const searchmode = useSelector(state => state.search.search);
+    const searchResult = useSelector(state => state.search.fields);
     const [selectedField, setSelectedField] = useState(null);
     let [top, setTop] = useState(null);
     let [middle, setMiddle] = useState(null);
@@ -24,9 +24,10 @@ export default function Warehouse () {
     const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] = useState(false);
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
 
+
     useEffect(() => {
-        console.log("🧁", searchmode)
-    }, [searchmode])
+        console.log("🧁", searchResult)
+    }, [searchResult])
 
 
     useEffect(() => {
@@ -94,7 +95,7 @@ export default function Warehouse () {
     return (
         <div className="warehouse-wrapper">
             <div className="field-info">
-            {selectedField ? (
+            { selectedField ? (
                 <RenderTMB selectedField={selectedField} handleStageClick={handleStageClick} handleOpenModal={handleOpenModal} />
           ) : (
                 <div>
@@ -105,7 +106,7 @@ export default function Warehouse () {
             <div className="warehouse">
             { rowsArr.map((row) => (
                  <div className="row" key={row.id}>
-                {!searchmode && (
+                { !searchResult && (
                  <div className="fields">
                 {sortFields(row.fields).map((field, index) => {
                     return (
@@ -130,7 +131,7 @@ export default function Warehouse () {
 
                  </div>
                 )}
-                { searchmode && (
+                { searchResult && (
                  <div className="fields">
                  {sortFields(row.fields).map((field, index) => (
                     <div
@@ -138,15 +139,15 @@ export default function Warehouse () {
                         key={field.id}
                         style={{
                             backgroundColor: `${
-                                field.vaults.length === 3 || field.full && field.contains_searched_item ? "var(--red)" :
-                                field.vaults.length === 3 || field.full && !field.contains_searched_item ? "rgba(234, 55, 61, 0.8)" :
-                                field.vaults.length === 2 && field.contains_searched_item ? "var(--yellow)" :
-                                field.vaults.length === 2 && !field.contains_searched_item ? "rgba(255, 209, 102, 0.8)" :
-                                field.vaults.length === 1 && field.contains_searched_item ? "var(--green)" :
-                                field.vaults.length === 1 && !field.contains_searched_item ? "rgba(75, 181, 67, 0.8)" : 
+                                field.vaults.length === 3 || field.full && searchResult.includes(field.id) ? "var(--red)" :
+                                field.vaults.length === 3 || field.full && !searchResult.includes(field.id) ? "rgba(234, 55, 61, 0.8)" :
+                                field.vaults.length === 2 && searchResult.includes(field.id) ? "var(--yellow)" :
+                                field.vaults.length === 2 && !searchResult.includes(field.id) ? "rgba(255, 209, 102, 0.8)" :
+                                field.vaults.length === 1 && searchResult.includes(field.id) ? "var(--green)" :
+                                field.vaults.length === 1 && !searchResult.includes(field.id) ? "rgba(75, 181, 67, 0.8)" : 
                                 "rgba(203,203,203,0.8)"
                               }`,
-                              filter:!field.contains_searched_item ? "brightness(25%)" : "brightness(120%)",
+                              filter: !searchResult.includes(field.id) ? "brightness(25%)" : "brightness(120%)",
                             border: `${selectedField?.id === field?.id ? "3px solid var(--blue)" : "blue"}`,
                         }}                      
                         onClick={() => handleFieldClick(field, row, index)}

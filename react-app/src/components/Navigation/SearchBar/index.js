@@ -5,8 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getWarehouseInfoThunk } from '../../../store/warehouse';
 import { getAllOrdersThunk } from '../../../store/order';
 import { searchThunk } from '../../../store/search';
-import { setSearchOffThunk } from '../../../store/search';
-
+import { setSearchOffAction } from '../../../store/search';
 
 function SearchBar() {
   const dispatch = useDispatch();
@@ -16,7 +15,7 @@ function SearchBar() {
   const [customers, setCustomers] = useState([]);
   const [orders, setOrders] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
-  const searchItem = useSelector(state => state.search.search);
+  const searchItem = useSelector(state => state.search.fields);
 
   
   useEffect(() => {
@@ -25,12 +24,6 @@ function SearchBar() {
 
   useEffect(() => {
     console.log("🟢", selectedItem)
-  
-    // if (selectedItem) {
-    //   const order = selectedItem.order_number ? true : false
-    //   const customer = selectedItem.name ? true : false
-    //   dispatch(setSearchOffThunk(selectedItem, order ? "order" : customer ? "customer" : "no type specified"))
-    // }
     dispatch(getAllOrdersThunk())
   }, [])
 
@@ -100,14 +93,13 @@ function SearchBar() {
 
     // Dispatch the setSelectedItemThunk with the selected customer's ID
     // await dispatch(setSelectedItemThunk(customer.id));
-    await dispatch(getWarehouseInfoThunk());
+    // await dispatch(getWarehouseInfoThunk());
   };
 
   const handleClearSelectedItem = async () => {
     const order = selectedItem.order_number ? true : false
     const customer = selectedItem.name ? true : false
-    console.log("❌ clear", selectedItem)
-    await dispatch(setSearchOffThunk(selectedItem, order ? "order" : customer ? "customer" : "no type specified"))
+    await dispatch(setSearchOffAction());
     await dispatch(getWarehouseInfoThunk());
     setSelectedItem(null);
   };
