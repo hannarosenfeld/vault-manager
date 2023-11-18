@@ -3,12 +3,6 @@ const GET_CUSTOMER = "customer/GET_CUSTOMER";
 const GET_ALL_CUSTOMERS = "customer/GET_ALL_CUSTOMERS";
 const ADD_CUSTOMER = "customer/ADD_CUSTOMER";
 const UPDATE_CUSTOMER_NAME = "customer/UPDATE_CUSTOMER_NAME";
-const SET_SELECTED_CUSTOMER = "/customer/SET_SELECTED_CUSTOMER";
-const RESET_SELECTED_CUSTOMER = "customer/RESET_SELECTED_CUSTOMER";
-
-const resetSelectedCustomerAction = () => ({
-  type: RESET_SELECTED_CUSTOMER,
-});
 
 const updateCustomerNameAction = (customerId, newName) => ({
   type: UPDATE_CUSTOMER_NAME,
@@ -31,62 +25,6 @@ const addCustomerAction = (customer) => ({
   customer
 });
  
-
-export const resetSelectedCustomerThunk = (customerId) => async (dispatch) => {
-  try {
-    const res = await fetch(`/api/customers/${customerId}/reset-selected`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (res.ok) {
-      dispatch(resetSelectedCustomerAction());
-      return { success: true };
-    } else {
-      const err = await res.json();
-      console.error("Error resetting selected customer:", err);
-      return { error: err };
-    }
-  } catch (error) {
-    console.error("Error resetting selected customer:", error);
-    return { error: error };
-  }
-};
-
-export const setSelectedCustomerThunk = (customerId) => async (dispatch) => {
-  try {
-    const res = await fetch(`/api/customers/${customerId}/selected`, {
-      method: 'PUT', // Set the HTTP method to PUT
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      // If you need to send data in the request body, add it here:
-      // body: JSON.stringify({ /* your data */ }),
-    });
-
-    if (res.ok) {
-      const selectedCustomer = await res.json();
-      dispatch({
-        type: SET_SELECTED_CUSTOMER,
-        payload: selectedCustomer,
-      });
-
-      dispatch(setWarehouseSearchModeAction(true));
-
-      return selectedCustomer;
-    } else {
-      const err = await res.json();
-      console.error("Error setting selected customer:", err);
-      return err;
-    }
-  } catch (error) {
-    console.error("Error setting selected customer:", error);
-    return error;
-  }
-};
-
 
 export const updateCustomerNameThunk = (customerId, newName) => async (dispatch) => {
   try {
@@ -176,21 +114,10 @@ export const addCustomerThunk = (customerData) => async (dispatch) => {
 const initialState = {
   customers: {},
   currentCustomer: {},
-  selectedCustomer: null,
 };
 
 const customerReducer = (state = initialState, action) => {
   switch (action.type) {
-    case RESET_SELECTED_CUSTOMER:
-      return {
-        ...state,
-        selectedCustomer: null, 
-      };    
-    case SET_SELECTED_CUSTOMER:
-      return {
-        ...state,
-        selectedCustomer: action.payload,
-      };    
     case GET_CUSTOMER:
       return {
         ...state,
@@ -218,7 +145,6 @@ const customerReducer = (state = initialState, action) => {
       };
     case UPDATE_CUSTOMER_NAME:
       const updatedCustomer = { ...state.customers[action.customerId], name: action.newName };
-    
       return {
         ...state,
         customers: {

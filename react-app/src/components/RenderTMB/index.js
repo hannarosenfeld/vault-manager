@@ -1,14 +1,17 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getFieldThunk } from "../../store/field";
 import AddVaultButton from "./AddVaultButton";
 import VaultInstance from "../VaultInstance";
 import { useState } from "react";
+import { getAllVaultsThunk } from "../../store/vault";
 
 const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEditClick }) => {
   const dispatch = useDispatch();
-  const vaults = useSelector((state) => state.vault.vaults);
+  const vaultsObj = useSelector((state) => state.vault.vaults);
+  const [topmostVault, setTopmostVault] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
   const fieldState = useSelector((state) => state.warehouse.warehouseFields[parseInt(selectedField.id)]);
+  const vaults = fieldState.vaults;
   const [fieldVaults, setFieldVaults] = useState({
     T: undefined,
     M: undefined,
@@ -16,11 +19,37 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
   })
 
   useEffect(() => {
+    dispatch(getAllVaultsThunk())
+  }, [])
+
+  useEffect(() => {
+    const updateTopmostVault = () => {
+      let topVault = null;
+  
+      for (let vaultId of vaults) {
+        const vault = vaultsObj[vaultId];
+        
+        if (!topVault || vault.position > topVault.position) {
+          topVault = vault;
+        }
+      }
+  
+      setTopmostVault(topVault);
+      setIsLoaded(true);
+    };
+  
+    if (vaults && vaults.length > 0) {
+      updateTopmostVault();
+    }
+  }, [selectedField, vaults]);
+  
+
+  useEffect(() => {
     setFieldVaults( fs => {
       let res = {}
       if (fieldState.vaults && fieldState.vaults.length !== 0) {
         fieldState.vaults.forEach((vault) => {
-          let vaultState = vaults[vault];
+          let vaultState = vaultsObj[vault];
           res[vaultState?.position] = vaultState;
         })
       }
@@ -50,6 +79,7 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
               vault={fieldVaults["T"]}
               handleStageClick={handleStageClick}
               handleEditClick={handleEditClick}
+              topmostVault={isLoaded && topmostVault.id === fieldVaults["T"].id ? true : false}
             />
           ) : (
             ""
@@ -65,6 +95,7 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
               vault={fieldVaults["M"]}
               handleStageClick={handleStageClick}
               handleEditClick={handleEditClick}
+              topmostVault={isLoaded && topmostVault.id === fieldVaults["M"].id ? true : false}
             />
           ) : (
             ""
@@ -80,6 +111,7 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
               vault={fieldVaults["B"]}
               handleStageClick={handleStageClick}
               handleEditClick={handleEditClick}
+              topmostVault={isLoaded && topmostVault.id === fieldVaults["B"].id ? true : false}
             />
           ) : (
             ""
@@ -89,7 +121,6 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
     </>
   );
 };
-
 
 
 export default RenderTMB;

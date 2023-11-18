@@ -124,15 +124,15 @@ const orderReducer = (state = initialState, action) => {
           ...action.orders,
         },
       };    
-    // case GET_ORDER:
-    //   return {
-    //     ...state,
-    //     orders: {
-    //       ...state.orders,
-    //       [action.order.id]: action.order,
-    //     },
-    //     currentOrder: action.order,
-    //   };
+    case GET_ORDER:
+      return {
+        ...state,
+        orders: {
+          ...state.orders,
+          [action.order.id]: action.order,
+        },
+        currentOrder: action.order,
+      };
     case ADD_ORDER:
       return {
         ...state,

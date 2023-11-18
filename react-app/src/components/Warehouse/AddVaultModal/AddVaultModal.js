@@ -97,8 +97,6 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
         setIsSubmitting(true);
 
         try {
-        // TODO: Do all of this in the backend !!
-        
         // Add Cusomter instance if name can't be found in my db
           const lowercaseCustomerName = customer_name.toLowerCase();
           let newCustomer;
@@ -110,26 +108,6 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
               name: customer_name,
             };
             newCustomer = await dispatch(addCustomerThunk(customerData));
-          }
-
-        // Add Order instance if Order # can't be found in my db
-          const doesOrderNumberAlreadyExist = (orderNumber) => {
-            if (vaultObj && vaultObj.vaults) {
-              return vaultObj.vaults.some((vault) => vault.order_number === orderNumber);
-            }
-            return false;
-          };
-          
-          const orderNumberExists = doesOrderNumberAlreadyExist(order_number);
-          
-
-        // TODO: right now it won't show the error and block submit
-          if (!orderNumberExists) {
-            console.log(`Order number ${order_number} is unique.`);
-            const orderData = {
-              order_number: order_number,
-            };
-            await dispatch(addOrderThunk(orderData));
           }
 
           // Check if Vault # already exists

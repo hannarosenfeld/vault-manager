@@ -122,7 +122,6 @@ export const addVaultThunk = (vaultData) => async (dispatch) => {
       },
       body: JSON.stringify(vaultData)
     });
-
     if (res.ok) {
       const data = await res.json();
       dispatch(addVaultAction(data));

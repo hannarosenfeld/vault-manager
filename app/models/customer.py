@@ -11,8 +11,6 @@ class Customer(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     color = db.Column(db.String(100), default='1B3333')
-
-    # Define the relationship with 'Vault' using back_populates
     vaults = db.relationship('Vault', back_populates='customer')
 
     def to_dict(self):

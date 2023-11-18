@@ -5,7 +5,6 @@ from app.forms import VaultForm, EditVaultForm
 
 vault_routes = Blueprint('vaults', __name__)
 
-
 def validation_errors_to_error_messages(validation_errors):
     """
     Simple function that turns the WTForms validation errors into a simple list
@@ -37,6 +36,7 @@ def single_vault(id):
 @vault_routes.route('/', methods=['POST'])
 @login_required
 def add_vault():
+    print("🍙 in route")
     form = VaultForm()
     form['csrf_token'].data = request.cookies['csrf_token'
 ]
@@ -56,7 +56,21 @@ def add_vault():
             type=form.data['type'],
             warehouse_id=1,
         )
-        
+
+        # check if the order_number exists
+        existent_order = Order.query.filter_by(order_number=new_vault.order_number).first()
+
+        if (existent_order):
+            existent_order.order_vaults.append(new_vault)
+            db.session.commit()
+
+        # if the order does not yet exists, create it and then add the new vault to it's list of vaults
+        if (existent_order == None): 
+            new_order = Order(order_number=new_vault.order_number) # Create a new order
+            new_order.order_vaults.append(new_vault) # Add the created vault to the order
+            db.session.add(new_order)
+            db.session.commit()
+
         field = Field.query.get(new_vault.field_id)
         
         # TODO check conditionally if production or local, if local field.vaults.count() == 1

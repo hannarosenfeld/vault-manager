@@ -8,16 +8,13 @@ import RenderTMB from "../RenderTMB";
 import ConfirmStaging from "./ConfirmStaging";
 import { rowCreator, sortFields } from "../utility";
 import "./Warehouse.css"
-import { getFieldThunk } from "../../store/field";
+
 
 
 export default function Warehouse () {
     const dispatch = useDispatch();
     const rowsArr = rowCreator(useSelector(state => state.warehouse.warehouseFields));
-    const vaults = useSelector(state => state.vault.vaults);
-    const searchmode = useSelector(state => state.warehouse.searchmode);
-    // const rowsArr = Object.values(rows);
-    const fieldState = useSelector((state) => state.field.currentField);
+    const searchResult = useSelector(state => state.search.fields);
     const [selectedField, setSelectedField] = useState(null);
     let [top, setTop] = useState(null);
     let [middle, setMiddle] = useState(null);
@@ -26,7 +23,12 @@ export default function Warehouse () {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] = useState(false);
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
-    const [topmostVault, setTopmostVault] = useState(null);
+
+
+    useEffect(() => {
+        console.log("🧁", searchResult)
+    }, [searchResult])
+
 
     useEffect(() => {
         const getWareHouseInfo = dispatch(getWarehouseInfoThunk());
@@ -47,27 +49,8 @@ export default function Warehouse () {
         const updatedBottom = newVault.position === "B" ? newVault : bottom;
     }
     };
-
-    // function findTopmostVault(vaults) {
-    //     for (const vault of vaults) {
-    //       if (!topmostVault || vault.position < topmostVault.position) {
-    //         setTopmostVault(vault)
-    //       }
-    //     }
-    //   }
-      
     const handleFieldClick = async (field, row, index) => {
         await setSelectedField(field);
-
-        // if (field.vaults.length > 0) {
-        //     const topmost = findTopmostVault(field.vaults);
-        //     if (topmost) {
-        //       setTopmostVault(topmost);
-        //       if (topmost.position === "T") await setTop(topmost);
-        //       if (topmost.position === "M") await setMiddle(topmost);
-        //       if (topmost.position === "B") await setBottom(topmost);
-        //     }
-        //   }
     };
 
     // Function to open the modal and log the statement
@@ -104,15 +87,15 @@ export default function Warehouse () {
     }
 
     const updateVaultPosition = (position) => {
-        // if (position === "T") setTop(null);
-        // if (position === "M") setMiddle(null);
-        // if (position === "B") setBottom(null);
+        if (position === "T") setTop(null);
+        if (position === "M") setMiddle(null);
+        if (position === "B") setBottom(null);
     };
 
     return (
         <div className="warehouse-wrapper">
             <div className="field-info">
-            {selectedField ? (
+            { selectedField ? (
                 <RenderTMB selectedField={selectedField} handleStageClick={handleStageClick} handleOpenModal={handleOpenModal} />
           ) : (
                 <div>
@@ -121,9 +104,9 @@ export default function Warehouse () {
             )}
             </div>
             <div className="warehouse">
-            {rowsArr.map((row) => (
+            { rowsArr.map((row) => (
                  <div className="row" key={row.id}>
-                {!searchmode && (
+                { !searchResult && (
                  <div className="fields">
                 {sortFields(row.fields).map((field, index) => {
                     return (
@@ -148,23 +131,23 @@ export default function Warehouse () {
 
                  </div>
                 )}
-                {searchmode && (
+                { searchResult && (
                  <div className="fields">
-                 {row.fields.map((field, index) => (
+                 {sortFields(row.fields).map((field, index) => (
                     <div
                         className="field"
                         key={field.id}
                         style={{
                             backgroundColor: `${
-                                field.vaults.length === 3 || field.full && field.contains_searched_customer ? "var(--red)" :
-                                field.vaults.length === 3 || field.full && !field.contains_searched_customer ? "rgba(234, 55, 61, 0.8)" :
-                                field.vaults.length === 2 && field.contains_searched_customer ? "var(--yellow)" :
-                                field.vaults.length === 2 && !field.contains_searched_customer ? "rgba(255, 209, 102, 0.8)" :
-                                field.vaults.length === 1 && field.contains_searched_customer ? "var(--green)" :
-                                field.vaults.length === 1 && !field.contains_searched_customer ? "rgba(75, 181, 67, 0.8)" : 
+                                field.vaults.length === 3 || field.full && searchResult.includes(field.id) ? "var(--red)" :
+                                field.vaults.length === 3 || field.full && !searchResult.includes(field.id) ? "rgba(234, 55, 61, 0.8)" :
+                                field.vaults.length === 2 && searchResult.includes(field.id) ? "var(--yellow)" :
+                                field.vaults.length === 2 && !searchResult.includes(field.id) ? "rgba(255, 209, 102, 0.8)" :
+                                field.vaults.length === 1 && searchResult.includes(field.id) ? "var(--green)" :
+                                field.vaults.length === 1 && !searchResult.includes(field.id) ? "rgba(75, 181, 67, 0.8)" : 
                                 "rgba(203,203,203,0.8)"
                               }`,
-                              filter:!field.contains_searched_customer ? "brightness(25%)" : "brightness(120%)",
+                              filter: !searchResult.includes(field.id) ? "brightness(25%)" : "brightness(120%)",
                             border: `${selectedField?.id === field?.id ? "3px solid var(--blue)" : "blue"}`,
                         }}                      
                         onClick={() => handleFieldClick(field, row, index)}
@@ -195,10 +178,8 @@ export default function Warehouse () {
                         vaultNumber={selectedVaultToStage?.vault_id}
                         vaultId={selectedVaultToStage?.id}
                         onClose={closeConfirmStagingModal}
-                        fieldId={selectedField?.id}
                         updateVaultPosition={updateVaultPosition}
                         updateSelectedFieldVaults={updateSelectedFieldVaults} // Pass the function here
-                        tmb={position}
                     />
                 </>
             </Modal>

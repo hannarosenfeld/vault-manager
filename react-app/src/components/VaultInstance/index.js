@@ -3,10 +3,12 @@ import { useState, useEffect } from 'react';
 import { getFieldThunk } from '../../store/field';
 import { Link } from 'react-router-dom';
 
-const VaultInstance = ({ vault, position, handleStageClick, handleEditClick }) => {
+const VaultInstance = ({ topmostVault, vault, position, handleStageClick, handleEditClick }) => {
   const dispatch = useDispatch();
-  const [topmostPosition, setTopmostPosition] = useState('');
+  // const [topmostPosition, setTopmostPosition] = useState('');
   const [field, setField] = useState(null);
+
+  console.log("❤️‍🔥", topmostVault)
 
   useEffect(() => {
     // Fetch field information when component mounts
@@ -19,18 +21,6 @@ const VaultInstance = ({ vault, position, handleStageClick, handleEditClick }) =
       });
   }, [dispatch, vault.field_id]);
 
-  useEffect(() => {
-    if (field && field.vaults && field.vaults.length > 0) {
-      // Find the topmost vault by comparing positions as strings
-      const newTopmostPosition = field.vaults.reduce((maxPosition, currentVault) => {
-        return currentVault.position > maxPosition ? currentVault.position : maxPosition;
-      }, field.vaults[0].position); // Initialize with the position of the first vault
-
-      // Update the topmost position state variable
-      setTopmostPosition(newTopmostPosition);
-    }
-  }, [field]);
-
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
       <div style={{ display: 'flex', width: '60%', gap: '5px' }}>
@@ -42,8 +32,8 @@ const VaultInstance = ({ vault, position, handleStageClick, handleEditClick }) =
       </div>
       <div className="edit-symbols">
         <span
-          onClick={() => handleStageClick(vault, position)}
-          style={{ color: position === topmostPosition ? '#FFA500' : '#CCCCCC' }}
+          onClick={ topmostVault ? () => handleStageClick(vault, position) : '' }
+          style={{ color: topmostVault ? '#FFA500' : '#CCCCCC', cursor: topmostVault ? 'pointer' : 'not-allowed' }}
           className="material-symbols-outlined"
         >
           forklift
