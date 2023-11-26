@@ -7,6 +7,7 @@ from .rows import seed_rows, undo_rows
 from .warehouse import seed_warehouse, undo_warehouse
 from .stage import seed_stage, undo_stage  # Import the seed_stage and undo_stage functions
 from .orders import seed_orders, undo_orders
+from app.models import Row, Field, Warehouse, Stage
 
 from app.models.db import db, environment, SCHEMA
 
@@ -22,23 +23,28 @@ def seed():
         # command, which will truncate all tables prefixed with 
         # the schema name (see comment in users.py undo_users function).
         # Make sure to add all your other model's undo functions below
-        undo_stage()  # Undo the Stage model first
-        undo_vaults()
-        undo_fields()
-        undo_rows()
-        undo_orders()
-        undo_customers()
-        undo_users()
-        undo_warehouse()
+        # undo_stage()
+        # undo_vaults()
+        # undo_fields()
+        # undo_rows()
+        # undo_orders()
+        # undo_customers()
+        # undo_users()
+        # undo_warehouse()
         # when ready to go live, add conditional that checks of those rows exist, plus remove undo_.. commands
-    seed_users()
-    seed_customers()
-    seed_orders()
-    seed_rows()
-    seed_fields()
-    seed_vaults()
-    seed_warehouse()
-    seed_stage()  # Seed the Stage model last
+        rows = Row.get.all()
+        fields = Field.get.all()
+        warehouse = Warehouse.get.all()
+        stage = Stage.get.all()
+
+        seed_users()
+        seed_customers()
+        seed_orders()
+        seed_rows() # if not rows:
+        seed_fields() # if not fields:
+        seed_vaults()
+        seed_warehouse()
+        seed_stage()
 
 @seed_commands.command('undo')
 def undo():
