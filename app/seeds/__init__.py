@@ -43,8 +43,8 @@ def seed():
         seed_rows() # if not rows:
         seed_fields() # if not fields:
         seed_vaults()
-        seed_warehouse() #..
-        seed_stage() #..
+        seed_warehouse()
+        seed_stage()
 
 @seed_commands.command('undo')
 def undo():
