@@ -32,10 +32,10 @@ def seed():
         # undo_users()
         # undo_warehouse()
         # when ready to go live, add conditional that checks of those rows exist, plus remove undo_.. commands
-        rows = Row.get.all()
-        fields = Field.get.all()
-        warehouse = Warehouse.get.all()
-        stage = Stage.get.all()
+        # rows = Row.query.get.all()
+        # fields = Field.query.get.all()
+        # warehouse = Warehouse.query.get.all()
+        # stage = Stage.query.get.all()
 
         seed_users()
         seed_customers()
