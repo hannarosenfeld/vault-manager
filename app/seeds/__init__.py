@@ -7,7 +7,7 @@ from .rows import seed_rows, undo_rows
 from .warehouse import seed_warehouse, undo_warehouse
 from .stage import seed_stage, undo_stage  # Import the seed_stage and undo_stage functions
 from .orders import seed_orders, undo_orders
-from app.models import Row, Field, Warehouse, Stage, Customer, User
+from app.models import Row, Field, Warehouse, Stage, Customer, User, Order, Vault
 
 from app.models.db import db, environment, SCHEMA
 
@@ -39,18 +39,18 @@ def seed():
         stage = Stage.query.all()
         customers = Customer.query.all()
         users = User.query.all()
+        orders = Order.query.all()
+        vaults = Vault.query.all()
 
-        print("❤️‍🔥")
+        print("💖")
         if not users: seed_users()
-        if not customers :
-            print("🩵 THERE ARE NO CUSTOMERS?!")
-            seed_customers()
-        seed_orders()
-        seed_rows() # if not rows:
-        seed_fields() # if not fields:
-        seed_vaults()
-        seed_warehouse()
-        seed_stage()
+        if not customers : seed_customers()
+        if not orders: seed_orders()
+        if not rows: seed_rows() 
+        if not fields: seed_fields() 
+        if not vaults: seed_vaults()
+        if not warehouse: seed_warehouse()
+        if not stage: seed_stage()
 
 @seed_commands.command('undo')
 def undo():
