@@ -52,16 +52,6 @@ function ProfileButton({ user }) {
               {user.username === "admin" ? <span style={{fontSize: "1.5em"}} class="material-symbols-outlined">shield_person</span> : ''}
               <ListItemText primary={user.username}/>
               </ListItem>
-              <ListItem
-                button
-                onClick={closeDrawer}
-                component={NavLink}
-                to="/add-user"
-                style={{ display: "flex", gap: "5px" }}
-              >
-                <i class="fa-solid fa-plus"></i>
-                Add User
-              </ListItem>
               <ListItem 
                 button 
                 onClick={closeDrawer} // Close the drawer when "Stage" is clicked

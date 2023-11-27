@@ -32,6 +32,7 @@ def seed():
         # undo_users()
         # undo_warehouse()
         # when ready to go live, add conditional that checks of those rows exist, plus remove undo_.. commands
+
         rows = Row.query.get.all()
         fields = Field.query.get.all()
         warehouse = Warehouse.query.get.all()
@@ -44,8 +45,8 @@ def seed():
         seed_rows() # if not rows:
         seed_fields() # if not fields:
         seed_vaults()
-        seed_warehouse() #..
-        seed_stage() #..
+        seed_warehouse()
+        seed_stage()
 
 @seed_commands.command('undo')
 def undo():

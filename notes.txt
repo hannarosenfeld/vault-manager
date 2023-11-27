@@ -1,0 +1,6 @@
+- remove items (contains_searched_item/warehouse.searchmode) remove from model update to account for that
+- update our searchroute to return only the matches
+- update the ffrontend to work with that new route
+
+(on refresh issue)
+- we want to move searchmode to the frontend 

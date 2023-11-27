@@ -15,7 +15,6 @@ class Field(db.Model, UserMixin):
     row = db.relationship('Row', back_populates='fields')
     warehouse_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('warehouse.id')))
     warehouse = db.relationship('Warehouse', back_populates='warehouse_fields')
-    contains_searched_customer = db.Column(db.Boolean, default=False)
     full = db.Column(db.Boolean, default=False)
 
     def generate_field_id(self, row_id, numerical_identifier):
@@ -26,7 +25,6 @@ class Field(db.Model, UserMixin):
             'id': self.id,
             'row_id': self.row_id,
             'field_id': self.field_id,
-            'vaults': [vault.to_dict() for vault in self.vaults],
-            'contains_searched_customer': self.contains_searched_customer,
+            'vaults': [vault.id for vault in self.vaults],
             'full': self.full
         }

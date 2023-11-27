@@ -2,22 +2,28 @@ import React, { useState, useEffect, useRef } from 'react';
 import './SearchBar.css';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSelectedCustomerThunk, resetSelectedCustomerThunk } from '../../../store/customer';
 import { getWarehouseInfoThunk } from '../../../store/warehouse';
 import { getAllOrdersThunk } from '../../../store/order';
+import { searchThunk } from '../../../store/search';
+import { setSearchOffAction } from '../../../store/search';
 
 function SearchBar() {
   const dispatch = useDispatch();
   const suggestionBoxRef = useRef(null);
-  const ordersState = useSelector(state => state.order.orders);
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [customers, setCustomers] = useState([]);
   const [orders, setOrders] = useState([]);
-  const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const searchItem = useSelector(state => state.search.fields);
 
+  
+  useEffect(() => {
+    console.log("🟠", searchItem)
+  }, [searchItem])
 
   useEffect(() => {
+    console.log("🟢", selectedItem)
     dispatch(getAllOrdersThunk())
   }, [])
 
@@ -43,7 +49,6 @@ function SearchBar() {
   useEffect(() => {
     // Add a click event listener to the window
     window.addEventListener('click', handleWindowClick);
-
     // Clean up the event listener when the component unmounts
     return () => {
       window.removeEventListener('click', handleWindowClick);
@@ -76,20 +81,27 @@ function SearchBar() {
     setSuggestions(combinedSuggestions);
   };
 
-  const handleSelectCustomer = async (customer) => {
+  const handleSelectItem = async (item) => {
     // Set the selected customer and clear the search term
-    setSelectedCustomer(customer);
+    setSelectedItem(item);
     setSearchTerm('');
 
-    // Dispatch the setSelectedCustomerThunk with the selected customer's ID
-    await dispatch(setSelectedCustomerThunk(customer.id));
-    await dispatch(getWarehouseInfoThunk());
+    const order = item.order_number ? true : false
+    const customer = item.name ? true : false
+
+    await dispatch(searchThunk(item, order ? "order" : customer ? "customer" : "no type specified"));
+
+    // Dispatch the setSelectedItemThunk with the selected customer's ID
+    // await dispatch(setSelectedItemThunk(customer.id));
+    // await dispatch(getWarehouseInfoThunk());
   };
 
-  const handleClearSelectedCustomer = async () => {
-    await dispatch(resetSelectedCustomerThunk(selectedCustomer.id));
+  const handleClearSelectedItem = async () => {
+    const order = selectedItem.order_number ? true : false
+    const customer = selectedItem.name ? true : false
+    await dispatch(setSearchOffAction());
     await dispatch(getWarehouseInfoThunk());
-    setSelectedCustomer(null);
+    setSelectedItem(null);
   };
 
   const handleSearch = () => {
@@ -98,10 +110,10 @@ function SearchBar() {
 
   return (
     <div className="search-bar">
-      {selectedCustomer ? (
-        <div className="selected-customer">
-          {selectedCustomer.name}
-          <button className="clear-button" onClick={handleClearSelectedCustomer}>
+      {selectedItem ? (
+        <div className="selected-item" style={{display: "flex", alignContent: "center", alignItems: "center", flexGrow: "2"}}>
+          <div style={{width: "100%", padding: "5px"}}>{ selectedItem.name || selectedItem.order_number}</div>
+          <button className="clear-button" onClick={handleClearSelectedItem}>
             X
           </button>
         </div>
@@ -120,10 +132,10 @@ function SearchBar() {
             <div ref={suggestionBoxRef} className="suggestion-box">
               <ul>
                 {suggestions.map((item) => (
-                  <li key={item.id} onClick={() => handleSelectCustomer(item)}>
+                  <li key={item.id} onClick={() => handleSelectItem(item)}>
                     {
-                    item.name ? <div style={{display: "flex", alignContent: "center", alignItems: "center"}}><span style={{marginRight: "0.5em"}} class="material-symbols-outlined">person</span> {item.name}</div> : 
-                    item.order_number ? <div style={{display: "flex", alignContent: "center", alignItems: "center"}}><span style={{marginRight: "0.5em"}} class="material-symbols-outlined">order_approve</span> {item.order_number}</div> : ''
+                    item.name ? <div style={{display: "flex", alignContent: "center", alignItems: "center"}}><span style={{marginRight: "0.5em"}} className="material-symbols-outlined">person</span> {item.name}</div> : 
+                    item.order_number ? <div style={{display: "flex", alignContent: "center", alignItems: "center"}}><span style={{marginRight: "0.5em"}} className="material-symbols-outlined">order_approve</span> {item.order_number}</div> : ''
                     }
                   </li>
                 ))}
