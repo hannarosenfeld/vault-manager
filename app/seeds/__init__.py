@@ -7,7 +7,7 @@ from .rows import seed_rows, undo_rows
 from .warehouse import seed_warehouse, undo_warehouse
 from .stage import seed_stage, undo_stage  # Import the seed_stage and undo_stage functions
 from .orders import seed_orders, undo_orders
-from app.models import Row, Field, Warehouse, Stage
+from app.models import Row, Field, Warehouse, Stage, Customer
 
 from app.models.db import db, environment, SCHEMA
 
@@ -32,13 +32,15 @@ def seed():
         # undo_users()
         # undo_warehouse()
         # when ready to go live, add conditional that checks of those rows exist, plus remove undo_.. commands
-        # rows = Row.query.get.all()
-        # fields = Field.query.get.all()
-        # warehouse = Warehouse.query.get.all()
-        # stage = Stage.query.get.all()
+
+        rows = Row.query.get.all()
+        fields = Field.query.get.all()
+        warehouse = Warehouse.query.get.all()
+        stage = Stage.query.get.all()
+        customers = Customer.query.get.all()
 
         seed_users()
-        seed_customers()
+        if not customers : seed_customers()
         seed_orders()
         seed_rows() # if not rows:
         seed_fields() # if not fields:
