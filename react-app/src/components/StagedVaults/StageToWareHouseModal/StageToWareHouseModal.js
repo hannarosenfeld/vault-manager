@@ -10,49 +10,37 @@ import {
 import { getAllStagedVaultsThunk } from "../../../store/stage";
 import { useDispatch, useSelector } from "react-redux";
 import RenderTMB from "../../RenderTMB";
+import { rowCreator } from "../../utility";
+
 import "./StageToWareHouseModal.css";
+
 
 export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   const dispatch = useDispatch();
-  const vaults = useSelector((state) => state.warehouse.warehouseVaults);
-  const rows = useSelector((state) => state.warehouse.warehouseRows);
-  const rowsArr = Object.values(rows);
+  const vaults = useSelector(state => state.vault.vaults);
+  const rowsArr = rowCreator(useSelector(state => state.warehouse.warehouseFields));
   const [selectedField, setSelectedField] = useState(null);
   const [selectedFieldIndex, setSelectedFieldIndex] = useState(0);
   const [selectedRow, setSelectedRow] = useState(null);
   const [position, setPosition] = useState(null);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
-  const [top, setTop] = useState(null);
-  const [middle, setMiddle] = useState(null);
-  const [bottom, setBottom] = useState(null);
+
   let fieldName = selectedRow && selectedFieldIndex ? selectedRow + selectedFieldIndex : null;
   let vaultsArr;
 
   useEffect(() => {
-    
     dispatch(getAllWarehouseVaultsThunk());
     dispatch(getWarehouseInfoThunk());
-  }, []);
+  }, [selectedField]);
 
   useEffect(() => {
     vaultsArr = Object.values(vaults);
-  }, [vaults, rows]);
+  }, [vaults]);
 
   const handleFieldClick = async (field, row, index) => {
     await setSelectedField(field);
-
-    setSelectedRow(row.id);
-    setSelectedFieldIndex(index + 1);
-
-    setTop(null);
-    setMiddle(null);
-    setBottom(null);
-
-    if (field.vaults.length > 0) {
-      setTop(field.vaults.find((vault) => vault.position === "T"));
-      setMiddle(field.vaults.find((vault) => vault.position === "M"));
-      setBottom(field.vaults.find((vault) => vault.position === "B"));
-    }
+    await setSelectedRow(row.id);
+    await setSelectedFieldIndex(index + 1);
   };
 
   const openConfirmationModal = (position) => {
@@ -68,6 +56,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
     if (selectedField) {
       await dispatch(moveVaultFromStageToWarehouseThunk(vault.id, selectedField.id, fieldName, position));
       await dispatch(getAllStagedVaultsThunk());
+      await dispatch(getWarehouseInfoThunk());
       closeConfirmationModal();
       closeModal();
     }
@@ -121,7 +110,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
               <div className="warehouse-wrapper">
                 <div className="field-info">
                   {selectedField ? (
-                    <RenderTMB top={top} middle={middle} bottom={bottom} handleOpenModal={openConfirmationModal} selectedField={selectedField}/>
+                    <RenderTMB handleOpenModal={openConfirmationModal} selectedField={selectedField}/>
                   ) : (
                     <div>
                       Select a field to view its info
@@ -143,6 +132,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
                                   field?.vaults?.length === 1 ? "var(--green)" :
                                   "var(--lightgrey)"
                               }`,
+                              border: selectedField?.id === field?.id ? "3px solid var(--blue)" : ""
                           }}   
                             onClick={() => handleFieldClick(field, row, index)}
                           >
