@@ -1,4 +1,6 @@
 /* Default styles for larger screens */
+.search-bar-container {
+}
 .search-bar {
   display: flex;
   align-items: center;
@@ -6,12 +8,11 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 5px;
-  max-width: 99%;
   width: 20em;
+  max-width: 99%;
   position: relative;
   align-content: center;
 }
-
 /* Input styling */
 .search-bar input {
   flex: 1;
@@ -24,12 +25,12 @@
   margin: 0 auto;
 }
 
-.selected-customer {
+.selected-item {
   display: flex; /* Display customer name and "X" button in a row */
   align-items: center; /* Vertically align them */
+  justify-content: space-between;
   gap: 10px; /* Add space between customer name and "X" button */
   width: 100%;
-  justify-content: space-between;
 }
 
 

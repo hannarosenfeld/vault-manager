@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 5f506121857f
+Revision ID: 0e66e249c485
 Revises: 
-Create Date: 2023-10-24 11:40:50.352457
+Create Date: 2023-11-17 20:55:19.787448
 
 """
 from alembic import op
@@ -13,7 +13,7 @@ environment = os.getenv("FLASK_ENV")
 SCHEMA = os.environ.get("SCHEMA")
 
 # revision identifiers, used by Alembic.
-revision = '5f506121857f'
+revision = '0e66e249c485'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -27,6 +27,7 @@ def upgrade():
     sa.Column('color', sa.String(length=100), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
+
     if environment == "production":
         op.execute(f"ALTER TABLE customers SET SCHEMA {SCHEMA};")
 
@@ -35,13 +36,15 @@ def upgrade():
     sa.Column('order_number', sa.String(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
+
     if environment == "production":
-        op.execute(f"ALTER TABLE orders SET SCHEMA {SCHEMA};")    
-    
+        op.execute(f"ALTER TABLE orders SET SCHEMA {SCHEMA};")
+
     op.create_table('stage',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
+
     if environment == "production":
         op.execute(f"ALTER TABLE stage SET SCHEMA {SCHEMA};")
 
@@ -54,14 +57,15 @@ def upgrade():
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username')
     )
+
     if environment == "production":
         op.execute(f"ALTER TABLE users SET SCHEMA {SCHEMA};")
 
     op.create_table('warehouse',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('searchmode', sa.Boolean(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
+
     if environment == "production":
         op.execute(f"ALTER TABLE warehouse SET SCHEMA {SCHEMA};")
 
@@ -71,6 +75,7 @@ def upgrade():
     sa.ForeignKeyConstraint(['warehouse_id'], ['warehouse.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+
     if environment == "production":
         op.execute(f"ALTER TABLE rows SET SCHEMA {SCHEMA};")
 
@@ -79,13 +84,13 @@ def upgrade():
     sa.Column('row_id', sa.String(), nullable=True),
     sa.Column('field_id', sa.String(length=3), nullable=False),
     sa.Column('warehouse_id', sa.Integer(), nullable=True),
-    sa.Column('contains_searched_customer', sa.Boolean(), nullable=True),
     sa.Column('full', sa.Boolean(), nullable=True),
     sa.ForeignKeyConstraint(['row_id'], ['rows.id'], ),
     sa.ForeignKeyConstraint(['warehouse_id'], ['warehouse.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('field_id')
     )
+
     if environment == "production":
         op.execute(f"ALTER TABLE fields SET SCHEMA {SCHEMA};")
 
@@ -111,6 +116,7 @@ def upgrade():
     sa.ForeignKeyConstraint(['warehouse_id'], ['warehouse.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
+
     if environment == "production":
         op.execute(f"ALTER TABLE vaults SET SCHEMA {SCHEMA};")
 

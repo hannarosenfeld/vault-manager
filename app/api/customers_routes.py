@@ -20,9 +20,9 @@ def all_customers():
     """
     Query for all customers and returns them in a list of customer dictionaries
     """
-    print("📬 in route")
     customers = Customer.query.all()
     return {'customers': [customer.to_dict() for customer in customers]}
+
 
 @customers_routes.route('/<int:id>')
 def single_customer(id):
@@ -31,6 +31,7 @@ def single_customer(id):
     """
     customer = Customer.query.get(id)
     return customer.to_dict()
+
 
 @customers_routes.route('/', methods=['POST'])
 def add_customer():
@@ -48,50 +49,6 @@ def add_customer():
         return new_customer.to_dict()
 
     return jsonify({'errors': validation_errors_to_error_messages(form.errors)}), 400
-
-
-@customers_routes.route('/<int:id>/selected', methods=['PUT'])
-def set_selected_customer_router(id):
-    """
-    Set the selected customer by ID and return the selected customer in a dictionary
-    """
-    customer = Customer.query.get(id)
-    if customer:
-        customer_vaults = [vault.to_dict() for vault in customer.vaults]
-
-        for vault in customer_vaults:
-            field_id = vault['field_id']  # Access 'field_id' from the dictionary
-            field = Field.query.get(field_id)
-            field.contains_searched_customer = True
-            warehouse = Warehouse.query.get(1)
-            warehouse.searchmode = True
-            db.session.commit()
-
-        return customer.to_dict()
-
-    return jsonify({'error': 'Customer not found'}), 404
-
-@customers_routes.route('/<int:id>/reset-selected', methods=['PUT'])
-def reset_selected_customer_router(id):
-    """
-    Reset the selected customer and return a success message.
-    """
-    print("🧼 in router")
-    customer = Customer.query.get(id)
-    if customer:
-        customer_vaults = [vault.to_dict() for vault in customer.vaults]
-
-        for vault in customer_vaults:
-            field_id = vault['field_id']  # Access 'field_id' from the dictionary
-            field = Field.query.get(field_id)
-            field.contains_searched_customer = False
-            warehouse = Warehouse.query.get(1)
-            warehouse.searchmode = False
-            db.session.commit()
-
-        return customer.to_dict()
-
-    return jsonify({'error': 'Customer not found'}), 404
 
 
 @customers_routes.route('/<int:id>', methods=['PUT'])
