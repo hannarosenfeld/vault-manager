@@ -39,7 +39,9 @@ def seed():
         customers = Customer.query.get.all()
 
         seed_users()
-        if not customers : seed_customers()
+        if not customers :
+            print("🩵 THERE ARE NO CUSTOMERS?!")
+            seed_customers()
         seed_orders()
         seed_rows() # if not rows:
         seed_fields() # if not fields:
