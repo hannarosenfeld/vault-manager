@@ -26,11 +26,6 @@ export default function Warehouse () {
 
 
     useEffect(() => {
-        console.log("🧁", searchResult)
-    }, [searchResult])
-
-
-    useEffect(() => {
         const getWareHouseInfo = dispatch(getWarehouseInfoThunk());
         const getAllWarehouseVaults = dispatch(getAllWarehouseVaultsThunk());
         const getAllVaults = dispatch(getAllVaultsThunk())

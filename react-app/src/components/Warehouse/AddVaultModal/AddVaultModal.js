@@ -12,6 +12,7 @@ import "./AddVaultModal.css"
 import MiniWareHouse from './MiniWareHouse';
 import { getAllFieldsThunk, getFieldThunk } from '../../../store/field';
 import { addOrderThunk } from '../../../store/order';
+import AWS from 'aws-sdk';
 
 
 export default function AddVaultModal({ onClose, selectedField, tmb, updateSelectedFieldVaults}) {
@@ -25,6 +26,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
     const [customer_name, setCustomerName] = useState('');
     const [vault_id, setVaultId] = useState('');
     const [order_number, setOrderNumber] = useState('');
+    const [attachment, setAttachment] = useState(null);
     const [suggestedCustomers, setSuggestedCustomers] = useState([]);
     const [vaultType, setVaultType] = useState('S');
     const [errors, setErrors] = useState([]);
@@ -129,29 +131,37 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
             console.log(`Vault number ${vault_id} is unique.`);
           }
 
-          const vaultData = {
-            customer_name: customer_name,
-            customer: newCustomer,
-            field_id: selectedField.id,
-            field_name: selectedField.field_id,
-            position: tmb,
-            type: vaultType,
-            vault_id: vault_id,
-            order_number: order_number,
-          };
+          console.log("❤️‍🔥 attachment: ", attachment)
 
-        const newVault = await dispatch(addVaultThunk(vaultData));
+        //   const formData = new FormData()
+        //   formData.append("hanna", "hanna")
+        //   console.log("🗓️", formData.get("hanna"))
+          
+          const vaultData = new FormData
+            vaultData.append("customer_name", customer_name)
+            vaultData.append("customer", newCustomer)
+            vaultData.append("field_id", selectedField.id)
+            vaultData.append("field_name", selectedField.field_id)
+            vaultData.append("position", tmb)
+            vaultData.append("type", vaultType)
+            vaultData.append("vault_id", vault_id)
+            vaultData.append("order_number", order_number)
+            vaultData.append("attachment", attachment)
 
-        if (newVault) {
-          const updateSelectedFieldVaultsThing = await updateSelectedFieldVaults(newVault);
-        } else {
-          console.error('updatedVault is null or undefined');
-        }
+          console.log("❤️‍🔥 ", vaultData.get("customer_name"))
 
-        const getWarehouseInfoDispatch = await dispatch(getWarehouseInfoThunk());
+          const newVault = await dispatch(addVaultThunk(vaultData));
 
-        onClose(newVault);
-        setIsSubmitting(false);
+        // if (newVault) {
+        //   const updateSelectedFieldVaultsThing = await updateSelectedFieldVaults(newVault);
+        // } else {
+        //   console.error('updatedVault is null or undefined');
+        // }
+
+        // const getWarehouseInfoDispatch = await dispatch(getWarehouseInfoThunk());
+
+        // onClose(newVault);
+        // setIsSubmitting(false);
         } catch (error) {
           console.error('Error in handleSubmit:', error);
           setIsSubmitting(false);
@@ -164,6 +174,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
 
         setErrors({});
     };
+
     
     return (
       <div className='add-vault-wrapper'>
@@ -185,7 +196,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
                     <div>Position: <span>{tmb}</span></div>
                 </div>
             </div>
-            <form className="add-vault-form" onSubmit={handleSubmit}>
+            <form className="add-vault-form" onSubmit={handleSubmit} enctype="multipart/form-data">
                 <div style={{display: "flex", gap: "0.5em", justifyContent: "space-between", alignItems: "center", alignContent: "center"}}>
                 <FormGroup style={{width: "75%"}}>
                     <div className="customer-input-container">
@@ -248,11 +259,20 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
                         required
                     />  
                 </FormGroup>
+                <FormGroup className="vault-order-number-item">
+                    <FormLabel>Attachment</FormLabel>
+                    <input
+                        type="file"
+                        onChange={(e) => setAttachment(e.target.files[0])}
+                    />
+                </FormGroup>
                 </div>
                 <div style={{height: "63%", marginBottom: "1em"}}>
                     <MiniWareHouse selectedField={selectedField}/>
                 </div>
-                <button type="submit" disabled={isSubmitting}>Submit</button>
+                <button type="submit" disabled={isSubmitting}>
+                    {isSubmitting ? 'Submitting...' : 'Submit'}
+                </button>
             </form>
         </Box>
         </div>

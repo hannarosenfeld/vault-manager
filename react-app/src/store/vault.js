@@ -114,13 +114,14 @@ export const getAllVaultsThunk = () => async (dispatch) => {
 };
 
 export const addVaultThunk = (vaultData) => async (dispatch) => {
+  console.log("🗳️", vaultData.get("customer_name"))
   try {
     const res = await fetch('/api/vaults/', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(vaultData)
+      // headers: {
+      //   'Content-Type': 'multipart/form-data'
+      // },
+      body: vaultData
     });
     if (res.ok) {
       const data = await res.json();

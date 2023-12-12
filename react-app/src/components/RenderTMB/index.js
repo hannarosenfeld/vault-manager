@@ -18,7 +18,7 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
     B: undefined,
   })
 
-  console.log("🍎", selectedField)
+
   useEffect(() => {
     dispatch(getAllVaultsThunk())
   }, [])

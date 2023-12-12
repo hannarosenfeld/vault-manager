@@ -12,6 +12,7 @@
 .add-vault-container {
     display: flex;
     flex-direction: column;
+    font-size: 1em;
     padding: 10px 20px;
     margin: 0 auto;
     border: 1px solid #ccc;

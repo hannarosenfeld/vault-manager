@@ -19,11 +19,10 @@ function SearchBar() {
 
   
   useEffect(() => {
-    console.log("🟠", searchItem)
+    console.log("🔎", searchItem)
   }, [searchItem])
 
   useEffect(() => {
-    console.log("🟢", selectedItem)
     dispatch(getAllOrdersThunk())
   }, [])
 

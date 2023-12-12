@@ -7,8 +7,12 @@ def seed_users():
     admin = User(
         username='admin', email='operations@nagleegroup.com', password='Naglee1525'
     )
+    hanna = User(
+        username='hanna', email='hanna@rosenfeld.com', password='1234'
+    )
 
     db.session.add(admin)
+    db.session.add(hanna)
     db.session.commit()
 
 
