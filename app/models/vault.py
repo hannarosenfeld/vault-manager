@@ -33,7 +33,9 @@ class Vault(db.Model, UserMixin):
     order_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('orders.id'), ondelete='CASCADE'))
     order = db.relationship('Order', back_populates='order_vaults')
 
-    def to_dict(self):
+    attachments = db.relationship('Attachment', back_populates='vault', cascade='all, delete-orphan')
+
+    def to_dict(self, include_attachments=False):
         return {
             'id': self.id,
             'customer_id': self.customer_id,
@@ -47,6 +49,9 @@ class Vault(db.Model, UserMixin):
             'customer': self.customer.to_summary_dict() if self.customer else None,
         }
 
+        if include_attachments:
+            vault_dict['attachments'] = [attachment.to_dict() for attachment in self.attachments]
+        
     def to_summary_dict(self):
         return {
             'id': self.id,

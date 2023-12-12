@@ -7,3 +7,4 @@ from .row import Row
 from .field import Field
 from .stage import Stage
 from .warehouse import Warehouse
+from .attachment import Attachment

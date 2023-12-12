@@ -8,8 +8,6 @@ const VaultInstance = ({ topmostVault, vault, position, handleStageClick, handle
   // const [topmostPosition, setTopmostPosition] = useState('');
   const [field, setField] = useState(null);
 
-  console.log("❤️‍🔥", topmostVault)
-
   useEffect(() => {
     // Fetch field information when component mounts
     dispatch(getFieldThunk(vault.field_id))

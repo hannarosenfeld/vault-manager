@@ -34,13 +34,11 @@ const initialState = {
 const searchReducer = (state = initialState, action) => {
   switch (action.type) {
     case SEARCH_ON:
-        console.log("🥭", action.payload)
         return {
             ...state,
             fields: action.payload
         }
     case SEARCH_OFF:
-      console.log("🥭", action.payload)
       return {
           ...state,
           fields: null

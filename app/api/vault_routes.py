@@ -1,7 +1,14 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required
-from app.models import Customer, Vault, Field, Order, db
+from app.models import Customer, Vault, Field, Order, Attachment, db
 from app.forms import VaultForm, EditVaultForm
+from werkzeug.utils import secure_filename
+import os
+from dotenv import load_dotenv
+import boto3
+import botocore
+
+load_dotenv()
 
 vault_routes = Blueprint('vaults', __name__)
 
@@ -36,56 +43,86 @@ def single_vault(id):
 @vault_routes.route('/', methods=['POST'])
 @login_required
 def add_vault():
-    print("🍙 in route")
     form = VaultForm()
-    form['csrf_token'].data = request.cookies['csrf_token'
-]
-    if form.validate_on_submit():
-        customer_name = form.data['customer_name']
-        customer = Customer.query.filter_by(name=customer_name).first()
+    print("📙", form.data)
+    form['csrf_token'].data = request.cookies['csrf_token']
 
-        new_vault = Vault(
-            customer_name=form.data['customer_name'],
-            customer=customer,
-            customer_id=customer.id if customer else None,
-            field_id=form.data['field_id'],
-            field_name=form.data['field_name'],
-            position=form.data['position'],
-            vault_id=form.data['vault_id'],
-            order_number=form.data['order_number'],
-            type=form.data['type'],
-            warehouse_id=1,
-        )
+    try:
+        if form.validate_on_submit():
+            customer_name = form.data['customer_name']
+            customer = Customer.query.filter_by(name=customer_name).first()
 
-        # check if the order_number exists
-        existent_order = Order.query.filter_by(order_number=new_vault.order_number).first()
+            new_vault = Vault(
+                customer_name=form.data['customer_name'],
+                customer=customer,
+                customer_id=customer.id if customer else None,
+                field_id=form.data['field_id'],
+                field_name=form.data['field_name'],
+                position=form.data['position'],
+                vault_id=form.data['vault_id'],
+                order_number=form.data['order_number'],
+                type=form.data['type'],
+                warehouse_id=1,
+            )
 
-        if (existent_order):
-            existent_order.order_vaults.append(new_vault)
+            # check if the order_number exists
+            existent_order = Order.query.filter_by(order_number=new_vault.order_number).first()
+
+            if existent_order:
+                existent_order.order_vaults.append(new_vault)
+                db.session.commit()
+
+            # if the order does not yet exist, create it and then add the new vault to its list of vaults
+            if not existent_order:
+                new_order = Order(order_number=new_vault.order_number)  # Create a new order
+                new_order.order_vaults.append(new_vault)  # Add the created vault to the order
+                db.session.add(new_order)
+                db.session.commit()
+
+            field = Field.query.get(new_vault.field_id)
+
+            # TODO check conditionally if production or local, if local field.vaults.count() == 1
+            if field.vaults.count() == 2:
+                for vault in field.vaults:
+                    if vault.type == "T" and new_vault.type == "T":
+                        field.full = True
+
+            # Handle file upload
+            attachment = form.data['attachment']
+
+            print("⭐️ attachment: ", not not attachment)
+
+            if attachment:
+                # Get AWS credentials from environment variables
+                aws_access_key_id = os.getenv('AWS_ACCESS_KEY')
+                aws_secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY')
+                s3_bucket_name = os.getenv('AWS_BUCKET_NAME')
+
+                # Save file to AWS S3
+                s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+                filename = secure_filename(attachment.filename)
+                s3_key = f'attachments/{filename}'  # Adjust the S3 key as needed
+                s3.upload_fileobj(attachment, s3_bucket_name, s3_key)
+
+                # Store file information in the database (adjust the model and fields accordingly)
+                new_attachment = Attachment(
+                    vault_id=new_vault.id,
+                    file_url=f'https://{s3_bucket_name}.s3.amazonaws.com/{s3_key}',
+                    # Add other relevant fields
+                )
+                db.session.add(new_attachment)
+                db.session.commit()
+
+
+            db.session.add(new_vault)
             db.session.commit()
 
-        # if the order does not yet exists, create it and then add the new vault to it's list of vaults
-        if (existent_order == None): 
-            new_order = Order(order_number=new_vault.order_number) # Create a new order
-            new_order.order_vaults.append(new_vault) # Add the created vault to the order
-            db.session.add(new_order)
-            db.session.commit()
+            dict_new_vault = new_vault.to_dict()
 
-        field = Field.query.get(new_vault.field_id)
-        
-        # TODO check conditionally if production or local, if local field.vaults.count() == 1
-        if field.vaults.count() == 2:
-            for vault in field.vaults:
-                if vault.type == "T" and new_vault.type == "T":
-                    field.full = True
+            return dict_new_vault
 
-        db.session.add(new_vault)
-                    
-        db.session.commit()
-
-        dict_new_vault = new_vault.to_dict()
-
-        return dict_new_vault
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
     return jsonify({'errors': validation_errors_to_error_messages(form.errors)}), 400
 
