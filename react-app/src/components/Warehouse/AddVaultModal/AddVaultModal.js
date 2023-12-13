@@ -11,9 +11,8 @@ import { FormGroup, FormLabel } from '@mui/material';
 import "./AddVaultModal.css"
 import MiniWareHouse from './MiniWareHouse';
 import { getAllFieldsThunk, getFieldThunk } from '../../../store/field';
-import { addOrderThunk } from '../../../store/order';
-import AWS from 'aws-sdk';
 
+// TODO: Work on the styling
 
 export default function AddVaultModal({ onClose, selectedField, tmb, updateSelectedFieldVaults}) {
     const dispatch = useDispatch();
@@ -131,12 +130,6 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
             console.log(`Vault number ${vault_id} is unique.`);
           }
 
-          console.log("❤️‍🔥 attachment: ", attachment)
-
-        //   const formData = new FormData()
-        //   formData.append("hanna", "hanna")
-        //   console.log("🗓️", formData.get("hanna"))
-          
           const vaultData = new FormData
             vaultData.append("customer_name", customer_name)
             vaultData.append("customer", newCustomer)
@@ -148,20 +141,18 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
             vaultData.append("order_number", order_number)
             vaultData.append("attachment", attachment)
 
-          console.log("❤️‍🔥 ", vaultData.get("customer_name"))
-
           const newVault = await dispatch(addVaultThunk(vaultData));
 
-        // if (newVault) {
-        //   const updateSelectedFieldVaultsThing = await updateSelectedFieldVaults(newVault);
-        // } else {
-        //   console.error('updatedVault is null or undefined');
-        // }
+        if (newVault) {
+          const updateSelectedFieldVaultsThing = await updateSelectedFieldVaults(newVault);
+        } else {
+          console.error('updatedVault is null or undefined');
+        }
 
-        // const getWarehouseInfoDispatch = await dispatch(getWarehouseInfoThunk());
+        const getWarehouseInfoDispatch = await dispatch(getWarehouseInfoThunk());
 
-        // onClose(newVault);
-        // setIsSubmitting(false);
+        onClose(newVault);
+        setIsSubmitting(false);
         } catch (error) {
           console.error('Error in handleSubmit:', error);
           setIsSubmitting(false);
@@ -239,7 +230,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
                 </FormGroup>
                 </div>
                 
-                <div className="vault-order-number" >
+                <div className="vault-order-number" style={{gap: "1em"}} >
                 <FormGroup className="vault-order-number-item">
                     <FormLabel>Vault#</FormLabel>
                     <input
