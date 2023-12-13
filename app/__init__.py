@@ -18,6 +18,7 @@ from .api.stage_routes import stage_routes
 from .api.warehouse_routes import warehouse_routes
 from .api.order_router import order_routes
 from .api.search_routes import search_routes
+from .api.attachment_routes import attachment_routes
 
 # from .api.answer_routes import answer_routes
 from .seeds import seed_commands
@@ -50,6 +51,8 @@ app.register_blueprint(stage_routes, url_prefix='/api/stage')
 app.register_blueprint(warehouse_routes, url_prefix='/api/warehouse')
 app.register_blueprint(order_routes, url_prefix='/api/orders')
 app.register_blueprint(search_routes, url_prefix='/api/search')
+app.register_blueprint(attachment_routes, url_prefix='/api/attachments')
+
 
 db.init_app(app)
 Migrate(app, db)

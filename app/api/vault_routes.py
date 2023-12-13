@@ -104,6 +104,7 @@ def add_vault():
                 # Store file information in the database (adjust the model and fields accordingly)
                 new_attachment = Attachment(
                     vault_id=new_vault.id,
+                    file_name=attachment.filename,
                     unique_name=unique_name,
                     file_url = f'https://{s3_bucket_name}.s3.amazonaws.com/{s3_key}',
                 )

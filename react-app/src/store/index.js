@@ -10,6 +10,7 @@ import stageReducer from './stage';
 import warehouseReducer from './warehouse';
 import orderReducer from './order';
 import searchReducer from './search';
+import attachmentReducer from './attachment';
 
 const rootReducer = combineReducers({
   session,
@@ -21,7 +22,8 @@ const rootReducer = combineReducers({
   stage: stageReducer,
   warehouse: warehouseReducer,
   order: orderReducer,
-  search: searchReducer
+  search: searchReducer,
+  attachment: attachmentReducer
 });
 
 
