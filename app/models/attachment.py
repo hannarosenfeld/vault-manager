@@ -2,7 +2,7 @@ from .db import db, environment, SCHEMA, add_prefix_for_prod
 
 class Attachment(db.Model):
     __tablename__ = 'attachments'
-    
+
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
 
@@ -13,7 +13,6 @@ class Attachment(db.Model):
     file_name = db.Column(db.String, nullable=False)
     unique_name = db.Column(db.String, nullable=False)
 
-    vault_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('vault.id'), ondelete='CASCADE'))
     vault = db.relationship('Vault', back_populates='attachments')
 
     def to_dict(self):
