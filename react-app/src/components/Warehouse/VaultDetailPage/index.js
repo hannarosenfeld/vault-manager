@@ -34,7 +34,7 @@ const VaultDetailPage = () => {
     return (
         <>
             {vaultObj && vaultObj.customer && (
-                <div className="container mt-3">
+                <div className="container mt-3 wrapper">
                     <div className="card" style={{ marginBottom: '20px' }}>
                         <div className="card-body">
                             <h2 className="card-title">Vault Detail View</h2>
