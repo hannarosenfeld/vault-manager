@@ -118,9 +118,6 @@ export const addVaultThunk = (vaultData) => async (dispatch) => {
   try {
     const res = await fetch('/api/vaults/', {
       method: 'POST',
-      // headers: {
-      //   'Content-Type': 'multipart/form-data'
-      // },
       body: vaultData
     });
     if (res.ok) {
