@@ -13,7 +13,7 @@ class Attachment(db.Model):
     file_name = db.Column(db.String, nullable=False)
     unique_name = db.Column(db.String, nullable=False)
 
-    vault_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('vault.id'), ondelete='CASCADE'))
+    vault_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('vaults.id'), ondelete='CASCADE'))
     vault = db.relationship('Vault', back_populates='attachments')
 
     def to_dict(self):
