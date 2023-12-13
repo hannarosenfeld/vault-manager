@@ -7,6 +7,7 @@ import os
 from dotenv import load_dotenv
 import boto3
 import botocore
+import uuid
 
 load_dotenv()
 
@@ -97,21 +98,21 @@ def add_vault():
                 aws_access_key_id = os.getenv('AWS_ACCESS_KEY')
                 aws_secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY')
                 s3_bucket_name = os.getenv('AWS_BUCKET_NAME')
-
-                # Save file to AWS S3
-                s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
-                filename = secure_filename(attachment.filename)
-                s3_key = f'attachments/{filename}'  # Adjust the S3 key as needed
-                s3.upload_fileobj(attachment, s3_bucket_name, s3_key)
+                unique_name = f'{secure_filename(attachment.filename)}-{uuid.uuid4()}'
+                s3_key = f'attachments/{unique_name}' 
 
                 # Store file information in the database (adjust the model and fields accordingly)
                 new_attachment = Attachment(
                     vault_id=new_vault.id,
-                    file_url=f'https://{s3_bucket_name}.s3.amazonaws.com/{s3_key}',
-                    # Add other relevant fields
+                    unique_name=unique_name,
+                    file_url = f'https://{s3_bucket_name}.s3.amazonaws.com/{s3_key}',
                 )
                 db.session.add(new_attachment)
                 db.session.commit()
+
+                # Save file to AWS S3
+                s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+                s3.upload_fileobj(attachment, s3_bucket_name, s3_key)
 
 
             db.session.add(new_vault)
