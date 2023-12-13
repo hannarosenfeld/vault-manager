@@ -28,7 +28,7 @@ const VaultDetailPage = () => {
     return (
         <>
             { vaultObj && vaultObj.customer && customerObj.vaults ? (
-                <div className="container mt-5">
+                <div className="container mt-5" style={{maxWidth: "800px"}}>
                     <div className="card">
                         <div className="card-body">
                             <h2 className="card-title">Vault #{vaultObj.vault_id}</h2>
