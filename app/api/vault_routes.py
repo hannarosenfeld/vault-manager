@@ -113,7 +113,7 @@ def add_vault():
 
                 # Save file to AWS S3
                 s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
-                s3.upload_fileobj(attachment, s3_bucket_name, s3_key)
+                s3.upload_fileobj(attachment, s3_bucket_name, s3_key, ExtraArgs={'ContentType':'application/pdf'})
 
 
             db.session.add(new_vault)
