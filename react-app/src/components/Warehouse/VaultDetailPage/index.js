@@ -15,6 +15,8 @@ const VaultDetailPage = () => {
     const attachments = Object.values(attachmentsObj);
     const [selectedPDF, setSelectedPDF] = useState(null);
 
+    console.log("📕", vaultObj)
+
     useEffect(() => {
         dispatch(getVaultThunk(vaultId));
         dispatch(getAllVaultAttachmentsThunk(vaultId));
