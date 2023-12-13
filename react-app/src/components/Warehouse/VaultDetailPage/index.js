@@ -10,7 +10,6 @@ const VaultDetailPage = () => {
     const params = useParams();
     const vaultId = parseInt(params.vaultId);
     const vaultObj = useSelector((state) => state.vault.currentVault);
-    const customerObj = useSelector((state) => state.customer.currentCustomer);
     const attachmentsObj = useSelector((state) => state.attachment.vaultAttachments);
     const attachments = Object.values(attachmentsObj);
     const [selectedPDF, setSelectedPDF] = useState(null);
@@ -23,7 +22,8 @@ const VaultDetailPage = () => {
     }, [vaultId]);
 
     useEffect(() => {
-        if (attachments) setSelectedPDF(attachments[0].file_url)
+        // if (attachments) setSelectedPDF(attachments[0].file_url)
+        console.log(attachments[0])
     }, [attachments])
 
     const handleAttachmentClick = (fileUrl) => {
@@ -33,7 +33,7 @@ const VaultDetailPage = () => {
 
     return (
         <>
-            {vaultObj && vaultObj.customer && customerObj.vaults ? (
+            {vaultObj && vaultObj.customer && (
                 <div className="container mt-3">
                     <div className="card" style={{ marginBottom: '20px' }}>
                         <div className="card-body">
@@ -47,9 +47,9 @@ const VaultDetailPage = () => {
                             <div>
                                 <strong>Customer</strong> {vaultObj.customer.name}
                             </div>
-                            <div>
+                            {/* <div>
                                 <strong>Customer Vaults:</strong> 10
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                     <div className="card">
@@ -75,8 +75,6 @@ const VaultDetailPage = () => {
                         </div>
                     </div>
                 </div>
-            ) : (
-                'Loading...'
             )}
         </>
     );
