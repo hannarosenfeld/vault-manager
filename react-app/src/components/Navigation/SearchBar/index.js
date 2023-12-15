@@ -103,9 +103,31 @@ function SearchBar() {
     setSelectedItem(null);
   };
 
-  const handleSearch = () => {
-    console.log('Searching for:', searchTerm);
+  const handleSearch = async () => {
+    try {
+      // Search logic to find the customer/order
+      const foundCustomer = customers.find(
+        (customer) => customer.name.toLowerCase() === searchTerm.toLowerCase()
+      );
+  
+      const foundOrder = orders.find(
+        (order) => order.order_number.toLowerCase() === searchTerm.toLowerCase()
+      );
+  
+      // Check if either customer or order is found
+      if (foundCustomer) {
+        await handleSelectItem(foundCustomer);
+      } else if (foundOrder) {
+        await handleSelectItem(foundOrder);
+      } else {
+        throw new Error('Customer/Order not found');
+      }
+    } catch (error) {
+      console.error('Error searching:', error.message);
+      // Handle the error as needed, e.g., display an error message to the user
+    }
   };
+  
 
   return (
     <div className="search-bar">
