@@ -148,7 +148,7 @@ export const removeVaultFromWarehouseThunk = (vaultId) => async (dispatch) => {
 };
   
 const initialState = {
-  // warehouseVaults: [],
+  warehouseVaults: [],
   warehouseFields: [],
   // warehouseRows: [],
   searchmode: null

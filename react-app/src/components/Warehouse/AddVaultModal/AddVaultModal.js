@@ -1,6 +1,6 @@
 import { useState, useEffect  } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getWarehouseInfoThunk} from '../../../store/warehouse';
+import { getAllWarehouseVaultsAction, getWarehouseInfoThunk} from '../../../store/warehouse';
 import { getAllCustomersThunk, addCustomerThunk } from '../../../store/customer'
 import { addVaultThunk, getAllVaultsThunk, getVaultThunk } from '../../../store/vault';
 import Paper from '@mui/material/Paper';
@@ -153,6 +153,8 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
 
         onClose(newVault);
         setIsSubmitting(false);
+        window.location.reload(true);
+        window.location.reload(false);
         } catch (error) {
           console.error('Error in handleSubmit:', error);
           setIsSubmitting(false);
