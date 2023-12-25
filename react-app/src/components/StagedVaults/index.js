@@ -39,7 +39,7 @@ export default function StagedVaults() {
             className="vault"
             onClick={() => handleVaultClick(vault)} // Pass the vault to the click handler
           >
-            <p><b>{truncateString(vault?.customer?.name, 6)}</b></p>
+            <p style={{marginBottom: "0"}}><b>{truncateString(vault?.customer?.name, 6)}</b></p>
             <p>{vault?.vault_id}</p>
           </div>
         ))}
