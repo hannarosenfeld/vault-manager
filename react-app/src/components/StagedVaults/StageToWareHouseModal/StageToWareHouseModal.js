@@ -117,7 +117,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
                     </div>
                   )}
                 </div>
-                <div className="warehouse">
+                <div className="warehouse" style={{height: "60%"}}>
                   {rowsArr?.map(row => (
                     <div className="row" key={row.id}>
                       <div className="fields">

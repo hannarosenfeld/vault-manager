@@ -23,7 +23,7 @@
     z-index: 0;
     font-size: 0.8em;
     max-height: 1040px;
-    overflow-y: auto; /* Add scrollbars if content exceeds the maximum height */
+    overflow-y: auto;  
     margin-top: -4.5em;
 }
 
@@ -151,42 +151,42 @@
   right: 5px;
 }
 
-/* Style the select element */
+
 .add-vault-form select {
   width: 100%;
   padding: 8px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  appearance: none; /* Remove the default arrow icon in some browsers */
+  appearance: none; 
   background: white url('data:image/svg+xml;charset=utf8,<svg fill="%23%23212121" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5H7z"/><path d="M0 0h24v24H0z" fill="none"/></svg>') no-repeat right center;
-  background-size: 20px; /* Set the size of the arrow icon */
+  background-size: 20px; 
   cursor: pointer;
-  color: #333; /* Text color */
+  color: #333; 
   font-size: 16px;
   font-size: 0.5em;
 }
 
-/* Add hover effect for the select element */
+
 .add-vault-form select:hover {
-  border-color: #007bff; /* Change the border color on hover */
+  border-color: #007bff; 
 }
 
-/* Style the arrow icon for the select element */
+
 .add-vault-form select::-ms-expand {
-  display: none; /* Remove the default arrow icon in Internet Explorer */
+  display: none; 
 }
 
-/* Style the options within the select element */
+
 .add-vault-form select option {
   background: white;
   color: #333;
 }
 
-/* Style the select element on focus */
+
 .add-vault-form select:focus {
-  outline: none; /* Remove the focus outline */
-  border-color: #007bff; /* Change the border color on focus */
+  outline: none; 
+  border-color: #007bff; 
 }
 
 

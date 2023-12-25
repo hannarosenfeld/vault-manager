@@ -27,9 +27,7 @@ function LoginFormPage() {
       <div className="login-page-content">
       <div className="login-header">
         <img src={naglee} />
-        {/* <h2>Naagle Vault Manager</h2> */}
       </div>
-      {/* <h3>Sign In</h3> */}
       <form onSubmit={handleSubmit}>
         <ul style={{color: "var(--red)"}}>
           {errors.map((error, idx) => (

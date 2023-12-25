@@ -52,16 +52,9 @@
 }
 
 
-/* make the search bar take up the entire available space */
 .search-bar-container {
   flex: 1;
   display: flex;
   justify-content: center;
 }
 
-/* #logout-button:hover {
-  color: red;
-  border: red;
-  z-index: 1000;
-  background: red;
-} */

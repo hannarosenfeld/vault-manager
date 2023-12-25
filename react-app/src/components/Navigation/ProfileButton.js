@@ -6,7 +6,6 @@ import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
 import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
 import { Drawer, List, ListItem, ListItemText, Button } from "@mui/material";
-import SignupFormPage from "../SignupFormPage";
 import "./Navigation.css";
 
 function ProfileButton({ user }) {
@@ -54,7 +53,7 @@ function ProfileButton({ user }) {
               </ListItem>
               <ListItem 
                 button 
-                onClick={closeDrawer} // Close the drawer when "Stage" is clicked
+                onClick={closeDrawer}
                 component={NavLink} 
                 to="/" 
                 style={{display: "flex", gap: "5px"}}>
@@ -62,7 +61,7 @@ function ProfileButton({ user }) {
               </ListItem>                 
               <ListItem 
                 button 
-                onClick={closeDrawer} // Close the drawer when "Stage" is clicked
+                onClick={closeDrawer}
                 component={NavLink} 
                 to="/stage" 
                 style={{display: "flex", gap: "5px"}}>

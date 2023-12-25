@@ -4,7 +4,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.5); /* Add a semi-transparent background */
+    background: rgba(0, 0, 0, 0.5); 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -33,7 +33,6 @@
 }
 
 
-/* In your CSS file or component */
 .modal-container {
     position: fixed;
     top: 0;
@@ -43,11 +42,11 @@
     display: flex;
     justify-content: flex-center;
     align-items: flex-center;
-    background-color: rgba(0, 0, 0, 0.5); /* Add a semi-transparent background */
+    background-color: rgba(0, 0, 0, 0.5); 
   }
   
   .modal-content {
-    width: 95%; /* Set width to 100% to take up the entire width */
+    width: 95%; 
     max-width: 320px;
     background-color: white;
     padding: 20px;
@@ -57,9 +56,7 @@
     align-self: center;
     margin: 0 auto;
   }
-  
 
-/* In your CSS file or component */
 .modal-content-wrapper {
     position: relative;
   }
@@ -68,7 +65,7 @@
     position: absolute;
     top: 10px;
     right: 10px;
-    z-index: 1; /* Ensure it's above the modal content */
+    z-index: 1;
   }
   
   

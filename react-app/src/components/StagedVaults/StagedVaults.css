@@ -17,7 +17,7 @@
         display: flex;
         flex-wrap: wrap;
         gap: 5px;
-        justify-content: flex-start; /* Adjust the alignment as needed */
+        justify-content: flex-start; 
     }
     
     .vault {

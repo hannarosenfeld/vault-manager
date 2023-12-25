@@ -47,9 +47,12 @@ const VaultDetailPage = () => {
                             <div>
                                 <strong>Customer</strong> {vaultObj.customer.name}
                             </div>
-                            {/* <div>
+                            
+                            {/* FUTURE FEATURE: show more information about customer vaults 
+                            <div>
                                 <strong>Customer Vaults:</strong> 10
-                            </div> */}
+                            </div> 
+                            */}
                         </div>
                     </div>
                     <div className="card">

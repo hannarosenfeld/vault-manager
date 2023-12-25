@@ -8,7 +8,7 @@ export default function StagedVaults() {
   const dispatch = useDispatch();
   const staged = useSelector((state) => state.stage.stagedVaults);
   const stagedArr = Object.values(staged);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State variable for the modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedVault, setSelectedVault] = useState(null);
 
   useEffect(() => {
@@ -18,12 +18,11 @@ export default function StagedVaults() {
   // Function to truncate a string to a specified length
   const truncateString = (str, maxLength) => {
     if (str.length > maxLength) {
-      return str.slice(0, maxLength) + ".."; // Append ellipsis for truncated text
+      return str.slice(0, maxLength) + "..";
     }
     return str;
   };
 
-  // Function to handle click and open the modal
   const handleVaultClick = (vault) => {
     setSelectedVault(vault);
     setIsModalOpen(true);
@@ -37,7 +36,7 @@ export default function StagedVaults() {
           <div
             key={vault.id}
             className="vault"
-            onClick={() => handleVaultClick(vault)} // Pass the vault to the click handler
+            onClick={() => handleVaultClick(vault)} 
           >
             <p style={{marginBottom: "0"}}><b>{truncateString(vault?.customer?.name, 6)}</b></p>
             <p>{vault?.vault_id}</p>

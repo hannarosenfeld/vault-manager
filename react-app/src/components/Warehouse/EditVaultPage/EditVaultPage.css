@@ -1,11 +1,11 @@
-/* EditVaultPage.css */
+
 
 .edit-vault-page-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #f4f4f4; /* Background color */
+  background-color: #f4f4f4; 
 }
 
 .edit-vault-page {
@@ -13,7 +13,7 @@
   padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
-  width: 400px; /* Adjust the width as needed */
+  width: 400px; 
   height: 100%;
 }
 
@@ -24,7 +24,7 @@
 .page-header h2 {
   font-size: 24px;
   margin-bottom: 20px;
-  color: #333; /* Heading color */
+  color: #333; 
 }
 
 .edit-page-content {
@@ -39,7 +39,7 @@
   display: block;
   font-weight: bold;
   margin-bottom: 5px;
-  color: #555; /* Label color */
+  color: #555; 
 }
 
 .form-control {
@@ -57,8 +57,8 @@
 }
 
 .save-button {
-  background-color: #007bff; /* Save button background color */
-  color: #fff; /* Save button text color */
+  background-color: #007bff; 
+  color: #fff; 
   border: none;
   border-radius: 5px;
   padding: 10px 20px;
@@ -67,26 +67,26 @@
 }
 
 .save-button:hover {
-  background-color: #0056b3; /* Save button background color on hover */
+  background-color: #0056b3; 
 }
 
-/* Style the DELETE button similarly if needed */
-/* EditVaultPage.css */
 
-/* ... Existing styles ... */
 
-/* Modal Styles */
+
+
+
+
 .delete-confirmation-modal {
   background-color: #fff;
   padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
-  width: 300px; /* Adjust the width as needed */
+  width: 300px; 
   text-align: center;
 }
 
 .modal-overlay {
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+  background-color: rgba(0, 0, 0, 0.5); 
   position: fixed;
   top: 0;
   left: 0;
@@ -103,8 +103,8 @@
 }
 
 .delete-button {
-  background-color: #ff0000; /* Delete button background color */
-  color: #fff; /* Delete button text color */
+  background-color: #ff0000; 
+  color: #fff; 
   border: none;
   border-radius: 5px;
   padding: 10px 20px;
@@ -114,8 +114,8 @@
 }
 
 .cancel-button {
-  background-color: #ccc; /* Cancel button background color */
-  color: #333; /* Cancel button text color */
+  background-color: #ccc; 
+  color: #333; 
   border: none;
   border-radius: 5px;
   padding: 10px 20px;
