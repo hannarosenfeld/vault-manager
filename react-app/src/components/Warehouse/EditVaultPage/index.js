@@ -115,9 +115,13 @@ const EditVaultPage = ({ onEditSubmit }) => {
                 />
               </div>
 
-              <div>
-                {/* upload new attachment here */}
-              </div>
+              <div className="form-group">
+                    <label>Attachment</label>
+                    <input
+                        type="file"
+                        // onChange={(e) => setAttachment(e.target.files[0])}
+                    />
+                </div>
 
               <div className="form-group">
                 <strong className="mb-3">Attachments</strong>
@@ -135,9 +139,9 @@ const EditVaultPage = ({ onEditSubmit }) => {
                 <Button onClick={handleDelete} color="error" variant="outlined">
                   DELETE
                 </Button>
-                <button className="save-button" type="submit">
+                <Button className="save-button" type="submit">
                   Save
-                </button>
+                </Button>
               </div>
             </form>
           )}
