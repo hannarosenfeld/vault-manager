@@ -8,11 +8,11 @@
 
 .edit-vault-page {
   background-color: #fff;
-  padding: 20px;
+  padding: 30px 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
   width: 60em; 
-  height: 90vh;
+  height: auto;
   margin: 0 auto;
 }
 
