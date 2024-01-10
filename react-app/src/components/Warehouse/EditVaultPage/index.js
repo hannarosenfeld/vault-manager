@@ -22,11 +22,23 @@ const EditVaultPage = ({ onEditSubmit }) => {
   const [newAttachments, setNewAttachments] = useState([]);
 
   const [formData, setFormData] = useState({
-    customer_name: '',
-    vault_id: '',
-    order_number: '',
-    attachments
+    customer_name: null,
+    vault_id: null,
+    order_number: null,
+    newAttachments
   });
+
+  useEffect(() => {
+    if (vaultObj && vaultObj.customer) {
+      setFormData({
+        customer_name: vaultObj.customer.name,
+        vault_id: vaultObj.vault_id,
+        order_number: vaultObj.order_number,
+        newAttachments
+      })
+      setIsLoading(false)
+    } else setIsLoading(true)
+  }, [vaultObj])
 
   useEffect(() => {console.log("🔗", newAttachments)}, [newAttachments])
 
@@ -133,6 +145,7 @@ const EditVaultPage = ({ onEditSubmit }) => {
 
               <div className="form-group">
                 <strong className="mb-3">Attachments</strong>
+                <div>
                 {attachments.map((attachment) => (
                   <div key={attachment.id} style={{display: "flex", alignItems: "center", gap: "3px"}}>
                     <span className="material-symbols-outlined" style={{ fontSize: '1.5em' }}>
@@ -141,6 +154,17 @@ const EditVaultPage = ({ onEditSubmit }) => {
                     <small>{attachment.file_name}</small>
                   </div>
                 ))}
+                </div>
+                <div className='new-attachments'>
+                {newAttachments.map((attachment) => (
+                  <div key={attachment.id} style={{display: "flex", alignItems: "center", gap: "3px"}}>
+                    <span className="material-symbols-outlined" style={{ fontSize: '1.5em' }}>
+                      file_present
+                    </span>
+                    <small>{attachment.name}</small>
+                  </div>
+                ))}
+                </div>
               </div>
 
               <div className="form-buttons">
