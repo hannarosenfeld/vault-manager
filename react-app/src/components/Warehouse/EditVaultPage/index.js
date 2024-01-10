@@ -23,6 +23,7 @@ const EditVaultPage = ({ onEditSubmit }) => {
     customer_name: '',
     vault_id: '',
     order_number: '',
+    attachments
   });
 
 
@@ -117,10 +118,13 @@ const EditVaultPage = ({ onEditSubmit }) => {
 
               <div className="form-group">
                     <label>Attachment</label>
-                    <input
+                    {/* <input
                         type="file"
                         // onChange={(e) => setAttachment(e.target.files[0])}
-                    />
+                    /> */}
+                    <div><span class="material-symbols-outlined">
+construction
+</span>attachment upload coming soon</div>
                 </div>
 
               <div className="form-group">
