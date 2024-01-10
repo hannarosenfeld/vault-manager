@@ -12,8 +12,6 @@ import "./AddVaultModal.css"
 import MiniWareHouse from './MiniWareHouse';
 import { getAllFieldsThunk, getFieldThunk } from '../../../store/field';
 
-// TODO: Work on the styling
-
 export default function AddVaultModal({ onClose, selectedField, tmb, updateSelectedFieldVaults}) {
     const dispatch = useDispatch();
     const customersObj = useSelector(state => state.customer.customers)
