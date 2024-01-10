@@ -19,6 +19,8 @@ const EditVaultPage = ({ onEditSubmit }) => {
   const attachments = Object.values(attachmentsObj);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [newAttachments, setNewAttachments] = useState([]);
+
   const [formData, setFormData] = useState({
     customer_name: '',
     vault_id: '',
@@ -26,6 +28,7 @@ const EditVaultPage = ({ onEditSubmit }) => {
     attachments
   });
 
+  useEffect(() => {console.log("🔗", newAttachments)}, [newAttachments])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -116,16 +119,17 @@ const EditVaultPage = ({ onEditSubmit }) => {
                 />
               </div>
 
+            {/* TODO: upload attachments */}
               <div className="form-group">
-                    <label>Attachment</label>
-                    {/* <input
-                        type="file"
-                        // onChange={(e) => setAttachment(e.target.files[0])}
-                    /> */}
-                    <div><span class="material-symbols-outlined">
-construction
-</span>attachment upload coming soon</div>
-                </div>
+                <label>Attachment</label>
+                <input
+                    type="file"
+                    onChange={(e) => setNewAttachments([...newAttachments,e.target.files[0]])}
+                />
+                <div><span class="material-symbols-outlined">
+                construction
+                </span>attachment upload coming soon</div>
+              </div>
 
               <div className="form-group">
                 <strong className="mb-3">Attachments</strong>
