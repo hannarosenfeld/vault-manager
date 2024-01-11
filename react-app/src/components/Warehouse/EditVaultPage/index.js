@@ -143,7 +143,6 @@ const EditVaultPage = () => {
                 />
               </div>
 
-            {/* TODO: upload attachments */}
               <div className="form-group">
                 <label>Attachment</label>
                 <input
