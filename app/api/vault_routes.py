@@ -152,6 +152,35 @@ def manage_vault(id):
             vault.vault_id = form.data['vault_id']
             vault.order_number = form.data['order_number']
 
+
+            print("🌸 hallo")
+            print("🌸 hallo", form.data['attachments_to_delete'])
+
+            # if 'attachments_to_delete' in request.json:
+            #     print("🌸 hallo again")
+            #     attachments_to_delete = request.json['attachments_to_delete']
+                
+            #     # Iterate over the attachments to be deleted
+            #     for attachment_id in attachments_to_delete:
+            #         attachment = Attachment.query.get(attachment_id)
+            #         print("💋 attachment", attachment)
+                    
+            #         if attachment:
+            #             # Get AWS credentials from environment variables
+            #             aws_access_key_id = os.getenv('AWS_ACCESS_KEY')
+            #             aws_secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY')
+            #             s3_bucket_name = os.getenv('AWS_BUCKET_NAME')
+                        
+            #             # Delete the file from AWS S3
+            #             s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+            #             s3_key = f'attachments/{attachment.unique_name}'
+            #             s3.delete_object(Bucket=s3_bucket_name, Key=s3_key)
+                        
+            #             # Remove the attachment from the database
+            #             vault.attachments.remove(attachment)
+            #             db.session.delete(attachment)
+
+
             # Handle file uploads
             for key, value in request.files.items():
                 if key.startswith('attachment'):

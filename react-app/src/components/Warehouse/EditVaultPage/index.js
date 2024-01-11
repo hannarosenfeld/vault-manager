@@ -24,12 +24,14 @@ const EditVaultPage = () => {
   const [newAttachments, setNewAttachments] = useState([]);
   const [selectedAttachment, setSelectedAttachment] = useState(null);
   const [isDeleteAttachmentModalOpen, setIsDeleteAttachmentModalOpen] = useState(false);
+  const [attachmentsToDelete, setAttachmentsToDelete] = useState([]);
 
   const [formData, setFormData] = useState({
     customer_name: null,
     vault_id: null,
     order_number: null,
-    new_attachments: null
+    new_attachments: null,
+    attachments_to_delete: null
   });
 
   useEffect(() => {
@@ -38,13 +40,12 @@ const EditVaultPage = () => {
         customer_name: vaultObj.customer.name,
         vault_id: vaultObj.vault_id,
         order_number: vaultObj.order_number,
-        new_attachments : newAttachments
+        new_attachments : newAttachments,
+        attachments_to_delete: attachmentsToDelete
       })
       setIsLoading(false)
     } else setIsLoading(true)
   }, [vaultObj, newAttachments])
-
-  useEffect(() => {console.log("🔗", newAttachments)}, [newAttachments])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,22 +65,21 @@ const EditVaultPage = () => {
   const handleSave = async (e) => {
     e.preventDefault();
 
-    console.log("🍋 formData: ", formData)
-
     const vaultData = new FormData
       vaultData.append("customer_name", formData.customer_name)
       vaultData.append("vault_id", formData.vault_id)
       vaultData.append("order_number", formData.order_number)
+      vaultData.append("attachments_to_delete", formData.attachments_to_delete)
       formData.new_attachments.forEach((attachment, index) => {
         vaultData.append(`attachment${index}`, attachment)
       })
       
-    console.log("❤️‍🩹 vaultData: ", vaultData.get("attachment0"))
+    console.log("❤️‍🩹 vaultData: ", vaultData.get('attachments_to_delete'))
 
     try {
       await dispatch(updateCustomerNameThunk(vaultObj.customer.id, formData.customer_name));
       await dispatch(editVaultThunk(vaultObj.id, vaultData));
-      history.push('/');
+      // history.push('/');
     } catch (error) {
       console.error('Error saving vault:', error);
     }
@@ -105,10 +105,7 @@ const EditVaultPage = () => {
   };
 
   const confirmDeleteAttachment = async () => {
-    // Perform the logic to delete the attachment
-    // You may dispatch an action to delete the attachment here
-
-    // After deletion, close the modal
+    attachmentsToDelete.push(selectedAttachment.id)
     setIsDeleteAttachmentModalOpen(false);
   };
 
@@ -175,6 +172,11 @@ const EditVaultPage = () => {
 
               <div className="form-group">
                 <strong className="mb-3">Attachments</strong>
+                <div style={{color: "orange"}}> 
+                   <span class="material-symbols-outlined" >
+                  engineering
+                  </span> deleting attachments is under construction and will not work yet
+                  </div>
                 <div>
                 {attachments.map((attachment) => (
                   <div className='attachment' key={attachment.id} style={{display: "flex", alignItems: "center", gap: "3px"}}>
