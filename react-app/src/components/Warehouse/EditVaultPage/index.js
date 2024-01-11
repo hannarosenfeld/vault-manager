@@ -9,6 +9,8 @@ import Button from '@mui/material/Button';
 import { useParams } from 'react-router-dom';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import { getAllVaultAttachmentsThunk } from '../../../store/attachment';
+import DeleteAttachmentConfirmationModal from './DeleteAttachmentConfirmationModal';
+
 
 const EditVaultPage = () => {
   const dispatch = useDispatch();
@@ -20,6 +22,8 @@ const EditVaultPage = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [newAttachments, setNewAttachments] = useState([]);
+  const [selectedAttachment, setSelectedAttachment] = useState(null);
+  const [isDeleteAttachmentModalOpen, setIsDeleteAttachmentModalOpen] = useState(false);
 
   const [formData, setFormData] = useState({
     customer_name: null,
@@ -95,6 +99,24 @@ const EditVaultPage = () => {
     setIsDeleteModalOpen(false);
   };
 
+  const handleDeleteAttachment = (attachment) => {
+    setSelectedAttachment(attachment);
+    setIsDeleteAttachmentModalOpen(true);
+  };
+
+  const confirmDeleteAttachment = async () => {
+    // Perform the logic to delete the attachment
+    // You may dispatch an action to delete the attachment here
+
+    // After deletion, close the modal
+    setIsDeleteAttachmentModalOpen(false);
+  };
+
+  const closeDeleteAttachmentModal = () => {
+    setSelectedAttachment(null);
+    setIsDeleteAttachmentModalOpen(false);
+  };
+
   return (
     <div className="edit-vault-page-container">
       <div className="edit-vault-page">
@@ -155,17 +177,20 @@ const EditVaultPage = () => {
                 <strong className="mb-3">Attachments</strong>
                 <div>
                 {attachments.map((attachment) => (
-                  <div key={attachment.id} style={{display: "flex", alignItems: "center", gap: "3px"}}>
+                  <div className='attachment' key={attachment.id} style={{display: "flex", alignItems: "center", gap: "3px"}}>
                     <span className="material-symbols-outlined" style={{ fontSize: '1.5em' }}>
                       file_present
                     </span>
                     <small>{attachment.file_name}</small>
+                    <span className="material-symbols-outlined cross" onClick={() => handleDeleteAttachment(attachment)}>
+                      close
+                    </span>
                   </div>
                 ))}
                 </div>
                 <div className='new-attachments'>
                 {newAttachments.map((attachment) => (
-                  <div key={attachment.id} style={{display: "flex", alignItems: "center", gap: "3px"}}>
+                  <div className='attachment' key={attachment.id} style={{display: "flex", alignItems: "center", gap: "3px"}}>
                     <span className="material-symbols-outlined" style={{ fontSize: '1.5em' }}>
                       file_present
                     </span>
@@ -187,6 +212,12 @@ const EditVaultPage = () => {
           )}
         </div>
       </div>
+      <DeleteAttachmentConfirmationModal
+        isOpen={isDeleteAttachmentModalOpen}
+        onClose={closeDeleteAttachmentModal}
+        onDelete={confirmDeleteAttachment}
+        attachment={selectedAttachment}
+      />
       <DeleteConfirmationModal
         isOpen={isDeleteModalOpen}
         onClose={closeDeleteModal}
