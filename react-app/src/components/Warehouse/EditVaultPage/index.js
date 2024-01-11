@@ -24,7 +24,7 @@ const EditVaultPage = () => {
   const [newAttachments, setNewAttachments] = useState([]);
   const [selectedAttachment, setSelectedAttachment] = useState(null);
   const [isDeleteAttachmentModalOpen, setIsDeleteAttachmentModalOpen] = useState(false);
-
+  const [reload, setReload] = useState(false)
 
   const [formData, setFormData] = useState({
     customer_name: null,
@@ -41,7 +41,7 @@ const EditVaultPage = () => {
         vault_id: vaultObj.vault_id,
         order_number: vaultObj.order_number,
         new_attachments : newAttachments,
-        attachment_to_delete: selectedAttachment
+        attachment_to_delete: selectedAttachment,
       })
       setIsLoading(false)
     } else setIsLoading(true)
@@ -60,7 +60,7 @@ const EditVaultPage = () => {
     };
 
     fetchData();
-  }, [dispatch, vaultId]);
+  }, [dispatch, vaultId, reload === true]);
 
   const handleSave = async (e) => {
     e.preventDefault();
@@ -109,6 +109,7 @@ const EditVaultPage = () => {
 
     await dispatch(deleteAttachmentThunk(vaultObj.id, attachmentData))
 
+    setReload(true)
     setIsDeleteAttachmentModalOpen(false);
   };
   
