@@ -74,7 +74,7 @@ const VaultDetailPage = () => {
                     </div>
                     <div className="card mt-3">
                         <div className="card-body">
-                            {selectedPDF && <embed src={selectedPDF} width="100%" height="500" />}
+                            {selectedPDF ? <embed src={selectedPDF} width="100%" height="500" /> : "Select an Attachment to view it's content"}
                         </div>
                     </div>
                 </div>
