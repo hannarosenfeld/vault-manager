@@ -150,9 +150,6 @@ const EditVaultPage = () => {
                     type="file"
                     onChange={(e) => setNewAttachments([...newAttachments,e.target.files[0]])}
                 />
-                <div><span class="material-symbols-outlined">
-                construction
-                </span>attachment upload coming soon</div>
               </div>
 
               <div className="form-group">
