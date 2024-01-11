@@ -175,13 +175,8 @@ const EditVaultPage = () => {
               </div>
 
               <div className="form-group">
-                <strong className="mb-3">Attachments</strong>
-                <div style={{color: "orange"}}> 
-                   <span class="material-symbols-outlined" >
-                  engineering
-                  </span> deleting attachments is under construction and will not work yet
-                  </div>
-                <div>
+                <strong>Attachments</strong>
+                <div className="attachments" >
                 {attachments.map((attachment) => (
                   <div className='attachment' key={attachment.id} style={{display: "flex", alignItems: "center", gap: "3px"}}>
                     <span className="material-symbols-outlined" style={{ fontSize: '1.5em' }}>
