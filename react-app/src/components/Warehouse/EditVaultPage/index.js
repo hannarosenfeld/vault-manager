@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import { getAllVaultAttachmentsThunk } from '../../../store/attachment';
 
-const EditVaultPage = ({ onEditSubmit }) => {
+const EditVaultPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { vaultId } = useParams();
@@ -25,7 +25,7 @@ const EditVaultPage = ({ onEditSubmit }) => {
     customer_name: null,
     vault_id: null,
     order_number: null,
-    newAttachments
+    new_attachments: null
   });
 
   useEffect(() => {
@@ -34,11 +34,11 @@ const EditVaultPage = ({ onEditSubmit }) => {
         customer_name: vaultObj.customer.name,
         vault_id: vaultObj.vault_id,
         order_number: vaultObj.order_number,
-        newAttachments
+        new_attachments : newAttachments
       })
       setIsLoading(false)
     } else setIsLoading(true)
-  }, [vaultObj])
+  }, [vaultObj, newAttachments])
 
   useEffect(() => {console.log("🔗", newAttachments)}, [newAttachments])
 
@@ -60,9 +60,21 @@ const EditVaultPage = ({ onEditSubmit }) => {
   const handleSave = async (e) => {
     e.preventDefault();
 
+    console.log("🍋 formData: ", formData)
+
+    const vaultData = new FormData
+      vaultData.append("customer_name", formData.customer_name)
+      vaultData.append("vault_id", formData.vault_id)
+      vaultData.append("order_number", formData.order_number)
+      formData.new_attachments.forEach((attachment, index) => {
+        vaultData.append(`attachment${index}`, attachment)
+      })
+      
+    console.log("❤️‍🩹 vaultData: ", vaultData.get("attachment0"))
+
     try {
       await dispatch(updateCustomerNameThunk(vaultObj.customer.id, formData.customer_name));
-      await dispatch(editVaultThunk(vaultObj.id, formData));
+      await dispatch(editVaultThunk(vaultObj.id, vaultData));
       history.push('/');
     } catch (error) {
       console.error('Error saving vault:', error);
@@ -93,7 +105,7 @@ const EditVaultPage = ({ onEditSubmit }) => {
           {isLoading ? (
             <p>Loading...</p>
           ) : (
-            <form onSubmit={handleSave} className="edit-vault-form">
+            <form onSubmit={handleSave} className="edit-vault-form" enctype="multipart/form-data">
               <div className="form-group">
                 <label htmlFor="customer_name">Customer Name</label>
                 <input

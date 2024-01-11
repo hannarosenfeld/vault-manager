@@ -32,14 +32,11 @@ const addVaultAction = (vault) => ({
 
 
 export const editVaultThunk = (vaultId, vaultData) => async (dispatch) => {
-  console.log("📪 in store", vaultData)
+  console.log("📪 in store", vaultData.get("attachment0"))
   try {
     const res = await fetch(`/api/vaults/${vaultId}`, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(vaultData)
+      body: vaultData
     });
 
     if (res.ok) {
@@ -115,7 +112,6 @@ export const getAllVaultsThunk = () => async (dispatch) => {
 };
 
 export const addVaultThunk = (vaultData) => async (dispatch) => {
-  console.log("🗳️", vaultData.get("customer_name"))
   try {
     const res = await fetch('/api/vaults/', {
       method: 'POST',

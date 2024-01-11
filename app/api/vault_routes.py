@@ -148,9 +148,34 @@ def manage_vault(id):
         form['csrf_token'].data = request.cookies['csrf_token']
 
         if form.validate_on_submit():
-            vault.customer_name= form.data['customer_name']
+            vault.customer_name = form.data['customer_name']
             vault.vault_id = form.data['vault_id']
-            vault.order_number= form.data['order_number']
+            vault.order_number = form.data['order_number']
+
+            # Handle file uploads
+            for key, value in request.files.items():
+                if key.startswith('attachment'):
+                    attachment = value
+
+                    # Get AWS credentials from environment variables
+                    aws_access_key_id = os.getenv('AWS_ACCESS_KEY')
+                    aws_secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY')
+                    s3_bucket_name = os.getenv('AWS_BUCKET_NAME')
+                    unique_name = f'{secure_filename(attachment.filename)}-{uuid.uuid4()}'
+                    s3_key = f'attachments/{unique_name}'
+
+                    # Store file information in the database
+                    new_attachment = Attachment(
+                        vault_id=vault.id,
+                        file_name=attachment.filename,
+                        unique_name=unique_name,
+                        file_url=f'https://{s3_bucket_name}.s3.amazonaws.com/{s3_key}',
+                    )
+                    db.session.add(new_attachment)
+
+                    # Save file to AWS S3
+                    s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+                    s3.upload_fileobj(attachment, s3_bucket_name, s3_key, ExtraArgs={'ContentType': 'application/pdf'})
 
             db.session.commit()
             return vault.to_dict()
