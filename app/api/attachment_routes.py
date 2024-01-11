@@ -23,14 +23,11 @@ def get_all_vault_attachments(vaultId):
 
 @attachment_routes.route('/<int:vaultId>/<int:attachmentId>', methods=['DELETE'])
 def delete_attachment(vaultId, attachmentId):
-    print("💖", vaultId, attachmentId)
     vault = Vault.query.get(vaultId)
     form = EditVaultForm()
 
     attachment = next((a for a in vault.attachments if a.id == attachmentId), None)
     attachment_unique_name = form.data['attachment_to_delete']
-
-    print("💋", attachment_unique_name)
 
     if attachment_unique_name:
         # Perform the logic to delete the attachment (e.g., remove from database or storage)
@@ -49,10 +46,7 @@ def delete_attachment(vaultId, attachmentId):
         db.session.delete(attachment)
         db.session.commit()
 
-        print(f"💖 Deleted attachment with ID {attachmentId}")
     else:
         print("💖 Attachment not found")
-
-    print("💖 Vault Attachments after deletion:", [a.id for a in vault.attachments])
 
     return {'message': 'Attachment deleted successfully'}

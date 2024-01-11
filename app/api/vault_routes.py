@@ -45,7 +45,6 @@ def single_vault(id):
 @login_required
 def add_vault():
     form = VaultForm()
-    print("📙", form.data)
     form['csrf_token'].data = request.cookies['csrf_token']
 
     try:

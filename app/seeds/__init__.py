@@ -42,7 +42,6 @@ def seed():
         orders = Order.query.all()
         vaults = Vault.query.all()
 
-        print("💖")
         if not users: seed_users()
         if not customers : seed_customers()
         if not orders: seed_orders()

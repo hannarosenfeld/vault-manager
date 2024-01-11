@@ -77,7 +77,7 @@ const EditVaultPage = () => {
     try {
       await dispatch(updateCustomerNameThunk(vaultObj.customer.id, formData.customer_name));
       await dispatch(editVaultThunk(vaultObj.id, vaultData));
-      // history.push('/');
+      history.push('/');
     } catch (error) {
       console.error('Error saving vault:', error);
     }
@@ -103,7 +103,6 @@ const EditVaultPage = () => {
   };
 
   const confirmDeleteAttachment = async () => {
-    console.log("🍋", formData.attachment_to_delete)
     const attachmentData = new FormData
       attachmentData.append("attachment_id", formData.attachment_to_delete.id)
       attachmentData.append("attachment_to_delete", formData.attachment_to_delete.unique_name)

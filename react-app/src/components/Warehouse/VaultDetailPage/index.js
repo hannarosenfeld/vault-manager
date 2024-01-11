@@ -14,21 +14,14 @@ const VaultDetailPage = () => {
     const attachments = Object.values(attachmentsObj);
     const [selectedPDF, setSelectedPDF] = useState(null);
 
-    console.log("📕", vaultObj)
 
     useEffect(() => {
         dispatch(getVaultThunk(vaultId));
         dispatch(getAllVaultAttachmentsThunk(vaultId));
     }, [vaultId]);
 
-    useEffect(() => {
-        // if (attachments) setSelectedPDF(attachments[0].file_url)
-        console.log(attachments[0])
-    }, [attachments])
-
     const handleAttachmentClick = (fileUrl) => {
         setSelectedPDF(fileUrl);
-        console.log('Attachment Clicked:', selectedPDF);
     };
 
     return (
