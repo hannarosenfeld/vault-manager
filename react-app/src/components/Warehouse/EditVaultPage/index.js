@@ -8,7 +8,7 @@ import { deleteVaultThunk } from '../../../store/vault';
 import Button from '@mui/material/Button';
 import { useParams } from 'react-router-dom';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
-import { getAllVaultAttachmentsThunk } from '../../../store/attachment';
+import { getAllVaultAttachmentsThunk, deleteAttachmentThunk } from '../../../store/attachment';
 import DeleteAttachmentConfirmationModal from './DeleteAttachmentConfirmationModal';
 
 
@@ -24,14 +24,14 @@ const EditVaultPage = () => {
   const [newAttachments, setNewAttachments] = useState([]);
   const [selectedAttachment, setSelectedAttachment] = useState(null);
   const [isDeleteAttachmentModalOpen, setIsDeleteAttachmentModalOpen] = useState(false);
-  const [attachmentsToDelete, setAttachmentsToDelete] = useState([]);
+
 
   const [formData, setFormData] = useState({
     customer_name: null,
     vault_id: null,
     order_number: null,
     new_attachments: null,
-    attachments_to_delete: null
+    attachment_to_delete: null
   });
 
   useEffect(() => {
@@ -41,11 +41,11 @@ const EditVaultPage = () => {
         vault_id: vaultObj.vault_id,
         order_number: vaultObj.order_number,
         new_attachments : newAttachments,
-        attachments_to_delete: attachmentsToDelete
+        attachment_to_delete: selectedAttachment
       })
       setIsLoading(false)
     } else setIsLoading(true)
-  }, [vaultObj, newAttachments])
+  }, [vaultObj, newAttachments, selectedAttachment])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,13 +69,11 @@ const EditVaultPage = () => {
       vaultData.append("customer_name", formData.customer_name)
       vaultData.append("vault_id", formData.vault_id)
       vaultData.append("order_number", formData.order_number)
-      vaultData.append("attachments_to_delete", formData.attachments_to_delete)
+
       formData.new_attachments.forEach((attachment, index) => {
         vaultData.append(`attachment${index}`, attachment)
       })
       
-    console.log("❤️‍🩹 vaultData: ", vaultData.get('attachments_to_delete'))
-
     try {
       await dispatch(updateCustomerNameThunk(vaultObj.customer.id, formData.customer_name));
       await dispatch(editVaultThunk(vaultObj.id, vaultData));
@@ -105,9 +103,16 @@ const EditVaultPage = () => {
   };
 
   const confirmDeleteAttachment = async () => {
-    attachmentsToDelete.push(selectedAttachment.id)
+    console.log("🍋", formData.attachment_to_delete)
+    const attachmentData = new FormData
+      attachmentData.append("attachment_id", formData.attachment_to_delete.id)
+      attachmentData.append("attachment_to_delete", formData.attachment_to_delete.unique_name)
+
+    await dispatch(deleteAttachmentThunk(vaultObj.id, attachmentData))
+
     setIsDeleteAttachmentModalOpen(false);
   };
+  
 
   const closeDeleteAttachmentModal = () => {
     setSelectedAttachment(null);
