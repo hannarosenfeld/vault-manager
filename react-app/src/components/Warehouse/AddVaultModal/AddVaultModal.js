@@ -181,7 +181,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
                 </IconButton>
             </div>
             <div style={{marginBottom: "5px"}}>
-            <h2 style={{marginBottom: "5px"}} id="modal-modal-title">Add Vault</h2>
+            <h4 style={{marginBottom: "0.5em"}} id="modal-modal-title">Add Vault</h4>
                 <div className="vault-info">
                     <div>Field: <span>{selectedField.field_id}</span></div>
                     <div>Position: <span>{tmb}</span></div>
@@ -194,6 +194,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
                         <FormLabel>Customer Name</FormLabel>
                         <input
                             type="text"
+                            
                             value={customer_name}
                             onChange={handleCustomerNameChange}
                             required
@@ -221,7 +222,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
                     <FormLabel>Vault Type</FormLabel>
                     <select
                         className="form-select form-select-lg"
-                        style={{fontSize: "1em", marginLeft: "-0.5em"}}
+                        style={{fontSize: "1em", marginLeft: "-0.5em", marginTop: "0.4em"}}
                         aria-aria-label=".form-select-lg example"
                         value={vaultType}
                         onChange={(e) => setVaultType(e.target.value)}
@@ -260,7 +261,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
                     />
                 </FormGroup>
                 </div>
-                <div style={{height: "63%", marginBottom: "1em"}}>
+                <div style={{height: "63%", marginTop: "1em"}}>
                     <MiniWareHouse selectedField={selectedField}/>
                 </div>
                 <button type="submit" disabled={isSubmitting}>
