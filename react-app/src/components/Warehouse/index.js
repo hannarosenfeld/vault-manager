@@ -24,6 +24,8 @@ export default function Warehouse () {
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
 
 
+    console.log("🍋 rowsArr: ", rowsArr)
+
     useEffect(() => {
         const getWareHouseInfo = dispatch(getWarehouseInfoThunk());
         const getAllWarehouseVaults = dispatch(getAllWarehouseVaultsThunk());
