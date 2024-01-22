@@ -10,7 +10,6 @@ import { rowCreator, sortFields } from "../utility";
 import "./Warehouse.css"
 
 
-
 export default function Warehouse () {
     const dispatch = useDispatch();
     const rowsArr = rowCreator(useSelector(state => state.warehouse.warehouseFields));

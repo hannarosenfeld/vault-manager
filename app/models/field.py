@@ -16,6 +16,7 @@ class Field(db.Model, UserMixin):
     warehouse_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('warehouse.id')))
     warehouse = db.relationship('Warehouse', back_populates='warehouse_fields')
     full = db.Column(db.Boolean, default=False)
+    type = db.Column(db.String, default="vault")
 
     def generate_field_id(self, row_id, numerical_identifier):
         return f"{row_id}{numerical_identifier:02d}"
@@ -26,5 +27,6 @@ class Field(db.Model, UserMixin):
             'row_id': self.row_id,
             'field_id': self.field_id,
             'vaults': [vault.id for vault in self.vaults],
-            'full': self.full
+            'full': self.full,
+            'type': self.type
         }
