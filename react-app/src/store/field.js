@@ -62,13 +62,11 @@ export const getAllFieldsThunk = () => async (dispatch) => {
 
 // // Thunk action creator for removing a vault from a field
 // export const removeVaultFromFieldThunk = (fieldId, vaultId) => async (dispatch) => {
-//     console.log("🌺 in thunk! ", fieldId, vaultId)
 //   try {
 //     const res = await fetch(`/api/fields/${fieldId}/vaults/${vaultId}`, {
 //       method: 'DELETE',
 //     });
 //     if (res.ok) {
-//       ("🌺 in thunk! ", res)
 //       dispatch(removeVaultFromFieldAction(fieldId, vaultId));
 //     } else {
 //       const err = await res.json();
