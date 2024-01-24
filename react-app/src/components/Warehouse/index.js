@@ -22,7 +22,7 @@ export default function Warehouse () {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] = useState(false);
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
-
+    const [toggleSelected, setToggleSelected] = useState(false); // this toggles couch box field on/off
 
     console.log("🍋 rowsArr: ", rowsArr)
 
@@ -38,6 +38,11 @@ export default function Warehouse () {
         }
         }, [selectedVaultToStage]);
 
+    const handleToggleChange = () => {
+        // Update the toggleSelected state when the toggle switch changes
+        setToggleSelected((prevToggleSelected) => !prevToggleSelected);
+    };
+                
     const updateSelectedFieldVaults = async (newVault) => {
         if (selectedField && newVault?.field_id === selectedField.id) {
         const updatedTop = newVault.position === "T" ? newVault : top;
@@ -46,6 +51,7 @@ export default function Warehouse () {
     }
     };
     const handleFieldClick = async (field, row, index) => {
+        await setToggleSelected(false);
         await setSelectedField(field);
     };
 
@@ -92,7 +98,13 @@ export default function Warehouse () {
         <div className="warehouse-wrapper">
             <div className="field-info">
             { selectedField ? (
-                <RenderTMB selectedField={selectedField} handleStageClick={handleStageClick} handleOpenModal={handleOpenModal} />
+                <RenderTMB 
+                selectedField={selectedField} 
+                handleStageClick={handleStageClick} 
+                handleOpenModal={handleOpenModal} 
+                handleToggleChange={handleToggleChange}
+                toggleSelected={toggleSelected}
+                />
           ) : (
                 <div>
                     Select a field to view its info
@@ -116,7 +128,7 @@ export default function Warehouse () {
                                     field?.vaults?.length === 1 ? "var(--green)" :
                                     "var(--lightgrey)"
                                 }`,
-                                border: `${selectedField?.id === field?.id ? "3px solid var(--blue)" : "none"}`,
+                                border: `${selectedField?.id === field?.id && toggleSelected ? " 3px solid orange" : selectedField?.id === field?.id ? "3px solid var(--blue)" : "none"}`,
                             }}                      
                             onClick={() => handleFieldClick(field, row, index)}
                         >

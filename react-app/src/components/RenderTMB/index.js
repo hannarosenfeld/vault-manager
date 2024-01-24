@@ -4,20 +4,22 @@ import AddVaultButton from "./AddVaultButton";
 import VaultInstance from "../VaultInstance";
 import { useState } from "react";
 import { getAllVaultsThunk } from "../../store/vault";
+import "./RenderTMB.css"
 
-const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEditClick }) => {
+
+const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEditClick, handleToggleChange, toggleSelected }) => {
   const dispatch = useDispatch();
   const vaultsObj = useSelector((state) => state.vault.vaults);
   const [topmostVault, setTopmostVault] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const fieldState = useSelector((state) => state.warehouse.warehouseFields[parseInt(selectedField.id)]);
   const vaults = fieldState.vaults;
+
   const [fieldVaults, setFieldVaults] = useState({
     T: undefined,
     M: undefined,
     B: undefined,
   })
-
 
   useEffect(() => {
     dispatch(getAllVaultsThunk())
@@ -119,7 +121,19 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
           )}
         </div>
       </div>
-      <div style={{fontSize: "2em", display: "flex", alignItems: "center", margin: "0 auto"}}>{selectedField.field_id}</div>
+      <div className={`selected-field-box ${toggleSelected ? 'toggled' : ''}`}>
+      <div class="form-check form-switch">
+      <input
+          className="form-check-input"
+          type="checkbox"
+          role="switch"
+          id="flexSwitchCheckDefault"
+          checked={toggleSelected}
+          onChange={handleToggleChange}
+        />
+      </div>
+        <div className="selected-field-name">{selectedField.field_id}</div>
+      </div>
     </>
   );
 };
