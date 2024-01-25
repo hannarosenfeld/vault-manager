@@ -48,7 +48,7 @@ function ProfileButton({ user }) {
           {user ? (
             <List>
               <ListItem>
-              {user.username === "admin" ? <span style={{fontSize: "1.5em"}} class="material-symbols-outlined">shield_person</span> : ''}
+              {user.username === "admin" ? <span style={{fontSize: "1.5em"}} className="material-symbols-outlined">shield_person</span> : ''}
               <ListItemText primary={user.username}/>
               </ListItem>
               <ListItem 

@@ -4,6 +4,24 @@ from app.models import db, Field, Vault, Row
 field_routes = Blueprint('fields', __name__)
 
 
+
+@field_routes.route('/<int:id>', methods=['PUT'])
+def toggle_field_type(id):
+    field = Field.query.get(id)
+
+    if not field:
+        return jsonify(message="Field not found"), 404
+    
+    else:
+        if field.type == "vault":
+            field.type = "couchbox"
+        elif field.type == "couchbox":
+            field.type = "vault"
+
+    db.session.commit()
+    return jsonify(field.to_dict())
+
+
 @field_routes.route('/')
 def get_all_fields():
     fields = Field.query.all()

@@ -8,6 +8,7 @@ import RenderTMB from "../RenderTMB";
 import ConfirmStaging from "./ConfirmStaging";
 import { rowCreator, sortFields } from "../utility";
 import "./Warehouse.css"
+import { getFieldThunk, toggleCouchBoxFieldThunk } from "../../store/field.js";
 
 
 export default function Warehouse () {
@@ -24,8 +25,6 @@ export default function Warehouse () {
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
     const [toggleSelected, setToggleSelected] = useState(false); // this toggles couch box field on/off
 
-    console.log("🍋 rowsArr: ", rowsArr)
-
     useEffect(() => {
         const getWareHouseInfo = dispatch(getWarehouseInfoThunk());
         const getAllWarehouseVaults = dispatch(getAllWarehouseVaultsThunk());
@@ -38,10 +37,13 @@ export default function Warehouse () {
         }
         }, [selectedVaultToStage]);
 
-    const handleToggleChange = () => {
-        // Update the toggleSelected state when the toggle switch changes
+    // toggle vault/couchbox field        
+    const handleToggleChange = async () => {
         setToggleSelected((prevToggleSelected) => !prevToggleSelected);
+        await dispatch(toggleCouchBoxFieldThunk(selectedField.id));
+        await dispatch(getFieldThunk(selectedField.id));
     };
+
                 
     const updateSelectedFieldVaults = async (newVault) => {
         if (selectedField && newVault?.field_id === selectedField.id) {

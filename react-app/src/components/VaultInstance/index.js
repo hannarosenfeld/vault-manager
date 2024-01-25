@@ -46,7 +46,7 @@ const VaultInstance = ({ topmostVault, vault, position, handleStageClick, handle
           </span>
         </Link>
         <Link to={`/vaults/${vault?.id}/detail`}>
-          <span class="material-symbols-outlined">
+          <span className="material-symbols-outlined">
           description
           </span>
         </Link>

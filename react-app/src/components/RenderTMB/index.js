@@ -71,7 +71,7 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
           <span className="position">T</span>
           {onlyTop && fieldState.full && (
             <div style={{ color: "red" }}>
-              <span class="material-symbols-outlined">warning</span>Field is full
+              <span className="material-symbols-outlined">warning</span>Field is full
             </div>
           )}
           {onlyTop && !fieldState.full ? (
@@ -122,7 +122,7 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
         </div>
       </div>
       <div className={`selected-field-box ${toggleSelected ? 'toggled' : ''}`}>
-      <div class="form-check form-switch">
+      <div className="form-check form-switch">
       <input
           className="form-check-input"
           type="checkbox"

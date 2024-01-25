@@ -35,7 +35,7 @@ function LoginFormPage() {
           ))}
         </ul>
         <fieldset>
-          <span class="material-symbols-outlined">person</span>
+          <span className="material-symbols-outlined">person</span>
             <input
               type="text"
               value={email}
@@ -44,7 +44,7 @@ function LoginFormPage() {
             />
           </fieldset>
           <fieldset>
-            <span class="material-symbols-outlined">lock</span>
+            <span className="material-symbols-outlined">lock</span>
             <input
               type="password"
               value={password}
