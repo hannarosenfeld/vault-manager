@@ -26,6 +26,10 @@ export default function Warehouse () {
     const [toggleSelected, setToggleSelected] = useState(false); // this toggles couch box field on/off
 
     useEffect(() => {
+        console.log("💖 selectedField: ", selectedField)
+    }, [selectedField])
+
+    useEffect(() => {
         const getWareHouseInfo = dispatch(getWarehouseInfoThunk());
         const getAllWarehouseVaults = dispatch(getAllWarehouseVaultsThunk());
         const getAllVaults = dispatch(getAllVaultsThunk())
@@ -130,10 +134,11 @@ export default function Warehouse () {
                                     "var(--lightgrey)"
                                 }`,
                                 border: `${field.type === "couchbox" ? "2px solid orange" : selectedField?.id === field?.id && toggleSelected ? " 3px solid orange" : selectedField?.id === field?.id ? "3px solid var(--blue)" : "none"}`,
+                                marginBottom: `${field.type === "couchbox" ? "-1em" : ''}`
                             }}                      
                             onClick={() => handleFieldClick(field, row, index)}
                         >
-                            <div className="field-number">{row.id}{index + 1}</div>
+                            {field.type === "vault" ? <div className="field-number">{row.id}{index + 1}</div> : field.type === "couchbox" ? <div className="field-number">{row.id}{index + 1} / {row.id}{index + 2}</div> : ''}
                         </div>
                     );
                 })}
