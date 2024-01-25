@@ -43,7 +43,6 @@ export default function Warehouse () {
         await dispatch(toggleCouchBoxFieldThunk(selectedField.id));
         await dispatch(getFieldThunk(selectedField.id));
     };
-
                 
     const updateSelectedFieldVaults = async (newVault) => {
         if (selectedField && newVault?.field_id === selectedField.id) {
@@ -130,7 +129,7 @@ export default function Warehouse () {
                                     field?.vaults?.length === 1 ? "var(--green)" :
                                     "var(--lightgrey)"
                                 }`,
-                                border: `${selectedField?.id === field?.id && toggleSelected ? " 3px solid orange" : selectedField?.id === field?.id ? "3px solid var(--blue)" : "none"}`,
+                                border: `${field.type === "couchbox" ? "2px solid orange" : selectedField?.id === field?.id && toggleSelected ? " 3px solid orange" : selectedField?.id === field?.id ? "3px solid var(--blue)" : "none"}`,
                             }}                      
                             onClick={() => handleFieldClick(field, row, index)}
                         >
