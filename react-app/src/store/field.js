@@ -2,6 +2,7 @@ import { GET_WAREHOUSE_INFO } from "./warehouse";
 
 const GET_FIELD = "field/GET_FIELD";
 const GET_ALL_FIELDS = "field/GET_ALL_FIELDS"; // Add this new action type
+const TOGGLE_COUCHBOX_FIELD = "field/TOGGLE_COUCHBOX_FIELD"
 // const REMOVE_VAULT_FROM_FIELD = "field/REMOVE_VAULT_FROM_FIELD"; // New action type for removing a vault from a field
 
 // Action creator for getting a single field
@@ -9,6 +10,11 @@ const getFieldAction = (field) => ({
   type: GET_FIELD,
   field
 });
+
+const toggleCouchBoxFieldAction = (field) => ({
+  type: TOGGLE_COUCHBOX_FIELD,
+  field
+})
 
 // Action creator for getting all fields
 const getAllFieldsAction = (fields) => ({
@@ -22,6 +28,27 @@ const getAllFieldsAction = (fields) => ({
 //   fieldId,
 //   vaultId
 // });
+
+
+export const toggleCouchBoxFieldThunk = (fieldId) => async (dispatch) => {
+  console.log("💖 in thunk", fieldId)
+  try {
+    const res = await fetch(`/api/fields/${fieldId}`, {
+    method: 'PUT',
+    });
+    if (res.ok) {
+      const data = await res.json();
+      dispatch(toggleCouchBoxFieldAction(data));
+      return data;
+    } else {
+      const err = await res.json();
+      return err;
+    }
+  } catch (error) {
+    console.error("Error toggling field:", error);
+    return error;
+  }
+};
 
 // Thunk action creator for getting a single field
 export const getFieldThunk = (fieldId) => async (dispatch) => {
@@ -86,6 +113,12 @@ const initialState = {
 
 const fieldReducer = (state = initialState, action) => {
   switch (action.type) {
+    case TOGGLE_COUCHBOX_FIELD:
+      console.log("💋", action.field)
+      return {
+        ...state,
+        [action.field.id]: action.field
+      }
     case GET_FIELD:
       return {
         ...state,

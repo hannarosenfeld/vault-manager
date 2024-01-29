@@ -8,6 +8,7 @@ import RenderTMB from "../RenderTMB";
 import ConfirmStaging from "./ConfirmStaging";
 import { rowCreator, sortFields } from "../utility";
 import "./Warehouse.css"
+import { getFieldThunk, toggleCouchBoxFieldThunk } from "../../store/field.js";
 
 
 export default function Warehouse () {
@@ -22,9 +23,11 @@ export default function Warehouse () {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] = useState(false);
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
+    const [toggleSelected, setToggleSelected] = useState(false); // this toggles couch box field on/off
 
-
-    console.log("🍋 rowsArr: ", rowsArr)
+    useEffect(() => {
+        console.log("💖 selectedField: ", selectedField)
+    }, [selectedField])
 
     useEffect(() => {
         const getWareHouseInfo = dispatch(getWarehouseInfoThunk());
@@ -38,6 +41,13 @@ export default function Warehouse () {
         }
         }, [selectedVaultToStage]);
 
+    // toggle vault/couchbox field        
+    const handleToggleChange = async () => {
+        setToggleSelected((prevToggleSelected) => !prevToggleSelected);
+        await dispatch(toggleCouchBoxFieldThunk(selectedField.id));
+        await dispatch(getFieldThunk(selectedField.id));
+    };
+                
     const updateSelectedFieldVaults = async (newVault) => {
         if (selectedField && newVault?.field_id === selectedField.id) {
         const updatedTop = newVault.position === "T" ? newVault : top;
@@ -46,6 +56,7 @@ export default function Warehouse () {
     }
     };
     const handleFieldClick = async (field, row, index) => {
+        await setToggleSelected(false);
         await setSelectedField(field);
     };
 
@@ -92,7 +103,13 @@ export default function Warehouse () {
         <div className="warehouse-wrapper">
             <div className="field-info">
             { selectedField ? (
-                <RenderTMB selectedField={selectedField} handleStageClick={handleStageClick} handleOpenModal={handleOpenModal} />
+                <RenderTMB 
+                selectedField={selectedField} 
+                handleStageClick={handleStageClick} 
+                handleOpenModal={handleOpenModal} 
+                handleToggleChange={handleToggleChange}
+                toggleSelected={toggleSelected}
+                />
           ) : (
                 <div>
                     Select a field to view its info
@@ -116,11 +133,12 @@ export default function Warehouse () {
                                     field?.vaults?.length === 1 ? "var(--green)" :
                                     "var(--lightgrey)"
                                 }`,
-                                border: `${selectedField?.id === field?.id ? "3px solid var(--blue)" : "none"}`,
+                                border: `${field.type === "couchbox" ? "2px solid orange" : selectedField?.id === field?.id && toggleSelected ? " 3px solid orange" : selectedField?.id === field?.id ? "3px solid var(--blue)" : "none"}`,
+                                marginBottom: `${field.type === "couchbox" ? "-1em" : ''}`
                             }}                      
                             onClick={() => handleFieldClick(field, row, index)}
                         >
-                            <div className="field-number">{row.id}{index + 1}</div>
+                            {field.type === "vault" ? <div className="field-number">{row.id}{index + 1}</div> : field.type === "couchbox" ? <div className="field-number">{row.id}{index + 1} / {row.id}{index + 2}</div> : ''}
                         </div>
                     );
                 })}
