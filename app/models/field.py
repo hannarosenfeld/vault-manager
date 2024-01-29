@@ -17,6 +17,7 @@ class Field(db.Model, UserMixin):
     warehouse = db.relationship('Warehouse', back_populates='warehouse_fields')
     full = db.Column(db.Boolean, default=False)
     type = db.Column(db.String, default="vault")
+    bottom_couchbox_field = db.Column(db.Boolean, default=False)
 
     def generate_field_id(self, row_id, numerical_identifier):
         return f"{row_id}{numerical_identifier:02d}"
@@ -28,5 +29,6 @@ class Field(db.Model, UserMixin):
             'field_id': self.field_id,
             'vaults': [vault.id for vault in self.vaults],
             'full': self.full,
-            'type': self.type
+            'type': self.type,
+            'bottom_couch_box': self.bottom_couchbox_field            
         }
