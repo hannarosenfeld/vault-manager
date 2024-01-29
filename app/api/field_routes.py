@@ -9,7 +9,27 @@ def get_all_fields():
     fields = Field.query.all()
     return jsonify({ field.id : field.to_dict() for field in fields })
 
+@field_routes.route('/<int:id>', methods=['PUT'])
+def toggle_field_type(id):
+    field = Field.query.get(id)
+    sub_field = Field.query.get(id + 1)
 
+    if not field:
+        return jsonify(message="Field not found"), 404
+
+    else:
+        if field.type == "vault":
+            if field.type == "vault" and sub_field.type == "vault":
+                field.type = "couchbox"
+            elif field.type == "couchbox":
+                sub_field.type = "couchbox"
+            elif field.type == "couchbox" and sub_field.type == "couchbox":
+                field.type = "vault"
+                sub_field.type = "vault"
+
+        db.session.commit()
+        return jsonify(field.to_dict())
+    
 @field_routes.route('/<field_id>')
 def get_field(field_id):
     field_id = int(field_id)

@@ -18,6 +18,7 @@ class Vault(db.Model, UserMixin):
     customer_name = db.Column(db.String(255))
     order_number = db.Column(db.String, nullable=False)
     type = db.Column(db.String)
+    bottom_couchbox_field = db.Column(db.Boolean, default=False)
 
     customer = db.relationship('Customer', back_populates='vaults')
     
@@ -35,6 +36,7 @@ class Vault(db.Model, UserMixin):
 
     attachments = db.relationship('Attachment', back_populates='vault', cascade='all, delete-orphan')
 
+
     def to_dict(self):
         return {
             'id': self.id,
@@ -47,7 +49,8 @@ class Vault(db.Model, UserMixin):
             'staged': self.staged,
             'type': self.type,
             'customer': self.customer.to_summary_dict() if self.customer else None,
-            'attachments': [attachment.to_dict() for attachment in self.attachments]    
+            'attachments': [attachment.to_dict() for attachment in self.attachments],
+            'bottom_couch_box': self.bottom_couchbox_field
         }
 
     def to_summary_dict(self):
