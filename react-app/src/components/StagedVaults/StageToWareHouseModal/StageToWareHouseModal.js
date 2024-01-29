@@ -24,6 +24,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   const [selectedRow, setSelectedRow] = useState(null);
   const [position, setPosition] = useState(null);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
+  const [loadingVaults, setLoadingVaults] = useState(false);
 
   let fieldName = selectedRow && selectedFieldIndex ? selectedRow + selectedFieldIndex : null;
   let vaultsArr;
@@ -38,11 +39,13 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   }, [vaults]);
 
   const handleFieldClick = async (field, row, index) => {
+    setLoadingVaults(true);
     await setSelectedField(field);
     await setSelectedRow(row.id);
     await setSelectedFieldIndex(index + 1);
+    setLoadingVaults(false);
   };
-
+  
   const openConfirmationModal = (position) => {
     setPosition(position);
     setConfirmationModalOpen(true);
@@ -53,15 +56,21 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   };
 
   const moveVault = async (vault, position) => {
+    if (loadingVaults) {
+      // Don't proceed if vaults are still loading
+      return;
+    }
+  
     if (selectedField) {
       await dispatch(moveVaultFromStageToWarehouseThunk(vault.id, selectedField.id, fieldName, position));
       await dispatch(getAllStagedVaultsThunk());
       await dispatch(getWarehouseInfoThunk());
+  
       closeConfirmationModal();
       closeModal();
     }
   };
-
+  
   const ConfirmationModal = () => {
     return (
       <div className="modal-container">
