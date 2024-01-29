@@ -16,7 +16,7 @@
     margin-bottom: 5px;
     display: grid; 
     grid-template-columns: 72% 28%; 
-    height: 20%;
+    height: 30%;
 }
 
 .selected-field-vaults-tmb {
