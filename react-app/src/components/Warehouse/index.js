@@ -10,7 +10,6 @@ import { rowCreator, sortFields } from "../utility";
 import "./Warehouse.css"
 
 
-
 export default function Warehouse () {
     const dispatch = useDispatch();
     const rowsArr = rowCreator(useSelector(state => state.warehouse.warehouseFields));
@@ -24,6 +23,8 @@ export default function Warehouse () {
     const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] = useState(false);
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
 
+
+    console.log("🍋 rowsArr: ", rowsArr)
 
     useEffect(() => {
         const getWareHouseInfo = dispatch(getWarehouseInfoThunk());
