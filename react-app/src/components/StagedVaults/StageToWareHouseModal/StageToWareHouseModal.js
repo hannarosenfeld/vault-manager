@@ -27,6 +27,8 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   const [loadingVaults, setLoadingVaults] = useState(false);
   const [loadingFieldInfo, setLoadingFieldInfo] = useState(false);
 
+
+
   let fieldName = selectedRow && selectedFieldIndex ? selectedRow + selectedFieldIndex : null;
   let vaultsArr;
 
@@ -55,6 +57,13 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
       setLoadingFieldInfo(false);
     }
   }
+
+    await setSelectedField(field);
+    await setSelectedRow(row.id);
+    await setSelectedFieldIndex(index + 1);
+    setLoadingVaults(false);
+  };
+  
 
   const openConfirmationModal = (position) => {
     setPosition(position);
