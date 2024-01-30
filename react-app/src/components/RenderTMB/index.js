@@ -5,11 +5,13 @@ import VaultInstance from "../VaultInstance";
 import { useState } from "react";
 import { getAllVaultsThunk } from "../../store/vault";
 import "./RenderTMB.css"
+import { getFieldVaultsThunk } from "../../store/field";
 
 
 const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEditClick, handleToggleChange, toggleSelected }) => {
   const dispatch = useDispatch();
   const vaultsObj = useSelector((state) => state.vault.vaults);
+  const selectedFieldVaults = useSelector((state) => state.field.fieldVaults);
   const [topmostVault, setTopmostVault] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const fieldState = useSelector((state) => state.warehouse.warehouseFields[parseInt(selectedField.id)]);
@@ -23,8 +25,17 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
   })
 
   useEffect(() => {
-    dispatch(getAllVaultsThunk())
+    console.log("❤️‍🔥", typeof selectedFieldVaults, selectedFieldVaults)
+  }, [selectedFieldVaults])
+
+  useEffect(() => {
+    dispatch(getAllVaultsThunk());
   }, [])
+
+  useEffect(() => {
+    dispatch(getFieldVaultsThunk(selectedField.id));
+  }, [selectedField])
+
 
   useEffect(() => {
     const updateTopmostVault = () => {
@@ -57,13 +68,15 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
           res[vaultState?.position] = vaultState;
         })
       }
+      console.log("🌸",fieldVaults["M2"])
+
       return res
     })
   }, [selectedField, fieldState])
 
   const onlyBottom = !fieldVaults["T"] && !fieldVaults["M"] && !fieldVaults["B"];
   const onlyMiddle = !fieldVaults["T"] && !fieldVaults["M"] && fieldVaults["B"];
-  const onlyFirstMiddle = selectedField.type === "couchbox" && (!fieldVaults["T"] && !fieldVaults["M1"] && fieldVaults["M"] && fieldVaults["B"]);
+  const onlyFirstMiddle = selectedField.type === "couchbox" && (!fieldVaults["T"] && !fieldVaults["M2"] && fieldVaults["M"] && fieldVaults["B"]);
   const onlyTop = !fieldVaults["T"] && fieldVaults["M"] && fieldVaults["B"];
 
   return (
@@ -94,23 +107,24 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
 
         {/* This is a conditional position based on wether this field is a vault- or couchbox field */}
         { selectedField.type === "couchbox" && 
-        <div className="middle-top middle">
-          <span className='position'>M2</span>
-          {onlyFirstMiddle ? (
-            <AddVaultButton position="M2" handleOpenModal={handleOpenModal} />
-          ) : fieldVaults["M2"]? (
-            <VaultInstance
-              position="M2"
-              vault={fieldVaults["M2"]}
-              handleStageClick={handleStageClick}
-              handleEditClick={handleEditClick}
-              topmostVault={isLoaded && topmostVault.id === fieldVaults["M2"].id ? true : false}
-            />
-          ) : (
-            ""
-          )}
-        </div>
+          <div className="middle-top middle">
+            <span className='position'>M2</span>
+            {onlyFirstMiddle ? (
+              <AddVaultButton position="M2" handleOpenModal={handleOpenModal} />
+            ) : fieldVaults["M2"]? (
+              <VaultInstance
+                position="M2"
+                vault={fieldVaults["M2"]}
+                handleStageClick={handleStageClick}
+                handleEditClick={handleEditClick}
+                topmostVault={isLoaded && topmostVault.id === fieldVaults["M2"].id ? true : false}
+              />
+            ) : (
+              ""
+            )}
+          </div>
         }
+
 
         <div className="middle-bottom middle">
           { selectedField.type === "vault" ? <span className='position'>M</span> : selectedField.type === "couchbox" ? <span className='position'>M1</span> : "" }
