@@ -17,6 +17,7 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
 
   const [fieldVaults, setFieldVaults] = useState({
     T: undefined,
+    M2: undefined,
     M: undefined,
     B: undefined,
   })
@@ -62,6 +63,7 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
 
   const onlyBottom = !fieldVaults["T"] && !fieldVaults["M"] && !fieldVaults["B"];
   const onlyMiddle = !fieldVaults["T"] && !fieldVaults["M"] && fieldVaults["B"];
+  const onlyFirstMiddle = selectedField.type === "couchbox" && (!fieldVaults["T"] && !fieldVaults["M1"] && fieldVaults["M"] && fieldVaults["B"]);
   const onlyTop = !fieldVaults["T"] && fieldVaults["M"] && fieldVaults["B"];
 
   return (
@@ -69,12 +71,12 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
       <div className="selected-field-vaults-tmb" style={{ gridTemplateRows: selectedField.type === "couchbox" ? "repeat(4,1fr)" : ""}}>
         <div className="top">
           <span className="position">T</span>
-          {onlyTop && fieldState.full && (
+          { onlyTop && fieldState.full && (
             <div style={{ color: "red" }}>
               <span className="material-symbols-outlined">warning</span>Field is full
             </div>
           )}
-          {onlyTop && !fieldState.full ? (
+          { !onlyFirstMiddle && onlyTop && !fieldState.full ? (
             <AddVaultButton position="T" handleOpenModal={handleOpenModal} />
           ) : fieldVaults["T"] ? (
             <VaultInstance
@@ -94,7 +96,7 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
         { selectedField.type === "couchbox" && 
         <div className="middle-top middle">
           <span className='position'>M2</span>
-          {onlyMiddle ? (
+          {onlyFirstMiddle ? (
             <AddVaultButton position="M2" handleOpenModal={handleOpenModal} />
           ) : fieldVaults["M2"]? (
             <VaultInstance

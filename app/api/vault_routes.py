@@ -32,6 +32,7 @@ def all_vaults():
     vaults = Vault.query.all()
     return { vault.id : vault.to_dict() for vault in vaults }
 
+
 @vault_routes.route('/<int:id>')
 def single_vault(id):
     """

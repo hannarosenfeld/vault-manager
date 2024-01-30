@@ -1,11 +1,14 @@
 import { GET_WAREHOUSE_INFO } from "./warehouse";
-
 const GET_FIELD = "field/GET_FIELD";
-const GET_ALL_FIELDS = "field/GET_ALL_FIELDS"; // Add this new action type
+const GET_ALL_FIELDS = "field/GET_ALL_FIELDS";
 const TOGGLE_COUCHBOX_FIELD = "field/TOGGLE_COUCHBOX_FIELD"
-// const REMOVE_VAULT_FROM_FIELD = "field/REMOVE_VAULT_FROM_FIELD"; // New action type for removing a vault from a field
+const GET_FIELD_VAULTS = "vault/GET_FIELD_VAULTS";
 
-// Action creator for getting a single field
+const getFieldVaultsAction = (vaults) => ({
+  type: GET_FIELD_VAULTS,
+  vaults
+})
+
 const getFieldAction = (field) => ({
   type: GET_FIELD,
   field
@@ -16,18 +19,28 @@ const toggleCouchBoxFieldAction = (field) => ({
   field
 })
 
-// Action creator for getting all fields
 const getAllFieldsAction = (fields) => ({
   type: GET_ALL_FIELDS,
   fields
 });
 
-// // Action creator for removing a vault from a field
-// const removeVaultFromFieldAction = (fieldId, vaultId) => ({
-//   type: REMOVE_VAULT_FROM_FIELD,
-//   fieldId,
-//   vaultId
-// });
+export const getFieldVaultsThunk = (fieldId) => async (dispatch) => {
+  try {
+    const res = await fetch(`/api/fields/${fieldId}/vaults`);
+
+    if (res.ok) {
+      const data = await res.json();
+      dispatch(getFieldVaultsAction({ fieldId, vaults: data }));
+    } else {
+      const errorMessage = await res.text(); // Get the error message
+      console.error(`Error fetching field vaults: ${errorMessage}`);
+      // Handle the error, e.g., show a notification or dispatch another action
+    }
+  } catch (error) {
+    console.error("Error fetching field vaults:", error);
+    // Handle other types of errors if needed
+  }
+};
 
 
 export const toggleCouchBoxFieldThunk = (fieldId) => async (dispatch) => {
@@ -87,28 +100,10 @@ export const getAllFieldsThunk = () => async (dispatch) => {
   }
 };
 
-// // Thunk action creator for removing a vault from a field
-// export const removeVaultFromFieldThunk = (fieldId, vaultId) => async (dispatch) => {
-//   try {
-//     const res = await fetch(`/api/fields/${fieldId}/vaults/${vaultId}`, {
-//       method: 'DELETE',
-//     });
-//     if (res.ok) {
-//       dispatch(removeVaultFromFieldAction(fieldId, vaultId));
-//     } else {
-//       const err = await res.json();
-//       console.error("Error removing vault from field:", err); // Log the error
-//       return err;
-//     }
-//   } catch (error) {
-//     console.error("Error removing vault from field:", error);
-//     return error;
-//   }
-// };
-
 const initialState = {
   fields: {},
-  currentField: {}
+  currentField: {},
+  fieldVaults: {}
 };
 
 const fieldReducer = (state = initialState, action) => {
@@ -141,27 +136,14 @@ const fieldReducer = (state = initialState, action) => {
           ...action.payload.warehouse_info.fields
         },
       }
-    // case REMOVE_VAULT_FROM_FIELD:
-    // // Check if the field exists in the state
-    // if (!state.fields[action.fieldId]) {
-    //     // Field doesn't exist, return the current state
-    //     return state;
-    // }
-    
-    // const updatedField = { ...state.fields[action.fieldId] };
-    // // Check if the 'vaults' property exists in the field object
-    // if (updatedField.vaults && Array.isArray(updatedField.vaults)) {
-    //     updatedField.vaults = updatedField.vaults.filter(vault => vault.id !== action.vaultId);
-    // }
-    
-    // return {
-    //     ...state,
-    //     fields: {
-    //     ...state.fields,
-    //     [action.fieldId]: updatedField
-    //     }
-    // };
-      
+      case GET_FIELD_VAULTS:
+        return {
+          ...state,
+          fieldVaults: {
+            ...state.fieldVaults,
+            [action.fieldId]: action.vaults
+          }
+        };      
     default:
       return state;
   }
