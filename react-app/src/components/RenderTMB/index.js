@@ -113,14 +113,14 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
         <div className="middle-bottom middle">
           { selectedField.type === "vault" ? <span className='position'>M</span> : selectedField.type === "couchbox" ? <span className='position'>M1</span> : "" }
           {onlyMiddle ? (
-            <AddVaultButton position={ selectedField.type === "vault" ? "M" : selectedField.type === "couchbox" ? "M1" : '' } handleOpenModal={handleOpenModal} />
-          ) : fieldVaults["M"] || fieldVaults["M1"] ? (
+            <AddVaultButton position="M" handleOpenModal={handleOpenModal} />
+          ) : fieldVaults["M"]? (
             <VaultInstance
-              position={ selectedField.type === "vault" ? "M" : selectedField.type === "couchbox" ? "M1" : '' }
-              vault={fieldVaults["M"] || fieldVaults["M1"]}
+              position="M"
+              vault={fieldVaults["M"]}
               handleStageClick={handleStageClick}
               handleEditClick={handleEditClick}
-              topmostVault={isLoaded && topmostVault.id === (fieldVaults["M"].id || fieldVaults["M1"].id) ? true : false}
+              topmostVault={isLoaded && topmostVault.id === fieldVaults["M"].id ? true : false}
             />
           ) : (
             ""
