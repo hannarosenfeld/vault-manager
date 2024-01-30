@@ -4,7 +4,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
 import {
   moveVaultFromStageToWarehouseThunk,
-  getAllWarehouseVaultsThunk,
   getWarehouseInfoThunk,
 } from "../../../store/warehouse";
 import { getAllStagedVaultsThunk } from "../../../store/stage";
@@ -13,11 +12,12 @@ import RenderTMB from "../../RenderTMB";
 import { rowCreator } from "../../utility";
 
 import "./StageToWareHouseModal.css";
+import { getFieldVaultsThunk } from "../../../store/vault";
 
 
 export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   const dispatch = useDispatch();
-  const vaults = useSelector(state => state.vault.vaults);
+  const vaults = useSelector(state => state.vault.fieldVaults);
   const rowsArr = rowCreator(useSelector(state => state.warehouse.warehouseFields));
   const [selectedField, setSelectedField] = useState(null);
   const [selectedFieldIndex, setSelectedFieldIndex] = useState(0);
@@ -25,12 +25,14 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   const [position, setPosition] = useState(null);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const [loadingVaults, setLoadingVaults] = useState(false);
+  const [loadingFieldInfo, setLoadingFieldInfo] = useState(false);
+
+
 
   let fieldName = selectedRow && selectedFieldIndex ? selectedRow + selectedFieldIndex : null;
   let vaultsArr;
 
   useEffect(() => {
-    dispatch(getAllWarehouseVaultsThunk());
     dispatch(getWarehouseInfoThunk());
   }, [selectedField]);
 
@@ -40,12 +42,29 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
 
   const handleFieldClick = async (field, row, index) => {
     setLoadingVaults(true);
+    setLoadingFieldInfo(true); 
+  
+    try {
+      await dispatch(getFieldVaultsThunk(field.id));
+      await setSelectedField(field);
+      await setSelectedRow(row.id);
+      await setSelectedFieldIndex(index + 1);
+    } catch (error) {
+      console.error("Error fetching field vaults:", error);
+      // Handle the error as needed
+    } finally {
+      setLoadingVaults(false);
+      setLoadingFieldInfo(false);
+    }
+  }
+
     await setSelectedField(field);
     await setSelectedRow(row.id);
     await setSelectedFieldIndex(index + 1);
     setLoadingVaults(false);
   };
   
+
   const openConfirmationModal = (position) => {
     setPosition(position);
     setConfirmationModalOpen(true);
@@ -117,15 +136,15 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
                 <p><b>Vault ID:</b> {selectedVault.vault_id}</p>
               </div>
               <div className="warehouse-wrapper">
-                <div className="field-info">
-                  {selectedField ? (
-                    <RenderTMB handleOpenModal={openConfirmationModal} selectedField={selectedField}/>
-                  ) : (
-                    <div>
-                      Select a field to view its info
-                    </div>
-                  )}
-                </div>
+              <div className="field-info">
+                {loadingFieldInfo ? (
+                  <div>Loading...</div>
+                ) : selectedField ? (
+                  <RenderTMB handleOpenModal={openConfirmationModal} selectedField={selectedField} />
+                ) : (
+                  <div>Select a field to view its info</div>
+                )}
+              </div>
                 <div className="warehouse" style={{height: "60%"}}>
                   {rowsArr?.map(row => (
                     <div className="row" key={row.id}>

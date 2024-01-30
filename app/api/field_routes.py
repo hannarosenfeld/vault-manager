@@ -39,6 +39,42 @@ def get_field(field_id):
     return jsonify(field.to_dict())
 
 
+from flask import jsonify  # Make sure to import jsonify
+
+
+
+@field_routes.route('/<field_id>/vaults')
+def get_field_vaults(field_id):
+    field_id = int(field_id)
+    field = Field.query.get(field_id)
+    if not field:
+        return jsonify(message="Field not found"), 404
+    
+    field_vaults = []
+
+    if field.vaults:
+        print("🥎")
+        for vault in field.vaults:
+            print("🍋", vault.to_dict() if hasattr(vault, 'to_dict') else vault)
+            if vault and hasattr(vault, 'to_dict'):
+                field_vaults.append({
+                    'id': vault.id,
+                    'customer_id': vault.customer_id,
+                    'field_id': vault.field_id,
+                    'field_name': vault.field_name,
+                    'position': vault.position,
+                    'vault_id': vault.vault_id,
+                    'order_number': vault.order_number,
+                    'staged': vault.staged,
+                    'type': vault.type,
+                    'customer': vault.customer.to_summary_dict() if vault.customer else None,
+                    'attachments': [attachment.to_dict() for attachment in vault.attachments]
+                })
+
+    print("✅", [vault for vault in field_vaults])
+    return jsonify([vault if not hasattr(vault, 'to_dict') else vault.to_dict() for vault in field_vaults])
+
+
 @field_routes.route('/<field_id>/row')
 def get_field_row(field_id):
     field = Field.query.get(field_id)

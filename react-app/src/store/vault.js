@@ -3,7 +3,12 @@ const GET_ALL_VAULTS = "vault/GET_ALL_VAULTS"; // Add this new action type
 const ADD_VAULT = "vault/ADD_VAULT"; // Add this new action type
 const EDIT_VAULT = "vault/EDIT_VAULT";
 const DELETE_VAULT = "vault/DELETE_VAULT";
+const GET_FIELD_VAULTS = "vault/GET_FIELD_VAULTS";
 
+const getFieldVaultsAction = (vaults) => ({
+  type: GET_FIELD_VAULTS,
+  vaults
+})
 
 const editVaultAction = (vault) => ({
   type: EDIT_VAULT,
@@ -30,6 +35,23 @@ const addVaultAction = (vault) => ({
   vault
 });
 
+export const getFieldVaultsThunk = (fieldId) => async (dispatch) => {
+  try {
+    const res = await fetch(`/api/fields/${fieldId}/vaults`);
+    console.log("📮", res)
+    // if (res.ok) {
+    //   const data = await res.json()
+    //   await dispatch(getFieldVaultsAction(data))
+    // } else {
+    //   const err = await res.json();
+    //   console.error("Error getting field vaults:", err);
+    //   return err;
+    // }
+  } catch (error) {
+    console.error("Error fetching field vaults:", error);
+    // Handle errors if needed
+  }
+};
 
 export const editVaultThunk = (vaultId, vaultData) => async (dispatch) => {
   console.log("📪 in store", vaultData.get("attachments_to_delete"))
@@ -135,11 +157,20 @@ export const addVaultThunk = (vaultData) => async (dispatch) => {
 
 const initialState = {
   vaults: {},
-  currentVault: {}
+  currentVault: {},
+  fieldVaults: {}
 };
 
 const vaultReducer = (state = initialState, action) => {
   switch (action.type) {
+    case GET_FIELD_VAULTS:
+      return {
+        ...state,
+        fieldVaults: {
+          ...state.fieldVaults,
+          [action.fieldId]: action.vaults
+        }
+      };    
     case GET_VAULT:
       return {
         ...state,
