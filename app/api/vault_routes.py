@@ -83,7 +83,10 @@ def add_vault():
             field = Field.query.get(new_vault.field_id)
 
             # TODO check conditionally if production or local, if local field.vaults.count() == 1
-            if field.vaults.count() == 2:
+            if field.type == "couchbox" and field.vaults.count() == 4:
+                field.full = True
+
+            elif field.vaults.count() == 2:
                 for vault in field.vaults:
                     if vault.type == "T" and new_vault.type == "T":
                         field.full = True

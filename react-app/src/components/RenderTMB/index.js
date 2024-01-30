@@ -84,7 +84,7 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
       <div className="selected-field-vaults-tmb" style={{ gridTemplateRows: selectedField.type === "couchbox" ? "repeat(4,1fr)" : ""}}>
         <div className="top">
           <span className="position">T</span>
-          { onlyTop && fieldState.full && (
+          { onlyTop && fieldState.full && selectedField.type === "vault" && (
             <div style={{ color: "red" }}>
               <span className="material-symbols-outlined">warning</span>Field is full
             </div>
