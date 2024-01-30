@@ -30,7 +30,7 @@ export const getFieldVaultsThunk = (fieldId) => async (dispatch) => {
 
     if (res.ok) {
       const data = await res.json();
-      dispatch(getFieldVaultsAction({ fieldId, vaults: data }));
+      dispatch(getFieldVaultsAction(data));
     } else {
       const errorMessage = await res.text(); // Get the error message
       console.error(`Error fetching field vaults: ${errorMessage}`);
@@ -44,7 +44,6 @@ export const getFieldVaultsThunk = (fieldId) => async (dispatch) => {
 
 
 export const toggleCouchBoxFieldThunk = (fieldId) => async (dispatch) => {
-  console.log("💖 in thunk", fieldId)
   try {
     const res = await fetch(`/api/fields/${fieldId}`, {
     method: 'PUT',
@@ -109,7 +108,6 @@ const initialState = {
 const fieldReducer = (state = initialState, action) => {
   switch (action.type) {
     case TOGGLE_COUCHBOX_FIELD:
-      console.log("💋", action.field)
       return {
         ...state,
         [action.field.id]: action.field
@@ -137,12 +135,10 @@ const fieldReducer = (state = initialState, action) => {
         },
       }
       case GET_FIELD_VAULTS:
+        console.log("✅", action)
         return {
           ...state,
-          fieldVaults: {
-            ...state.fieldVaults,
-            [action.fieldId]: action.vaults
-          }
+          fieldVaults: action.vaults
         };      
     default:
       return state;

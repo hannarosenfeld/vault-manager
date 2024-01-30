@@ -49,9 +49,7 @@ def get_field_vaults(field_id):
     field_vaults = []
 
     if field.vaults:
-        print("🥎")
         for vault in field.vaults:
-            print("🍋", vault.to_dict() if hasattr(vault, 'to_dict') else vault)
             if vault and hasattr(vault, 'to_dict'):
                 field_vaults.append({
                     'id': vault.id,
@@ -67,7 +65,6 @@ def get_field_vaults(field_id):
                     'attachments': [attachment.to_dict() for attachment in vault.attachments]
                 })
 
-    print("✅", [vault for vault in field_vaults])
     return jsonify([vault if not hasattr(vault, 'to_dict') else vault.to_dict() for vault in field_vaults])
 
 
