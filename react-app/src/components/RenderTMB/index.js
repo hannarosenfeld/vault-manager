@@ -66,7 +66,7 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
 
   return (
     <>
-      <div className="selected-field-vaults-tmb">
+      <div className="selected-field-vaults-tmb" style={{ gridTemplateRows: selectedField.type === "couchbox" ? "repeat(4,1fr)" : ""}}>
         <div className="top">
           <span className="position">T</span>
           {onlyTop && fieldState.full && (
@@ -88,17 +88,39 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
             ""
           )}
         </div>
-        <div className="middle">
-          <span className="position">M</span>
+
+
+        {/* This is a conditional position based on wether this field is a vault- or couchbox field */}
+        { selectedField.type === "couchbox" && 
+        <div className="middle-top middle">
+          <span className='position'>M2</span>
           {onlyMiddle ? (
-            <AddVaultButton position="M" handleOpenModal={handleOpenModal} />
-          ) : fieldVaults["M"] ? (
+            <AddVaultButton position="M2" handleOpenModal={handleOpenModal} />
+          ) : fieldVaults["M2"]? (
             <VaultInstance
-              position="M"
-              vault={fieldVaults["M"]}
+              position="M2"
+              vault={fieldVaults["M2"]}
               handleStageClick={handleStageClick}
               handleEditClick={handleEditClick}
-              topmostVault={isLoaded && topmostVault.id === fieldVaults["M"].id ? true : false}
+              topmostVault={isLoaded && topmostVault.id === fieldVaults["M2"].id ? true : false}
+            />
+          ) : (
+            ""
+          )}
+        </div>
+        }
+
+        <div className="middle-bottom middle">
+          { selectedField.type === "vault" ? <span className='position'>M</span> : selectedField.type === "couchbox" ? <span className='position'>M1</span> : "" }
+          {onlyMiddle ? (
+            <AddVaultButton position={ selectedField.type === "vault" ? "M" : selectedField.type === "couchbox" ? "M1" : '' } handleOpenModal={handleOpenModal} />
+          ) : fieldVaults["M"] || fieldVaults["M1"] ? (
+            <VaultInstance
+              position={ selectedField.type === "vault" ? "M" : selectedField.type === "couchbox" ? "M1" : '' }
+              vault={fieldVaults["M"] || fieldVaults["M1"]}
+              handleStageClick={handleStageClick}
+              handleEditClick={handleEditClick}
+              topmostVault={isLoaded && topmostVault.id === (fieldVaults["M"].id || fieldVaults["M1"].id) ? true : false}
             />
           ) : (
             ""

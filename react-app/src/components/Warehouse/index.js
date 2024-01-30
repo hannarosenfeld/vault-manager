@@ -133,12 +133,13 @@ export default function Warehouse () {
                                     field?.vaults?.length === 1 ? "var(--green)" :
                                     "var(--lightgrey)"
                                 }`,
-                                border: `${field.type === "couchbox" ? "2px solid orange" : selectedField?.id === field?.id && toggleSelected ? " 3px solid orange" : selectedField?.id === field?.id ? "3px solid var(--blue)" : "none"}`,
-                                marginBottom: `${field.type === "couchbox" ? "-1em" : ''}`
+                                border: `${selectedField?.id === field?.id ? "3px solid var(--blue)" : "none"}`,
+                                marginBottom: `${field.type === "couchbox" ? "-2.2em" : ''}`,
+                                width: `${field.bottom_couch_box ? "0px" : ''}`,
                             }}                      
                             onClick={() => handleFieldClick(field, row, index)}
                         >
-                            {field.type === "vault" ? <div className="field-number">{row.id}{index + 1}</div> : field.type === "couchbox" ? <div className="field-number">{row.id}{index + 1} / {row.id}{index + 2}</div> : ''}
+                            {field.bottom_couch_box ? "" : field.type === "vault" ? <div className="field-number">{row.id}{index + 1}</div> : field.type === "couchbox" ? <div className="field-number">{row.id}{index + 1} / {row.id}{index + 2}</div> : ''}
                         </div>
                     );
                 })}

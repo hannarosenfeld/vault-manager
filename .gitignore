@@ -6,3 +6,4 @@ __pycache__/
 .vscode/
 render_debug.md
 instance/dev.db
+dev.db

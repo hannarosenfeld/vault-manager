@@ -21,11 +21,11 @@ def toggle_field_type(id):
         if field.type == "vault":
             if field.type == "vault" and sub_field.type == "vault":
                 field.type = "couchbox"
-            elif field.type == "couchbox":
-                sub_field.type = "couchbox"
+                sub_field.bottom_couchbox_field = True
             elif field.type == "couchbox" and sub_field.type == "couchbox":
                 field.type = "vault"
                 sub_field.type = "vault"
+                sub_field.bottom_couchbox_field = False
 
         db.session.commit()
         return jsonify(field.to_dict())
