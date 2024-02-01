@@ -72,11 +72,11 @@
     z-index: 1;
   }
   
-  .warehouse-wrapper .warehouse {
+.stage-to-warehouse-modal-wrapper .warehouse-wrapper .warehouse {
     margin-top: 10px;
     height: 65% !important;
   }
 
-  .warehouse-wrapper .selected-field-vaults-tmb .field-row {
+.stage-to-warehouse-modal-wrapper .warehouse-wrapper .selected-field-vaults-tmb .field-row {
 
   }
