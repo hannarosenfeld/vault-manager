@@ -173,10 +173,12 @@ export default function Warehouse () {
                               }`,
                               filter: !searchResult.includes(field.id) ? "brightness(25%)" : "brightness(120%)",
                             border: `${selectedField?.id === field?.id ? "3px solid var(--blue)" : ""}`,
+                            marginBottom: `${field.type === "couchbox" ? "-2.2em" : ''}`,
+                            width: `${field.bottom_couch_box ? "0px" : ''}`,
                         }}                      
                         onClick={() => handleFieldClick(field, row, index)}
                     >
-                        <div className="field-number">{field.field_id}</div>
+                    {field.bottom_couch_box ? "" : field.type === "vault" ? <div className="field-number">{row.id}{index + 1}</div> : field.type === "couchbox" ? <div className="field-number">{row.id}{index + 1} / {row.id}{index + 2}</div> : ''}
                     </div>
                 ))}
                  </div>
