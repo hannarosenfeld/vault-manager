@@ -141,11 +141,13 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
                                   field?.vaults?.length === 1 ? "var(--green)" :
                                   "var(--lightgrey)"
                               }`,
-                              border: selectedField?.id === field?.id ? "3px solid var(--blue)" : ""
+                              border: selectedField?.id === field?.id ? "3px solid var(--blue)" : "",
+                              marginBottom: `${field.type === "couchbox" ? "-1.7em" : ''}`,
+                              width: `${field.bottom_couch_box ? "0px" : ''}`,                              
                           }}   
                             onClick={() => handleFieldClick(field, row, index)}
                           >
-                            <div className="field-number">{row.id}{index + 1}</div>
+                    {field.bottom_couch_box ? "" : field.type === "vault" ? <div className="field-number">{row.id}{index + 1}</div> : field.type === "couchbox" ? <div className="field-number">{row.id}{index + 1} / {row.id}{index + 2}</div> : ''}
                           </div>
                         ))}
                       </div>
