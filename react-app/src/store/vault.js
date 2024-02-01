@@ -38,7 +38,6 @@ const addVaultAction = (vault) => ({
 export const getFieldVaultsThunk = (fieldId) => async (dispatch) => {
   try {
     const res = await fetch(`/api/fields/${fieldId}/vaults`);
-    console.log("📮", res)
     // if (res.ok) {
     //   const data = await res.json()
     //   await dispatch(getFieldVaultsAction(data))
@@ -54,7 +53,6 @@ export const getFieldVaultsThunk = (fieldId) => async (dispatch) => {
 };
 
 export const editVaultThunk = (vaultId, vaultData) => async (dispatch) => {
-  console.log("📪 in store", vaultData.get("attachments_to_delete"))
   try {
     const res = await fetch(`/api/vaults/${vaultId}`, {
       method: 'PUT',

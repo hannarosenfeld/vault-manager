@@ -26,10 +26,6 @@ export default function Warehouse () {
     const [toggleSelected, setToggleSelected] = useState(false);
 
     useEffect(() => {
-        console.log("💖 selectedField: ", selectedField)
-    }, [selectedField])
-
-    useEffect(() => {
         const getWareHouseInfo = dispatch(getWarehouseInfoThunk());
         const getAllWarehouseVaults = dispatch(getAllWarehouseVaultsThunk());
         const getAllVaults = dispatch(getAllVaultsThunk())

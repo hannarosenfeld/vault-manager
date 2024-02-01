@@ -9,27 +9,33 @@ def get_all_fields():
     fields = Field.query.all()
     return jsonify({ field.id : field.to_dict() for field in fields })
 
+
 @field_routes.route('/<int:id>', methods=['PUT'])
 def toggle_field_type(id):
     field = Field.query.get(id)
-    sub_field = Field.query.get(id + 1)
 
     if not field:
         return jsonify(message="Field not found"), 404
 
-    else:
-        if field.type == "vault":
-            if field.type == "vault" and sub_field.type == "vault":
-                field.type = "couchbox"
-                sub_field.bottom_couchbox_field = True
-            if field.type == "couchbox" and sub_field.type == "couchbox":
-                field.type = "vault"
-                sub_field.type = "vault"
-                sub_field.bottom_couchbox_field = False
+    sub_field_id = id + 1
+    sub_field = Field.query.get(sub_field_id)
 
-        db.session.commit()
-        return jsonify(field.to_dict())
-    
+    if not sub_field:
+        return jsonify(message="Subfield not found"), 404
+
+    if field.type == "vault" and sub_field.type == "vault":
+        field.type = "couchbox"
+        sub_field.type = "couchbox"
+        sub_field.bottom_couchbox_field = True
+    elif field.type == "couchbox" and sub_field.type == "couchbox":
+        field.type = "vault"
+        sub_field.type = "vault"
+        sub_field.bottom_couchbox_field = False
+
+    db.session.commit()
+    return jsonify(field.to_dict())
+
+
 @field_routes.route('/<field_id>')
 def get_field(field_id):
     field_id = int(field_id)

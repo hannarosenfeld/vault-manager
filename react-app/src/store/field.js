@@ -46,7 +46,7 @@ export const getFieldVaultsThunk = (fieldId) => async (dispatch) => {
 export const toggleCouchBoxFieldThunk = (fieldId) => async (dispatch) => {
   try {
     const res = await fetch(`/api/fields/${fieldId}`, {
-    method: 'PUT',
+      method: 'PUT',
     });
     if (res.ok) {
       const data = await res.json();
@@ -108,9 +108,13 @@ const initialState = {
 const fieldReducer = (state = initialState, action) => {
   switch (action.type) {
     case TOGGLE_COUCHBOX_FIELD:
+      console.log("🌸 in reducer: ", action)
       return {
         ...state,
-        [action.field.id]: action.field
+        fields: {
+          ...state.fields,
+          [action.field.id]: action.field
+        }
       }
     case GET_FIELD:
       return {
@@ -135,7 +139,6 @@ const fieldReducer = (state = initialState, action) => {
         },
       }
       case GET_FIELD_VAULTS:
-        console.log("✅", action)
         return {
           ...state,
           fieldVaults: action.vaults

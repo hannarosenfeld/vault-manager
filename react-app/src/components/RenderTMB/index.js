@@ -25,10 +25,6 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
   })
 
   useEffect(() => {
-    console.log("❤️‍🔥", typeof selectedFieldVaults, selectedFieldVaults)
-  }, [selectedFieldVaults])
-
-  useEffect(() => {
     dispatch(getAllVaultsThunk());
   }, [])
 
@@ -68,8 +64,6 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
           res[vaultState?.position] = vaultState;
         })
       }
-      console.log("🌸",fieldVaults["M2"])
-
       return res
     })
   }, [selectedField, fieldState])
