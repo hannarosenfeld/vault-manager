@@ -36,11 +36,11 @@
 
 
 
-.top, .middle {
+.top, .middle, .middle-bottom, .middle-top {
     border-bottom: 1px solid var(--lightgrey);
 }
 
-.top, .middle, .bottom {
+.top, .middle, .bottom, .middle-top, .middle-bottom {
     display: flex;
     align-items: center;
     font-size: 13px;

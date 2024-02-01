@@ -76,7 +76,7 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
   return (
     <>
       <div className="selected-field-vaults-tmb" style={{ gridTemplateRows: selectedField.type === "couchbox" ? "repeat(4,1fr)" : ""}}>
-        <div className="top">
+        <div className="top field-row">
           <span className="position">T</span>
           { onlyTop && fieldState.full && selectedField.type === "vault" && (
             <div style={{ color: "red" }}>
@@ -101,7 +101,7 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
 
         {/* This is a conditional position based on wether this field is a vault- or couchbox field */}
         { selectedField.type === "couchbox" && 
-          <div className="middle-top middle">
+          <div className="middle-top middle field-row">
             <span className='position'>M2</span>
             {onlyFirstMiddle ? (
               <AddVaultButton position="M2" handleOpenModal={handleOpenModal} />
@@ -120,7 +120,7 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
         }
 
 
-        <div className="middle-bottom middle">
+        <div className="middle-bottom middl field-row">
           { selectedField.type === "vault" ? <span className='position'>M</span> : selectedField.type === "couchbox" ? <span className='position'>M1</span> : "" }
           {onlyMiddle ? (
             <AddVaultButton position="M" handleOpenModal={handleOpenModal} />
@@ -136,7 +136,7 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
             ""
           )}
         </div>
-        <div className="bottom">
+        <div className="bottom field-row">
           <span className="position">B</span>
           {onlyBottom ? (
             <AddVaultButton position="B" handleOpenModal={handleOpenModal} />
