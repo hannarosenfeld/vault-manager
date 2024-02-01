@@ -160,15 +160,21 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
         </div>
       </div>
       <div className={`selected-field-box ${toggleSelected ? 'toggled' : ''}`}>
-      <div className="form-check form-switch">
-      <input
+      <div className="form-check form-switch" >
+        <input
           className="form-check-input"
           type="checkbox"
           role="switch"
           id="flexSwitchCheckDefault"
-          checked={toggleSelected}
+          checked={toggleSelected || selectedField.type === "couchbox" }
           onChange={handleToggleChange}
         />
+        <label
+          className={`field-type-label ${toggleSelected ? 'vault-label' : 'couchbox-label'}`}
+          style={{fontSize: "0.8em", paddingRight: "0.5em"}}
+        >
+          {toggleSelected || selectedField.type === "couchbox" ? 'Couchbox' : 'Vault' }
+        </label>
       </div>
         <div className="selected-field-name">{selectedField.field_id}</div>
       </div>

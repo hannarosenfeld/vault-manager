@@ -23,7 +23,7 @@ export default function Warehouse () {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] = useState(false);
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
-    const [toggleSelected, setToggleSelected] = useState(false); // this toggles couch box field on/off
+    const [toggleSelected, setToggleSelected] = useState(false);
 
     useEffect(() => {
         console.log("💖 selectedField: ", selectedField)
@@ -33,21 +33,34 @@ export default function Warehouse () {
         const getWareHouseInfo = dispatch(getWarehouseInfoThunk());
         const getAllWarehouseVaults = dispatch(getAllWarehouseVaultsThunk());
         const getAllVaults = dispatch(getAllVaultsThunk())
-    }, [dispatch])
+    }, [dispatch, toggleSelected])
 
     useEffect(() => {
         if (selectedVaultToStage) {
             openConfirmStagingModal();
         }
-        }, [selectedVaultToStage]);
+    }, [selectedVaultToStage]);
 
-    // toggle vault/couchbox field        
     const handleToggleChange = async () => {
-        setToggleSelected((prevToggleSelected) => !prevToggleSelected);
+        const newToggleSelected = !toggleSelected;
+        
+        // If it's switching back to "Vault," update the selectedField type
+        const updatedSelectedField = {
+            ...selectedField,
+            type: newToggleSelected ? "couchbox" : "vault",
+        };
+        
+        // Update the local state
+        setToggleSelected(newToggleSelected);
+        
+        // Dispatch actions to update Redux store
         await dispatch(toggleCouchBoxFieldThunk(selectedField.id));
         await dispatch(getFieldThunk(selectedField.id));
+        
+        // Set the updated selected field without calling handleToggleChange again
+        setSelectedField(updatedSelectedField);
     };
-                
+              
     const updateSelectedFieldVaults = async (newVault) => {
         if (selectedField && newVault?.field_id === selectedField.id) {
         const updatedTop = newVault.position === "T" ? newVault : top;
@@ -163,7 +176,7 @@ export default function Warehouse () {
                                 "rgba(203,203,203,0.8)"
                               }`,
                               filter: !searchResult.includes(field.id) ? "brightness(25%)" : "brightness(120%)",
-                            border: `${selectedField?.id === field?.id ? "3px solid var(--blue)" : "blue"}`,
+                            border: `${selectedField?.id === field?.id ? "3px solid var(--blue)" : ""}`,
                         }}                      
                         onClick={() => handleFieldClick(field, row, index)}
                     >

@@ -22,7 +22,7 @@ def toggle_field_type(id):
             if field.type == "vault" and sub_field.type == "vault":
                 field.type = "couchbox"
                 sub_field.bottom_couchbox_field = True
-            elif field.type == "couchbox" and sub_field.type == "couchbox":
+            if field.type == "couchbox" and sub_field.type == "couchbox":
                 field.type = "vault"
                 sub_field.type = "vault"
                 sub_field.bottom_couchbox_field = False
