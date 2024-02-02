@@ -108,7 +108,6 @@ const initialState = {
 const fieldReducer = (state = initialState, action) => {
   switch (action.type) {
     case TOGGLE_COUCHBOX_FIELD:
-      console.log("🌸 in reducer: ", action)
       return {
         ...state,
         fields: {

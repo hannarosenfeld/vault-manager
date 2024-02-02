@@ -26,10 +26,14 @@ export default function Warehouse () {
     const [toggleSelected, setToggleSelected] = useState(false);
 
     useEffect(() => {
+        dispatch(getWarehouseInfoThunk());
+    }, [toggleSelected])
+
+    useEffect(() => {
         const getWareHouseInfo = dispatch(getWarehouseInfoThunk());
         const getAllWarehouseVaults = dispatch(getAllWarehouseVaultsThunk());
         const getAllVaults = dispatch(getAllVaultsThunk())
-    }, [dispatch, toggleSelected])
+    }, [dispatch])
 
     useEffect(() => {
         if (selectedVaultToStage) {
