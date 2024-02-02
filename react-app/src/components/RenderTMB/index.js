@@ -84,7 +84,7 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
             </div>
           )}
           { !onlyFirstMiddle && onlyTop && !fieldState.full ? (
-            <AddVaultButton position="T" handleOpenModal={handleOpenModal} />
+            <AddVaultButton position="T" handleOpenModal={handleOpenModal} fieldType={selectedField.type}/>
           ) : fieldVaults["T"] ? (
             <VaultInstance
               position="T"
@@ -104,7 +104,7 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
           <div className="middle-top middle field-row">
             <span className='position'>M2</span>
             {onlyFirstMiddle ? (
-              <AddVaultButton position="M2" handleOpenModal={handleOpenModal} />
+              <AddVaultButton position="M2" handleOpenModal={handleOpenModal} fieldType={selectedField.type}/>
             ) : fieldVaults["M2"]? (
               <VaultInstance
                 position="M2"
@@ -123,7 +123,7 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
         <div className="middle-bottom middl field-row">
           { selectedField.type === "vault" ? <span className='position'>M</span> : selectedField.type === "couchbox" ? <span className='position'>M1</span> : "" }
           {onlyMiddle ? (
-            <AddVaultButton position="M" handleOpenModal={handleOpenModal} />
+            <AddVaultButton position="M" handleOpenModal={handleOpenModal} fieldType={selectedField.type}/>
           ) : fieldVaults["M"]? (
             <VaultInstance
               position="M"
@@ -139,7 +139,7 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
         <div className="bottom field-row">
           <span className="position">B</span>
           {onlyBottom ? (
-            <AddVaultButton position="B" handleOpenModal={handleOpenModal} />
+            <AddVaultButton position="B" handleOpenModal={handleOpenModal} fieldType={selectedField.type}/>
           ) : fieldVaults["B"] ? (
             <VaultInstance
               position="B"
