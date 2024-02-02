@@ -25,6 +25,7 @@ const getAllFieldsAction = (fields) => ({
 });
 
 export const getFieldVaultsThunk = (fieldId) => async (dispatch) => {
+  console.log("✅")
   try {
     const res = await fetch(`/api/fields/${fieldId}/vaults`);
 
@@ -138,10 +139,19 @@ const fieldReducer = (state = initialState, action) => {
         },
       }
       case GET_FIELD_VAULTS:
+        console.log("📬", action.vaults);
+      
+        // Convert array to object using reduce
+        const updatedFieldVaults = action.vaults.reduce((accumulator, vault) => {
+          accumulator[vault.position] = vault;
+          return accumulator;
+        }, {});
+      
         return {
           ...state,
-          fieldVaults: action.vaults
-        };      
+          fieldVaults: updatedFieldVaults
+        };
+           
     default:
       return state;
   }
