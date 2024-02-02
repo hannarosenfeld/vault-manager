@@ -140,9 +140,9 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
             vaultData.append("field_id", selectedField.id)
             vaultData.append("field_name", selectedField.field_id)
             vaultData.append("position", tmb)
-            vaultData.append("type", vaultType)
-            vaultData.append("vault_id", vault_id)
-            vaultData.append("order_number", order_number)
+            vaultData.append("type", selectedField.type === "vault" ? vaultType : "couchbox")
+            vaultData.append("vault_id", selectedField.type === "vault" ? vault_id : null)
+            vaultData.append("order_number", selectedField.type === "vault" ? order_number : null)
             vaultData.append("attachment", attachment)
 
             const newVault = await dispatch(addVaultThunk(vaultData));
@@ -185,7 +185,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
                     </IconButton>
                 </div>
                 <div style={{ marginBottom: "5px" }}>
-                    <h4 style={{ marginBottom: "0.5em" }} id="modal-modal-title">Add Vault</h4>
+                    <h4 id="modal-modal-title">{selectedField.type === "vault" ? "Add Vault" : "Add Couchbox"}</h4>
                     <div className="vault-info">
                         <div>Field: <span>{selectedField.field_id}</span></div>
                         <div>Position: <span>{tmb}</span></div>
@@ -222,42 +222,6 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
                                 )}
                             </div>
                         </FormGroup>
-
-                        <FormGroup style={{ width: "20%" }}>
-                            <FormLabel>Vault Type</FormLabel>
-                            <select
-                                className="form-select form-select-lg"
-                                style={{ fontSize: "1em", marginLeft: "-0.5em", marginTop: "0.4em" }}
-                                aria-aria-label=".form-select-lg example"
-                                value={vaultType}
-                                onChange={(e) => setVaultType(e.target.value)}
-                            >
-                                <option value="S">Standard</option>
-                                {field?.vaults?.length == 2 && field.vaults[0].type !== "S" && field.vaults[1].type !== "S" ? '' : <option value="T">Tall</option>}
-                            </select>
-                        </FormGroup>
-                    </div>
-
-                    <div className="vault-order-number" style={{ gap: "1em" }} >
-                        <FormGroup className="vault-order-number-item">
-                            <FormLabel>Vault#</FormLabel>
-                            <input
-                                type="text"
-                                value={vault_id}
-                                onChange={(e) => handleVaultIdChange(e)}
-                                required
-                            />
-                            {errors.vault_id ? <div style={{ color: "red", marginTop: "-0.5em" }}>{errors.vault_id}</div> : ''}
-                        </FormGroup>
-                        <FormGroup className="vault-order-number-item">
-                            <FormLabel>Order#</FormLabel>
-                            <input
-                                type="text"
-                                value={order_number}
-                                onChange={(e) => setOrderNumber(e.target.value)}
-                                required
-                            />
-                        </FormGroup>
                         <FormGroup className="vault-order-number-item">
                             <FormLabel>Attachment</FormLabel>
                             <input
@@ -265,6 +229,55 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
                                 onChange={(e) => setAttachment(e.target.files[0])}
                             />
                         </FormGroup>
+                    </div>
+
+                    <div className="vault-order-number" style={{ gap: "1em" }}>
+                    {selectedField.type === "vault" && (
+                        <div style={{width: "100%", display: "flex", gap: "0.5em", justifyContent: "space-between"}}>
+                        <FormGroup className="vault-order-number-item">
+                            <FormLabel>Vault#</FormLabel>
+                            <input
+                            type="text"
+                            value={vault_id}
+                            onChange={(e) => handleVaultIdChange(e)}
+                            required
+                            />
+                            {errors.vault_id && (
+                            <div style={{ color: "red", marginTop: "-0.5em" }}>
+                                {errors.vault_id}
+                            </div>
+                            )}
+                        </FormGroup>
+
+                        <FormGroup className="vault-order-number-item">
+                            <FormLabel>Order#</FormLabel>
+                            <input
+                            type="text"
+                            value={order_number}
+                            onChange={(e) => setOrderNumber(e.target.value)}
+                            required
+                            />
+                        </FormGroup>
+
+                        <div style={{width: "20%"}}>
+                        <FormLabel>Vault Type</FormLabel>
+                        <select
+                            className="form-select form-select-lg"
+                            style={{ fontSize: "1em", marginLeft: "-0.5em", marginTop: "0.4em" }}
+                            aria-aria-label=".form-select-lg example"
+                            value={vaultType}
+                            onChange={(e) => setVaultType(e.target.value)}
+                        >
+                            <option value="S">Standard</option>
+                            {field?.vaults?.length === 2 &&
+                            field.vaults[0].type !== "S" &&
+                            field.vaults[1].type !== "S" ? null : (
+                            <option value="T">Tall</option>
+                            )}
+                        </select>
+                        </div>
+                        </div>
+                    )}
                     </div>
                     <div style={{ height: "63%", marginTop: "1em" }}>
                         <MiniWareHouse selectedField={selectedField} />
