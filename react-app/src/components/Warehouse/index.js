@@ -58,7 +58,7 @@ export default function Warehouse () {
         
         // Dispatch actions to update Redux store
         await dispatch(toggleCouchBoxFieldThunk(selectedField.id));
-        // await dispatch(getFieldThunk(selectedField.id));
+        await dispatch(getFieldThunk(selectedField.id));
         // Set the updated selected field without calling handleToggleChange again
         await setSelectedField(updatedSelectedField);
         history.push('/');
