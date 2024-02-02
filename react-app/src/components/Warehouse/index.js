@@ -44,7 +44,7 @@ export default function Warehouse () {
         }
     }, [selectedVaultToStage]);
 
-    const handleToggleChange = async () => {
+    const handleToggleChange = () => {
         const newToggleSelected = !toggleSelected;
         
         // If it's switching back to "Vault," update the selectedField type
@@ -57,12 +57,16 @@ export default function Warehouse () {
         setToggleSelected(newToggleSelected);
         
         // Dispatch actions to update Redux store
-        await dispatch(toggleCouchBoxFieldThunk(selectedField.id));
-        await dispatch(getFieldThunk(selectedField.id));
+        dispatch(toggleCouchBoxFieldThunk(selectedField.id));
+        dispatch(getFieldThunk(selectedField.id));
+        
         // Set the updated selected field without calling handleToggleChange again
-        await setSelectedField(updatedSelectedField);
+        setSelectedField(updatedSelectedField);
+        
         history.push('/');
     };
+    
+    
               
     const updateSelectedFieldVaults = async (newVault) => {
         if (selectedField && newVault?.field_id === selectedField.id) {
