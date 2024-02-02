@@ -9,10 +9,12 @@ import ConfirmStaging from "./ConfirmStaging";
 import { rowCreator, sortFields } from "../utility";
 import "./Warehouse.css"
 import { getFieldThunk, toggleCouchBoxFieldThunk } from "../../store/field.js";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min.js";
 
 
 export default function Warehouse () {
     const dispatch = useDispatch();
+    const history = useHistory();
     const rowsArr = rowCreator(useSelector(state => state.warehouse.warehouseFields));
     const searchResult = useSelector(state => state.search.fields);
     const [selectedField, setSelectedField] = useState(null);
@@ -27,6 +29,7 @@ export default function Warehouse () {
 
     useEffect(() => {
         dispatch(getWarehouseInfoThunk());
+        
     }, [toggleSelected])
 
     useEffect(() => {
@@ -55,10 +58,10 @@ export default function Warehouse () {
         
         // Dispatch actions to update Redux store
         await dispatch(toggleCouchBoxFieldThunk(selectedField.id));
-        await dispatch(getFieldThunk(selectedField.id));
-        
+        // await dispatch(getFieldThunk(selectedField.id));
         // Set the updated selected field without calling handleToggleChange again
-        setSelectedField(updatedSelectedField);
+        await setSelectedField(updatedSelectedField);
+        history.push('/');
     };
               
     const updateSelectedFieldVaults = async (newVault) => {
