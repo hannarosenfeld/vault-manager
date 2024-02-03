@@ -18,10 +18,6 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
   const vaults = fieldState.vaults;
 
   useEffect(() => {
-    console.log("👯‍♂️", selectedFieldVaults)
-  }, [selectedFieldVaults])
-
-  useEffect(() => {
     dispatch(getAllVaultsThunk());
   }, [])
 
