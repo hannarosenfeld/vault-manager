@@ -14,7 +14,7 @@ function SignupFormPage() {
   const [errors, setErrors] = useState([]);
   const [isSuccess, setIsSuccess] = useState(false); // State to track success
 
-  if (!sessionUser.username === "admin") return <Redirect to="/" />;
+  // if (!sessionUser.username === "admin") return <Redirect to="/" />;
 
   const handleSubmit = async (e) => {
     e.preventDefault();

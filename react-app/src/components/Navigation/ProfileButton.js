@@ -7,6 +7,7 @@ import SignupFormModal from "../SignupFormModal";
 import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
 import { Drawer, List, ListItem, ListItemText, Button } from "@mui/material";
 import "./Navigation.css";
+import SignupFormPage from "../SignupFormPage";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -67,7 +68,14 @@ function ProfileButton({ user }) {
                 style={{display: "flex", gap: "5px"}}>
                 {/* <i class="fa-solid fa-plus"></i> */}
                 <ListItemText primary="Stage" />
-              </ListItem>           
+              </ListItem>       
+              <ListItem 
+                onClick={closeDrawer}
+                component={NavLink} 
+                to="/signup"
+                style={{display: "flex", gap: "5px", cursor: "pointer"}}>
+                <ListItemText primary="+ Add User" />
+              </ListItem>   
               <ListItem>
                 <Button id="logout-button" variant="outlined" style={{color: "var(--lightgrey)", borderColor: "var(--lightgrey)"}} onClick={handleLogout}>Log Out</Button>
               </ListItem>

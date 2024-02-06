@@ -27,7 +27,11 @@ function App() {
   return (
     <>
       {isLoaded && !sessionUser && (
-        <LoginFormPage />
+        <Switch>
+          <Route exact path="/">
+            <LoginFormPage />
+          </Route>
+        </Switch>
       )}
       {isLoaded && sessionUser && (
         <>
@@ -36,6 +40,9 @@ function App() {
             <Route exact path="/">
               <Index />
             </Route>
+            <Route exact path="/signup">
+              <SignupFormPage />
+            </Route>            
             <Route path="/warehouse">
               <Warehouse/>
             </Route>
