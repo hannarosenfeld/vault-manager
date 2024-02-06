@@ -69,13 +69,18 @@ function ProfileButton({ user }) {
                 {/* <i class="fa-solid fa-plus"></i> */}
                 <ListItemText primary="Stage" />
               </ListItem>       
+
+
+              {/* 
               <ListItem 
                 onClick={closeDrawer}
                 component={NavLink} 
                 to="/signup"
                 style={{display: "flex", gap: "5px", cursor: "pointer"}}>
                 <ListItemText primary="+ Add User" />
-              </ListItem>   
+              </ListItem>    
+              */}
+
               <ListItem>
                 <Button id="logout-button" variant="outlined" style={{color: "var(--lightgrey)", borderColor: "var(--lightgrey)"}} onClick={handleLogout}>Log Out</Button>
               </ListItem>
