@@ -13,6 +13,14 @@ import { getFieldThunk, toggleCouchBoxFieldThunk } from "../../store/field.js";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min.js";
 
 
+
+// TODO: we need to limit the dispatches/data fetching:
+// which data do i actually need??
+// i basically need to know how many vaults are on the field for the color coding green/ yellow/ red
+// i don't need any other info!!
+// when i click on a field, i should dispatch that fields info, from the renderTMB.
+// in the renderTMB, i fetch the data for that field and then give it to vault instance.
+
 export default function Warehouse() {
     const dispatch = useDispatch();
     const history = useHistory();

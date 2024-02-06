@@ -37,7 +37,6 @@ export const addVaultToWarehouseAction = (vault) => ({
   
 
 export const getAllWarehousesThunk = () => async (dispatch) => {
-  console.log("😎 in thunk")
   try {
     const response = await fetch('/api/warehouse');
     if (response.ok) {
@@ -184,7 +183,6 @@ const initialState = {
 const warehouseReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_ALL_WAREHOUSES:
-      console.log("💖", action.warehouses)
       const warehouses = Object.values(action.warehouses)
       return {
         ...state,

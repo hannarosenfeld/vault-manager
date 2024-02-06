@@ -14,7 +14,7 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
   const selectedFieldVaults = useSelector((state) => state.field.fieldVaults);
   const [topmostVault, setTopmostVault] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [loading, setLoading] = useState(true); // Loading state
+  const [loading, setLoading] = useState(true);
   const fieldState = useSelector((state) => state.warehouse.warehouseFields[parseInt(selectedField.id)]);
   const vaults = fieldState.vaults;
 
@@ -40,7 +40,7 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
 
       setTopmostVault(topVault);
       setIsLoaded(true);
-      setLoading(false); // Set loading to false when data is loaded
+      setLoading(false);
     };
 
     if (vaults && vaults.length > 0) {

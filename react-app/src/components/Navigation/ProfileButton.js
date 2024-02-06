@@ -15,8 +15,6 @@ function ProfileButton({ user }) {
   const [showDrawer, setShowDrawer] = useState(false);
   const warehouses = useSelector(state => state.warehouse.warehouses)
 
-  console.log("📗", warehouses)
-
   useEffect(() => {
     dispatch(getAllWarehousesThunk())
 }, [dispatch])
