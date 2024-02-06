@@ -128,3 +128,9 @@
     border: 3px solid var(--blue); 
   }
   
+  .loading-animation-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Set the height to cover the entire viewport */
+}
