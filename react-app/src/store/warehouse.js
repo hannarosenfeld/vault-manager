@@ -3,6 +3,12 @@ const REMOVE_VAULT_FROM_WAREHOUSE = 'warehouse/REMOVE_VAULT_FROM_WAREHOUSE';
 const GET_ALL_WAREHOUSE_VAULTS = 'warehouse/GET_ALL_WAREHOUSE_VAULTS'; // New action type
 export const GET_WAREHOUSE_INFO = 'warehouse/GET_ALL_WAREHOUSE_INFO';
 export const SET_WAREHOUSE_SEARCH_MODE = 'warehouse/SET_WAREHOUSE_SEARCH_MODE';
+const GET_ALL_WAREHOUSES = 'warehouse/GET_ALL_WAREHOUSES'
+
+export const getAllWarehouses = (warehouses) => ({
+  type: GET_ALL_WAREHOUSES,
+  warehouses
+})
 
 export const setWarehouseSearchModeAction = (searchmode) => ({
   type: SET_WAREHOUSE_SEARCH_MODE,
@@ -29,6 +35,29 @@ export const addVaultToWarehouseAction = (vault) => ({
   payload: vault,
 });
   
+
+export const getAllWarehousesThunk = () => async (dispatch) => {
+  try {
+    const response = await fetch('/api/warehouse');
+
+    if (response.ok) {
+      // Assuming the response includes the complete warehouse information
+      const warehouseInfo = await response.json();
+      // Dispatch the action with the fetched warehouse information
+      dispatch(getWarehouseInfoAction(warehouseInfo));
+
+      return warehouseInfo;
+    } else {
+      const errorData = await response.json();
+      console.error('Error fetching warehouse information:', errorData.errors);
+      return errorData;
+    }
+  } catch (error) {
+    console.error('Error fetching warehouse information:', error);
+    return error;
+  }
+};
+
 export const addVaultToWarehouseThunk = (vaultId) => async (dispatch) => {
   try {
     const response = await fetch(`/api/warehouse/vaults/${vaultId}`, {
@@ -53,6 +82,9 @@ export const addVaultToWarehouseThunk = (vaultId) => async (dispatch) => {
   }
 }; 
 
+
+
+// TODO: UPDATE THIS TO GET THE WAREHOUSE INFO BY WAREHOUSE ID
 export const getWarehouseInfoThunk = () => async (dispatch) => {
   try {
     // Simulate an API call to fetch all warehouse information (replace with your actual API call)
