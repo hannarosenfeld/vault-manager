@@ -130,14 +130,16 @@ const fieldReducer = (state = initialState, action) => {
         ...state,
         fields: action.fields
       };
-    case GET_WAREHOUSE_INFO:
-      return {
-        ...state,
-        fields: {
-          ...state.fields,
-          ...action.payload.warehouse_info.fields
-        },
-      }
+      case GET_WAREHOUSE_INFO:
+        console.log("😡", action);
+        return {
+          ...state,
+          fields: {
+            ...state.fields,
+            ...action.payload.fields
+          },
+        };
+      
       case GET_FIELD_VAULTS:
         console.log("📬", action.vaults);
       

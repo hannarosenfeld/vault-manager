@@ -16,6 +16,7 @@ def seed_warehouse():
     warehouse.warehouse_rows = rows
     warehouse.warehouse_fields = fields
     warehouse.warehouse_vaults = vaults
+    warehouse.name = "Warehouse 3"
     
     db.session.add(warehouse)
     db.session.commit()

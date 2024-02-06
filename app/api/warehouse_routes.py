@@ -1,9 +1,21 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 from app.models import Warehouse, Field, Vault, Stage, db
-# from sqlalchemy.orm import make_transient
 
 warehouse_routes = Blueprint('warehouse', __name__)
+
+
+@warehouse_routes.route('/', methods=['GET'])
+def get_warehouses():
+    """
+    Retrieve all warehouses
+    """
+    warehouses = Warehouse.query.all()
+
+    if not warehouses:
+        return {'errors': 'Not warehouses found!'}, 404
+
+    return { warehouse.id : warehouse.to_dict() for warehouse in warehouses }
 
 
 @warehouse_routes.route('/<int:warehouse_id>', methods=['GET'])

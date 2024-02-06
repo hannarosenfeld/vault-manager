@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/session";
 import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../LoginFormModal";
@@ -8,10 +8,18 @@ import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
 import { Drawer, List, ListItem, ListItemText, Button } from "@mui/material";
 import "./Navigation.css";
 import SignupFormPage from "../SignupFormPage";
+import { getAllWarehousesThunk } from "../../store/warehouse";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showDrawer, setShowDrawer] = useState(false);
+  const warehouses = useSelector(state => state.warehouse.warehouses)
+
+  console.log("📗", warehouses)
+
+  useEffect(() => {
+    dispatch(getAllWarehousesThunk())
+}, [dispatch])
 
   const openDrawer = () => {
     setShowDrawer(true);
@@ -52,14 +60,17 @@ function ProfileButton({ user }) {
               {user.username === "admin" ? <span style={{fontSize: "1.5em"}} class="material-symbols-outlined">shield_person</span> : ''}
               <ListItemText primary={user.username}/>
               </ListItem>
+              { warehouses?.map(warehouse => (
               <ListItem 
-                button 
-                onClick={closeDrawer}
-                component={NavLink} 
-                to="/" 
-                style={{display: "flex", gap: "5px"}}>
-                <ListItemText primary="Warehouse" />
-              </ListItem>                 
+              button 
+              onClick={closeDrawer}
+              component={NavLink} 
+              to="/" 
+              style={{display: "flex", gap: "5px"}}>
+              <ListItemText primary={warehouse.name} />
+            </ListItem>  
+              ))               
+              }
               <ListItem 
                 button 
                 onClick={closeDrawer}
@@ -68,7 +79,15 @@ function ProfileButton({ user }) {
                 style={{display: "flex", gap: "5px"}}>
                 {/* <i class="fa-solid fa-plus"></i> */}
                 <ListItemText primary="Stage" />
-              </ListItem>       
+              </ListItem>
+              <ListItem 
+                button 
+                onClick={closeDrawer}
+                component={NavLink} 
+                to="/add-warehouse" 
+                style={{display: "flex", gap: "5px", color: "var(--blue)"}}>
+                <ListItemText primary="+ Add Warehouse" />
+              </ListItem>        
 
 
               {/* 

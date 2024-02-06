@@ -1,7 +1,7 @@
 const ADD_VAULT_TO_WAREHOUSE = 'warehouse/ADD_VAULT_TO_WAREHOUSE';
 const REMOVE_VAULT_FROM_WAREHOUSE = 'warehouse/REMOVE_VAULT_FROM_WAREHOUSE';
 const GET_ALL_WAREHOUSE_VAULTS = 'warehouse/GET_ALL_WAREHOUSE_VAULTS'; // New action type
-export const GET_WAREHOUSE_INFO = 'warehouse/GET_ALL_WAREHOUSE_INFO';
+export const GET_WAREHOUSE_INFO = 'warehouse/GET_WAREHOUSE_INFO';
 export const SET_WAREHOUSE_SEARCH_MODE = 'warehouse/SET_WAREHOUSE_SEARCH_MODE';
 const GET_ALL_WAREHOUSES = 'warehouse/GET_ALL_WAREHOUSES'
 
@@ -37,11 +37,12 @@ export const addVaultToWarehouseAction = (vault) => ({
   
 
 export const getAllWarehousesThunk = () => async (dispatch) => {
+  console.log("😎 in thunk")
   try {
     const response = await fetch('/api/warehouse');
     if (response.ok) {
       const data = await response.json();
-      dispatch(getWarehouseInfoAction(data));
+      dispatch(getAllWarehouses(data));
       return data;
     } else {
       const errorData = await response.json();
@@ -82,16 +83,12 @@ export const addVaultToWarehouseThunk = (vaultId) => async (dispatch) => {
 
 // TODO: UPDATE THIS TO GET THE WAREHOUSE INFO BY WAREHOUSE ID
 export const getWarehouseInfoThunk = (warehouseId) => async (dispatch) => {
+  if (!warehouseId) return
   try {
-    // Simulate an API call to fetch all warehouse information (replace with your actual API call)
     const response = await fetch(`/api/warehouse/${warehouseId}`);
-
     if (response.ok) {
-      // Assuming the response includes the complete warehouse information
       const warehouseInfo = await response.json();
-      // Dispatch the action with the fetched warehouse information
       dispatch(getWarehouseInfoAction(warehouseInfo));
-
       return warehouseInfo;
     } else {
       const errorData = await response.json();
@@ -176,6 +173,7 @@ export const removeVaultFromWarehouseThunk = (vaultId) => async (dispatch) => {
 };
   
 const initialState = {
+  warehouseses: [],
   warehouseVaults: [],
   warehouseFields: [],
   // warehouseRows: [],
@@ -185,14 +183,25 @@ const initialState = {
 
 const warehouseReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_WAREHOUSE_INFO:
+    case GET_ALL_WAREHOUSES:
+      console.log("💖", action.warehouses)
+      const warehouses = Object.values(action.warehouses)
       return {
         ...state,
-        // warehouseVaults: action.payload.warehouse_info.vaults,
-        warehouseFields: action.payload.warehouse_info.fields,
-        // warehouseRows: action.payload.warehouse_info.rows,
-        searchmode: action.payload.warehouse_info.searchmode
-      };
+        warehouses: [...warehouses]
+      }
+    case GET_WAREHOUSE_INFO:
+      const warehouseInfo = action.payload?.warehouse_info;
+      if (warehouseInfo) {
+        return {
+          ...state,
+          warehouseFields: warehouseInfo.fields,
+          searchmode: warehouseInfo.searchmode
+        };
+      } else {
+        console.error('Warehouse info is undefined');
+        return state;
+      }
     case ADD_VAULT_TO_WAREHOUSE:
       // Add the vault to the warehouseVaults array in state
       const newVaults = Array.isArray(action.payload) ? action.payload : [];
