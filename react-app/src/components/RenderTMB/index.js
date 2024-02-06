@@ -3,44 +3,47 @@ import { useDispatch, useSelector } from "react-redux";
 import AddVaultButton from "./AddVaultButton";
 import VaultInstance from "../VaultInstance";
 import { useState } from "react";
-import { getAllVaultsThunk } from "../../store/vault";
 import "./RenderTMB.css"
 import { getFieldVaultsThunk } from "../../store/field";
 
 
-const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEditClick, handleToggleChange, toggleSelected }) => {
+const RenderTMB = ({ 
+  selectedField, 
+  handleStageClick, 
+  handleOpenModal, 
+  handleToggleChange, 
+  toggleSelected }) => {
+
+    console.log(
+      "1️⃣ selectedField: ", selectedField,
+      "2️⃣ handleStageClick: ", handleStageClick,
+      "3️⃣ handleOpenModal: ", handleOpenModal,
+      "5️⃣ handleToggleChange: ", handleToggleChange,
+      "6️⃣ toggleSelected: ", toggleSelected
+  );
+  
   const dispatch = useDispatch();
-  const vaultsObj = useSelector((state) => state.vault.vaults);
   const selectedFieldVaults = useSelector((state) => state.field.fieldVaults);
   const [topmostVault, setTopmostVault] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const fieldState = useSelector((state) => state.warehouse.warehouseFields[parseInt(selectedField.id)]);
-  const vaults = fieldState.vaults;
+  const fieldState = useSelector((state) => state.field.fieldVaults);
+  const vaults = Object.values(fieldState)
 
-  useEffect(() => {
-    dispatch(getAllVaultsThunk());
-  }, [])
 
   useEffect(() => {
     dispatch(getFieldVaultsThunk(selectedField.id));
-  }, [selectedField])
+  }, [selectedField, handleStageClick])
 
   useEffect(() => {
     const updateTopmostVault = () => {
       let topVault = null;
 
-      for (let vaultId of vaults) {
-        const vault = vaultsObj[vaultId];
-
+      for (let vault of vaults) {
         if (!topVault || vault.position > topVault.position) {
           topVault = vault;
         }
       }
 
       setTopmostVault(topVault);
-      setIsLoaded(true);
-      setLoading(false);
     };
 
     if (vaults && vaults.length > 0) {
@@ -55,9 +58,6 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
 
   return (
     <>
-      {loading ? ( // Render loading indicator if loading is true
-        <div className="loading-animation">Loading...</div>
-      ) : (
         <div className="selected-field-vaults-tmb" style={{ gridTemplateRows: selectedField.type === "couchbox" ? "repeat(4,1fr)" : ""}}>
           <div className="top field-row">
             <span className="position">T</span>
@@ -73,8 +73,7 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
                 position="T"
                 vault={selectedFieldVaults["T"]}
                 handleStageClick={handleStageClick}
-                handleEditClick={handleEditClick}
-                topmostVault={isLoaded && topmostVault.id === selectedFieldVaults["T"].id ? true : false}
+                topmostVault={topmostVault?.id === selectedFieldVaults["T"].id ? true : false}
               />
             ) : (
               ""
@@ -91,8 +90,7 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
                   position="M2"
                   vault={selectedFieldVaults["M2"]}
                   handleStageClick={handleStageClick}
-                  handleEditClick={handleEditClick}
-                  topmostVault={isLoaded && topmostVault.id === selectedFieldVaults["M2"].id ? true : false}
+                  topmostVault={topmostVault?.id === selectedFieldVaults["M2"].id ? true : false}
                 />
               ) : (
                 ""
@@ -109,8 +107,7 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
                 position="M"
                 vault={selectedFieldVaults["M"]}
                 handleStageClick={handleStageClick}
-                handleEditClick={handleEditClick}
-                topmostVault={isLoaded && topmostVault.id === selectedFieldVaults["M"].id ? true : false}
+                topmostVault={topmostVault?.id === selectedFieldVaults["M"].id ? true : false}
               />
             ) : (
               ""
@@ -125,15 +122,13 @@ const RenderTMB = ({ selectedField, handleStageClick, handleOpenModal, handleEdi
                 position="B"
                 vault={selectedFieldVaults["B"]}
                 handleStageClick={handleStageClick}
-                handleEditClick={handleEditClick}
-                topmostVault={isLoaded && topmostVault.id === selectedFieldVaults["B"].id ? true : false}
+                topmostVault={topmostVault?.id === selectedFieldVaults["B"].id ? true : false}
               />
             ) : (
               ""
             )}
           </div>
         </div>
-      )}
       <div className={`selected-field-box ${toggleSelected ? 'toggled' : ''}`}>
       <div className="form-check form-switch" >
         <input

@@ -116,6 +116,7 @@ const fieldReducer = (state = initialState, action) => {
         }
       }
     case GET_FIELD:
+      console.log("🤦🏻‍♀️")
       return {
         ...state,
         fields: {

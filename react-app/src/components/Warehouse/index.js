@@ -2,14 +2,12 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from '@mui/material/Modal';
 import CircularProgress from '@mui/material/CircularProgress';
-import { getAllWarehouseVaultsThunk, getWarehouseInfoThunk } from "../../store/warehouse";
-import { getAllVaultsThunk } from "../../store/vault"
 import AddVaultModal from "./AddVaultModal/AddVaultModal.js"
 import RenderTMB from "../RenderTMB";
 import ConfirmStaging from "./ConfirmStaging";
 import { rowCreator, sortFields } from "../utility";
 import "./Warehouse.css"
-import { getFieldThunk, toggleCouchBoxFieldThunk } from "../../store/field.js";
+import { getAllFieldsThunk, getFieldThunk, toggleCouchBoxFieldThunk } from "../../store/field.js";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min.js";
 
 
@@ -24,7 +22,7 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min.js";
 export default function Warehouse() {
     const dispatch = useDispatch();
     const history = useHistory();
-    const rowsArr = rowCreator(useSelector(state => state.warehouse.warehouseFields));
+    const rowsArr = rowCreator(useSelector(state => state.field.fields));
     const searchResult = useSelector(state => state.search.fields);
     const [selectedField, setSelectedField] = useState(null);
     let [top, setTop] = useState(null);
@@ -38,16 +36,8 @@ export default function Warehouse() {
     const [loading, setLoading] = useState(true); // Loading state
 
     useEffect(() => {
-        dispatch(getWarehouseInfoThunk(1));
-    }, [toggleSelected])
-
-    useEffect(() => {
-        const getWareHouseInfo = dispatch(getWarehouseInfoThunk());
-        const getAllWarehouseVaults = dispatch(getAllWarehouseVaultsThunk());
-        const getAllVaults = dispatch(getAllVaultsThunk())
-
-        // Set loading to false once data is fetched
-        Promise.all([getWareHouseInfo, getAllWarehouseVaults, getAllVaults])
+        const getWareHouseFields = dispatch(getAllFieldsThunk())
+        Promise.all([getWareHouseFields])
             .then(() => setLoading(false))
             .catch(() => setLoading(false));
     }, [dispatch])
