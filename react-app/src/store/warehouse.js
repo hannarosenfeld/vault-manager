@@ -39,21 +39,17 @@ export const addVaultToWarehouseAction = (vault) => ({
 export const getAllWarehousesThunk = () => async (dispatch) => {
   try {
     const response = await fetch('/api/warehouse');
-
     if (response.ok) {
-      // Assuming the response includes the complete warehouse information
-      const warehouseInfo = await response.json();
-      // Dispatch the action with the fetched warehouse information
-      dispatch(getWarehouseInfoAction(warehouseInfo));
-
-      return warehouseInfo;
+      const data = await response.json();
+      dispatch(getWarehouseInfoAction(data));
+      return data;
     } else {
       const errorData = await response.json();
-      console.error('Error fetching warehouse information:', errorData.errors);
+      console.error('Error fetching warehouses:', errorData.errors);
       return errorData;
     }
   } catch (error) {
-    console.error('Error fetching warehouse information:', error);
+    console.error('Error fetching warehouses:', error);
     return error;
   }
 };
@@ -85,10 +81,10 @@ export const addVaultToWarehouseThunk = (vaultId) => async (dispatch) => {
 
 
 // TODO: UPDATE THIS TO GET THE WAREHOUSE INFO BY WAREHOUSE ID
-export const getWarehouseInfoThunk = () => async (dispatch) => {
+export const getWarehouseInfoThunk = (warehouseId) => async (dispatch) => {
   try {
     // Simulate an API call to fetch all warehouse information (replace with your actual API call)
-    const response = await fetch('/api/warehouse');
+    const response = await fetch(`/api/warehouse/${warehouseId}`);
 
     if (response.ok) {
       // Assuming the response includes the complete warehouse information

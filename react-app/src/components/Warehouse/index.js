@@ -28,7 +28,7 @@ export default function Warehouse () {
     const [toggleSelected, setToggleSelected] = useState(false);
 
     useEffect(() => {
-        dispatch(getWarehouseInfoThunk());
+        dispatch(getWarehouseInfoThunk(1));
         
     }, [toggleSelected])
 

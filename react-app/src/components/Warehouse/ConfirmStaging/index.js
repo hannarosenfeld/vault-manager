@@ -21,7 +21,7 @@ export default function ConfirmStaging({
         updateVaultPosition(vault.position);
         const removeVault = await dispatch(removeVaultFromWarehouseThunk(vaultId))        
         const updatedVault = await dispatch(addVaultToStageThunk(vaultId));
-        const getWarehouseInfoDispatch = await dispatch(getWarehouseInfoThunk());
+        const getWarehouseInfoDispatch = await dispatch(getWarehouseInfoThunk(1));
 
         onClose();
     }

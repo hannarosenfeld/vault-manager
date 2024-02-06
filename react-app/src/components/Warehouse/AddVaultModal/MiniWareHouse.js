@@ -8,7 +8,7 @@ export default function MiniWareHouse({ selectedField }) {
     const rowsArr = rowCreator(useSelector(state => state.warehouse.warehouseFields));
 
     useEffect(() => {
-        dispatch(getWarehouseInfoThunk());
+        dispatch(getWarehouseInfoThunk(1));
         dispatch(getAllWarehouseVaultsThunk());
     }, [dispatch])
 

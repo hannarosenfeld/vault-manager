@@ -6,12 +6,12 @@ from app.models import Warehouse, Field, Vault, Stage, db
 warehouse_routes = Blueprint('warehouse', __name__)
 
 
-@warehouse_routes.route('/', methods=['GET'])
-def get_warehouse_info():
+@warehouse_routes.route('/<int:warehouse_id>', methods=['GET'])
+def get_warehouse_info(warehouse_id):
     """
     Retrieve information about the warehouse
     """
-    warehouse = Warehouse.query.get(1)  # Assuming there is only one warehouse with ID 1
+    warehouse = Warehouse.query.get(warehouse_id)
 
     if not warehouse:
         return {'errors': 'Warehouse not found'}, 404

@@ -31,7 +31,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
 
   useEffect(() => {
     dispatch(getAllWarehouseVaultsThunk());
-    dispatch(getWarehouseInfoThunk());
+    dispatch(getWarehouseInfoThunk(1));
   }, [selectedField]);
 
   useEffect(() => {
@@ -64,7 +64,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
     if (selectedField) {
       await dispatch(moveVaultFromStageToWarehouseThunk(vault.id, selectedField.id, fieldName, position));
       await dispatch(getAllStagedVaultsThunk());
-      await dispatch(getWarehouseInfoThunk());
+      await dispatch(getWarehouseInfoThunk(1));
   
       closeConfirmationModal();
       closeModal();
