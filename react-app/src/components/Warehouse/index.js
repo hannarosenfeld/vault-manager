@@ -5,17 +5,18 @@ import CircularProgress from '@mui/material/CircularProgress';
 import AddVaultModal from "./AddVaultModal/AddVaultModal.js"
 import RenderTMB from "../RenderTMB";
 import ConfirmStaging from "./ConfirmStaging";
-import { rowCreator, sortFields } from "../utility";
+// import { rowCreator, sortFields } from "../utility";
 import "./Warehouse.css"
 import { getAllFieldsThunk, getFieldThunk, toggleCouchBoxFieldThunk } from "../../store/field.js";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min.js";
+import { getWarehouseInfoThunk } from "../../store/warehouse.js";
 
  
 
 export default function Warehouse() {
     const dispatch = useDispatch();
     const history = useHistory();
-    const rowsArr = rowCreator(useSelector(state => state.field.fields));
+    const rowsArr = useSelector(state => state.warehouse.currentWarehouse.rows);
     const searchResult = useSelector(state => state.search.fields);
     const [selectedField, setSelectedField] = useState(null);
     let [top, setTop] = useState(null);
@@ -29,6 +30,12 @@ export default function Warehouse() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        console.log("🌸 rowsArr: ", rowsArr)
+    }, [rowsArr])
+
+    useEffect(() => {
+        dispatch(getWarehouseInfoThunk(1))
+
         const getWareHouseFields = dispatch(getAllFieldsThunk())
         Promise.all([getWareHouseFields])
             .then(() => setLoading(false))
@@ -142,7 +149,7 @@ export default function Warehouse() {
                             <div className="row" key={row.id}>
                                 {!searchResult && (
                                     <div className="fields">
-                                        {sortFields(row.fields).map((field, index) => {
+                                        {row.fields.map((field, index) => {
                                             return (
                                                 <div
                                                     className="field"
@@ -161,7 +168,7 @@ export default function Warehouse() {
                                                     }}
                                                     onClick={() => handleFieldClick(field, row, index)}
                                                 >
-                                                    {field.bottom_couch_box ? "" : field.type === "vault" ? <div className="field-number">{row.id}{index + 1}</div> : field.type === "couchbox" ? <div className="field-number">{row.id}{index + 1} / {row.id}{index + 2}</div> : ''}
+                                                    {field.bottom_couch_box ? "" : field.type === "vault" ? <div className="field-number">{row.name}{index + 1}</div> : field.type === "couchbox" ? <div className="field-number">{row.name}{index + 1} / {row.name}{index + 2}</div> : ''}
                                                 </div>
                                             );
                                         })}
@@ -170,7 +177,7 @@ export default function Warehouse() {
                                 )}
                                 {searchResult && (
                                     <div className="fields">
-                                        {sortFields(row.fields).map((field, index) => (
+                                        {row.fields.map((field, index) => (
                                             <div
                                                 className="field"
                                                 key={field.id}
@@ -192,7 +199,7 @@ export default function Warehouse() {
                                                 }}
                                                 onClick={() => handleFieldClick(field, row, index)}
                                             >
-                                                {field.bottom_couch_box ? "" : field.type === "vault" ? <div className="field-number">{row.id}{index + 1}</div> : field.type === "couchbox" ? <div className="field-number">{row.id}{index + 1} / {row.id}{index + 2}</div> : ''}
+                                                {field.bottom_couch_box ? "" : field.type === "vault" ? <div className="field-number">{row.name}{index + 1}</div> : field.type === "couchbox" ? <div className="field-number">{row.name}{index + 1} / {row.name}{index + 2}</div> : ''}
                                             </div>
                                         ))}
                                     </div>

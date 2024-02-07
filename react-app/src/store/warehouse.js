@@ -110,8 +110,6 @@ export const addVaultToWarehouseThunk = (vaultId) => async (dispatch) => {
   }
 }; 
 
-
-
 export const getWarehouseInfoThunk = (warehouseId) => async (dispatch) => {
   if (!warehouseId) return
   try {
@@ -210,7 +208,8 @@ const initialState = {
   warehouseVaults: [],
   warehouseFields: [],
   // warehouseRows: [],
-  searchmode: null
+  searchmode: null,
+  currentWarehouse: {}
 };
   
 
@@ -228,7 +227,8 @@ const warehouseReducer = (state = initialState, action) => {
         return {
           ...state,
           warehouseFields: warehouseInfo.fields,
-          searchmode: warehouseInfo.searchmode
+          searchmode: warehouseInfo.searchmode,
+          currentWarehouse: warehouseInfo
         };
       } else {
         console.error('Warehouse info is undefined');
