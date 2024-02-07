@@ -52,6 +52,16 @@ def upgrade():
         FROM fields
     """)
 
+    # Drop foreign key constraints that reference the 'rows' table
+    from sqlalchemy import inspect
+    inspector = inspect(op.get_bind())
+    fk_constraints = inspector.get_foreign_keys('rows')
+    for fk in fk_constraints:
+        op.drop_constraint(fk['name'], 'fields', type_='foreignkey')
+
+    # Now you should be able to drop the 'rows' table
+    op.drop_table('rows')
+
     # Drop the old table
     op.drop_table('fields')
 
