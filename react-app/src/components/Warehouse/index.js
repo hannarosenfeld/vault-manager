@@ -5,7 +5,6 @@ import CircularProgress from '@mui/material/CircularProgress';
 import AddVaultModal from "./AddVaultModal/AddVaultModal.js"
 import RenderTMB from "../RenderTMB";
 import ConfirmStaging from "./ConfirmStaging";
-// import { rowCreator, sortFields } from "../utility";
 import "./Warehouse.css"
 import { getAllFieldsThunk, getFieldThunk, toggleCouchBoxFieldThunk } from "../../store/field.js";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min.js";
@@ -145,7 +144,7 @@ export default function Warehouse() {
                         )}
                     </div>
                     <div className="warehouse">
-                        {rowsArr.map((row) => (
+                        {rowsArr?.map((row) => (
                             <div className="row" key={row.id}>
                                 {!searchResult && (
                                     <div className="fields">
