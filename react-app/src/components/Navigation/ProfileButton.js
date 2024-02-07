@@ -82,7 +82,7 @@ function ProfileButton({ user }) {
                 button 
                 onClick={closeDrawer}
                 component={NavLink} 
-                to="/add-warehouse" 
+                to="/warehouse/add-warehouse" 
                 style={{display: "flex", gap: "5px", color: "var(--blue)"}}>
                 <ListItemText primary="+ Add Warehouse" />
               </ListItem>        
