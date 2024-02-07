@@ -10,14 +10,7 @@ import "./Warehouse.css"
 import { getAllFieldsThunk, getFieldThunk, toggleCouchBoxFieldThunk } from "../../store/field.js";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min.js";
 
-
-
-// TODO: we need to limit the dispatches/data fetching:
-// which data do i actually need??
-// i basically need to know how many vaults are on the field for the color coding green/ yellow/ red
-// i don't need any other info!!
-// when i click on a field, i should dispatch that fields info, from the renderTMB.
-// in the renderTMB, i fetch the data for that field and then give it to vault instance.
+ 
 
 export default function Warehouse() {
     const dispatch = useDispatch();
@@ -64,10 +57,8 @@ export default function Warehouse() {
         dispatch(toggleCouchBoxFieldThunk(selectedField.id));
         dispatch(getFieldThunk(selectedField.id));
 
-        // Set the updated selected field without calling handleToggleChange again
-        setSelectedField(updatedSelectedField);
-
-        history.push('/');
+        window.location.reload(true);
+        window.location.reload(false);
     };
 
     const updateSelectedFieldVaults = async (newVault) => {
@@ -166,6 +157,7 @@ export default function Warehouse() {
                                                         border: `${selectedField?.id === field?.id ? "3px solid var(--blue)" : "none"}`,
                                                         marginBottom: `${field.type === "couchbox" ? "-2.2em" : ''}`,
                                                         width: `${field.bottom_couch_box ? "0px" : ''}`,
+                                                        zIndex: `${field.bottom_couch_box ? "100" : 'none'}`,
                                                     }}
                                                     onClick={() => handleFieldClick(field, row, index)}
                                                 >
@@ -196,6 +188,7 @@ export default function Warehouse() {
                                                     border: `${selectedField?.id === field?.id ? "3px solid var(--blue)" : ""}`,
                                                     marginBottom: `${field.type === "couchbox" ? "-2.2em" : ''}`,
                                                     width: `${field.bottom_couch_box ? "0px" : ''}`,
+                                                    zIndex: `${field.bottom_couch_box ? "100" : 'none'}`
                                                 }}
                                                 onClick={() => handleFieldClick(field, row, index)}
                                             >
