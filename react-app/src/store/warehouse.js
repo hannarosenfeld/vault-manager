@@ -1,3 +1,4 @@
+const ADD_WAREHOUSE = 'warehouse/ADD_WAREHOUSE';
 const ADD_VAULT_TO_WAREHOUSE = 'warehouse/ADD_VAULT_TO_WAREHOUSE';
 const REMOVE_VAULT_FROM_WAREHOUSE = 'warehouse/REMOVE_VAULT_FROM_WAREHOUSE';
 const GET_ALL_WAREHOUSE_VAULTS = 'warehouse/GET_ALL_WAREHOUSE_VAULTS'; // New action type
@@ -34,7 +35,38 @@ export const addVaultToWarehouseAction = (vault) => ({
   type: ADD_VAULT_TO_WAREHOUSE,
   payload: vault,
 });
+
+export const addWarehouseAction = (warehouseData) => ({
+  type: ADD_WAREHOUSE,
+  payload: warehouseData,
+});
   
+
+export const addWarehouseThunk = (warehouseData) => async (dispatch) => {
+  try {
+    const response = await fetch('/api/warehouse', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(warehouseData),
+    });
+
+    if (response.ok) {
+      const newWarehouse = await response.json();
+      dispatch(addWarehouseAction(newWarehouse));
+      return newWarehouse;
+    } else {
+      const errorData = await response.json();
+      console.error('Error adding warehouse:', errorData.errors);
+      return errorData;
+    }
+  } catch (error) {
+    console.error('Error adding warehouse:', error);
+    return error;
+  }
+};
+
 
 export const getAllWarehousesThunk = () => async (dispatch) => {
   try {
@@ -80,7 +112,6 @@ export const addVaultToWarehouseThunk = (vaultId) => async (dispatch) => {
 
 
 
-// TODO: UPDATE THIS TO GET THE WAREHOUSE INFO BY WAREHOUSE ID
 export const getWarehouseInfoThunk = (warehouseId) => async (dispatch) => {
   if (!warehouseId) return
   try {
@@ -170,9 +201,12 @@ export const removeVaultFromWarehouseThunk = (vaultId) => async (dispatch) => {
     return error;
   }
 };
+
+
+
   
 const initialState = {
-  warehouseses: [],
+  warehouses: [],
   warehouseVaults: [],
   warehouseFields: [],
   // warehouseRows: [],
@@ -207,6 +241,11 @@ const warehouseReducer = (state = initialState, action) => {
       return {
         ...state,
         warehouseVaults: [...state.warehouseVaults, ...newVaults],
+      };
+    case ADD_WAREHOUSE:
+      return {
+        ...state,
+        warehouses: [...state.warehouses, action.payload]
       };
     case GET_ALL_WAREHOUSE_VAULTS:
     return {

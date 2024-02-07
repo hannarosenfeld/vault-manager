@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
-from app.models import Warehouse, Field, Vault, Stage, db
+from app.models import Warehouse, Field, Vault, Row, Stage, db
 
 warehouse_routes = Blueprint('warehouse', __name__)
 
@@ -13,9 +13,9 @@ def get_warehouses():
     warehouses = Warehouse.query.all()
 
     if not warehouses:
-        return {'errors': 'Not warehouses found!'}, 404
+        return {'errors': 'No warehouses found!'}, 404
 
-    return { warehouse.id : warehouse.to_dict() for warehouse in warehouses }
+    return {warehouse.id: warehouse.to_dict() for warehouse in warehouses}
 
 
 @warehouse_routes.route('/<int:warehouse_id>', methods=['GET'])
@@ -43,7 +43,6 @@ def add_vault_to_warehouse(vault_id):
     if not vault:
         return jsonify({'errors': 'Vault not found'}), 404
 
-
     # if vault is in storage, set values according to selected warehouse position and move it
     if vault in stage.staged_vaults:
         new_field_id = request.json.get('fieldId')
@@ -57,7 +56,7 @@ def add_vault_to_warehouse(vault_id):
         vault.stage_id = None
 
         if vault in stage.staged_vaults:
-            stage.staged_vaults.remove(vault)        
+            stage.staged_vaults.remove(vault)
 
     try:
         warehouse.warehouse_vaults.append(vault)
@@ -108,3 +107,38 @@ def remove_vault_from_warehouse(vault_id):
     db.session.commit()
 
     return {'message': 'Vault removed from the warehouse successfully'}
+
+
+@warehouse_routes.route('/', methods=['POST'])
+def add_warehouse():
+    """
+    Add a new warehouse
+    """
+    data = request.json
+    name = data.get('name')
+    num_rows = data.get('numRows')
+    num_fields_per_row = data.get('numFieldsPerRow')
+
+    try:
+        # Create warehouse
+        warehouse = Warehouse(name=name)
+        db.session.add(warehouse)
+        db.session.commit()
+
+        # Create rows and fields
+        for _ in range(num_rows):
+            row = Row()
+            warehouse.warehouse_rows.append(row)
+            db.session.add(row)
+            for _ in range(num_fields_per_row):
+                field = Field()
+                row.fields.append(field)
+                db.session.add(field)
+
+        db.session.commit()
+
+        return jsonify({'message': 'Warehouse added successfully', 'warehouse_id': warehouse.id}), 201
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'errors': str(e)}), 500
