@@ -5,6 +5,7 @@ import VaultInstance from "../VaultInstance";
 import { useState } from "react";
 import "./RenderTMB.css"
 import { getFieldVaultsThunk } from "../../store/field";
+import { loading } from "../utility.js"
 
 
 const RenderTMB = ({ 
@@ -14,23 +15,17 @@ const RenderTMB = ({
   handleToggleChange, 
   toggleSelected }) => {
 
-    console.log(
-      "1️⃣ selectedField: ", selectedField,
-      "2️⃣ handleStageClick: ", handleStageClick,
-      "3️⃣ handleOpenModal: ", handleOpenModal,
-      "5️⃣ handleToggleChange: ", handleToggleChange,
-      "6️⃣ toggleSelected: ", toggleSelected
-  );
-  
   const dispatch = useDispatch();
   const selectedFieldVaults = useSelector((state) => state.field.fieldVaults);
   const [topmostVault, setTopmostVault] = useState(null);
   const fieldState = useSelector((state) => state.field.fieldVaults);
   const vaults = Object.values(fieldState)
-
+  const [isLoading, setIsLoadig] = useState(true);
 
   useEffect(() => {
-    dispatch(getFieldVaultsThunk(selectedField.id));
+      setIsLoadig(true);
+      dispatch(getFieldVaultsThunk(selectedField.id))
+      .then(setIsLoadig(false));
   }, [selectedField, handleStageClick])
 
   useEffect(() => {
@@ -58,6 +53,15 @@ const RenderTMB = ({
 
   return (
     <>
+    {isLoading ? (
+      <div style={{width: "100%", display: "flex", alignItems: "center", marginLeft: "50%", alignContent: "center"}}>
+      <div className="loading-dots">
+        <div className="dot1"></div>
+        <div className="dot2"></div>
+        <div className="dot3"></div>
+      </div>
+    </div>
+    ) : (
         <div className="selected-field-vaults-tmb" style={{ gridTemplateRows: selectedField.type === "couchbox" ? "repeat(4,1fr)" : ""}}>
           <div className="top field-row">
             <span className="position">T</span>
@@ -129,6 +133,7 @@ const RenderTMB = ({
             )}
           </div>
         </div>
+    )}
       <div className={`selected-field-box ${toggleSelected ? 'toggled' : ''}`}>
       <div className="form-check form-switch" >
         <input

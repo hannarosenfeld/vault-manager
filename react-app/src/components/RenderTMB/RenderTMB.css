@@ -51,3 +51,40 @@
     max-height: 11em !important;
 
   }
+
+  .loading-dots {
+    display: flex;
+    align-items: center;
+    color: var(--blue);
+  }
+  
+  .loading-dots span {
+    margin-right: 10px;
+  }
+  
+  .loading-dots div {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--blue);
+    margin-right: 5px;
+    animation: loading 1.4s infinite ease-in-out both;
+  }
+  
+  .dot1 {
+    animation-delay: -0.32s;
+  }
+  
+  .dot2 {
+    animation-delay: -0.16s;
+  }
+  
+  @keyframes loading {
+    0%, 80%, 100% {
+      transform: scale(0);
+    } 
+    40% {
+      transform: scale(1);
+    }
+  }
+  
