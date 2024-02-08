@@ -109,7 +109,6 @@ def remove_vault_from_warehouse(vault_id):
     return {'message': 'Vault removed from the warehouse successfully'}
 
 
-
 @warehouse_routes.route('/', methods=['POST'])
 def add_warehouse():
     """
@@ -133,7 +132,7 @@ def add_warehouse():
             db.session.add(row)
 
             for field_num in range(1, num_fields_per_row + 1):
-                field_id = f"{row_name}{field_num:02d}"  # Generate field id like A01, A02, ..., B01, B02, ...
+                field_id = f"{row_name}{field_num}"  # Generate field id like A1, A2, ..., B1, B2, ...
                 field = Field(row=row, field_id=field_id, warehouse=warehouse)
                 db.session.add(field)
 

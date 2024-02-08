@@ -5,7 +5,6 @@ import VaultInstance from "../VaultInstance";
 import { useState } from "react";
 import "./RenderTMB.css"
 import { getFieldVaultsThunk } from "../../store/field";
-import { loading } from "../utility.js"
 
 
 const RenderTMB = ({ 
