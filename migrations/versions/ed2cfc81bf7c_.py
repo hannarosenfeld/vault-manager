@@ -107,7 +107,7 @@ def upgrade():
     sa.Column('order_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['customer_id'], ['customers.id'], ondelete='SET NULL'),
     sa.ForeignKeyConstraint(['field_id'], ['fields.id'], ondelete='CASCADE'),
-    sa.ForeignKeyConstraint(['field_name'], ['fields.field_id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['field_name'], ['fields.id'], ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['order_id'], ['orders.id'], ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['stage_id'], ['stage.id'], ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['warehouse_id'], ['warehouse.id'], ondelete='CASCADE'),
