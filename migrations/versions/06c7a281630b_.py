@@ -76,7 +76,7 @@ def upgrade():
     
     op.create_table('fields',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('row_id', sa.Integer), nullable=True),
+    sa.Column('row_id', sa.Integer(), nullable=True),
     sa.Column('field_id', sa.String(length=20), nullable=False),  # Updated length and removed unique constraint
     sa.Column('warehouse_id', sa.Integer(), nullable=True),
     sa.Column('full', sa.Boolean(), nullable=True),
