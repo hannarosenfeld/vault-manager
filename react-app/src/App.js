@@ -44,15 +44,16 @@ function App() {
             
             <Route exact path="/signup">
               <SignupFormPage />
-            </Route>            
+            </Route>        
+            
+            <Route exact path="/warehouse/add-warehouse">
+              <AddWarehouseForm />
+            </Route>                  
 
             <Route exact path="/warehouse/:warehouseId"> 
               <Warehouse />
-            </Route>
+            </Route>          
 
-            <Route path="/warehouse/add-warehouse">
-              <AddWarehouseForm />
-            </Route>            
             <Route path="/vaults/:vaultId/edit">
               <EditVaultPage />
             </Route>

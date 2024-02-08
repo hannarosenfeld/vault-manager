@@ -80,6 +80,7 @@ function ProfileButton({ user }) {
                 {/* <i class="fa-solid fa-plus"></i> */}
                 <ListItemText primary="Stage" />
               </ListItem>
+              
               <ListItem 
                 button 
                 onClick={closeDrawer}
@@ -88,8 +89,6 @@ function ProfileButton({ user }) {
                 style={{display: "flex", gap: "5px", color: "var(--blue)"}}>
                 <ListItemText primary="+ Add Warehouse" />
               </ListItem>        
-
-
               
               <ListItem 
                 onClick={closeDrawer}
@@ -99,7 +98,6 @@ function ProfileButton({ user }) {
                 <ListItemText primary="+ Add User" />
               </ListItem>    
              
-
               <ListItem>
                 <Button id="logout-button" variant="outlined" style={{color: "var(--lightgrey)", borderColor: "var(--lightgrey)"}} onClick={handleLogout}>Log Out</Button>
               </ListItem>
