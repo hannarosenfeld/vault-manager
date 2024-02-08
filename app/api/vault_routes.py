@@ -63,7 +63,7 @@ def add_vault():
                 vault_id=form.data['vault_id'],
                 order_number=form.data['order_number'],
                 type=form.data['type'],
-                warehouse_id=1,
+                warehouse_id=form.data['warehouse_id'],
             )
 
             # check if the order_number exists

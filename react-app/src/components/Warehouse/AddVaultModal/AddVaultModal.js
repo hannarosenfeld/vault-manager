@@ -12,7 +12,7 @@ import "./AddVaultModal.css"
 import MiniWareHouse from './MiniWareHouse';
 import { getAllFieldsThunk, getFieldThunk } from '../../../store/field';
 
-export default function AddVaultModal({ onClose, selectedField, tmb, updateSelectedFieldVaults }) {
+export default function AddVaultModal({ onClose, selectedField, tmb, updateSelectedFieldVaults, warehouseId }) {
     const dispatch = useDispatch();
     const customersObj = useSelector(state => state.customer.customers)
     const vaultObj = useSelector(state => state.vault.vaults);
@@ -144,6 +144,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
             vaultData.append("vault_id", selectedField.type === "vault" ? vault_id : null)
             vaultData.append("order_number", selectedField.type === "vault" ? order_number : null)
             vaultData.append("attachment", attachment)
+            vaultData.append("warehouse_id", warehouseId)
 
             const newVault = await dispatch(addVaultThunk(vaultData));
 

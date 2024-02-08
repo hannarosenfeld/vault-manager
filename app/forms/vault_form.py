@@ -11,4 +11,5 @@ class VaultForm(FlaskForm):
     vault_id = StringField('vault_id', validators=[DataRequired()])
     order_number= StringField('order_number', validators=[DataRequired()])
     type = StringField('type', validators=[DataRequired()])
+    warehouse_id = IntegerField('warehouse_id', validators=[DataRequired()])
     attachment = FileField('attachment')

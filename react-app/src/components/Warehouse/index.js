@@ -149,7 +149,6 @@ export default function Warehouse() {
                                 {!searchResult && (
                                     <div className="fields">
                                         {row.fields.map((field, index) => {
-                                            console.log("✅",field)
                                             return (
                                                 <div
                                                     className="field"
@@ -214,6 +213,7 @@ export default function Warehouse() {
                                 selectedField={selectedField}
                                 tmb={position}
                                 updateSelectedFieldVaults={updateSelectedFieldVaults} // Pass the function here
+                                warehouseId={warehouseId}
                             />
                         </>
                     </Modal>

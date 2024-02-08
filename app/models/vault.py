@@ -49,6 +49,7 @@ class Vault(db.Model, UserMixin):
             'type': self.type,
             'customer': self.customer.to_summary_dict() if self.customer else None,
             'attachments': [attachment.to_dict() for attachment in self.attachments],
+            'warehouse_id': self.warehouse_id
         }
 
     def to_summary_dict(self):
