@@ -76,17 +76,17 @@ def upgrade():
         op.execute(f"ALTER TABLE rows SET SCHEMA {SCHEMA};")
 
     op.create_table('fields',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('row_id', sa.String(), nullable=True),
-    sa.Column('field_id', sa.String(length=3), nullable=False),
-    sa.Column('warehouse_id', sa.Integer(), nullable=True),
-    sa.Column('full', sa.Boolean(), nullable=True),
-    sa.Column('type', sa.String(), nullable=True),
-    sa.Column('bottom_couchbox_field', sa.Boolean(), nullable=True),
-    sa.ForeignKeyConstraint(['row_id'], ['rows.id'], ),
-    sa.ForeignKeyConstraint(['warehouse_id'], ['warehouse.id'], ),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('field_id')
+        sa.Column('id', sa.Integer(), nullable=False),
+        sa.Column('row_id', sa.Integer(), nullable=True),
+        sa.Column('field_id', sa.String(length=3), nullable=False),
+        sa.Column('warehouse_id', sa.Integer(), nullable=True),
+        sa.Column('full', sa.Boolean(), nullable=True),
+        sa.Column('type', sa.String(), nullable=True),
+        sa.Column('bottom_couchbox_field', sa.Boolean(), nullable=True),
+        sa.ForeignKeyConstraint(['row_id'], ['rows.id'], ),
+        sa.ForeignKeyConstraint(['warehouse_id'], ['warehouse.id'], ),
+        sa.PrimaryKeyConstraint('id'),
+        sa.UniqueConstraint('field_id')
     )
     if environment == "production":
         op.execute(f"ALTER TABLE fields SET SCHEMA {SCHEMA};")
