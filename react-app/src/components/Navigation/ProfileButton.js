@@ -90,7 +90,7 @@ function ProfileButton({ user }) {
               </ListItem>        
 
 
-              {/* 
+              
               <ListItem 
                 onClick={closeDrawer}
                 component={NavLink} 
@@ -98,7 +98,7 @@ function ProfileButton({ user }) {
                 style={{display: "flex", gap: "5px", cursor: "pointer"}}>
                 <ListItemText primary="+ Add User" />
               </ListItem>    
-              */}
+             
 
               <ListItem>
                 <Button id="logout-button" variant="outlined" style={{color: "var(--lightgrey)", borderColor: "var(--lightgrey)"}} onClick={handleLogout}>Log Out</Button>

@@ -41,9 +41,10 @@ function App() {
             <Route exact path="/">
               <Index />
             </Route>
-            {/* <Route exact path="/signup">
+            
+            <Route exact path="/signup">
               <SignupFormPage />
-            </Route>             */}
+            </Route>            
 
             <Route exact path="/warehouse/:warehouseId"> 
               <Warehouse />
