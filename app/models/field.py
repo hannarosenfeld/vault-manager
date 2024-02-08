@@ -9,7 +9,7 @@ class Field(db.Model, UserMixin):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    row_id = db.Column(db.String, db.ForeignKey(add_prefix_for_prod('rows.id')))
+    row_id = db.Column(db.String, db.ForeignKey(add_prefix_for_prod('rows.name')))
     field_id = db.Column(db.String(3), unique=True, nullable=False)
     vaults = db.relationship('Vault', back_populates='field', foreign_keys='Vault.field_id', lazy='dynamic')
     row = db.relationship('Row', back_populates='fields')
