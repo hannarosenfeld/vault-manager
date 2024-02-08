@@ -16,6 +16,7 @@ export default function Warehouse() {
     const { warehouseId } = useParams(); 
     const rowsArr = useSelector(state => state.warehouse.currentWarehouse.rows);
     const warehouseFields = useSelector(state => state.warehouse.currentWarehouse.fields);
+    const warehouse = useSelector(state => state.warehouse.currentWarehouse)
     const searchResult = useSelector(state => state.search.fields);
     const [selectedField, setSelectedField] = useState(null);
     let [top, setTop] = useState(null);
@@ -29,8 +30,7 @@ export default function Warehouse() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        console.log("🌸 rowsArr: ", rowsArr)
-        console.log("❤️‍🔥", warehouseFields)
+        console.log("❤️‍🔥", warehouse)
     }, [rowsArr])
 
     useEffect(() => {
@@ -149,6 +149,7 @@ export default function Warehouse() {
                                 {!searchResult && (
                                     <div className="fields">
                                         {row.fields.map((field, index) => {
+                                            console.log("✅",field)
                                             return (
                                                 <div
                                                     className="field"

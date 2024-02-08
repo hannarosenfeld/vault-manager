@@ -15,8 +15,8 @@ def seed_stage():
 
 def undo_stage():
     if environment == "production":
-        db.session.execute(f"TRUNCATE table {SCHEMA}.stage RESTART IDENTITY CASCADE;")
+        db.session.execute(db.text(f"TRUNCATE TABLE {SCHEMA}.stage RESTART IDENTITY CASCADE;"))
     else:
-        db.session.execute("DELETE FROM stage WHERE id = 1")  # Assuming 'id' is the primary key
+        db.session.execute(db.text("DELETE FROM stage WHERE id = 1"))  # Assuming 'id' is the primary key
     
     db.session.commit()

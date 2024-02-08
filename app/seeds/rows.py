@@ -8,7 +8,7 @@ def seed_rows():
         row = Row(id=i, name=name)
 
         # Retrieve the corresponding fields for the row
-        fields_for_row = Field.query.filter_by(row_id=str(i)).all()
+        fields_for_row = Field.query.filter_by(row_id=i).all()  # Use integer representation of row_id
         row.fields = fields_for_row
 
         db.session.add(row)
