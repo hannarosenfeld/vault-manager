@@ -78,7 +78,7 @@ def upgrade():
     op.create_table('fields',
         sa.Column('id', sa.Integer(), nullable=False),
         sa.Column('row_id', sa.Integer(), nullable=True),
-        sa.Column('field_id', sa.String(length=2), nullable=False),
+        sa.Column('field_id', sa.String(), nullable=False),
         sa.Column('warehouse_id', sa.Integer(), nullable=True),
         sa.Column('full', sa.Boolean(), nullable=True),
         sa.Column('type', sa.String(), nullable=True),
