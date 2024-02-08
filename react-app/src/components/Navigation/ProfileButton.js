@@ -58,16 +58,18 @@ function ProfileButton({ user }) {
               {user.username === "admin" ? <span style={{fontSize: "1.5em"}} class="material-symbols-outlined">shield_person</span> : ''}
               <ListItemText primary={user.username}/>
               </ListItem>
+
               { warehouses?.map(warehouse => (
               <ListItem 
               button 
               onClick={closeDrawer}
               component={NavLink} 
-              to="/" 
+              to={`/warehouse/${warehouse.id}`}
               style={{display: "flex", gap: "5px"}}>
               <ListItemText primary={warehouse.name} />
             </ListItem>  
-              ))               
+              ))    
+
               }
               <ListItem 
                 button 

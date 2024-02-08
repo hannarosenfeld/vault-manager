@@ -45,9 +45,8 @@ function App() {
               <SignupFormPage />
             </Route>             */}
 
-          {/* TODO : change this route so it's warehouse/:warehouseId */}
-            <Route exact path="/warehouse"> 
-              <Warehouse/>
+            <Route exact path="/warehouse/:warehouseId"> 
+              <Warehouse />
             </Route>
 
             <Route path="/warehouse/add-warehouse">

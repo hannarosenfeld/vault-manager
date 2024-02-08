@@ -207,7 +207,7 @@ const initialState = {
   warehouses: [],
   warehouseVaults: [],
   warehouseFields: [],
-  // warehouseRows: [],
+  warehouseRows: [],
   searchmode: null,
   currentWarehouse: {}
 };

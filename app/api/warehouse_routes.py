@@ -109,10 +109,11 @@ def remove_vault_from_warehouse(vault_id):
     return {'message': 'Vault removed from the warehouse successfully'}
 
 
+
 @warehouse_routes.route('/', methods=['POST'])
 def add_warehouse():
     """
-    Add a new warehouse
+    Add a new warehouse along with rows and fields.
     """
     data = request.json
     name = data.get('name')
@@ -126,13 +127,14 @@ def add_warehouse():
         db.session.commit()
 
         # Create rows and fields
-        for _ in range(num_rows):
-            row = Row()
-            warehouse.warehouse_rows.append(row)
+        for row_num in range(1, num_rows + 1):
+            row_name = chr(ord('A') + (row_num - 1) % 26)  # Convert row number to alphabetical character (A, B, ..., Z)
+            row = Row(name=row_name, warehouse=warehouse)
             db.session.add(row)
-            for _ in range(num_fields_per_row):
-                field = Field()
-                row.fields.append(field)
+
+            for field_num in range(1, num_fields_per_row + 1):
+                field_id = f"{row_name}{field_num:02d}"  # Generate field id like A01, A02, ..., B01, B02, ...
+                field = Field(row=row, field_id=field_id, warehouse=warehouse)
                 db.session.add(field)
 
         db.session.commit()
