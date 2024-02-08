@@ -1,17 +1,19 @@
 """empty message
 
-Revision ID: 6a2ed62ba008
+Revision ID: a44622e01250
 Revises: 
-Create Date: 2024-02-08 17:00:46.039430
+Create Date: 2024-02-08 17:39:26.829169
 
 """
 from alembic import op
 import sqlalchemy as sa
-from app.models import environment, SCHEMA  # Import environment and SCHEMA from your models module
 
+import os
+environment = os.getenv("FLASK_ENV")
+SCHEMA = os.environ.get("SCHEMA")
 
 # revision identifiers, used by Alembic.
-revision = '6a2ed62ba008'
+revision = 'a44622e01250'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -25,26 +27,23 @@ def upgrade():
     sa.Column('color', sa.String(length=100), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
-
     if environment == "production":
-        op.execute(f"ALTER TABLE customers SET SCHEMA {SCHEMA};")
+        op.execute(f"ALTER TABLE customers SET SCHEMA {SCHEMA};")    
 
     op.create_table('orders',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('order_number', sa.String(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
-
     if environment == "production":
-        op.execute(f"ALTER TABLE orders SET SCHEMA {SCHEMA};")
+        op.execute(f"ALTER TABLE orders SET SCHEMA {SCHEMA};")    
 
     op.create_table('stage',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
-
     if environment == "production":
-        op.execute(f"ALTER TABLE stage SET SCHEMA {SCHEMA};")
+        op.execute(f"ALTER TABLE stage SET SCHEMA {SCHEMA};")    
 
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -55,7 +54,6 @@ def upgrade():
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username')
     )
-
     if environment == "production":
         op.execute(f"ALTER TABLE users SET SCHEMA {SCHEMA};")
 
@@ -64,9 +62,8 @@ def upgrade():
     sa.Column('name', sa.String(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
-
     if environment == "production":
-        op.execute(f"ALTER TABLE warehouse SET SCHEMA {SCHEMA};")
+        op.execute(f"ALTER TABLE warehouse SET SCHEMA {SCHEMA};")    
 
     op.create_table('rows',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -75,31 +72,30 @@ def upgrade():
     sa.ForeignKeyConstraint(['warehouse_id'], ['warehouse.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-
     if environment == "production":
-        op.execute(f"ALTER TABLE rows SET SCHEMA {SCHEMA};")
+        op.execute(f"ALTER TABLE rows SET SCHEMA {SCHEMA};")    
 
     op.create_table('fields',
-    sa.Column('id', sa.Integer(), nullable=False),  # Changed to use id as primary key
+    sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('row_id', sa.Integer(), nullable=True),
-    sa.Column('field_id', sa.String(length=20), nullable=True),
+    sa.Column('field_id', sa.String(length=20), nullable=False),
     sa.Column('warehouse_id', sa.Integer(), nullable=True),
     sa.Column('full', sa.Boolean(), nullable=True),
     sa.Column('type', sa.String(), nullable=True),
     sa.Column('bottom_couchbox_field', sa.Boolean(), nullable=True),
     sa.ForeignKeyConstraint(['row_id'], ['rows.id'], ),
     sa.ForeignKeyConstraint(['warehouse_id'], ['warehouse.id'], ),
-    sa.PrimaryKeyConstraint('id')  # Added primary key constraint
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('id')
     )
-
     if environment == "production":
         op.execute(f"ALTER TABLE fields SET SCHEMA {SCHEMA};")
 
     op.create_table('vaults',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('customer_id', sa.Integer(), nullable=True),
-    sa.Column('field_name', sa.String(), nullable=True),
     sa.Column('field_id', sa.Integer(), nullable=True),
+    sa.Column('field_name', sa.String(), nullable=True),
     sa.Column('position', sa.String(length=100), nullable=False),
     sa.Column('vault_id', sa.String(length=100), nullable=False),
     sa.Column('staged', sa.Boolean(), nullable=True),
@@ -110,14 +106,13 @@ def upgrade():
     sa.Column('stage_id', sa.Integer(), nullable=True),
     sa.Column('order_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['customer_id'], ['customers.id'], ondelete='SET NULL'),
-    sa.ForeignKeyConstraint(['field_id'], ['fields.id'], ondelete='CASCADE'),  # Changed to reference id column
+    sa.ForeignKeyConstraint(['field_id'], ['fields.id'], ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['field_name'], ['fields.field_id'], ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['order_id'], ['orders.id'], ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['stage_id'], ['stage.id'], ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['warehouse_id'], ['warehouse.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
-
     if environment == "production":
         op.execute(f"ALTER TABLE vaults SET SCHEMA {SCHEMA};")
 
@@ -133,9 +128,9 @@ def upgrade():
     sa.ForeignKeyConstraint(['vault_id'], ['vaults.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
-
     if environment == "production":
-        op.execute(f"ALTER TABLE attachments SET SCHEMA {SCHEMA};")
+        op.execute(f"ALTER TABLE attachments SET SCHEMA {SCHEMA};")    
+    # ### end Alembic commands ###
 
 
 def downgrade():
