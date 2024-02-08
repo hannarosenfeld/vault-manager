@@ -92,26 +92,24 @@ def upgrade():
         op.execute(f"ALTER TABLE fields SET SCHEMA {SCHEMA};")
 
     op.create_table('vaults',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('customer_id', sa.Integer(), nullable=True),
-    sa.Column('field_id', sa.Integer(), nullable=True),
-    sa.Column('field_name', sa.String(), nullable=False),
-    sa.Column('position', sa.String(length=100), nullable=False),
-    sa.Column('vault_id', sa.String(length=100), nullable=False),
-    sa.Column('staged', sa.Boolean(), nullable=True),
-    sa.Column('customer_name', sa.String(length=255), nullable=True),
-    sa.Column('order_number', sa.String(), nullable=False),
-    sa.Column('type', sa.String(), nullable=True),
-    sa.Column('warehouse_id', sa.Integer(), nullable=True),
-    sa.Column('stage_id', sa.Integer(), nullable=True),
-    sa.Column('order_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['customer_id'], ['customers.id'], ondelete='SET NULL'),
-    sa.ForeignKeyConstraint(['field_id'], ['fields.id'], ondelete='CASCADE'),
-    sa.ForeignKeyConstraint(['field_name'], ['fields.id'], ondelete='CASCADE'),
-    sa.ForeignKeyConstraint(['order_id'], ['orders.id'], ondelete='CASCADE'),
-    sa.ForeignKeyConstraint(['stage_id'], ['stage.id'], ondelete='CASCADE'),
-    sa.ForeignKeyConstraint(['warehouse_id'], ['warehouse.id'], ondelete='CASCADE'),
-    sa.PrimaryKeyConstraint('id')
+        sa.Column('id', sa.Integer(), nullable=False),
+        sa.Column('customer_id', sa.Integer(), nullable=True),
+        sa.Column('field_name', sa.String(), nullable=False),  
+        sa.Column('position', sa.String(length=100), nullable=False),
+        sa.Column('vault_id', sa.String(length=100), nullable=False),
+        sa.Column('staged', sa.Boolean(), nullable=True),
+        sa.Column('customer_name', sa.String(length=255), nullable=True),
+        sa.Column('order_number', sa.String(), nullable=False),
+        sa.Column('type', sa.String(), nullable=True),
+        sa.Column('warehouse_id', sa.Integer(), nullable=True),
+        sa.Column('stage_id', sa.Integer(), nullable=True),
+        sa.Column('order_id', sa.Integer(), nullable=True),
+        sa.ForeignKeyConstraint(['customer_id'], ['customers.id'], ondelete='SET NULL'),
+        sa.ForeignKeyConstraint(['field_name'], ['fields.name'], ondelete='CASCADE'),  # Change to reference the name column in the fields table
+        sa.ForeignKeyConstraint(['order_id'], ['orders.id'], ondelete='CASCADE'),
+        sa.ForeignKeyConstraint(['stage_id'], ['stage.id'], ondelete='CASCADE'),
+        sa.ForeignKeyConstraint(['warehouse_id'], ['warehouse.id'], ondelete='CASCADE'),
+        sa.PrimaryKeyConstraint('id')
     )
     if environment == "production":
         op.execute(f"ALTER TABLE vaults SET SCHEMA {SCHEMA};")
