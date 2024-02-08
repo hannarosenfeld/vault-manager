@@ -8,7 +8,7 @@ def seed_fields():
     for i in range(1, 10):  # Adjust the range to match the number of rows
         row_char = chr(64 + i)  # Convert integer to ASCII character ('A', 'B', ...)
         for field_num in range(1, 13):
-            field_id = f"{row_char}{field_num:02d}"  # Use the letter for the row and ensure the number has at least two digits
+            field_id = f"{row_char}{field_num}"  # Use the letter for the row and ensure the number has at least one digit
             field = Field(row_id=i, field_id=field_id)  # Use integer representation of row_id
             fields.append(field)
 
