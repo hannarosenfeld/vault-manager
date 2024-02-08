@@ -9,10 +9,6 @@ from alembic import op
 import sqlalchemy as sa
 from app.models import environment, SCHEMA  # Import environment and SCHEMA from your models module
 
-import os
-environment = os.getenv("FLASK_ENV")
-SCHEMA = os.environ.get("SCHEMA")
-
 
 # revision identifiers, used by Alembic.
 revision = '6a2ed62ba008'

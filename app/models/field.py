@@ -10,7 +10,7 @@ class Field(db.Model, UserMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     row_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('rows.id')))
-    field_id = db.Column(db.String(20))
+    field_id = db.Column(db.String(20), unique=True, nullable=False)  # Adjust the length as needed
     vaults = db.relationship('Vault', back_populates='field', foreign_keys='Vault.field_id', lazy='dynamic')
     row = db.relationship('Row', back_populates='fields')
     warehouse_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('warehouse.id')))
