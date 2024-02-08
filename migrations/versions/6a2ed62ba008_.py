@@ -80,7 +80,7 @@ def upgrade():
         op.execute(f"ALTER TABLE rows SET SCHEMA {SCHEMA};")
 
     op.create_table('fields',
-    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('id', sa.Integer(), nullable=False),  # Changed to use id as primary key
     sa.Column('row_id', sa.Integer(), nullable=True),
     sa.Column('field_id', sa.String(length=20), nullable=True),
     sa.Column('warehouse_id', sa.Integer(), nullable=True),
@@ -89,7 +89,7 @@ def upgrade():
     sa.Column('bottom_couchbox_field', sa.Boolean(), nullable=True),
     sa.ForeignKeyConstraint(['row_id'], ['rows.id'], ),
     sa.ForeignKeyConstraint(['warehouse_id'], ['warehouse.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id')  # Added primary key constraint
     )
 
     if environment == "production":
@@ -110,7 +110,7 @@ def upgrade():
     sa.Column('stage_id', sa.Integer(), nullable=True),
     sa.Column('order_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['customer_id'], ['customers.id'], ondelete='SET NULL'),
-    sa.ForeignKeyConstraint(['field_id'], ['fields.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['field_id'], ['fields.id'], ondelete='CASCADE'),  # Changed to reference id column
     sa.ForeignKeyConstraint(['field_name'], ['fields.field_id'], ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['order_id'], ['orders.id'], ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['stage_id'], ['stage.id'], ondelete='CASCADE'),
