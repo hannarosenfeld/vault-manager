@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: ed2cfc81bf7c
+Revision ID: 319c0856adfb
 Revises: 
-Create Date: 2024-02-08 15:04:57.143133
+Create Date: 2024-02-08 16:31:54.953862
 
 """
 from alembic import op
@@ -14,7 +14,7 @@ SCHEMA = os.environ.get("SCHEMA")
 
 
 # revision identifiers, used by Alembic.
-revision = 'ed2cfc81bf7c'
+revision = '319c0856adfb'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -28,6 +28,7 @@ def upgrade():
     sa.Column('color', sa.String(length=100), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
+    # Add ALTER TABLE statement
     if environment == "production":
         op.execute(f"ALTER TABLE customers SET SCHEMA {SCHEMA};")
 
@@ -36,6 +37,7 @@ def upgrade():
     sa.Column('order_number', sa.String(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
+    # Add ALTER TABLE statement
     if environment == "production":
         op.execute(f"ALTER TABLE orders SET SCHEMA {SCHEMA};")
 
@@ -43,6 +45,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
+    # Add ALTER TABLE statement
     if environment == "production":
         op.execute(f"ALTER TABLE stage SET SCHEMA {SCHEMA};")
 
@@ -55,6 +58,7 @@ def upgrade():
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username')
     )
+    # Add ALTER TABLE statement
     if environment == "production":
         op.execute(f"ALTER TABLE users SET SCHEMA {SCHEMA};")
 
@@ -63,6 +67,7 @@ def upgrade():
     sa.Column('name', sa.String(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
+    # Add ALTER TABLE statement
     if environment == "production":
         op.execute(f"ALTER TABLE warehouse SET SCHEMA {SCHEMA};")
 
@@ -73,6 +78,7 @@ def upgrade():
     sa.ForeignKeyConstraint(['warehouse_id'], ['warehouse.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    # Add ALTER TABLE statement
     if environment == "production":
         op.execute(f"ALTER TABLE rows SET SCHEMA {SCHEMA};")
 
@@ -88,29 +94,33 @@ def upgrade():
     sa.ForeignKeyConstraint(['warehouse_id'], ['warehouse.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    # Add ALTER TABLE statement
     if environment == "production":
         op.execute(f"ALTER TABLE fields SET SCHEMA {SCHEMA};")
 
     op.create_table('vaults',
-        sa.Column('id', sa.Integer(), nullable=False),
-        sa.Column('customer_id', sa.Integer(), nullable=True),
-        sa.Column('field_name', sa.String(), nullable=False),  
-        sa.Column('position', sa.String(length=100), nullable=False),
-        sa.Column('vault_id', sa.String(length=100), nullable=False),
-        sa.Column('staged', sa.Boolean(), nullable=True),
-        sa.Column('customer_name', sa.String(length=255), nullable=True),
-        sa.Column('order_number', sa.String(), nullable=False),
-        sa.Column('type', sa.String(), nullable=True),
-        sa.Column('warehouse_id', sa.Integer(), nullable=True),
-        sa.Column('stage_id', sa.Integer(), nullable=True),
-        sa.Column('order_id', sa.Integer(), nullable=True),
-        sa.ForeignKeyConstraint(['customer_id'], ['customers.id'], ondelete='SET NULL'),
-        sa.ForeignKeyConstraint(['field_name'], ['fields.name'], ondelete='CASCADE'),  # Change to reference the name column in the fields table
-        sa.ForeignKeyConstraint(['order_id'], ['orders.id'], ondelete='CASCADE'),
-        sa.ForeignKeyConstraint(['stage_id'], ['stage.id'], ondelete='CASCADE'),
-        sa.ForeignKeyConstraint(['warehouse_id'], ['warehouse.id'], ondelete='CASCADE'),
-        sa.PrimaryKeyConstraint('id')
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('customer_id', sa.Integer(), nullable=True),
+    sa.Column('field_name', sa.String(), nullable=True),
+    sa.Column('field_id', sa.Integer(), nullable=True),
+    sa.Column('position', sa.String(length=100), nullable=False),
+    sa.Column('vault_id', sa.String(length=100), nullable=False),
+    sa.Column('staged', sa.Boolean(), nullable=True),
+    sa.Column('customer_name', sa.String(length=255), nullable=True),
+    sa.Column('order_number', sa.String(), nullable=False),
+    sa.Column('type', sa.String(), nullable=True),
+    sa.Column('warehouse_id', sa.Integer(), nullable=True),
+    sa.Column('stage_id', sa.Integer(), nullable=True),
+    sa.Column('order_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['customer_id'], ['customers.id'], ondelete='SET NULL'),
+    sa.ForeignKeyConstraint(['field_id'], ['fields.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['field_name'], ['fields.field_id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['order_id'], ['orders.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['stage_id'], ['stage.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['warehouse_id'], ['warehouse.id'], ondelete='CASCADE'),
+    sa.PrimaryKeyConstraint('id')
     )
+    # Add ALTER TABLE statement
     if environment == "production":
         op.execute(f"ALTER TABLE vaults SET SCHEMA {SCHEMA};")
 
@@ -126,6 +136,7 @@ def upgrade():
     sa.ForeignKeyConstraint(['vault_id'], ['vaults.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
+    # Add ALTER TABLE statement
     if environment == "production":
         op.execute(f"ALTER TABLE attachments SET SCHEMA {SCHEMA};")
 
