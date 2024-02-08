@@ -77,7 +77,7 @@ def upgrade():
     op.create_table('fields',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('row_id', sa.String(), nullable=True),
-    sa.Column('field_id', sa.String(length=3), nullable=False),
+    sa.Column('field_id', sa.String(length=20), nullable=False),  # Updated length and removed unique constraint
     sa.Column('warehouse_id', sa.Integer(), nullable=True),
     sa.Column('full', sa.Boolean(), nullable=True),
     sa.Column('type', sa.String(), nullable=True),
@@ -85,7 +85,7 @@ def upgrade():
     sa.ForeignKeyConstraint(['row_id'], ['rows.id'], ),
     sa.ForeignKeyConstraint(['warehouse_id'], ['warehouse.id'], ),
     sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('field_id')
+    # Removed unique constraint
     )
     if environment == "production":
         op.execute(f"ALTER TABLE fields SET SCHEMA {SCHEMA};")
@@ -93,8 +93,7 @@ def upgrade():
     op.create_table('vaults',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('customer_id', sa.Integer(), nullable=True),
-    sa.Column('field_id', sa.Integer(), nullable=True),
-    sa.Column('field_name', sa.String(), nullable=False),
+    sa.Column('field_name', sa.String(), nullable=False),  # Updated to field name instead of id
     sa.Column('position', sa.String(length=100), nullable=False),
     sa.Column('vault_id', sa.String(length=100), nullable=False),
     sa.Column('staged', sa.Boolean(), nullable=True),
@@ -105,9 +104,7 @@ def upgrade():
     sa.Column('stage_id', sa.Integer(), nullable=True),
     sa.Column('order_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['customer_id'], ['customers.id'], ondelete='SET NULL'),
-    sa.ForeignKeyConstraint(['field_id'], ['fields.id'], ondelete='CASCADE'),
-    sa.ForeignKeyConstraint(['field_name'], ['fields.field_id'], ondelete='CASCADE'),
-    sa.ForeignKeyConstraint(['order_id'], ['orders.id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['field_name'], ['fields.field_id'], ondelete='CASCADE'),  # Updated to field_name
     sa.ForeignKeyConstraint(['stage_id'], ['stage.id'], ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['warehouse_id'], ['warehouse.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
