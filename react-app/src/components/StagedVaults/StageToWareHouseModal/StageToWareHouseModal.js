@@ -10,7 +10,7 @@ import {
 import { getAllStagedVaultsThunk } from "../../../store/stage";
 import { useDispatch, useSelector } from "react-redux";
 import RenderTMB from "../../RenderTMB";
-import { rowCreator } from "../../utility";
+// import { rowCreator } from "../../utility";
 
 import "./StageToWareHouseModal.css";
 
@@ -18,7 +18,7 @@ import "./StageToWareHouseModal.css";
 export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   const dispatch = useDispatch();
   const vaults = useSelector(state => state.vault.vaults);
-  const rowsArr = rowCreator(useSelector(state => state.warehouse.warehouseFields));
+  const rowsArr = useSelector(state => state.warehouse.currentWarehouse.rows);
   const [selectedField, setSelectedField] = useState(null);
   const [selectedFieldIndex, setSelectedFieldIndex] = useState(0);
   const [selectedRow, setSelectedRow] = useState(null);
@@ -28,6 +28,15 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
 
   let fieldName = selectedRow && selectedFieldIndex ? selectedRow + selectedFieldIndex : null;
   let vaultsArr;
+
+  useEffect(() => {
+    console.log("💖", rowsArr)
+  }, [rowsArr]);
+
+  useEffect(() => {
+    vaultsArr = Object.values(vaults);
+  }, [vaults]);
+
 
   useEffect(() => {
     dispatch(getAllWarehouseVaultsThunk());
@@ -73,7 +82,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   
   const ConfirmationModal = () => {
     return (
-      <div className="modal-container">
+       <div className="modal-container">
         <div className="modal-content">
           <p style={{ marginBottom: "1em" }}>Are you sure you want to move the vault to the warehouse?</p>
           <div style={{ display: "flex", margin: "0 auto", float: "right", gap: "1em" }}>
