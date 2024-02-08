@@ -1,14 +1,18 @@
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { getWarehouseInfoThunk, getAllWarehouseVaultsThunk } from "../../../store/warehouse";
-import { rowCreator } from "../../utility"
 
-export default function MiniWareHouse({ selectedField }) {
+
+export default function MiniWareHouse({ selectedField, warehouseId }) {
     const dispatch = useDispatch();
-    const rowsArr = rowCreator(useSelector(state => state.warehouse.warehouseFields));
+    const rowsArr = useSelector(state => state.warehouse.currentWarehouse.rows);
 
     useEffect(() => {
-        dispatch(getWarehouseInfoThunk(1));
+        console.log("❤️‍🩹", rowsArr)
+    }, [rowsArr])
+    
+    useEffect(() => {
+        dispatch(getWarehouseInfoThunk(warehouseId));
         dispatch(getAllWarehouseVaultsThunk());
     }, [dispatch])
 

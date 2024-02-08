@@ -281,7 +281,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
                     )}
                     </div>
                     <div style={{ height: "63%", marginTop: "1em" }}>
-                        <MiniWareHouse selectedField={selectedField} />
+                        <MiniWareHouse selectedField={selectedField} warehouseId={warehouseId} />
                     </div>
                     <button type="submit" disabled={isSubmitting}>
                         {isSubmitting ? 'Submitting...' : 'Submit'}

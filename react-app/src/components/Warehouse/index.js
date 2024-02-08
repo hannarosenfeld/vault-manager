@@ -30,7 +30,7 @@ export default function Warehouse() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        console.log("❤️‍🔥", warehouse)
+        // console.log("❤️‍🔥", warehouse)
     }, [rowsArr])
 
     useEffect(() => {

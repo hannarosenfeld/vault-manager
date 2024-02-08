@@ -30,7 +30,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   let vaultsArr;
 
   useEffect(() => {
-    console.log("💖", rowsArr)
+    // console.log("💖", rowsArr)
   }, [rowsArr]);
 
   useEffect(() => {
