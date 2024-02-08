@@ -17,9 +17,12 @@ depends_on = None
 
 
 def upgrade():
-    # Create a temporary table with the desired schema
+    # Rename the existing 'fields' table to 'old_fields'
+    op.rename_table('fields', 'old_fields')
+
+    # Create a new table with the desired schema
     op.create_table(
-        'tmp_fields',
+        'fields',
         sa.Column('id', sa.Integer(), primary_key=True),
         sa.Column('row_id', sa.Integer(), nullable=True),
         sa.Column('field_id', sa.String(3), unique=True, nullable=False),
@@ -29,9 +32,9 @@ def upgrade():
         sa.Column('bottom_couchbox_field', sa.Boolean(), default=False),
     )
 
-    # Copy data from the old table to the temporary table
+    # Copy data from the old table to the new table
     op.execute("""
-        INSERT INTO tmp_fields (id, row_id, field_id, warehouse_id, full, type, bottom_couchbox_field)
+        INSERT INTO fields (id, row_id, field_id, warehouse_id, full, type, bottom_couchbox_field)
         SELECT id,
                CASE
                    WHEN row_id = 'A' THEN 1
@@ -49,14 +52,11 @@ def upgrade():
                full,
                type,
                bottom_couchbox_field
-        FROM fields
+        FROM old_fields
     """)
 
-    # Drop the old table
-    op.drop_table('fields')
-
-    # Rename the temporary table to the original table's name
-    op.rename_table('tmp_fields', 'fields')
+    # Optionally, you can drop the old table if it's no longer needed
+    op.drop_table('old_fields')
 
 
 def downgrade():
