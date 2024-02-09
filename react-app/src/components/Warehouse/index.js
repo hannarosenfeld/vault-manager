@@ -28,13 +28,14 @@ export default function Warehouse() {
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
     const [toggleSelected, setToggleSelected] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [warehouseKey, setWarehouseKey] = useState(1);
 
     useEffect(() => {
         console.log("❤️‍🔥", warehouse)
     }, [rowsArr])
 
     useEffect(() => {
-        const warehouseInfo = dispatch(getWarehouseInfoThunk(warehouseId))
+        const warehouseInfo = dispatch(getWarehouseInfoThunk(warehouseId ? warehouseId : warehouseKey))
 
         Promise.all([warehouseInfo])
             .then(() => setLoading(false))
