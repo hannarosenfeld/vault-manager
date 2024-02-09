@@ -29,11 +29,11 @@ def seed():
         # if not Row.query.all(): 
             seed_rows() 
         # if not Field.query.all(): 
-            seed_fields() 
+            seed_fields()
+        # if not Warehouse.query.all(): 
+            seed_warehouse()             
         # if not Vault.query.all(): 
             seed_vaults()
-        # if not Warehouse.query.all(): 
-            seed_warehouse()
         # if not Stage.query.all(): 
             seed_stage()  
 
