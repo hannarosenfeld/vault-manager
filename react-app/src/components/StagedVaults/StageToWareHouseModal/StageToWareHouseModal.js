@@ -6,6 +6,7 @@ import {
   moveVaultFromStageToWarehouseThunk,
   getAllWarehouseVaultsThunk,
   getWarehouseInfoThunk,
+  getAllWarehousesThunk,
 } from "../../../store/warehouse";
 import { getAllStagedVaultsThunk } from "../../../store/stage";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,28 +20,29 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   const dispatch = useDispatch();
   const vaults = useSelector(state => state.vault.vaults);
   const rowsArr = useSelector(state => state.warehouse.currentWarehouse.rows);
+  const warehouses = useSelector(state => state.warehouse.warehouses);
   const [selectedField, setSelectedField] = useState(null);
   const [selectedFieldIndex, setSelectedFieldIndex] = useState(0);
   const [selectedRow, setSelectedRow] = useState(null);
   const [position, setPosition] = useState(null);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const [loadingVaults, setLoadingVaults] = useState(false);
+  const [selectedWarehouse, setSelectedWarehouse] = useState(1);
+
 
   let fieldName = selectedRow && selectedFieldIndex ? selectedRow + selectedFieldIndex : null;
   let vaultsArr;
 
   useEffect(() => {
-    // console.log("💖", rowsArr)
-  }, [rowsArr]);
+    dispatch(getAllWarehousesThunk());
+  }, []);
 
   useEffect(() => {
     vaultsArr = Object.values(vaults);
   }, [vaults]);
 
-
   useEffect(() => {
     dispatch(getAllWarehouseVaultsThunk());
-    dispatch(getWarehouseInfoThunk(1));
   }, [selectedField]);
 
   useEffect(() => {
@@ -106,6 +108,13 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
 
     return sortedFieldsArr
 }
+
+  const toggleWarehouse = async(warehouseId) => {
+    await dispatch(getWarehouseInfoThunk(warehouseId));
+  
+    setSelectedWarehouse(warehouseId);
+  }
+
   return (
     <div className="stage-to-warehouse-modal-wrapper">
       <div className="stage-to-warehouse-modal-content">
@@ -120,10 +129,17 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
           </div>
           {selectedVault && (
             <div>
+              <div style={{display: "flex"}}>
               <div className="vault-info">
                 <h3>Selected Vault Information</h3>
                 <p><b>Customer:</b> {selectedVault.customer.name}</p>
                 <p><b>Vault ID:</b> {selectedVault.vault_id}</p>
+              </div>
+              <div className="warehouses-button-container">
+                {warehouses.map(warehouse => (
+                    <button onClick={() => toggleWarehouse(warehouse.id)} type="button" className={`${warehouse.id === selectedWarehouse ? 'btn btn-primary' : 'btn btn-secondary'}`}>{warehouse.name}</button>
+                ))}
+              </div>
               </div>
               <div className="warehouse-wrapper">
                 <div className="field-info">
@@ -156,7 +172,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
                           }}   
                             onClick={() => handleFieldClick(field, row, index)}
                           >
-                    {field.bottom_couch_box ? "" : field.type === "vault" ? <div className="field-number">{row.id}{index + 1}</div> : field.type === "couchbox" ? <div className="field-number">{row.id}{index + 1} / {row.id}{index + 2}</div> : ''}
+                    {field.bottom_couch_box ? "" : field.type === "vault" ? <div className="field-number">{row.name}{index + 1}</div> : field.type === "couchbox" ? <div className="field-number">{row.name}{index + 1} / {row.name}{index + 2}</div> : ''}
                           </div>
                         ))}
                       </div>

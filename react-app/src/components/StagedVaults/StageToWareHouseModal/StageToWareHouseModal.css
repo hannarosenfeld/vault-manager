@@ -77,6 +77,15 @@
     height: 65% !important;
   }
 
-.stage-to-warehouse-modal-wrapper .warehouse-wrapper .selected-field-vaults-tmb .field-row {
+.warehouses-button-container {
+  width: 100%;
+  margin-right: 4em;
+  display: flex;
+  gap: 1em;
+  height: 50%;
+  align-self: center;
+}
 
-  }
+.warehouses-button-container.active {
+  border: 2px solid red;
+}
