@@ -43,8 +43,9 @@ export const addWarehouseAction = (warehouseData) => ({
   
 
 export const addWarehouseThunk = (warehouseData) => async (dispatch) => {
+  console.log("🌹 warehousedata:", warehouseData)
   try {
-    const response = await fetch('/api/warehouse', {
+    const response = await fetch('/api/warehouse/add-warehouse', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

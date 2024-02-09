@@ -16,7 +16,7 @@ import { getAllWarehousesThunk, getWarehouseInfoThunk } from "./store/warehouse"
 function App() {
   const dispatch = useDispatch();
   const history = useHistory();
-  const currentWarehouse = useSelector(state => state.warehouse.currentWarehouse)
+  // const currentWarehouse = useSelector(state => state.warehouse.currentWarehouse)
   const [isLoaded, setIsLoaded] = useState(false);
 	const sessionUser = useSelector(state => state.session.user);
 
@@ -25,11 +25,10 @@ function App() {
   // }, [currentWarehouse])
 
   const onAddWarehouseSubmit = async () => {
-    await currentWarehouse
-    await dispatch(getAllWarehousesThunk());
+    // await currentWarehouse
+    await dispatch(getAllWarehousesThunk());    
     // history.push(`/warehouse/${currentWarehouse.warehouse_id}`);
     history.push("/");
-
   }
 
   useEffect(() => {

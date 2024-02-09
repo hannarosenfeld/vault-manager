@@ -109,7 +109,7 @@ def remove_vault_from_warehouse(vault_id):
     return {'message': 'Vault removed from the warehouse successfully'}
 
 
-@warehouse_routes.route('/', methods=['POST'])
+@warehouse_routes.route('/add-warehouse', methods=['POST'])
 def add_warehouse():
     """
     Add a new warehouse along with rows and fields.
@@ -127,18 +127,42 @@ def add_warehouse():
 
         # Create rows and fields
         for row_num in range(1, num_rows + 1):
-            row_name = chr(ord('A') + (row_num - 1) % 26)  # Convert row number to alphabetical character (A, B, ..., Z)
+            row_name = chr(ord('A') + (row_num - 1) % 26)
             row = Row(name=row_name, warehouse=warehouse)
             db.session.add(row)
 
             for field_num in range(1, num_fields_per_row + 1):
-                field_id = f"{row_name}{field_num}"  # Generate field id like A1, A2, ..., B1, B2, ...
-                field = Field(row=row, field_id=field_id, warehouse=warehouse)
+                field_id = f"{row_name}{field_num}"
+                field = Field(
+                    row=row,
+                    field_id=field_id,
+                    warehouse=warehouse,
+                    full=False,
+                    bottom_couchbox_field=False,
+                    type='vault',
+                    vaults=[]
+                )
                 db.session.add(field)
 
         db.session.commit()
 
-        return jsonify({'message': 'Warehouse added successfully', 'warehouse_id': warehouse.id}), 201
+        # Fetch warehouse with associated rows and fields
+        warehouse = Warehouse.query.filter_by(name=name).first()
+
+        return jsonify(warehouse.to_dict()), 201
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
 
     except Exception as e:
         db.session.rollback()

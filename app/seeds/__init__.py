@@ -18,7 +18,7 @@ seed_commands = AppGroup('seed')
 # Creates the `flask seed all` command
 @seed_commands.command('all')
 def seed():
-    if environment == 'production' or environment == 'development':
+    # if environment == 'production' or environment == 'development':
         # Seed data if any of the tables is empty
         if not User.query.all(): 
             seed_users()  
@@ -36,6 +36,15 @@ def seed():
             seed_vaults()
         if not Stage.query.all(): 
             seed_stage()  
+
+        # seed_users()  
+        # seed_customers()
+        # seed_orders()
+        # seed_rows() 
+        # seed_fields()
+        # seed_warehouse()             
+        # seed_vaults()
+        # seed_stage()              
 
 @seed_commands.command('undo')
 def undo():

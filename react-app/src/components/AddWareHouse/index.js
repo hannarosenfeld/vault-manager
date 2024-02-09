@@ -17,7 +17,7 @@ const AddWarehouseForm = ({ onAddWarehouseSubmit }) => {
       numFieldsPerRow: parseInt(numFieldsPerRow)
     };
 
-    await  dispatch(addWarehouseThunk(warehouseData));
+    await dispatch(addWarehouseThunk(warehouseData));
     setName('');
     setNumRows('');
     setNumFieldsPerRow('');

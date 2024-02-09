@@ -19,4 +19,5 @@ class Row(db.Model, UserMixin):
             'id': self.id,
             'name': self.name,  # Include the name in the to_dict method
             'fields': [field.to_dict() for field in self.fields],
+            'warehouse_id': self.warehouse_id
         }
