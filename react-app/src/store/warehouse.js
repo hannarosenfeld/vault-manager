@@ -245,7 +245,8 @@ const warehouseReducer = (state = initialState, action) => {
     case ADD_WAREHOUSE:
       return {
         ...state,
-        warehouses: [...state.warehouses, action.payload]
+        warehouses: [...state.warehouses, action.payload],
+        currentWarehouse: action.payload
       };
     case GET_ALL_WAREHOUSE_VAULTS:
     return {

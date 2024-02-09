@@ -11,18 +11,23 @@ import StagedVaults from "./components/StagedVaults";
 import EditVaultPage from "./components/Warehouse/EditVaultPage";
 import VaultDetailPage from "./components/Warehouse/VaultDetailPage";
 import AddWarehouseForm from "./components/AddWareHouse";
-import { getAllWarehousesThunk } from "./store/warehouse";
+import { getAllWarehousesThunk, getWarehouseInfoThunk } from "./store/warehouse";
 
 function App() {
   const dispatch = useDispatch();
   const history = useHistory();
-
+  const currentWarehouse = useSelector(state => state.warehouse.currentWarehouse)
   const [isLoaded, setIsLoaded] = useState(false);
 	const sessionUser = useSelector(state => state.session.user);
 
+  useEffect(()=>{
+    console.log("💖", currentWarehouse.warehouse_id)
+  }, [currentWarehouse])
+
   const onAddWarehouseSubmit = async () => {
+    await currentWarehouse
     await dispatch(getAllWarehousesThunk());
-    history.push("/");
+  history.push(`/warehouse/${currentWarehouse.warehouse_id}`);
   }
 
   useEffect(() => {
