@@ -44,10 +44,5 @@
 
 
   .selected-field-vaults-tmb {
-    max-height: 11em !important;
-  }
-
-  .selected-field-box {
-    max-height: 11em !important;
-
+    min-height: 100%;
   }
