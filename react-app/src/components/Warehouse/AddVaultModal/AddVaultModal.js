@@ -138,7 +138,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
             vaultData.append("customer_name", customer_name)
             vaultData.append("customer", newCustomer)
             vaultData.append("field_id", selectedField.id)
-            vaultData.append("field_name", selectedField.field_id)
+            // vaultData.append("field_name", selectedField.field_id)
             vaultData.append("position", tmb)
             vaultData.append("type", selectedField.type === "vault" ? vaultType : "couchbox")
             vaultData.append("vault_id", selectedField.type === "vault" ? vault_id : null)

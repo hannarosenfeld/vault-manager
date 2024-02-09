@@ -58,7 +58,7 @@ def add_vault():
                 customer=customer,
                 customer_id=customer.id if customer else None,
                 field_id=form.data['field_id'],
-                field_name=form.data['field_name'],
+                # field_name=form.data['field_name'],
                 position=form.data['position'],
                 vault_id=form.data['vault_id'],
                 order_number=form.data['order_number'],

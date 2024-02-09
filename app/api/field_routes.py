@@ -61,7 +61,7 @@ def get_field_vaults(field_id):
                     'id': vault.id,
                     'customer_id': vault.customer_id,
                     'field_id': vault.field_id,
-                    'field_name': vault.field_name,
+                    # 'field_name': vault.field_name,
                     'position': vault.position,
                     'vault_id': vault.vault_id,
                     'order_number': vault.order_number,

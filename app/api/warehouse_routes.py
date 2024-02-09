@@ -46,10 +46,10 @@ def add_vault_to_warehouse(vault_id):
     # if vault is in storage, set values according to selected warehouse position and move it
     if vault in stage.staged_vaults:
         new_field_id = request.json.get('fieldId')
-        new_field_name = request.json.get('fieldName')
+        # new_field_name = request.json.get('fieldName')
         position = request.json.get('position')
         vault.field_id = new_field_id
-        vault.field_name = new_field_name
+        # vault.field_name = new_field_name
         vault.position = position
         vault.staged = False
         vault.warehouse_id = 1
