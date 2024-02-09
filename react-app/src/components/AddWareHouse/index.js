@@ -1,24 +1,27 @@
-import React, { useState } from 'react';
+import React, { useImperativeHandle, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addWarehouseThunk } from '../../store/warehouse';
 
-const AddWarehouseForm = () => {
+
+const AddWarehouseForm = ({ onAddWarehouseSubmit }) => {
   const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [numRows, setNumRows] = useState('');
   const [numFieldsPerRow, setNumFieldsPerRow] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const warehouseData = {
       name,
       numRows: parseInt(numRows),
       numFieldsPerRow: parseInt(numFieldsPerRow)
     };
-    dispatch(addWarehouseThunk(warehouseData));
+
+    await  dispatch(addWarehouseThunk(warehouseData));
     setName('');
     setNumRows('');
     setNumFieldsPerRow('');
+    onAddWarehouseSubmit();
   };
 
   return (
