@@ -9,8 +9,8 @@ def seed_rows():
     for name in row_names:
         row = Row(name=name)
 
-        fields_for_row = Field.query.filter_by(row_id=i).all()
-        row.fields = fields_for_row
+        # fields_for_row = Field.query.filter_by(row_id=i).all()
+        # row.fields = fields_for_row
 
         db.session.add(row)
 
