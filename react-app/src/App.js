@@ -20,14 +20,16 @@ function App() {
   const [isLoaded, setIsLoaded] = useState(false);
 	const sessionUser = useSelector(state => state.session.user);
 
-  useEffect(()=>{
-    console.log("💖", currentWarehouse.warehouse_id)
-  }, [currentWarehouse])
+  // useEffect(()=>{
+  //   console.log("💖", currentWarehouse.warehouse_id)
+  // }, [currentWarehouse])
 
   const onAddWarehouseSubmit = async () => {
     await currentWarehouse
     await dispatch(getAllWarehousesThunk());
-  history.push(`/warehouse/${currentWarehouse.warehouse_id}`);
+    // history.push(`/warehouse/${currentWarehouse.warehouse_id}`);
+    history.push("/");
+
   }
 
   useEffect(() => {

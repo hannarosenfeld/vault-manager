@@ -222,6 +222,7 @@ const warehouseReducer = (state = initialState, action) => {
         warehouses: [...warehouses]
       }
     case GET_WAREHOUSE_INFO:
+      console.log("🥎 warehouse info in reducer: ", action.payload.warehouse_info)
       const warehouseInfo = action.payload?.warehouse_info;
       if (warehouseInfo) {
         return {

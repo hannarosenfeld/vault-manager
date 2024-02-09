@@ -6,13 +6,12 @@ import AddVaultModal from "./AddVaultModal/AddVaultModal.js"
 import RenderTMB from "../RenderTMB";
 import ConfirmStaging from "./ConfirmStaging";
 import "./Warehouse.css"
-import { getAllFieldsThunk, getFieldThunk, toggleCouchBoxFieldThunk } from "../../store/field.js";
-import { useHistory, useParams } from "react-router-dom"; // Import useParams
+import { getFieldThunk, toggleCouchBoxFieldThunk } from "../../store/field.js";
+import { useHistory, useParams } from "react-router-dom";  
 import { getWarehouseInfoThunk } from "../../store/warehouse.js";
 
 export default function Warehouse() {
     const dispatch = useDispatch();
-    const history = useHistory();
     const { warehouseId } = useParams(); 
     const rowsArr = useSelector(state => state.warehouse.currentWarehouse.rows);
     const warehouseFields = useSelector(state => state.warehouse.currentWarehouse.fields);
@@ -31,11 +30,11 @@ export default function Warehouse() {
     const [warehouseKey, setWarehouseKey] = useState(1);
 
     useEffect(() => {
-        console.log("❤️‍🔥", warehouse)
-    }, [rowsArr])
+        console.log("❤️‍🔥 warehouse: ", warehouse)
+    }, [warehouse])
 
     useEffect(() => {
-        const warehouseInfo = dispatch(getWarehouseInfoThunk(warehouseId ? warehouseId : warehouseKey))
+        const warehouseInfo = dispatch(getWarehouseInfoThunk(warehouseId))
 
         Promise.all([warehouseInfo])
             .then(() => setLoading(false))
