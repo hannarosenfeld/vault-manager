@@ -77,7 +77,7 @@ function ProfileButton({ user }) {
                 onClick={closeDrawer}
                 component={NavLink} 
                 to="/stage" 
-                style={{display: "flex", gap: "5px"}}>
+                style={{display: "flex", gap: "5px", color: "orange"}}>
                 {/* <i class="fa-solid fa-plus"></i> */}
                 <ListItemText primary="Stage" />
               </ListItem>
