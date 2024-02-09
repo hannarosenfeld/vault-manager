@@ -20,21 +20,21 @@ seed_commands = AppGroup('seed')
 def seed():
     if environment == 'production' or environment == 'development':
         # Seed data if any of the tables is empty
-        # if not User.query.all(): 
+        if not User.query.all(): 
             seed_users()  
-        # if not Customer.query.all(): 
+        if not Customer.query.all(): 
             seed_customers()
-        # if not Order.query.all(): 
+        if not Order.query.all(): 
             seed_orders()
-        # if not Row.query.all(): 
+        if not Row.query.all(): 
             seed_rows() 
-        # if not Field.query.all(): 
+        if not Field.query.all(): 
             seed_fields()
-        # if not Warehouse.query.all(): 
+        if not Warehouse.query.all(): 
             seed_warehouse()             
-        # if not Vault.query.all(): 
+        if not Vault.query.all(): 
             seed_vaults()
-        # if not Stage.query.all(): 
+        if not Stage.query.all(): 
             seed_stage()  
 
 @seed_commands.command('undo')
