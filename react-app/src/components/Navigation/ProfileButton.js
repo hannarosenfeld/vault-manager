@@ -56,6 +56,7 @@ function ProfileButton({ user }) {
           {user ? (
             <List>
               <ListItem>
+              <i className="fas fa-user-circle" style={{fontSize: "1.5em", marginRight: "0.5em"}}/>
               {user.username === "admin" ? <span style={{fontSize: "1.5em"}} class="material-symbols-outlined">shield_person</span> : ''}
               <ListItemText primary={user.username}/>
               </ListItem>
