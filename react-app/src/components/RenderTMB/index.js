@@ -12,20 +12,21 @@ const RenderTMB = ({
   handleStageClick, 
   handleOpenModal, 
   handleToggleChange, 
-  toggleSelected }) => {
+  toggleSelected, 
+  warehouse
+ }) => {
 
   const dispatch = useDispatch();
-  const selectedFieldVaults = useSelector((state) => state.field.fieldVaults);
   const [topmostVault, setTopmostVault] = useState(null);
-  const fieldState = useSelector((state) => state.field.fieldVaults);
-  const vaults = Object.values(fieldState)
+  const selectedFieldVaults = useSelector((state) => state.field.fieldVaults);
+  const vaults = Object.values(selectedFieldVaults)
   const [isLoading, setIsLoadig] = useState(true);
 
   useEffect(() => {
       setIsLoadig(true);
       dispatch(getFieldVaultsThunk(selectedField.id))
       .then(setIsLoadig(false));
-  }, [selectedField, handleStageClick])
+  }, [selectedField, handleStageClick, warehouse.id])
 
   useEffect(() => {
     const updateTopmostVault = () => {
@@ -43,7 +44,7 @@ const RenderTMB = ({
     if (vaults && vaults.length > 0) {
       updateTopmostVault();
     }
-  }, [selectedField, vaults]);
+  }, [selectedField, vaults, warehouse.id]);
 
   const onlyBottom = !selectedFieldVaults["T"] && !selectedFieldVaults["M"] && !selectedFieldVaults["B"];
   const onlyMiddle = !selectedFieldVaults["T"] && !selectedFieldVaults["M"] && selectedFieldVaults["B"];
@@ -64,12 +65,12 @@ const RenderTMB = ({
         <div className="selected-field-vaults-tmb" style={{ gridTemplateRows: selectedField.type === "couchbox" ? "repeat(4,1fr)" : ""}}>
           <div className="top field-row">
             <span className="position">T</span>
-            { onlyTop && fieldState.full && selectedField.type === "vault" && (
+            { onlyTop && selectedFieldVaults.full && selectedField.type === "vault" && (
               <div style={{ color: "red" }}>
                 <span className="material-symbols-outlined">warning</span>Field is full
               </div>
             )}
-            { !onlyFirstMiddle && onlyTop && !fieldState.full ? (
+            { !onlyFirstMiddle && onlyTop && !selectedFieldVaults.full ? (
               <AddVaultButton position="T" handleOpenModal={handleOpenModal} fieldType={selectedField.type}/>
             ) : selectedFieldVaults["T"] ? (
               <VaultInstance

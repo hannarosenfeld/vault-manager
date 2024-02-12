@@ -136,6 +136,7 @@ export default function Warehouse() {
                                 handleOpenModal={handleOpenModal}
                                 handleToggleChange={handleToggleChange}
                                 toggleSelected={toggleSelected}
+                                warehouse={warehouse}
                             />
                         ) : (
                             <div>
