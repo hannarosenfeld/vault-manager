@@ -30,7 +30,8 @@ export default function Warehouse() {
     const [warehouseKey, setWarehouseKey] = useState(1);
 
     useEffect(() => {
-        console.log("❤️‍🔥 warehouse: ", warehouse)
+        console.log("❤️‍🔥 warehouse: ", warehouse);
+        setSelectedField(null);
     }, [warehouse])
 
     useEffect(() => {

@@ -140,6 +140,7 @@ const fieldReducer = (state = initialState, action) => {
         };
       
       case GET_FIELD_VAULTS:
+        console.log("🥎 in reducer", action.vaults)
         const updatedFieldVaults = action.vaults.reduce((accumulator, vault) => {
           accumulator[vault.position] = vault;
           return accumulator;
