@@ -36,6 +36,10 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
     };
 
     useEffect(() => {
+        console.log("🥎 selectedField:", selectedField)
+    }, [selectedField])
+
+    useEffect(() => {
         document.addEventListener('click', handleDocumentClick);
 
         return () => {
@@ -66,9 +70,9 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
 
     useEffect(() => {
         dispatch(getAllCustomersThunk());
-        dispatch(getAllVaultsThunk());
-        dispatch(getAllFieldsThunk());
-        dispatch(getFieldThunk(selectedField.id));
+        // dispatch(getAllVaultsThunk());
+        // dispatch(getAllFieldsThunk());
+        // dispatch(getFieldThunk(selectedField.id));
     }, [dispatch]);
 
     useEffect(() => {
@@ -186,7 +190,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
                     </IconButton>
                 </div>
                 <div style={{ marginBottom: "5px" }}>
-                    <h4 id="modal-modal-title">{selectedField?.type === "vault" ? "Add Vault" : "Add Couchbox"}</h4>
+                    <h4 id="modal-modal-title">{selectedField.type === "vault" ? "Add Vault" : "Add Couchbox"}</h4>
                     <div className="vault-info">
                         <div>Field: <span>{selectedField.field_id}</span></div>
                         <div>Position: <span>{tmb}</span></div>

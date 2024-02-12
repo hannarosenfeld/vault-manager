@@ -31,11 +31,7 @@ export default function Warehouse() {
 
     useEffect(() => {
         setSelectedField(null);
-    }, [warehouse])
-
-    useEffect(() => {
-        console.log("🥎 selectedField:", selectedField)
-    }, [selectedField])
+    }, [warehouse.id])
 
     useEffect(() => {
         const warehouseInfo = dispatch(getWarehouseInfoThunk(warehouseId))
