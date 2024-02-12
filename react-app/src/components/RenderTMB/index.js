@@ -26,7 +26,7 @@ const RenderTMB = ({
       setIsLoadig(true);
       dispatch(getFieldVaultsThunk(selectedField.id))
       .then(setIsLoadig(false));
-  }, [selectedField, handleStageClick, warehouse.id])
+  }, [selectedField, handleStageClick])
 
   useEffect(() => {
     const updateTopmostVault = () => {
@@ -44,7 +44,7 @@ const RenderTMB = ({
     if (vaults && vaults.length > 0) {
       updateTopmostVault();
     }
-  }, [selectedField, vaults, warehouse.id]);
+  }, [selectedField, vaults]);
 
   const onlyBottom = !selectedFieldVaults["T"] && !selectedFieldVaults["M"] && !selectedFieldVaults["B"];
   const onlyMiddle = !selectedFieldVaults["T"] && !selectedFieldVaults["M"] && selectedFieldVaults["B"];
