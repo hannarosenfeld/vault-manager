@@ -30,9 +30,12 @@ export default function Warehouse() {
     const [warehouseKey, setWarehouseKey] = useState(1);
 
     useEffect(() => {
-        console.log("❤️‍🔥 warehouse: ", warehouse)
         setSelectedField(null);
     }, [warehouse])
+
+    useEffect(() => {
+        console.log("🥎 selectedField:", selectedField)
+    }, [selectedField])
 
     useEffect(() => {
         const warehouseInfo = dispatch(getWarehouseInfoThunk(warehouseId))

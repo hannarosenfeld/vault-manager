@@ -43,7 +43,6 @@ export const addWarehouseAction = (warehouseData) => ({
   
 
 export const addWarehouseThunk = (warehouseData) => async (dispatch) => {
-  console.log("🌹 warehousedata:", warehouseData)
   try {
     const response = await fetch('/api/warehouse/add-warehouse', {
       method: 'POST',
@@ -223,7 +222,6 @@ const warehouseReducer = (state = initialState, action) => {
         warehouses: [...warehouses]
       }
     case GET_WAREHOUSE_INFO:
-      console.log("🥎 warehouse info in reducer: ", action.payload.warehouse_info)
       const warehouseInfo = action.payload?.warehouse_info;
       if (warehouseInfo) {
         return {

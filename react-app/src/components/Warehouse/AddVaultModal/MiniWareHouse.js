@@ -8,10 +8,6 @@ export default function MiniWareHouse({ selectedField, warehouseId }) {
     const rowsArr = useSelector(state => state.warehouse.currentWarehouse.rows);
 
     useEffect(() => {
-        console.log("❤️‍🩹", rowsArr)
-    }, [rowsArr])
-    
-    useEffect(() => {
         dispatch(getWarehouseInfoThunk(warehouseId));
         dispatch(getAllWarehouseVaultsThunk());
     }, [dispatch])
