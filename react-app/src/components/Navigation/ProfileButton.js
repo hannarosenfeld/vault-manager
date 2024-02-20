@@ -8,13 +8,14 @@ import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
 import { Drawer, List, ListItem, ListItemText, Button } from "@mui/material";
 import "./Navigation.css";
 import { getAllWarehousesThunk } from "../../store/warehouse";
-
+import { clearCurrentField } from "../../store/field";
 
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showDrawer, setShowDrawer] = useState(false);
-  const warehouses = useSelector(state => state.warehouse.warehouses)
+  const warehousesObj = useSelector(state => state.warehouse.warehouses)
+  const warehouses = Object.values(warehousesObj)
 
   useEffect(() => {
     dispatch(getAllWarehousesThunk())
@@ -27,6 +28,11 @@ function ProfileButton({ user }) {
   const closeDrawer = () => {
     setShowDrawer(false);
   };
+
+  const visitWarehouse = () => {
+    clearCurrentField()
+    closeDrawer();
+  }
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -64,7 +70,7 @@ function ProfileButton({ user }) {
               { warehouses?.map(warehouse => (
               <ListItem 
               button 
-              onClick={closeDrawer}
+              onClick={visitWarehouse}
               component={NavLink} 
               to={`/warehouse/${warehouse.id}`}
               style={{display: "flex", gap: "5px"}}>

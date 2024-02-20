@@ -7,3 +7,4 @@ __pycache__/
 render_debug.md
 instance/dev.db
 dev.db
+node_modules

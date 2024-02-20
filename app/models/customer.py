@@ -17,8 +17,8 @@ class Customer(db.Model, UserMixin):
         return {
             'id': self.id,
             'name': self.name,
-            'color': self.color,
-            'vaults': [vault.to_dict() for vault in self.vaults],
+            # 'color': self.color,
+            'vaults': [vault.to_dict() for vault in self.vaults], # list of vault id's
         }
 
     def to_summary_dict(self):

@@ -206,36 +206,40 @@ export const removeVaultFromWarehouseThunk = (vaultId) => async (dispatch) => {
 const initialState = {
   warehouses: [],
   warehouseVaults: [],
-  warehouseFields: [],
+  // warehouseFields: [],  
   warehouseRows: [],
   searchmode: null,
-  currentWarehouse: {}
+  // currentWarehouse: {}
 };
   
 
 const warehouseReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_ALL_WAREHOUSES:
-      const warehouses = Object.values(action.warehouses)
-      return {
-        ...state,
-        warehouses: [...warehouses]
-      }
+      const payload = Object.values(action.warehouses)
+      
+
+        state = {...state, warehouses : {}}
+        payload.forEach((warehouse) => {
+          state.warehouses[warehouse.id] = warehouse
+        })
+        
+        return state
+
     case GET_WAREHOUSE_INFO:
       const warehouseInfo = action.payload?.warehouse_info;
       if (warehouseInfo) {
         return {
           ...state,
-          warehouseFields: warehouseInfo.fields,
+          // warehouseFields: warehouseInfo.fields,
           searchmode: warehouseInfo.searchmode,
-          currentWarehouse: warehouseInfo
+          // currentWarehouse: warehouseInfo
         };
       } else {
         console.error('Warehouse info is undefined');
         return state;
       }
     case ADD_VAULT_TO_WAREHOUSE:
-      // Add the vault to the warehouseVaults array in state
       const newVaults = Array.isArray(action.payload) ? action.payload : [];
 
       return {
@@ -246,7 +250,7 @@ const warehouseReducer = (state = initialState, action) => {
       return {
         ...state,
         warehouses: [...state.warehouses, action.payload],
-        currentWarehouse: action.payload
+        // currentWarehouse: action.payload
       };
     case GET_ALL_WAREHOUSE_VAULTS:
     return {
@@ -254,7 +258,6 @@ const warehouseReducer = (state = initialState, action) => {
         warehouseVaults: action.vaults,
     };
     case REMOVE_VAULT_FROM_WAREHOUSE:
-        // Remove the vaultId from the warehouseVaults array in state
         return {
           ...state,
           warehouseVaults: state.warehouseVaults.filter(

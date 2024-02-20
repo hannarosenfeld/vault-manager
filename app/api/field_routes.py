@@ -23,8 +23,10 @@ def toggle_field_type(id):
     if not sub_field:
         return jsonify(message="Subfield not found"), 404
 
+
+    # TODO: change field.type to "couchbox-T / couchbox-B"
     if field.type == "vault" and sub_field.type == "vault":
-        field.type = "couchbox"
+        field.type = "couchbox" 
         sub_field.type = "couchbox"
         sub_field.bottom_couchbox_field = True
     elif field.type == "couchbox" and sub_field.type == "couchbox":

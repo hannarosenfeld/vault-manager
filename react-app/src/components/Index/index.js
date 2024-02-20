@@ -7,7 +7,8 @@ import { useEffect } from "react";
 
 export default function Index() {
     const dispatch = useDispatch();
-    const warehouses = useSelector(state => state.warehouse.warehouses);
+    const warehousesObj = useSelector(state => state.warehouse.warehouses);
+    const warehouses = Object.values(warehousesObj);
 
     useEffect(() => {
         dispatch(getAllWarehousesThunk());

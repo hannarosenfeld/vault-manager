@@ -22,6 +22,8 @@ const RenderTMB = ({
   const vaults = Object.values(selectedFieldVaults)
   const [isLoading, setIsLoadig] = useState(true);
 
+  
+
   useEffect(() => {
       setIsLoadig(true);
       dispatch(getFieldVaultsThunk(selectedField.id))

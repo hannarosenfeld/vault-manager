@@ -3,6 +3,8 @@ const GET_FIELD = "field/GET_FIELD";
 const GET_ALL_FIELDS = "field/GET_ALL_FIELDS";
 const TOGGLE_COUCHBOX_FIELD = "field/TOGGLE_COUCHBOX_FIELD"
 const GET_FIELD_VAULTS = "vault/GET_FIELD_VAULTS";
+const CLEAR_CURRENT_FIELD = "field/CLEAR_CURRENT_FIELD";
+
 
 const getFieldVaultsAction = (vaults) => ({
   type: GET_FIELD_VAULTS,
@@ -23,6 +25,10 @@ const getAllFieldsAction = (fields) => ({
   type: GET_ALL_FIELDS,
   fields
 });
+
+export const clearCurrentField = () => ({
+  type: CLEAR_CURRENT_FIELD
+})
 
 export const getFieldVaultsThunk = (fieldId) => async (dispatch) => {
   try {
@@ -148,6 +154,9 @@ const fieldReducer = (state = initialState, action) => {
           ...state,
           fieldVaults: updatedFieldVaults
         };
+      
+      case CLEAR_CURRENT_FIELD:
+        return { ...state, currentField: null }
            
     default:
       return state;

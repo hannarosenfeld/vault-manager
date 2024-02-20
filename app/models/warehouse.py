@@ -19,6 +19,6 @@ class Warehouse(db.Model):
             'id': self.id,
             'name': self.name,
             'vaults': [vault.to_dict() for vault in self.warehouse_vaults],
-            'fields': {field.id : field.to_dict() for field in self.warehouse_fields},
+            # 'fields': {field.id : field.to_dict() for field in self.warehouse_fields},
             'rows': [row.to_dict() for row in self.warehouse_rows],
         }

@@ -8,14 +8,14 @@ import ConfirmStaging from "./ConfirmStaging";
 import "./Warehouse.css"
 import { getFieldThunk, toggleCouchBoxFieldThunk } from "../../store/field.js";
 import { useHistory, useParams } from "react-router-dom";  
-import { getWarehouseInfoThunk } from "../../store/warehouse.js";
+import { getWarehouseInfoThunk, getAllWarehousesThunk } from "../../store/warehouse.js";
 
 export default function Warehouse() {
     const dispatch = useDispatch();
     const { warehouseId } = useParams(); 
-    const rowsArr = useSelector(state => state.warehouse.currentWarehouse.rows);
-    const warehouseFields = useSelector(state => state.warehouse.currentWarehouse.fields);
-    const warehouse = useSelector(state => state.warehouse.currentWarehouse)
+    const rowsArr = useSelector(state => state.warehouse?.warehouses[warehouseId]?.rows);
+    const warehouseFields = useSelector(state => state.warehouse?.warehouses[warehouseId]?.fields);
+    const warehouse = useSelector(state => state.warehouse.warehouses[warehouseId]);
     const searchResult = useSelector(state => state.search.fields);
     const [selectedField, setSelectedField] = useState(null);
     let [top, setTop] = useState(null);
@@ -31,10 +31,14 @@ export default function Warehouse() {
 
     useEffect(() => {
         setSelectedField(null);
-    }, [warehouse.id])
+    }, [warehouse?.id])
 
     useEffect(() => {
-        const warehouseInfo = dispatch(getWarehouseInfoThunk(warehouseId))
+        console.log("💖", selectedField)
+    }, [selectedField])
+
+    useEffect(() => {
+        const warehouseInfo = dispatch(getAllWarehousesThunk());
 
         Promise.all([warehouseInfo])
             .then(() => setLoading(false))
