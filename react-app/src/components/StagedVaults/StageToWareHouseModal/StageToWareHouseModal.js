@@ -18,16 +18,18 @@ import "./StageToWareHouseModal.css";
 
 export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   const dispatch = useDispatch();
+  const [selectedWarehouse, setSelectedWarehouse] = useState(1);
   const vaults = useSelector(state => state.vault.vaults);
-  const rowsArr = useSelector(state => state.warehouse.currentWarehouse.rows);
-  const warehouses = useSelector(state => state.warehouse.warehouses);
+  const rowsArr = useSelector(state => state.warehouse?.warehouses[selectedWarehouse]?.rows);
+  const warehousesObj = useSelector(state => state.warehouse.warehouses);
+  const warehouses = Object.values(warehousesObj)
+
   const [selectedField, setSelectedField] = useState(null);
   const [selectedFieldIndex, setSelectedFieldIndex] = useState(0);
   const [selectedRow, setSelectedRow] = useState(null);
   const [position, setPosition] = useState(null);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const [loadingVaults, setLoadingVaults] = useState(false);
-  const [selectedWarehouse, setSelectedWarehouse] = useState(1);
 
 
   let fieldName = selectedRow && selectedFieldIndex ? selectedRow + selectedFieldIndex : null;

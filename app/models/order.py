@@ -10,6 +10,7 @@ class Order(db.Model, UserMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     order_number = db.Column(db.String)
+    # warehouseId = [1,2,3] TODO!
 
     order_vaults = db.relationship('Vault', back_populates="order", lazy='joined')
 
