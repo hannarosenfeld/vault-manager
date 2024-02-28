@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from app.models import db, Field, Vault, Row
+from app.models import db, Field, Vault
 
 field_routes = Blueprint('fields', __name__)
 
@@ -76,13 +76,13 @@ def get_field_vaults(field_id):
     return jsonify([vault if not hasattr(vault, 'to_dict') else vault.to_dict() for vault in field_vaults])
 
 
-@field_routes.route('/<field_id>/row')
-def get_field_row(field_id):
-    field = Field.query.get(field_id)
-    if not field:
-        return jsonify(message="Field not found"), 404
+# @field_routes.route('/<field_id>/row')
+# def get_field_row(field_id):
+#     field = Field.query.get(field_id)
+#     if not field:
+#         return jsonify(message="Field not found"), 404
     
-    row = Row.query.get(field.row_id).to_dict()
+#     row = Row.query.get(field.row_id).to_dict()
 
-    return jsonify(row)
+#     return jsonify(row)
 
