@@ -12,8 +12,8 @@ class Order(db.Model, UserMixin):
     name = db.Column(db.String)
 
     order_vaults = db.relationship('Vault', back_populates="order")
-    order_warehouses = db.relationship('Warehouse', back_populates="order", lazy='joined')
-    order_fields = db.relationship('Fields', back_populates="order", lazy='joined')
+    # order_warehouses = db.relationship('Warehouse', back_populates="order", lazy='joined')
+    # order_fields = db.relationship('Fields', back_populates="order", lazy='joined')
 
     # order_number = db.Column(db.String)
     

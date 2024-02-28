@@ -1,8 +1,10 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from flask_login import UserMixin
+from .warehouse_users import warehouse_users
+
 
 class Warehouse(db.Model):
-    __tablename__ = 'warehouse'
+    __tablename__ = 'warehouses'
 
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
@@ -12,7 +14,7 @@ class Warehouse(db.Model):
     rows = db.Column(db.Integer)
     cols = db.Column(db.Integer)
     warehouse_fields = db.relationship('Field', back_populates='warehouse', foreign_keys='Field.warehouse_id')
-    users = db.relationship('User', secondary=warehouse_user, back_populates='warehouses', cascade='all, delete')
+    users = db.relationship('User', secondary=warehouse_users, back_populates='warehouses', cascade='all, delete')
     
 
     # warehouse_rows = db.relationship('Row', back_populates='warehouse', foreign_keys='Row.warehouse_id')

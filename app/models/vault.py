@@ -13,7 +13,8 @@ class Vault(db.Model, UserMixin):
     field_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('fields.id'), ondelete='CASCADE'))
     order_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('orders.id'), ondelete='CASCADE'))
     position = db.Column(db.String(100), nullable=False)
-    custommer_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('customers.id'), ondelete='CASCADE'))
+    type = db.Column(db.String)
+    customer_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('customers.id'), ondelete='CASCADE'))
     
     field = db.relationship('Field', back_populates='vaults', foreign_keys='Vault.field_id')
     order = db.relationship('Order', back_populates='order_vaults')
@@ -23,7 +24,6 @@ class Vault(db.Model, UserMixin):
     # field_name = db.Column(db.String, db.ForeignKey(add_prefix_for_prod('fields.field_id'), ondelete='CASCADE'))
     # staged = db.Column(db.Boolean, default=False)
     # customer_name = db.Column(db.String(255))
-    # type = db.Column(db.String)
     # warehouse_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('warehouse.id'), ondelete='CASCADE'))
     # warehouse = db.relationship('Warehouse', back_populates='warehouse_vaults')
     # stage_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('stage.id'), ondelete='CASCADE'), nullable=True)

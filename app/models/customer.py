@@ -10,7 +10,7 @@ class Customer(db.Model, UserMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    orders = db.relationship('Order', back_populates='customer')
+    # orders = db.relationship('Order', back_populates='customer')
     vaults = db.relationship('Vault', back_populates='customer')
 
     # color = db.Column(db.String(100), default='1B3333')

@@ -1,14 +1,14 @@
-from app.models import db, Warehouse, Row, Field, Vault, environment, SCHEMA
+from app.models import db, Warehouse, Field, Vault, environment, SCHEMA
 from sqlalchemy.sql import text
 
-def seed_warehouse():
+def seed_warehouse(users, fields):
     warehouse = Warehouse()
 
     warehouse.name = "Warehouse 3"
     warehouse.cols = 9
     warehouse.rows = 12
-    warehouse.warehouse_fields = list(range(1, 109))
-    warehouse.users = [1,2]
+    warehouse.warehouse_fields = fields
+    warehouse.users = users
     # rows = Row.query.all()
     # fields = Field.query.all()
     # warehouse.warehouse_vaults = vaults

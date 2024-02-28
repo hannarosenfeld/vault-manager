@@ -18,6 +18,7 @@ def seed_customers():
 
     db.session.commit()
 
+    return [c1, c2, c3]
 
 def undo_customers():
     if environment == "production":

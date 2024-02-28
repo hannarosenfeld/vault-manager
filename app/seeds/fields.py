@@ -11,9 +11,10 @@ def seed_fields():
             name = f"{row_char}{field_num}"  # Use the letter for the row and e, warehouse_id=1nsure the number has at least one digit
             field = Field(name=name, warehouse_id=1)  # Use integer representation of row_id
             fields.append(field)
-
     db.session.add_all(fields)
     db.session.commit()
+
+    return fields
 
 
 def undo_fields():

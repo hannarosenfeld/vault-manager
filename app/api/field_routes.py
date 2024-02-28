@@ -78,6 +78,10 @@ def toggle_field_type(id):
 
             db.session.commit()
             return jsonify(field1.to_dict())
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
     return jsonify({'errors': validation_errors_to_error_messages(form.errors)}), 400
 
 # @field_routes.route('/<field_id>')

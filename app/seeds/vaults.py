@@ -2,15 +2,14 @@ from app.models import db, Vault, environment, SCHEMA
 from sqlalchemy.sql import text
 
 
-def seed_vaults():
+def seed_vaults(customers):
     v1 = Vault(
         name='144',
         customer_id=2, 
         field_id=25, 
         position='T', 
         order_id=1, 
-        type="S", 
-        warehouse_id=1
+        type="S"
     )
     v2 = Vault(
         name='266',
@@ -18,17 +17,15 @@ def seed_vaults():
         field_id=25,
         position='M',
         order_id=2,
-        type="S",
-        warehouse_id=1
+        type="S"
     )
     v3 = Vault(
         name='176',   
-        customer_id=1,
+        customer_id=2,
         field_id=25,
         position='B',
         order_id=3,
-        type="S",
-        warehouse_id=1
+        type="S"
     )
 
     db.session.add(v1)

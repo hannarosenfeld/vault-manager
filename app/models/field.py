@@ -14,7 +14,7 @@ class Field(db.Model, UserMixin):
     vaults = db.relationship('Vault', back_populates='field', foreign_keys='Vault.field_id', lazy='dynamic')
     full = db.Column(db.Boolean, default=False)
 
-    warehouse_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('warehouse.id')))
+    warehouse_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('warehouses.id')))
     warehouse = db.relationship('Warehouse', back_populates='warehouse_fields')
 
     def generate_name(self, col_name, numerical_identifier):

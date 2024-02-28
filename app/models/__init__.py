@@ -8,4 +8,4 @@ from .field import Field
 # from .stage import Stage
 from .warehouse import Warehouse
 from .attachment import Attachment
-from .warehouse_users import Warehouse_User
+from .warehouse_users import warehouse_users
