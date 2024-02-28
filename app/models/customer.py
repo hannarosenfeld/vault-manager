@@ -19,7 +19,7 @@ class Customer(db.Model, UserMixin):
         return {
             'id': self.id,
             'name': self.name,
-            'orders': [order.to_dict() for order in self.orders], 
-            'vaults': [vault.to_dict() for vault in self.vaults], 
+            'orders': [order.id for order in self.orders], 
+            'vaults': [vault.id for vault in self.vaults], 
             # 'color': self.color,
         }
