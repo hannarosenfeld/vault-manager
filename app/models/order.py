@@ -21,7 +21,7 @@ class Order(db.Model, UserMixin):
         return {
             'id': self.id,
             'name': self.name,
-            'order_vaults': [vault.to_dict() for vault in self.order_vaults],
-            'order_warehouses': [vault.to_dict() for vault in self.order_warehouses],
-            'order_fields': [vault.to_dict() for vault in self.order_fields]
+            'vaults': [vault.id for vault in self.order_vaults],
+            'warehouses': [warehouse.id for warehouse in self.order_warehouses],
+            'fields': [field.id for field in self.order_fields]
         }
