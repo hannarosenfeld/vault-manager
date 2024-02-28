@@ -34,6 +34,9 @@ def toggle_field_type(id):
             if type == 'couchbox':
                 field2 = Field.query.get(field_id_2)
 
+                if len(field1.vaults) > 0 or len(field2.vaults) > 0:
+                    return jsonify(message="Please stage all vaults in fields to continue")
+
                 if not field2:
                     return jsonify(message="Field 2 not found"), 404
 
