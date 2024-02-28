@@ -26,32 +26,32 @@ def seed():
             seed_customers()
         if not Order.query.all(): 
             seed_orders()
-        if not Row.query.all(): 
-            seed_rows() 
+        # if not Row.query.all(): 
+        #     seed_rows() 
         if not Field.query.all(): 
             seed_fields()
         if not Warehouse.query.all(): 
             seed_warehouse()             
         if not Vault.query.all(): 
             seed_vaults()
-        if not Stage.query.all(): 
-            seed_stage()  
+        # if not Stage.query.all(): 
+        #     seed_stage()  
 
         # seed_users()  
         # seed_customers()
         # seed_orders()
-        # seed_rows() 
+        # seed_rows() !delete
         # seed_fields()
         # seed_warehouse()             
         # seed_vaults()
-        # seed_stage()              
+        # seed_stage() !delete      
 
 @seed_commands.command('undo')
 def undo():
-    undo_stage()
+    # undo_stage()
     undo_vaults()
     undo_fields()
-    undo_rows()
+    # undo_rows()
     undo_customers()
     undo_users()
     undo_warehouse()
