@@ -10,15 +10,22 @@ class Warehouse(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
-    warehouse_vaults = db.relationship('Vault', back_populates="warehouse")
+    rows = db.Column(db.Integer)
+    cols = db.Column(db.Integer)
     warehouse_fields = db.relationship('Field', back_populates='warehouse', foreign_keys='Field.warehouse_id')
-    warehouse_rows = db.relationship('Row', back_populates='warehouse', foreign_keys='Row.warehouse_id')
+
+    # warehouse_rows = db.relationship('Row', back_populates='warehouse', foreign_keys='Row.warehouse_id')
+    # warehouse_vaults = db.relationship('Vault', back_populates="warehouse")
 
     def to_dict(self):
         return {
             'id': self.id,
             'name': self.name,
-            'vaults': [vault.to_dict() for vault in self.warehouse_vaults],
+            'rows': self.rows,
+            'columns': self.columns,
+            'fields': [field.id for field in self.warehouse_fields]
+
+            # 'vaults': [vault.to_dict() for vault in self.warehouse_vaults],
             # 'fields': {field.id : field.to_dict() for field in self.warehouse_fields},
-            'rows': [row.to_dict() for row in self.warehouse_rows],
+            # 'rows': [row.to_dict() for row in self.warehouse_rows],
         }
