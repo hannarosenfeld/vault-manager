@@ -11,10 +11,10 @@ from .models import db, User
 from .api.user_routes import user_routes
 from .api.auth_routes import auth_routes
 from .api.vault_routes import vault_routes
-from .api.row_routes import row_routes
+# from .api.row_routes import row_routes
 from .api.field_routes import field_routes
 from .api.customers_routes import customers_routes
-from .api.stage_routes import stage_routes
+# from .api.stage_routes import stage_routes
 from .api.warehouse_routes import warehouse_routes
 from .api.order_router import order_routes
 from .api.search_routes import search_routes
@@ -44,10 +44,10 @@ app.config.from_object(Config)
 app.register_blueprint(user_routes, url_prefix='/api/users')
 app.register_blueprint(auth_routes, url_prefix='/api/auth')
 app.register_blueprint(vault_routes, url_prefix='/api/vaults')
-app.register_blueprint(row_routes, url_prefix='/api/rows')
+# app.register_blueprint(row_routes, url_prefix='/api/rows')
 app.register_blueprint(field_routes, url_prefix='/api/fields')
 app.register_blueprint(customers_routes, url_prefix='/api/customers')
-app.register_blueprint(stage_routes, url_prefix='/api/stage')
+# app.register_blueprint(stage_routes, url_prefix='/api/stage')
 app.register_blueprint(warehouse_routes, url_prefix='/api/warehouse')
 app.register_blueprint(order_routes, url_prefix='/api/orders')
 app.register_blueprint(search_routes, url_prefix='/api/search')
