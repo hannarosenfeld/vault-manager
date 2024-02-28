@@ -25,7 +25,7 @@ class Warehouse(db.Model):
             'id': self.id,
             'name': self.name,
             'rows': self.rows,
-            'columns': self.columns,
+            'columns': self.cols,
             'fields': [field.id for field in self.warehouse_fields]
 
             # 'vaults': [vault.to_dict() for vault in self.warehouse_vaults],

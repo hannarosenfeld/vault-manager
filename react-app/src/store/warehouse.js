@@ -70,7 +70,7 @@ export const addWarehouseThunk = (warehouseData) => async (dispatch) => {
 
 export const getAllWarehousesThunk = () => async (dispatch) => {
   try {
-    const response = await fetch('/api/warehouse');
+    const response = await fetch('/api/warehouse/');
     if (response.ok) {
       const data = await response.json();
       dispatch(getAllWarehouses(data));

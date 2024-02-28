@@ -53,7 +53,7 @@ export const toggleFieldTypeThunk = (fieldId) => async (dispatch) => {
   try {
     const res = await fetch(`/api/fields/${fieldId}`, {
       method: 'PUT',
-      body:
+      // body:
     });
     if (res.ok) {
       const data = await res.json();
