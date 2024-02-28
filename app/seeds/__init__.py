@@ -7,7 +7,7 @@ from .rows import seed_rows, undo_rows
 from .warehouse import seed_warehouse, undo_warehouse
 from .stage import seed_stage, undo_stage 
 from .orders import seed_orders, undo_orders
-from app.models import Row, Field, Warehouse, Stage, Customer, User, Order, Vault
+from app.models import Field, Warehouse, Stage, Customer, User, Order, Vault
 
 from app.models.db import db, environment, SCHEMA
 
