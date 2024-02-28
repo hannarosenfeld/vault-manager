@@ -29,7 +29,8 @@ def toggle_field_type(id):
             if not field1:
                 return jsonify(message="Field 1 not found"), 404
 
-            field1.name = name
+            if name:
+                field1.name = name
 
             if type == 'couchbox':
                 field2 = Field.query.get(field_id_2)
@@ -49,6 +50,22 @@ def toggle_field_type(id):
                 db.session.commit()
 
                 return jsonify([field1.to_dict(), field2.to_dict()])
+
+            if type == 'vault':
+
+                if len(field1.vaults) > 0:
+                    return jsonify(message="Please stage all vaults in field to continue")
+
+                if field1.type == 'couchbox-T' and field.type2 == 'couchbox-B':
+                    field1.type = 'vault'
+                    field2.type = 'vault'
+                else: 
+                    return jsonify(message="Cannot switch to vault")
+                
+                db.session.commit()
+
+                return jsonify([field1.to_dict(), field2.to_dict()])
+
             # TODO: change field.type to "couchbox-T / couchbox-B"
             # if field.type == "vault" and sub_field.type == "vault":
             #     field.type = "couchbox" 
@@ -63,13 +80,13 @@ def toggle_field_type(id):
             return jsonify(field1.to_dict())
     return jsonify({'errors': validation_errors_to_error_messages(form.errors)}), 400
 
-@field_routes.route('/<field_id>')
-def get_field(field_id):
-    field_id = int(field_id)
-    field = Field.query.get(field_id)
-    if not field:
-        return jsonify(message="Field not found"), 404
-    return jsonify(field.to_dict())
+# @field_routes.route('/<field_id>')
+# def get_field(field_id):
+#     field_id = int(field_id)
+#     field = Field.query.get(field_id)
+#     if not field:
+#         return jsonify(message="Field not found"), 404
+#     return jsonify(field.to_dict())
 
 
 # @field_routes.route('/<field_id>/vaults')

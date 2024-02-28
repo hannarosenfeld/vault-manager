@@ -100,7 +100,7 @@ This is the documentation for all api routes and responses
                 }
             ]}
         ```
-    * `POST /{user_id}`
+    <!-- * `POST /{user_id}`
         * Purpose: Create a new field by warehouse_id
         * Body:
         ```json 
@@ -123,7 +123,7 @@ This is the documentation for all api routes and responses
                     "full": false
                 }
             }
-        ```
+        ``` -->
     * `PUT /{field_id}`
         * Purpose: Edit a field by field_id
         * Body: 
@@ -147,9 +147,9 @@ This is the documentation for all api routes and responses
                 }
             }
         ```
-    * `DELETE /{field_id}`
+    <!-- * `DELETE /{field_id}`
         * Purpose: Delete a field by field_id
-        * Return: `{'message': 'Successfully deleted the field!'}`
+        * Return: `{'message': 'Successfully deleted the field!'}` -->
 
 
 * `/vaults`
