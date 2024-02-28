@@ -10,19 +10,16 @@ class Customer(db.Model, UserMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    color = db.Column(db.String(100), default='1B3333')
+    orders = db.relationship('Order', back_populates='customer')
     vaults = db.relationship('Vault', back_populates='customer')
+
+    # color = db.Column(db.String(100), default='1B3333')
 
     def to_dict(self):
         return {
             'id': self.id,
             'name': self.name,
+            'orders': [order.to_dict() for order in self.orders], 
+            'vaults': [vault.to_dict() for vault in self.vaults], 
             # 'color': self.color,
-            'vaults': [vault.to_dict() for vault in self.vaults], # list of vault id's
-        }
-
-    def to_summary_dict(self):
-        return {
-            'id': self.id,
-            'name': self.name
         }
