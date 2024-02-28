@@ -1,7 +1,6 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from flask_login import UserMixin
 
-
 class Warehouse(db.Model):
     __tablename__ = 'warehouse'
 
@@ -13,6 +12,8 @@ class Warehouse(db.Model):
     rows = db.Column(db.Integer)
     cols = db.Column(db.Integer)
     warehouse_fields = db.relationship('Field', back_populates='warehouse', foreign_keys='Field.warehouse_id')
+    users = db.relationship('User', secondary=warehouse_user, back_populates='warehouses', cascade='all, delete')
+    
 
     # warehouse_rows = db.relationship('Row', back_populates='warehouse', foreign_keys='Row.warehouse_id')
     # warehouse_vaults = db.relationship('Vault', back_populates="warehouse")

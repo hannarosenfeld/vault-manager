@@ -13,6 +13,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(40), nullable=False, unique=True)
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
+    warehouses = db.relationship('Warehouse', secondary=warehouse_user, back_populates='users', cascade='all, delete')
 
 
     

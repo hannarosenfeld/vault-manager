@@ -2,7 +2,7 @@ This is the documentation for all api routes and responses
 
 /warehouses
 * `/warehouses`
-    * `GET /user/{user_id}`
+    * `GET /{user_id}`
         * Purpose: Get all warehouses by user_id
         * Return:         
         ```json 

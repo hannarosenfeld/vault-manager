@@ -11,7 +11,7 @@ class Order(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
 
-    order_vaults = db.relationship('Vault', back_populates="order", lazy='joined')
+    order_vaults = db.relationship('Vault', back_populates="order")
     order_warehouses = db.relationship('Warehouse', back_populates="order", lazy='joined')
     order_fields = db.relationship('Fields', back_populates="order", lazy='joined')
 
