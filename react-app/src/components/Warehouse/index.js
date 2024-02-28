@@ -6,7 +6,7 @@ import AddVaultModal from "./AddVaultModal/AddVaultModal.js"
 import RenderTMB from "../RenderTMB";
 import ConfirmStaging from "./ConfirmStaging";
 import "./Warehouse.css"
-import { getFieldThunk, toggleCouchBoxFieldThunk } from "../../store/field.js";
+import { getFieldThunk, toggleFieldTypeThunk } from "../../store/field.js";
 import { useHistory, useParams } from "react-router-dom";  
 import { getWarehouseInfoThunk, getAllWarehousesThunk } from "../../store/warehouse.js";
 
@@ -64,7 +64,7 @@ export default function Warehouse() {
         setToggleSelected(newToggleSelected);
 
         // Dispatch actions to update Redux store
-        dispatch(toggleCouchBoxFieldThunk(selectedField.id));
+        dispatch(toggleFieldTypeThunk(selectedField.id));
         dispatch(getFieldThunk(selectedField.id));
 
         window.location.reload(true);

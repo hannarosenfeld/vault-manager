@@ -1,7 +1,7 @@
 import { GET_WAREHOUSE_INFO } from "./warehouse";
 const GET_FIELD = "field/GET_FIELD";
 const GET_ALL_FIELDS = "field/GET_ALL_FIELDS";
-const TOGGLE_COUCHBOX_FIELD = "field/TOGGLE_COUCHBOX_FIELD"
+const TOGGLE_FIELD_TYPE = "field/TOGGLE_FIELD_TYPE"
 const GET_FIELD_VAULTS = "vault/GET_FIELD_VAULTS";
 const CLEAR_CURRENT_FIELD = "field/CLEAR_CURRENT_FIELD";
 
@@ -16,8 +16,8 @@ const getFieldAction = (field) => ({
   field
 });
 
-const toggleCouchBoxFieldAction = (field) => ({
-  type: TOGGLE_COUCHBOX_FIELD,
+const toggleFieldTypeAction = (field) => ({
+  type: TOGGLE_FIELD_TYPE,
   field
 })
 
@@ -49,14 +49,15 @@ export const getFieldVaultsThunk = (fieldId) => async (dispatch) => {
 };
 
 
-export const toggleCouchBoxFieldThunk = (fieldId) => async (dispatch) => {
+export const toggleFieldTypeThunk = (fieldId) => async (dispatch) => {
   try {
     const res = await fetch(`/api/fields/${fieldId}`, {
       method: 'PUT',
+      body:
     });
     if (res.ok) {
       const data = await res.json();
-      dispatch(toggleCouchBoxFieldAction(data));
+      dispatch(toggleFieldTypeAction(data));
       return data;
     } else {
       const err = await res.json();
@@ -113,7 +114,7 @@ const initialState = {
 
 const fieldReducer = (state = initialState, action) => {
   switch (action.type) {
-    case TOGGLE_COUCHBOX_FIELD:
+    case TOGGLE_FIELD_TYPE:
       return {
         ...state,
         fields: {

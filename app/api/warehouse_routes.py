@@ -31,6 +31,7 @@ def get_warehouse_info(warehouse_id):
     return {'warehouse_info': warehouse.to_dict()}
 
 
+# TODO : edit this route for new schema
 @warehouse_routes.route('/vaults/<int:vault_id>', methods=['PUT'])
 def add_vault_to_warehouse(vault_id):
     """
@@ -116,38 +117,46 @@ def add_warehouse():
     """
     data = request.json
     name = data.get('name')
-    num_rows = data.get('numRows')
-    num_fields_per_row = data.get('numFieldsPerRow')
+    rows = data.get('numRows')
+    cols = data.get('numCols')
 
     try:
         # Create warehouse
         warehouse = Warehouse(name=name)
         db.session.add(warehouse)
+        warehouse.name = name
+        warehouse.rows = rows
+        warehouse.cols = cols
         db.session.commit()
 
-        # Create rows and fields
-        for row_num in range(1, num_rows + 1):
-            row_name = chr(ord('A') + (row_num - 1) % 26)
-            row = Row(name=row_name, warehouse=warehouse)
-            db.session.add(row)
-
-            for field_num in range(1, num_fields_per_row + 1):
-                field_id = f"{row_name}{field_num}"
-                field = Field(
-                    row=row,
-                    field_id=field_id,
-                    warehouse=warehouse,
-                    full=False,
-                    bottom_couchbox_field=False,
-                    type='vault',
-                    vaults=[]
-                )
-                db.session.add(field)
-
-        db.session.commit()
+        print("💖", warehouse.to_dict())
 
         # Fetch warehouse with associated rows and fields
         warehouse = Warehouse.query.filter_by(name=name).first()
+        warehouse_id = warehouse.id
+
+        # Create colums and fields
+        for col_num in range(1, cols + 1):
+            col_name = chr(ord('A') + (col_num - 1) % 26)
+            # row = Row(name=col_name, warehouse=warehouse)
+            # db.session.add(row)
+
+        for field_num in range(1, cols + 1):
+            field_name = f"{col_name}{field_num}"
+            field = Field(
+                name=field_name,
+                warehouse_id = warehouse_id, #might change this to warehouse.id
+                full=False,
+                type='vault',
+                vaults=[]
+                # row=row,
+                # field_id=field_id,
+                # warehouse=warehouse,
+                # bottom_couchbox_field=False,
+            )
+            db.session.add(field)        
+
+        db.session.commit()
 
         return jsonify(warehouse.to_dict()), 201
 

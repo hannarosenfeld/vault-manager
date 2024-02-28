@@ -136,6 +136,8 @@ const RenderTMB = ({
           </div>
         </div>
     )}
+
+    {/* Toggle Field Type Switch */}
       <div className={`selected-field-box ${toggleSelected ? 'toggled' : ''}`}>
       <div className="form-check form-switch" >
         <input
@@ -151,8 +153,10 @@ const RenderTMB = ({
           style={{fontSize: "0.8em", paddingRight: "0.5em"}}
         >
           {toggleSelected || selectedField.type === "couchbox" ? 'Couchbox' : 'Vault' }
+
         </label>
       </div>
+      
         <div className="selected-field-name">{selectedField.field_id}</div>
       </div>
     </>
