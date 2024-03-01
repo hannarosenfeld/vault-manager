@@ -3,12 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import AddVaultButton from "./AddVaultButton";
 import VaultInstance from "../VaultInstance";
 import { useState } from "react";
-import "./RenderTMB.css"
-import { getFieldVaultsThunk } from "../../store/field";
+import "./RenderTMB.css";
 
 
 const RenderTMB = ({ 
-  selectedField, 
+  selectedFieldId, 
   handleStageClick, 
   handleOpenModal, 
   handleToggleChange, 
@@ -18,17 +17,19 @@ const RenderTMB = ({
 
   const dispatch = useDispatch();
   const [topmostVault, setTopmostVault] = useState(null);
-  const selectedFieldVaults = useSelector((state) => state.field.fieldVaults);
-  const vaults = Object.values(selectedFieldVaults)
-  const [isLoading, setIsLoadig] = useState(true);
+  // const selectedFieldVaults = useSelector((state) => state.field.fieldVaults);
+  // const vaults = Object.values(selectedFieldIdVaults)
+  const field = useSelector((state) => state.field[selectedFieldId])
+  const vaults = useSelector((state) => state.vaults)
+  const selectedFieldVaults = field.vaults.map((vaultId) => vaults[vaultId])
+  const [isLoading, setIsLoadig] = useState(false);
 
-  
+  const { type } = field
 
-  useEffect(() => {
-      setIsLoadig(true);
-      dispatch(getFieldVaultsThunk(selectedField.id))
-      .then(setIsLoadig(false));
-  }, [selectedField, handleStageClick])
+  // useEffect(() => {
+  //     setIsLoadig(true)
+  //     .then(setIsLoadig(false));
+  // }, [selectedFieldId, handleStageClick])
 
   useEffect(() => {
     const updateTopmostVault = () => {
@@ -46,12 +47,12 @@ const RenderTMB = ({
     if (vaults && vaults.length > 0) {
       updateTopmostVault();
     }
-  }, [selectedField, vaults]);
+  }, [selectedFieldId, vaults]);
 
-  const onlyBottom = !selectedFieldVaults["T"] && !selectedFieldVaults["M"] && !selectedFieldVaults["B"];
-  const onlyMiddle = !selectedFieldVaults["T"] && !selectedFieldVaults["M"] && selectedFieldVaults["B"];
-  const onlyFirstMiddle = selectedField.type === "couchbox" && (!selectedFieldVaults["T"] && !selectedFieldVaults["M2"] && selectedFieldVaults["M"] && selectedFieldVaults["B"]);
-  const onlyTop = !selectedFieldVaults["T"] && selectedFieldVaults["M"] && selectedFieldVaults["B"];
+  const onlyBottom = !selectedFieldVaults["B"];
+  const onlyMiddle = !selectedFieldVaults["M"] && selectedFieldVaults["B"];
+  const onlyFirstMiddle = type === "couchbox-T" && !selectedFieldVaults["M2"] && selectedFieldVaults["M"];
+  const onlyTop = !selectedFieldVaults["T"] && ((type === "couchbox-T" && selectedFieldVaults["M1"]) || selectedFieldVaults["M"])
 
   return (
     <>
@@ -64,16 +65,16 @@ const RenderTMB = ({
       </div>
     </div>
     ) : (
-        <div className="selected-field-vaults-tmb" style={{ gridTemplateRows: selectedField.type === "couchbox" ? "repeat(4,1fr)" : ""}}>
+        <div className="selected-field-vaults-tmb" style={{ gridTemplateRows: type === "couchbox" ? "repeat(4,1fr)" : ""}}>
           <div className="top field-row">
             <span className="position">T</span>
-            { onlyTop && selectedFieldVaults.full && selectedField.type === "vault" && (
+            { onlyTop && selectedFieldVaults.full && type === "vault" && (
               <div style={{ color: "red" }}>
                 <span className="material-symbols-outlined">warning</span>Field is full
               </div>
             )}
             { !onlyFirstMiddle && onlyTop && !selectedFieldVaults.full ? (
-              <AddVaultButton position="T" handleOpenModal={handleOpenModal} fieldType={selectedField.type}/>
+              <AddVaultButton position="T" handleOpenModal={handleOpenModal} fieldType={type}/>
             ) : selectedFieldVaults["T"] ? (
               <VaultInstance
                 position="T"
@@ -86,11 +87,11 @@ const RenderTMB = ({
             )}
           </div>
 
-          { selectedField.type === "couchbox" && 
+          { type === "couchbox" && 
             <div className="middle-top middle field-row">
               <span className='position'>M2</span>
               {onlyFirstMiddle ? (
-                <AddVaultButton position="M2" handleOpenModal={handleOpenModal} fieldType={selectedField.type}/>
+                <AddVaultButton position="M2" handleOpenModal={handleOpenModal} fieldType={type}/>
               ) : selectedFieldVaults["M2"]? (
                 <VaultInstance
                   position="M2"
@@ -105,9 +106,9 @@ const RenderTMB = ({
           }
 
           <div className="middle-bottom middl field-row">
-            { selectedField.type === "vault" ? <span className='position'>M</span> : selectedField.type === "couchbox" ? <span className='position'>M1</span> : "" }
+            { type === "vault" ? <span className='position'>M</span> : type === "couchbox" ? <span className='position'>M1</span> : "" }
             {onlyMiddle ? (
-              <AddVaultButton position="M" handleOpenModal={handleOpenModal} fieldType={selectedField.type}/>
+              <AddVaultButton position="M" handleOpenModal={handleOpenModal} fieldType={type}/>
             ) : selectedFieldVaults["M"]? (
               <VaultInstance
                 position="M"
@@ -122,7 +123,7 @@ const RenderTMB = ({
           <div className="bottom field-row">
             <span className="position">B</span>
             {onlyBottom ? (
-              <AddVaultButton position="B" handleOpenModal={handleOpenModal} fieldType={selectedField.type}/>
+              <AddVaultButton position="B" handleOpenModal={handleOpenModal} fieldType={type}/>
             ) : selectedFieldVaults["B"] ? (
               <VaultInstance
                 position="B"
@@ -145,19 +146,19 @@ const RenderTMB = ({
           type="checkbox"
           role="switch"
           id="flexSwitchCheckDefault"
-          checked={toggleSelected || selectedField.type === "couchbox" }
+          checked={toggleSelected || type === "couchbox" }
           onChange={handleToggleChange}
         />
         <label
-          className={`field-type-label ${selectedField.type === 'vault' ? 'vault-label' : 'couchbox-label'}`}
+          className={`field-type-label ${type === 'vault' ? 'vault-label' : 'couchbox-label'}`}
           style={{fontSize: "0.8em", paddingRight: "0.5em"}}
         >
-          {toggleSelected || selectedField.type === "couchbox" ? 'Couchbox' : 'Vault' }
+          {toggleSelected || type === "couchbox" ? 'Couchbox' : 'Vault' }
 
         </label>
       </div>
       
-        <div className="selected-field-name">{selectedField.field_id}</div>
+        <div className="selected-field-name">{field.name}</div>
       </div>
     </>
   );

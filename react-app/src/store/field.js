@@ -1,23 +1,9 @@
-import { GET_WAREHOUSE_INFO } from "./warehouse";
-const GET_FIELD = "field/GET_FIELD";
 const GET_ALL_FIELDS = "field/GET_ALL_FIELDS";
-const TOGGLE_FIELD_TYPE = "field/TOGGLE_FIELD_TYPE"
-const GET_FIELD_VAULTS = "vault/GET_FIELD_VAULTS";
-const CLEAR_CURRENT_FIELD = "field/CLEAR_CURRENT_FIELD";
+const EDIT_FIELD = "field/EDIT_FIELD";
 
 
-const getFieldVaultsAction = (vaults) => ({
-  type: GET_FIELD_VAULTS,
-  vaults
-})
-
-const getFieldAction = (field) => ({
-  type: GET_FIELD,
-  field
-});
-
-const toggleFieldTypeAction = (field) => ({
-  type: TOGGLE_FIELD_TYPE,
+const editFieldAction = (field) => ({
+  type: EDIT_FIELD,
   field
 })
 
@@ -26,71 +12,33 @@ const getAllFieldsAction = (fields) => ({
   fields
 });
 
-export const clearCurrentField = () => ({
-  type: CLEAR_CURRENT_FIELD
-})
 
-export const getFieldVaultsThunk = (fieldId) => async (dispatch) => {
+export const editFieldThunk = (fieldData) => async (dispatch) => {
   try {
-    const res = await fetch(`/api/fields/${fieldId}/vaults`);
-
-    if (res.ok) {
-      const data = await res.json();
-      dispatch(getFieldVaultsAction(data));
-    } else {
-      const errorMessage = await res.text(); // Get the error message
-      console.error(`Error fetching field vaults: ${errorMessage}`);
-      // Handle the error, e.g., show a notification or dispatch another action
-    }
-  } catch (error) {
-    console.error("Error fetching field vaults:", error);
-    // Handle other types of errors if needed
-  }
-};
-
-
-export const toggleFieldTypeThunk = (fieldId) => async (dispatch) => {
-  try {
-    const res = await fetch(`/api/fields/${fieldId}`, {
+    const res = await fetch(`/api/fields/${fieldData.id}`, {
       method: 'PUT',
-      // body:
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(fieldData)
     });
     if (res.ok) {
       const data = await res.json();
-      dispatch(toggleFieldTypeAction(data));
+      dispatch(editFieldAction(data));
       return data;
     } else {
       const err = await res.json();
       return err;
     }
   } catch (error) {
-    console.error("Error toggling field:", error);
+    console.error("Error editting field:", error);
     return error;
   }
 };
 
-// Thunk action creator for getting a single field
-export const getFieldThunk = (fieldId) => async (dispatch) => {
+export const getAllFieldsThunk = (warehouseId) => async (dispatch) => {
   try {
-    const res = await fetch(`/api/fields/${fieldId}`);
-    if (res.ok) {
-      const data = await res.json();
-      dispatch(getFieldAction(data));
-      return data;
-    } else {
-      const err = await res.json();
-      return err;
-    }
-  } catch (error) {
-    console.error("Error fetching field:", error);
-    return error;
-  }
-};
-
-// Thunk action creator for getting all fields
-export const getAllFieldsThunk = () => async (dispatch) => {
-  try {
-    const res = await fetch('/api/fields/');
+    const res = await fetch(`/api/fields/${warehouseId}`);
     if (res.ok) {
       const data = await res.json();
       dispatch(getAllFieldsAction(data));
@@ -106,59 +54,18 @@ export const getAllFieldsThunk = () => async (dispatch) => {
   }
 };
 
-const initialState = {
-  fields: {},
-  currentField: {},
-  fieldVaults: {}
-};
+const initialState = {};
 
 const fieldReducer = (state = initialState, action) => {
+  let newState = { ...state };
   switch (action.type) {
-    case TOGGLE_FIELD_TYPE:
-      return {
-        ...state,
-        fields: {
-          ...state.fields,
-          [action.field.id]: action.field
-        }
-      }
-    case GET_FIELD:
-      return {
-        ...state,
-        fields: {
-          ...state.fields,
-          [action.field.id]: action.field
-        },
-        currentField: action.field
-      };
+    case EDIT_FIELD:
+      const {id, name, type, vaults, warehouseId, full} = action.field;
+      newState[id] = {name, type, vaults, warehouseId, full};
+      return state
     case GET_ALL_FIELDS:
-      return {
-        ...state,
-        fields: action.fields
-      };
-      case GET_WAREHOUSE_INFO:
-        return {
-          ...state,
-          fields: {
-            ...state.fields,
-            ...action.payload.fields
-          },
-        };
-      
-      case GET_FIELD_VAULTS:
-        const updatedFieldVaults = action.vaults.reduce((accumulator, vault) => {
-          accumulator[vault.position] = vault;
-          return accumulator;
-        }, {});
-      
-        return {
-          ...state,
-          fieldVaults: updatedFieldVaults
-        };
-      
-      case CLEAR_CURRENT_FIELD:
-        return { ...state, currentField: null }
-           
+      newState = { ...newState, ...action.fields }
+      return newState
     default:
       return state;
   }

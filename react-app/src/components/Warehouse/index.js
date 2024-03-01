@@ -6,18 +6,17 @@ import AddVaultModal from "./AddVaultModal/AddVaultModal.js"
 import RenderTMB from "../RenderTMB";
 import ConfirmStaging from "./ConfirmStaging";
 import "./Warehouse.css"
-import { getFieldThunk, toggleFieldTypeThunk } from "../../store/field.js";
+import { getAllFieldsThunk, editFieldThunk } from "../../store/field.js";
 import { useHistory, useParams } from "react-router-dom";  
-import { getWarehouseInfoThunk, getAllWarehousesThunk } from "../../store/warehouse.js";
+import { getAllWarehousesThunk } from "../../store/warehouse.js";
 
 export default function Warehouse() {
     const dispatch = useDispatch();
     const { warehouseId } = useParams(); 
-    const rowsArr = useSelector(state => state.warehouse?.warehouses[warehouseId]?.rows);
-    const warehouseFields = useSelector(state => state.warehouse?.warehouses[warehouseId]?.fields);
-    const warehouse = useSelector(state => state.warehouse.warehouses[warehouseId]);
+    const warehouse = useSelector(state => state.warehouse[warehouseId]);
+    const fields = useSelector(state => state.field)
     const searchResult = useSelector(state => state.search.fields);
-    const [selectedField, setSelectedField] = useState(null);
+    const [selectedFieldId, setSelectedFieldId] = useState(null);
     let [top, setTop] = useState(null);
     let [middle, setMiddle] = useState(null);
     let [bottom, setBottom] = useState(null);
@@ -30,15 +29,12 @@ export default function Warehouse() {
     const [warehouseKey, setWarehouseKey] = useState(1);
 
     useEffect(() => {
-        setSelectedField(null);
+        setSelectedFieldId(null);
     }, [warehouse?.id])
 
     useEffect(() => {
-        console.log("💖", selectedField)
-    }, [selectedField])
-
-    useEffect(() => {
         const warehouseInfo = dispatch(getAllWarehousesThunk());
+        const fields = dispatch(getAllFieldsThunk(warehouseId))
 
         Promise.all([warehouseInfo])
             .then(() => setLoading(false))
@@ -51,37 +47,36 @@ export default function Warehouse() {
         }
     }, [selectedVaultToStage]);
 
-    const handleToggleChange = () => {
-        const newToggleSelected = !toggleSelected;
+    // const handleToggleChange = () => {
+    //     const newToggleSelected = !toggleSelected;
 
-        // If it's switching back to "Vault," update the selectedField type
-        const updatedSelectedField = {
-            ...selectedField,
-            type: newToggleSelected ? "couchbox" : "vault",
-        };
+    //     // If it's switching back to "Vault," update the selectedField type
+    //     const updatedSelectedField = {
+    //         ...selectedField,
+    //         type: newToggleSelected ? "couchbox" : "vault",
+    //     };
 
-        // Update the local state
-        setToggleSelected(newToggleSelected);
+    //     // Update the local state
+    //     setToggleSelected(newToggleSelected);
 
-        // Dispatch actions to update Redux store
-        dispatch(toggleFieldTypeThunk(selectedField.id));
-        dispatch(getFieldThunk(selectedField.id));
+    //     // Dispatch actions to update Redux store
+    //     // dispatch(getFieldThunk(selectedField.id));
 
-        window.location.reload(true);
-        window.location.reload(false);
-    };
+    //     window.location.reload(true);
+    //     window.location.reload(false);
+    // };
 
-    const updateSelectedFieldVaults = async (newVault) => {
-        if (selectedField && newVault?.field_id === selectedField.id) {
-            const updatedTop = newVault.position === "T" ? newVault : top;
-            const updatedMiddle = newVault.position === "M" ? newVault : middle;
-            const updatedBottom = newVault.position === "B" ? newVault : bottom;
-        }
-    };
+    // const updateSelectedFieldVaults = async (newVault) => {
+    //     if (selectedField && newVault?.field_id === selectedField.id) {
+    //         const updatedTop = newVault.position === "T" ? newVault : top;
+    //         const updatedMiddle = newVault.position === "M" ? newVault : middle;
+    //         const updatedBottom = newVault.position === "B" ? newVault : bottom;
+    //     }
+    // };
 
-    const handleFieldClick = async (field, row, index) => {
+    const handleFieldClick = async (id) => {
         await setToggleSelected(false);
-        await setSelectedField(field);
+        await setSelectedFieldId(id);
     };
 
     // Function to open the modal and log the statement
@@ -123,6 +118,37 @@ export default function Warehouse() {
         if (position === "B") setBottom(null);
     };
 
+    function fieldGenerator() {
+        const res = [];
+            let temp = Object.values(fields).sort((a,b) => a.name-b.name)
+            for (let i = 0; i < warehouse.rows; i++) {
+                for (let j = 0; j < warehouse.rows; j++) {
+                    let field = temp[j*warehouse.rows+i]
+                    field && res.push(<div className="field"
+                                key={field.id}
+                                style={{
+                                    backgroundColor: `${
+                                        field.vaults.length === 3 || field.full ? "var(--red)" :
+                                            field.vaults.length === 2 ? "var(--yellow)" :
+                                                field.vaults.length === 1 ? "var(--green)" :
+                                                    "var(--lightgrey)"
+                                    }`,
+                                    border: `${selectedFieldId === field.id ? "3px solid var(--blue)" : "none"}`,
+                                    marginBottom: `${field.type === "couchbox-T" ? "-2.2em" : ''}`,
+                                    width: `${field.type === "couchbox-B" ? "0px" : ''}`,
+                                    zIndex: `${field.type === "couchbox-B" ? "100" : 'none'}`,
+                                }}
+                                onClick={() => handleFieldClick(field.id)}
+                            >
+                                {field.type === "couchbox-B" ? "" : <div className="field-number">{field.name}</div>}
+
+                            </div>)
+                }
+        }
+        return res.map((el) => <>{el}</>)
+    }
+
+
     return (
         <div className="warehouse-wrapper wrapper">
             {loading && ( // Show loading animation if loading state is true
@@ -133,12 +159,12 @@ export default function Warehouse() {
             {!loading && ( // Render warehouse content when loading is complete
                 <>
                     <div className="field-info">
-                        {selectedField ? (
+                        {selectedFieldId ? (
                             <RenderTMB
-                                selectedField={selectedField}
+                                selectedFieldId={selectedFieldId}
                                 handleStageClick={handleStageClick}
                                 handleOpenModal={handleOpenModal}
-                                handleToggleChange={handleToggleChange}
+                                // handleToggleChange={handleToggleChange}
                                 toggleSelected={toggleSelected}
                                 warehouse={warehouse}
                             />
@@ -149,7 +175,36 @@ export default function Warehouse() {
                         )}
                     </div>
                     <div className="warehouse">
-                        {rowsArr?.map((row) => (
+                        {/* {() => {
+                            let idx = 0;
+                            for (let i = 0; i < warehouse.columns; i++) {
+                                for (let i = 0; i < warehouse.rows; i++) {
+
+                                    <div
+                                        className="field"
+                                        key={field.id}
+                                        style={{
+                                            backgroundColor: `${
+                                                field?.vaults?.length === 3 || field.full ? "var(--red)" :
+                                                    field?.vaults?.length === 2 ? "var(--yellow)" :
+                                                        field?.vaults?.length === 1 ? "var(--green)" :
+                                                            "var(--lightgrey)"
+                                            }`,
+                                            border: `${selectedField?.id === field?.id ? "3px solid var(--blue)" : "none"}`,
+                                            marginBottom: `${field.type === "couchbox" ? "-2.2em" : ''}`,
+                                            width: `${field.bottom_couch_box ? "0px" : ''}`,
+                                            zIndex: `${field.bottom_couch_box ? "100" : 'none'}`,
+                                        }}
+                                        onClick={() => handleFieldClick(field)}
+                                    >
+                                        {field.bottom_couch_box ? "" : field.type === "vault" ? <div className="field-number">{row.name}{index + 1}</div> : field.type === "couchbox" ? <div className="field-number">{row.name}{index + 1} / {row.name}{index + 2}</div> : ''}
+                                    </div>
+
+                                }
+                        }}
+                        } */}
+                        {fields ? fieldGenerator(fields): null}
+                        {/* {rowsArr?.map((row) => (
                             <div className="row" key={row.id}>
                                 {!searchResult && (
                                     <div className="fields">
@@ -209,15 +264,15 @@ export default function Warehouse() {
                                     </div>
                                 )}
                             </div>
-                        ))}
+                        ))} */}
                     </div>
                     <Modal open={isModalOpen}>
                         <>
                             <AddVaultModal
                                 onClose={handleCloseModal}
-                                selectedField={selectedField}
+                                selectedFieldId={selectedFieldId}
                                 tmb={position}
-                                updateSelectedFieldVaults={updateSelectedFieldVaults} // Pass the function here
+                                // updateSelectedFieldVaults={updateSelectedFieldVaults} // Pass the function here
                                 warehouseId={warehouseId}
                             />
                         </>
@@ -226,9 +281,9 @@ export default function Warehouse() {
                         <>
                             <ConfirmStaging
                                 vault={selectedVaultToStage}
-                                vaultCustomer={selectedVaultToStage?.customer.name}
-                                vaultNumber={selectedVaultToStage?.vault_id}
-                                vaultId={selectedVaultToStage?.id}
+                                // vaultCustomer={selectedVaultToStage?.customer.name}
+                                // vaultNumber={selectedVaultToStage?.vault_id}
+                                // vaultId={selectedVaultToStage?.id}
                                 onClose={closeConfirmStagingModal}
                                 updateVaultPosition={updateVaultPosition}
                             />

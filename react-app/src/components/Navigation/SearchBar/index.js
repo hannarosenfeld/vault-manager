@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import './SearchBar.css';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { getWarehouseInfoThunk } from '../../../store/warehouse';
 import { getAllOrdersThunk } from '../../../store/order';
 import { searchThunk } from '../../../store/search';
 import { setSearchOffAction } from '../../../store/search';
@@ -92,14 +91,12 @@ function SearchBar() {
 
     // Dispatch the setSelectedItemThunk with the selected customer's ID
     // await dispatch(setSelectedItemThunk(customer.id));
-    // await dispatch(getWarehouseInfoThunk());
   };
 
   const handleClearSelectedItem = async () => {
     const order = selectedItem.order_number ? true : false
     const customer = selectedItem.name ? true : false
     await dispatch(setSearchOffAction());
-    await dispatch(getWarehouseInfoThunk());
     setSelectedItem(null);
   };
 

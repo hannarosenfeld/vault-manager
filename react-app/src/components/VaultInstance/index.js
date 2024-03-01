@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
-import { getFieldThunk } from '../../store/field';
+import { getAllFieldsThunk } from '../../store/field';
 import { Link } from 'react-router-dom';
 
 const VaultInstance = ({ topmostVault, vault, position, handleStageClick, handleEditClick }) => {
@@ -10,7 +10,7 @@ const VaultInstance = ({ topmostVault, vault, position, handleStageClick, handle
 
   useEffect(() => {
     // Fetch field information when component mounts
-    dispatch(getFieldThunk(vault.field_id))
+    dispatch(getAllFieldsThunk(vault.field_id))
       .then((response) => {
         setField(response.payload);
       })

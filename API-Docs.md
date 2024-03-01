@@ -82,8 +82,6 @@ This is the documentation for all api routes and responses
         * Purpose: Delete warehouse by warehouse_id
         * Return: `{'message': 'Successfully deleted the warehouse!'}`
 
-
--Delete field by fieldId
 * `/fields`
     * `GET /{warehouse_id}`
         * Purpose: Get all fields by warehouse_id

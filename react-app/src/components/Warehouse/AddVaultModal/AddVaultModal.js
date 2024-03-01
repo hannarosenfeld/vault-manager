@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getWarehouseInfoThunk } from '../../../store/warehouse';
 import { getAllCustomersThunk, addCustomerThunk } from '../../../store/customer';
 import { addVaultThunk, getAllVaultsThunk } from '../../../store/vault';
 import Paper from '@mui/material/Paper';
@@ -10,7 +9,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { FormGroup, FormLabel } from '@mui/material';
 import "./AddVaultModal.css"
 import MiniWareHouse from './MiniWareHouse';
-import { getAllFieldsThunk, getFieldThunk } from '../../../store/field';
+import { getAllFieldsThunk } from '../../../store/field';
 
 export default function AddVaultModal({ onClose, selectedField, tmb, updateSelectedFieldVaults, warehouseId }) {
     const dispatch = useDispatch();
@@ -157,8 +156,6 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
             } else {
                 console.error('updatedVault is null or undefined');
             }
-
-            const getWarehouseInfoDispatch = await dispatch(getWarehouseInfoThunk(1));
 
             onClose(newVault);
             setIsSubmitting(false);

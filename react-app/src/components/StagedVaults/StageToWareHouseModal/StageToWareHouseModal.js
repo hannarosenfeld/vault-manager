@@ -2,17 +2,10 @@ import { useEffect, useState } from "react";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
-import {
-  moveVaultFromStageToWarehouseThunk,
-  getAllWarehouseVaultsThunk,
-  getWarehouseInfoThunk,
-  getAllWarehousesThunk,
-} from "../../../store/warehouse";
-import { getAllStagedVaultsThunk } from "../../../store/stage";
 import { useDispatch, useSelector } from "react-redux";
 import RenderTMB from "../../RenderTMB";
 // import { rowCreator } from "../../utility";
-
+import { getAllWarehousesThunk  } from "../../../store/warehouse";
 import "./StageToWareHouseModal.css";
 
 
@@ -20,8 +13,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   const dispatch = useDispatch();
   const [selectedWarehouse, setSelectedWarehouse] = useState(1);
   const vaults = useSelector(state => state.vault.vaults);
-  const rowsArr = useSelector(state => state.warehouse?.warehouses[selectedWarehouse]?.rows);
-  const warehousesObj = useSelector(state => state.warehouse.warehouses);
+  const warehousesObj = useSelector(state => state.warehouse);
   const warehouses = Object.values(warehousesObj)
 
   const [selectedField, setSelectedField] = useState(null);
@@ -36,20 +28,12 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   let vaultsArr;
 
   useEffect(() => {
-    dispatch(getWarehouseInfoThunk(1));
-  }, [])
-  
-  useEffect(() => {
     dispatch(getAllWarehousesThunk());
   }, []);
 
   useEffect(() => {
     vaultsArr = Object.values(vaults);
   }, [vaults]);
-
-  useEffect(() => {
-    dispatch(getAllWarehouseVaultsThunk());
-  }, [selectedField]);
 
   useEffect(() => {
     vaultsArr = Object.values(vaults);
@@ -79,9 +63,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
     }
   
     if (selectedField) {
-      await dispatch(moveVaultFromStageToWarehouseThunk(vault.id, selectedField.id, fieldName, position));
-      await dispatch(getAllStagedVaultsThunk());
-      await dispatch(getWarehouseInfoThunk(1));
+      // await dispatch(moveVaultFromStageToWarehouseThunk(vault.id, selectedField.id, fieldName, position));
   
       closeConfirmationModal();
       closeModal();
@@ -115,9 +97,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
     return sortedFieldsArr
 }
 
-  const toggleWarehouse = async(warehouseId) => {
-    await dispatch(getWarehouseInfoThunk(warehouseId));
-  
+  const toggleWarehouse = async(warehouseId) => {  
     setSelectedWarehouse(warehouseId);
   }
 
@@ -158,32 +138,30 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
                   )}
                 </div>
                 <div className="warehouse" style={{height: "60%"}}>
-                  {rowsArr?.map(row => (
-                    <div className="row" key={row.id}>
-                      <div className="fields">
-                      {row.fields.map((field, index) => (
-                          <div
-                            className="field"
-                            key={field.id}
-                            style={{
-                              backgroundColor: `${
-                                  field?.vaults?.length === 3 || field.full ? "var(--red)" :
-                                  field?.vaults?.length === 2 ? "var(--yellow)" :
-                                  field?.vaults?.length === 1 ? "var(--green)" :
-                                  "var(--lightgrey)"
-                              }`,
-                              border: selectedField?.id === field?.id ? "3px solid var(--blue)" : "",
-                              marginBottom: `${field.type === "couchbox" ? "-1.7em" : ''}`,
-                              width: `${field.bottom_couch_box ? "0px" : ''}`,                              
-                          }}   
-                            onClick={() => handleFieldClick(field, row, index)}
-                          >
-                    {field.bottom_couch_box ? "" : field.type === "vault" ? <div className="field-number">{row.name}{index + 1}</div> : field.type === "couchbox" ? <div className="field-number">{row.name}{index + 1} / {row.name}{index + 2}</div> : ''}
-                          </div>
-                        ))}
-                      </div>
+                  {/* <div className="row" key={row.id}>
+                    <div className="fields">
+                    {row.fields.map((field, index) => (
+                        <div
+                          className="field"
+                          key={field.id}
+                          style={{
+                            backgroundColor: `${
+                                field?.vaults?.length === 3 || field.full ? "var(--red)" :
+                                field?.vaults?.length === 2 ? "var(--yellow)" :
+                                field?.vaults?.length === 1 ? "var(--green)" :
+                                "var(--lightgrey)"
+                            }`,
+                            border: selectedField?.id === field?.id ? "3px solid var(--blue)" : "",
+                            marginBottom: `${field.type === "couchbox" ? "-1.7em" : ''}`,
+                            width: `${field.bottom_couch_box ? "0px" : ''}`,                              
+                        }}   
+                          onClick={() => handleFieldClick(field, row, index)}
+                        >
+                  {field.bottom_couch_box ? "" : field.type === "vault" ? <div className="field-number">{row.name}{index + 1}</div> : field.type === "couchbox" ? <div className="field-number">{row.name}{index + 1} / {row.name}{index + 2}</div> : ''}
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  </div> */}
                 </div>
               </div>
             </div>

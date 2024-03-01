@@ -47,6 +47,7 @@ The folling is the current store state being used
             "orderName": "ABC123", // or null
             "fieldId": 321, // or null
             "customerId": 1234,
+            "position": "T", // "M1" "M2" "B"
             "attachments": [1, 2] // Attachments by Ids
         }
     },

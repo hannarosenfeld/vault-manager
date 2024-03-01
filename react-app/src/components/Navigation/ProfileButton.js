@@ -8,13 +8,12 @@ import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
 import { Drawer, List, ListItem, ListItemText, Button } from "@mui/material";
 import "./Navigation.css";
 import { getAllWarehousesThunk } from "../../store/warehouse";
-import { clearCurrentField } from "../../store/field";
 
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showDrawer, setShowDrawer] = useState(false);
-  const warehousesObj = useSelector(state => state.warehouse.warehouses)
+  const warehousesObj = useSelector(state => state.warehouse)
   const warehouses = Object.values(warehousesObj)
 
   useEffect(() => {
@@ -30,7 +29,6 @@ function ProfileButton({ user }) {
   };
 
   const visitWarehouse = () => {
-    clearCurrentField()
     closeDrawer();
   }
 
