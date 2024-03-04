@@ -27,7 +27,6 @@ const RenderTMB = ({
   const { type } = field
 
   useEffect(() => {
-    console.log('hitting useEffect get all vaults')
     dispatch(getAllVaultsThunk(selectedFieldId))
   }, [selectedFieldId])
 
