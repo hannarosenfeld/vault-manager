@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './EditVaultPage.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-import { editVaultThunk, getVaultThunk } from '../../../store/vault';
+import { editVaultThunk } from '../../../store/vault';
 import { updateCustomerNameThunk } from '../../../store/customer';
 import { deleteVaultThunk } from '../../../store/vault';
 import Button from '@mui/material/Button';
@@ -50,7 +50,6 @@ const EditVaultPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await dispatch(getVaultThunk(vaultId));
         await dispatch(getAllVaultAttachmentsThunk(vaultId));
         setIsLoading(false);
       } catch (error) {

@@ -23,13 +23,15 @@ def validation_errors_to_error_messages(validation_errors):
             errorMessages.append(f'{field} : {error}')
     return errorMessages
 
-
-@vault_routes.route('/')
-def all_vaults():
+# Get all vaultIds 
+@vault_routes.route('/<int:field_id>')
+def all_vaults(field_id):
     """
     Query for all vaults and returns them in a list of vault dictionaries
     """
-    vaults = Vault.query.all()
+    field = Field.query.get(field_id)
+    vault_ids = field.to_dict()['vaults']
+    vaults = [Vault.query.get(id) for id in vault_ids]
     return { vault.id : vault.to_dict() for vault in vaults }
 
 

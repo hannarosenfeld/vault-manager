@@ -4,6 +4,7 @@ import AddVaultButton from "./AddVaultButton";
 import VaultInstance from "../VaultInstance";
 import { useState } from "react";
 import "./RenderTMB.css";
+import { getAllVaultsThunk } from "../../store/vault";
 
 
 const RenderTMB = ({ 
@@ -21,10 +22,15 @@ const RenderTMB = ({
   // const vaults = Object.values(selectedFieldIdVaults)
   const field = useSelector((state) => state.field[selectedFieldId])
   const vaults = useSelector((state) => state.vaults)
-  const selectedFieldVaults = field.vaults.map((vaultId) => vaults[vaultId])
+  const selectedFieldVaults = (vaultIds => vaultIds.map((id) => vaults[id]))
   const [isLoading, setIsLoadig] = useState(false);
 
   const { type } = field
+
+  useEffect(() => {
+    console.log('hitting useEffect get all vaults')
+    dispatch(getAllVaultsThunk(selectedFieldId))
+  }, [selectedFieldId])
 
   // useEffect(() => {
   //     setIsLoadig(true)
@@ -75,14 +81,16 @@ const RenderTMB = ({
             )}
             { !onlyFirstMiddle && onlyTop && !selectedFieldVaults.full ? (
               <AddVaultButton position="T" handleOpenModal={handleOpenModal} fieldType={type}/>
-            ) : selectedFieldVaults["T"] ? (
+            ) 
+            : selectedFieldVaults["T"] ? (
               <VaultInstance
                 position="T"
                 vault={selectedFieldVaults["T"]}
                 handleStageClick={handleStageClick}
                 topmostVault={topmostVault?.id === selectedFieldVaults["T"].id ? true : false}
               />
-            ) : (
+            ) 
+            : (
               ""
             )}
           </div>
