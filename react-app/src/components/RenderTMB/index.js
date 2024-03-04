@@ -17,18 +17,43 @@ const RenderTMB = ({
  }) => {
   const dispatch = useDispatch();
 
-  const field = useSelector((state) => state.field[selectedFieldId])
-  const vaults = useSelector((state) => state.vaults)
-  const selectedFieldVaults = (vaultIds => vaultIds.map((id) => vaults[id]))
+  const field = useSelector((state) => state.field[selectedFieldId]);
+  const vaults = useSelector((state) => state.vault);
+  const vaultsArr = Object.values(vaults);
 
+  let onlyBottom;
+  let onlyMiddle;
+  let onlyFirstMiddle;
+  let onlyTop;
+
+  const [sortedVaults, setSortedVaults] = useState(null);
   const [topmostVault, setTopmostVault] = useState(null);
-  const [isLoading, setIsLoadig] = useState(false);
+  const [isLoading, setIsLoadig] = useState(true);
 
   const { type } = field
 
   useEffect(() => {
     dispatch(getAllVaultsThunk(selectedFieldId))
   }, [selectedFieldId])
+
+  useEffect(() => {
+    const sortVaults = {};
+    vaultsArr.forEach(vault => {
+      sortVaults[vault.position] = vault;
+    });
+    setSortedVaults(sortVaults);
+    console.log("🌸 vaults: ", sortedVaults);
+    setIsLoadig(false)
+  }, [vaults]);
+
+  useEffect(() => {
+    if (sortedVaults) {
+      onlyBottom = !sortedVaults["B"];
+      onlyMiddle = !sortedVaults["M"] && sortedVaults["B"];
+      onlyFirstMiddle = type === "couchbox-T" && !sortedVaults["M2"] && sortedVaults["M"];
+      onlyTop = !sortedVaults["T"] && ((type === "couchbox-T" && sortedVaults["M1"]) || sortedVaults["M"])
+    }
+  }, [sortedVaults])
 
   useEffect(() => {
     const updateTopmostVault = () => {
@@ -48,11 +73,6 @@ const RenderTMB = ({
     }
   }, [selectedFieldId, vaults]);
 
-  const onlyBottom = !selectedFieldVaults["B"];
-  const onlyMiddle = !selectedFieldVaults["M"] && selectedFieldVaults["B"];
-  const onlyFirstMiddle = type === "couchbox-T" && !selectedFieldVaults["M2"] && selectedFieldVaults["M"];
-  const onlyTop = !selectedFieldVaults["T"] && ((type === "couchbox-T" && selectedFieldVaults["M1"]) || selectedFieldVaults["M"])
-
   return (
     <>
     {isLoading ? (
@@ -67,20 +87,20 @@ const RenderTMB = ({
         <div className="selected-field-vaults-tmb" style={{ gridTemplateRows: type === "couchbox" ? "repeat(4,1fr)" : ""}}>
           <div className="top field-row">
             <span className="position">T</span>
-            { onlyTop && selectedFieldVaults.full && type === "vault" && (
+            { onlyTop && sortedVaults.full && type === "vault" && (
               <div style={{ color: "red" }}>
                 <span className="material-symbols-outlined">warning</span>Field is full
               </div>
             )}
-            { !onlyFirstMiddle && onlyTop && !selectedFieldVaults.full ? (
+            { !onlyFirstMiddle && onlyTop && !sortedVaults.full ? (
               <AddVaultButton position="T" handleOpenModal={handleOpenModal} fieldType={type}/>
             ) 
-            : selectedFieldVaults["T"] ? (
+            : sortedVaults["T"] ? (
               <VaultInstance
                 position="T"
-                vault={selectedFieldVaults["T"]}
+                vault={sortedVaults["T"]}
                 handleStageClick={handleStageClick}
-                topmostVault={topmostVault?.id === selectedFieldVaults["T"].id ? true : false}
+                topmostVault={topmostVault?.id === sortedVaults["T"].id ? true : false}
               />
             ) 
             : (
@@ -93,12 +113,12 @@ const RenderTMB = ({
               <span className='position'>M2</span>
               {onlyFirstMiddle ? (
                 <AddVaultButton position="M2" handleOpenModal={handleOpenModal} fieldType={type}/>
-              ) : selectedFieldVaults["M2"]? (
+              ) : sortedVaults["M2"]? (
                 <VaultInstance
                   position="M2"
-                  vault={selectedFieldVaults["M2"]}
+                  vault={sortedVaults["M2"]}
                   handleStageClick={handleStageClick}
-                  topmostVault={topmostVault?.id === selectedFieldVaults["M2"].id ? true : false}
+                  topmostVault={topmostVault?.id === sortedVaults["M2"].id ? true : false}
                 />
               ) : (
                 ""
@@ -110,12 +130,12 @@ const RenderTMB = ({
             { type === "vault" ? <span className='position'>M</span> : type === "couchbox" ? <span className='position'>M1</span> : "" }
             {onlyMiddle ? (
               <AddVaultButton position="M" handleOpenModal={handleOpenModal} fieldType={type}/>
-            ) : selectedFieldVaults["M"]? (
+            ) : sortedVaults["M"]? (
               <VaultInstance
                 position="M"
-                vault={selectedFieldVaults["M"]}
+                vault={sortedVaults["M"]}
                 handleStageClick={handleStageClick}
-                topmostVault={topmostVault?.id === selectedFieldVaults["M"].id ? true : false}
+                topmostVault={topmostVault?.id === sortedVaults["M"].id ? true : false}
               />
             ) : (
               ""
@@ -125,12 +145,12 @@ const RenderTMB = ({
             <span className="position">B</span>
             {onlyBottom ? (
               <AddVaultButton position="B" handleOpenModal={handleOpenModal} fieldType={type}/>
-            ) : selectedFieldVaults["B"] ? (
+            ) : sortedVaults["B"] ? (
               <VaultInstance
                 position="B"
-                vault={selectedFieldVaults["B"]}
+                vault={sortedVaults["B"]}
                 handleStageClick={handleStageClick}
-                topmostVault={topmostVault?.id === selectedFieldVaults["B"].id ? true : false}
+                topmostVault={topmostVault?.id === sortedVaults["B"].id ? true : false}
               />
             ) : (
               ""

@@ -52,6 +52,7 @@ export const updateCustomerNameThunk = (customerId, newName) => async (dispatch)
 };
 
 export const getCustomerThunk = (customerId) => async (dispatch) => {
+  console.log("🦚", customerId)
   try {
     const res = await fetch(`/api/customers/${customerId}`); // Adjust the API endpoint
     if (res.ok) {
@@ -119,6 +120,7 @@ const initialState = {
 const customerReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_CUSTOMER:
+      console.log("🌳")
       return {
         ...state,
         customers: {

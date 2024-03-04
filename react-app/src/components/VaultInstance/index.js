@@ -2,30 +2,29 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { getAllFieldsThunk } from '../../store/field';
 import { Link } from 'react-router-dom';
+import { getCustomerThunk } from '../../store/customer';
+
 
 const VaultInstance = ({ topmostVault, vault, position, handleStageClick, handleEditClick }) => {
   const dispatch = useDispatch();
-  // const [topmostPosition, setTopmostPosition] = useState('');
+  const customer = useSelector(state => state.customer) // TODO: Change store and fetch customer to render on line 23
   const [field, setField] = useState(null);
+  const [isLoading, setIsLoadig] = useState(true); // TODO: Conditional Render based on isLoaded
+
+  console.log("🪶", customer)
 
   useEffect(() => {
-    // Fetch field information when component mounts
-    dispatch(getAllFieldsThunk(vault.field_id))
-      .then((response) => {
-        setField(response.payload);
-      })
-      .catch((error) => {
-        console.error('Error fetching field:', error);
-      });
-  }, [dispatch, vault.field_id]);
+    dispatch(getCustomerThunk(vault.customer_id)) // The route is currently not working
+    .then(setIsLoadig(false));
+  }, [vault.customer_id])
 
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
       <div style={{ display: 'flex', width: '60%', gap: '5px' }}>
-        <div>{vault?.customer?.name}</div>
-        <div>{vault?.vault_id}</div>
+        <div>{customer.name}</div>
+        <div>{vault.name}</div>
         <div style={{ color: 'var(--red)' }}>
-          <b>{vault?.type}</b>
+          <b>{vault.type}</b>
         </div>
       </div>
       <div className="edit-symbols">
@@ -51,7 +50,7 @@ const VaultInstance = ({ topmostVault, vault, position, handleStageClick, handle
           </span>
         </Link>
       </div>
-    </div>
+    </div>    
   );
 };
 
