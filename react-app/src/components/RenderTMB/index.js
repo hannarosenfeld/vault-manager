@@ -15,27 +15,24 @@ const RenderTMB = ({
   toggleSelected, 
   warehouse
  }) => {
-
   const dispatch = useDispatch();
-  const [topmostVault, setTopmostVault] = useState(null);
-  // const selectedFieldVaults = useSelector((state) => state.field.fieldVaults);
-  // const vaults = Object.values(selectedFieldIdVaults)
+
   const field = useSelector((state) => state.field[selectedFieldId])
   const vaults = useSelector((state) => state.vaults)
   const selectedFieldVaults = (vaultIds => vaultIds.map((id) => vaults[id]))
+
+  const [topmostVault, setTopmostVault] = useState(null);
   const [isLoading, setIsLoadig] = useState(false);
 
   const { type } = field
+  
+  // const selectedFieldVaults = useSelector((state) => state.field.fieldVaults);
+  // const vaults = Object.values(selectedFieldIdVaults)
 
   useEffect(() => {
     console.log('hitting useEffect get all vaults')
     dispatch(getAllVaultsThunk(selectedFieldId))
   }, [selectedFieldId])
-
-  // useEffect(() => {
-  //     setIsLoadig(true)
-  //     .then(setIsLoadig(false));
-  // }, [selectedFieldId, handleStageClick])
 
   useEffect(() => {
     const updateTopmostVault = () => {
