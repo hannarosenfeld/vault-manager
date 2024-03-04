@@ -25,9 +25,6 @@ const RenderTMB = ({
   const [isLoading, setIsLoadig] = useState(false);
 
   const { type } = field
-  
-  // const selectedFieldVaults = useSelector((state) => state.field.fieldVaults);
-  // const vaults = Object.values(selectedFieldIdVaults)
 
   useEffect(() => {
     console.log('hitting useEffect get all vaults')
