@@ -16,21 +16,19 @@ const RenderTMB = ({
   warehouse
  }) => {
   const dispatch = useDispatch();
-
   const field = useSelector((state) => state.field[selectedFieldId]);
   const vaults = useSelector((state) => state.vault);
   const vaultsArr = Object.values(vaults);
+  const [sortedVaults, setSortedVaults] = useState(null);
+  const [topmostVault, setTopmostVault] = useState(null);
+  const [isLoading, setIsLoadig] = useState(true);
+  const { type } = field
 
+  // 🚨 TODO: The Add Vault Button is currently not showing
   let onlyBottom;
   let onlyMiddle;
   let onlyFirstMiddle;
   let onlyTop;
-
-  const [sortedVaults, setSortedVaults] = useState(null);
-  const [topmostVault, setTopmostVault] = useState(null);
-  const [isLoading, setIsLoadig] = useState(true);
-
-  const { type } = field
 
   useEffect(() => {
     dispatch(getAllVaultsThunk(selectedFieldId))
@@ -42,7 +40,6 @@ const RenderTMB = ({
       sortVaults[vault.position] = vault;
     });
     setSortedVaults(sortVaults);
-    console.log("🌸 vaults: ", sortedVaults);
     setIsLoadig(false)
   }, [vaults]);
 
@@ -107,7 +104,6 @@ const RenderTMB = ({
               ""
             )}
           </div>
-
           { type === "couchbox" && 
             <div className="middle-top middle field-row">
               <span className='position'>M2</span>
@@ -125,8 +121,7 @@ const RenderTMB = ({
               )}
             </div>
           }
-
-          <div className="middle-bottom middl field-row">
+          <div className="middle-bottom middle field-row">
             { type === "vault" ? <span className='position'>M</span> : type === "couchbox" ? <span className='position'>M1</span> : "" }
             {onlyMiddle ? (
               <AddVaultButton position="M" handleOpenModal={handleOpenModal} fieldType={type}/>
@@ -158,7 +153,6 @@ const RenderTMB = ({
           </div>
         </div>
     )}
-
     {/* Toggle Field Type Switch */}
       <div className={`selected-field-box ${toggleSelected ? 'toggled' : ''}`}>
       <div className="form-check form-switch" >
@@ -175,10 +169,8 @@ const RenderTMB = ({
           style={{fontSize: "0.8em", paddingRight: "0.5em"}}
         >
           {toggleSelected || type === "couchbox" ? 'Couchbox' : 'Vault' }
-
         </label>
-      </div>
-      
+      </div>    
         <div className="selected-field-name">{field.name}</div>
       </div>
     </>
