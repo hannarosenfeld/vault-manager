@@ -30,6 +30,7 @@ def single_customer(id):
     Query for a customer by id and returns that customer in a dictionary
     """
     customer = Customer.query.get(id)
+
     return customer.to_dict()
 
 

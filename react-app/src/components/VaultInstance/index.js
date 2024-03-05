@@ -1,22 +1,27 @@
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState, useEffect } from 'react';
-import { getAllFieldsThunk } from '../../store/field';
 import { Link } from 'react-router-dom';
 import { getCustomerThunk } from '../../store/customer';
-
+import { getAllFieldsThunk } from '../../store/field';
 
 const VaultInstance = ({ topmostVault, vault, position, handleStageClick, handleEditClick }) => {
   const dispatch = useDispatch();
-  const customer = useSelector(state => state.customer) // TODO: Change store and fetch customer to render on line 23
+  const [isLoading, setIsLoading] = useState(true);
+  const customer = useSelector(state => state.customer[vault.customer_id]);
   const [field, setField] = useState(null);
-  const [isLoading, setIsLoadig] = useState(true); // TODO: Conditional Render based on isLoaded
-
-  console.log("🪶", customer)
 
   useEffect(() => {
-    dispatch(getCustomerThunk(vault.customer_id)) // The route is currently not working
-    .then(setIsLoadig(false));
-  }, [vault.customer_id])
+    dispatch(getCustomerThunk(vault.customer_id))
+      .then(() => setIsLoading(false))
+      .catch(error => {
+        console.error('Error fetching customer data:', error);
+        setIsLoading(false);
+      });
+  }, [dispatch, vault.customer_id]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
@@ -29,7 +34,7 @@ const VaultInstance = ({ topmostVault, vault, position, handleStageClick, handle
       </div>
       <div className="edit-symbols">
         <span
-          onClick={ topmostVault ? () => handleStageClick(vault, position) : '' }
+          onClick={topmostVault ? () => handleStageClick(vault, position) : ''}
           style={{ color: topmostVault ? '#FFA500' : '#CCCCCC', cursor: topmostVault ? 'pointer' : 'not-allowed' }}
           className="material-symbols-outlined"
         >
@@ -45,12 +50,10 @@ const VaultInstance = ({ topmostVault, vault, position, handleStageClick, handle
           </span>
         </Link>
         <Link to={`/vaults/${vault?.id}/detail`}>
-          <span class="material-symbols-outlined">
-          description
-          </span>
+          <span className="material-symbols-outlined">description</span>
         </Link>
       </div>
-    </div>    
+    </div>
   );
 };
 

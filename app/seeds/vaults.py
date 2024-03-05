@@ -21,7 +21,7 @@ def seed_vaults(customers):
     )
     v3 = Vault(
         name='176',   
-        customer_id=2,
+        customer_id=1,
         field_id=25,
         position='B',
         order_id=3,

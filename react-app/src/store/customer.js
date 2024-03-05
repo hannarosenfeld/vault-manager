@@ -112,22 +112,15 @@ export const addCustomerThunk = (customerData) => async (dispatch) => {
   }
 };
 
-const initialState = {
-  customers: {},
-  currentCustomer: {},
-};
+const initialState = {};
 
 const customerReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_CUSTOMER:
-      console.log("🌳")
       return {
-        ...state,
-        customers: {
-          ...state.customers,
+          ...state,
           [action.customer.id]: action.customer
-        },
-        currentCustomer: action.customer
+        // currentCustomer: action.customer
       };    
     case GET_ALL_CUSTOMERS:
       return {
