@@ -52,23 +52,24 @@ const RenderTMB = ({
     }
   }, [sortedVaults])
 
-  useEffect(() => {
-    const updateTopmostVault = () => {
-      let topVault = null;
-
-      for (let vault of vaults) {
-        if (!topVault || vault.position > topVault.position) {
-          topVault = vault;
-        }
+  const updateTopmostVault = () => {
+    let topVault = null;
+    for (let vault of vaultsArr) {
+      if (!topVault || vault.position > topVault.position) {
+        topVault = vault;
       }
+    }
 
-      setTopmostVault(topVault);
-    };
+    setTopmostVault(topVault);
+    console.log("🥎",topmostVault)
+  };
 
+  useEffect(() => {
+    updateTopmostVault()
     if (vaults && vaults.length > 0) {
       updateTopmostVault();
     }
-  }, [selectedFieldId, vaults]);
+  }, [vaultsArr]);
 
   return (
     <>
