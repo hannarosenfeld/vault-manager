@@ -50,6 +50,12 @@ const RenderTMB = ({
       onlyFirstMiddle = type === "couchbox-T" && !sortedVaults["M2"] && sortedVaults["M"];
       onlyTop = !sortedVaults["T"] && ((type === "couchbox-T" && sortedVaults["M1"]) || sortedVaults["M"])
     }
+    console.log(
+      "💖 onlyBottom:", onlyBottom,
+      "\n💖 onlyFirstMiddle: ", onlyFirstMiddle,
+      "\n💖 onlyMiddle: ", onlyMiddle,
+      "\n💖 onlyTop: ", onlyTop
+      )
   }, [sortedVaults])
 
   const updateTopmostVault = () => {
@@ -61,7 +67,7 @@ const RenderTMB = ({
     }
 
     setTopmostVault(topVault);
-    console.log("🥎",topmostVault)
+    console.log("🥎 topmostVault: ",topmostVault)
   };
 
   useEffect(() => {
