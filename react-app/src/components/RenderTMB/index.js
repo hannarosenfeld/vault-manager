@@ -45,6 +45,7 @@ const RenderTMB = ({
 
   useEffect(() => {
     if (sortedVaults) {
+      console.log("🍄 sortedVaults: ", sortedVaults, !sortedVaults["B"])
       onlyBottom = !sortedVaults["B"];
       onlyMiddle = !sortedVaults["M"] && sortedVaults["B"];
       onlyFirstMiddle = type === "couchbox-T" && !sortedVaults["M2"] && sortedVaults["M"];
@@ -81,11 +82,9 @@ const RenderTMB = ({
     <>
     {isLoading ? (
       <div style={{width: "100%", display: "flex", alignItems: "center", marginLeft: "50%", alignContent: "center"}}>
-      <div className="loading-dots">
-        <div className="dot1"></div>
-        <div className="dot2"></div>
-        <div className="dot3"></div>
-      </div>
+        <div class="spinner-border text-primary" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
     </div>
     ) : (
         <div className="selected-field-vaults-tmb" style={{ gridTemplateRows: type === "couchbox" ? "repeat(4,1fr)" : ""}}>

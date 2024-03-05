@@ -2,13 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getCustomerThunk } from '../../store/customer';
-import { getAllFieldsThunk } from '../../store/field';
 
-const VaultInstance = ({ topmostVault, vault, position, handleStageClick, handleEditClick }) => {
+const VaultInstance = ({ topmostVault, vault, handleStageClick, handleEditClick }) => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
   const customer = useSelector(state => state.customer[vault.customer_id]);
-  const [field, setField] = useState(null);
 
   useEffect(() => {
     dispatch(getCustomerThunk(vault.customer_id))
@@ -34,7 +32,7 @@ const VaultInstance = ({ topmostVault, vault, position, handleStageClick, handle
       </div>
       <div className="edit-symbols">
         <span
-          onClick={topmostVault ? () => handleStageClick(vault, position) : ''}
+          onClick={topmostVault ? () => handleStageClick(vault) : ''}
           style={{ color: topmostVault ? '#FFA500' : '#CCCCCC', cursor: topmostVault ? 'pointer' : 'not-allowed' }}
           className="material-symbols-outlined"
         >

@@ -89,18 +89,9 @@ export default function Warehouse() {
         setIsModalOpen(false);
     };
 
-    const handleStageClick = async (vault, position) => {
-        if (
-            (position === "T") ||
-            (position === "M" && !top) ||
-            (position === "B" && !middle)
-        ) {
-            console.log("Staging Allowed!");
-            await setSelectedVaultToStage(vault);
-            await setPosition(position);
-        } else {
-            console.log("Staging not allowed for this vault position.");
-        }
+    const handleStageClick = async (vault) => {
+        await setSelectedVaultToStage(vault);
+        await setPosition(position);
     };
 
     const openConfirmStagingModal = () => {
