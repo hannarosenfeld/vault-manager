@@ -18,7 +18,8 @@ const RenderTMB = ({
   const dispatch = useDispatch();
   const field = useSelector((state) => state.field[selectedFieldId]);
   const vaults = useSelector((state) => state.vault);
-  const vaultsArr = Object.values(vaults);
+  const vaultIds = field.vaults;
+  const vaultsArr = vaultIds.map(id => vaults[id])
   const [sortedVaults, setSortedVaults] = useState(null);
   const [topmostVault, setTopmostVault] = useState(null);
   const [isLoading, setIsLoadig] = useState(true);
@@ -35,6 +36,7 @@ const RenderTMB = ({
   }, [selectedFieldId])
 
   useEffect(() => {
+    // console.log("🚨", vaultsArr)
     const sortVaults = {};
     vaultsArr.forEach(vault => {
       sortVaults[vault.position] = vault;
@@ -43,21 +45,21 @@ const RenderTMB = ({
     setIsLoadig(false)
   }, [vaults]);
 
-  useEffect(() => {
-    if (sortedVaults) {
-      console.log("🍄 sortedVaults: ", sortedVaults, !sortedVaults["B"])
-      onlyBottom = !sortedVaults["B"];
-      onlyMiddle = !sortedVaults["M"] && sortedVaults["B"];
-      onlyFirstMiddle = type === "couchbox-T" && !sortedVaults["M2"] && sortedVaults["M"];
-      onlyTop = !sortedVaults["T"] && ((type === "couchbox-T" && sortedVaults["M1"]) || sortedVaults["M"])
-    }
-    console.log(
-      "💖 onlyBottom:", onlyBottom,
-      "\n💖 onlyFirstMiddle: ", onlyFirstMiddle,
-      "\n💖 onlyMiddle: ", onlyMiddle,
-      "\n💖 onlyTop: ", onlyTop
-      )
-  }, [sortedVaults])
+  // useEffect(() => {
+  //   if (sortedVaults) {
+  //     console.log("🍄 sortedVaults: ", sortedVaults)
+  //     onlyBottom = sortedVaults["B"] ? false : true;
+  //     onlyMiddle = !sortedVaults["M"] && sortedVaults["B"];
+  //     onlyFirstMiddle = type === "couchbox-T" && !sortedVaults["M2"] && sortedVaults["M"];
+  //     onlyTop = !sortedVaults["T"] && ((type === "couchbox-T" && sortedVaults["M1"]) || sortedVaults["M"])
+  //   }
+  //   console.log(
+  //     "💖 onlyBottom:", onlyBottom,
+  //     "\n💖 onlyFirstMiddle: ", onlyFirstMiddle,
+  //     "\n💖 onlyMiddle: ", onlyMiddle,
+  //     "\n💖 onlyTop: ", onlyTop
+  //     )
+  // }, [sortedVaults])
 
   const updateTopmostVault = () => {
     let topVault = null;
@@ -78,6 +80,9 @@ const RenderTMB = ({
     }
   }, [vaultsArr]);
 
+
+  const { T, M, M2, B } = sortedVaults
+
   return (
     <>
     {isLoading ? (
@@ -95,7 +100,7 @@ const RenderTMB = ({
                 <span className="material-symbols-outlined">warning</span>Field is full
               </div>
             )}
-            { !onlyFirstMiddle && onlyTop && !sortedVaults.full ? (
+            { !T && M && B ? (
               <AddVaultButton position="T" handleOpenModal={handleOpenModal} fieldType={type}/>
             ) 
             : sortedVaults["T"] ? (
@@ -113,7 +118,7 @@ const RenderTMB = ({
           { type === "couchbox" && 
             <div className="middle-top middle field-row">
               <span className='position'>M2</span>
-              {onlyFirstMiddle ? (
+              { !M2 && M && B ? (
                 <AddVaultButton position="M2" handleOpenModal={handleOpenModal} fieldType={type}/>
               ) : sortedVaults["M2"]? (
                 <VaultInstance
@@ -129,9 +134,9 @@ const RenderTMB = ({
           }
           <div className="middle-bottom middle field-row">
             { type === "vault" ? <span className='position'>M</span> : type === "couchbox" ? <span className='position'>M1</span> : "" }
-            {onlyMiddle ? (
+            {B && !M ? (
               <AddVaultButton position="M" handleOpenModal={handleOpenModal} fieldType={type}/>
-            ) : sortedVaults["M"]? (
+            ) : sortedVaults["M"] ? (
               <VaultInstance
                 position="M"
                 vault={sortedVaults["M"]}
@@ -144,7 +149,7 @@ const RenderTMB = ({
           </div>
           <div className="bottom field-row">
             <span className="position">B</span>
-            {onlyBottom ? (
+            {!B ? (
               <AddVaultButton position="B" handleOpenModal={handleOpenModal} fieldType={type}/>
             ) : sortedVaults["B"] ? (
               <VaultInstance
