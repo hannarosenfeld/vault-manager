@@ -4,13 +4,13 @@ from sqlalchemy.sql import text
 
 def seed_customers():
     c1 = Customer(
-        name="Office Furniture"
+        name="OFFICE FURNITURE"
     )
     c2 = Customer(
-        name="Knox"
+        name="KNOX"
     )    
     c3 = Customer(
-        name="Zang"
+        name="ZANG"
     )    
     db.session.add(c1)
     db.session.add(c2)
