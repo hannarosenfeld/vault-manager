@@ -24,14 +24,14 @@ def all_customers():
     return {'customers': [customer.to_dict() for customer in customers]}
 
 
-@customers_routes.route('/<int:id>')
-def single_customer(id):
-    """
-    Query for a customer by id and returns that customer in a dictionary
-    """
-    customer = Customer.query.get(id)
+# @customers_routes.route('/<int:id>')
+# def single_customer(id):
+#     """
+#     Query for a customer by id and returns that customer in a dictionary
+#     """
+#     customer = Customer.query.get(id)
 
-    return customer.to_dict()
+#     return customer.to_dict()
 
 
 @customers_routes.route('/', methods=['POST'])

@@ -56,8 +56,6 @@ def add_vault():
             customer = Customer.query.filter_by(name=customer_name).first()
 
             new_vault = Vault(
-                customer_name=form.data['customer_name'],
-                customer=customer,
                 customer_id=customer.id if customer else None,
                 field_id=form.data['field_id'],
                 # field_name=form.data['field_name'],

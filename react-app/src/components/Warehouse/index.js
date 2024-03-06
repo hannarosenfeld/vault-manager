@@ -9,6 +9,7 @@ import "./Warehouse.css"
 import { getAllFieldsThunk, editFieldThunk } from "../../store/field.js";
 import { useHistory, useParams } from "react-router-dom";  
 import { getAllWarehousesThunk } from "../../store/warehouse.js";
+import { getAllCustomersThunk } from "../../store/customer.js";
 
 export default function Warehouse() {
     const dispatch = useDispatch();
@@ -34,6 +35,7 @@ export default function Warehouse() {
 
     useEffect(() => {
         const warehouseInfo = dispatch(getAllWarehousesThunk());
+        dispatch(getAllCustomersThunk())
         const fields = dispatch(getAllFieldsThunk(warehouseId))
 
         Promise.all([warehouseInfo])

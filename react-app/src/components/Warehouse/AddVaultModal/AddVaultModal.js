@@ -11,11 +11,11 @@ import "./AddVaultModal.css"
 import MiniWareHouse from './MiniWareHouse';
 import { getAllFieldsThunk } from '../../../store/field';
 
-export default function AddVaultModal({ onClose, selectedField, tmb, updateSelectedFieldVaults, warehouseId }) {
+export default function AddVaultModal({ onClose, selectedFieldId, tmb, updateSelectedFieldVaults, warehouseId }) {
     const dispatch = useDispatch();
     const customersObj = useSelector(state => state.customer.customers)
     const vaultObj = useSelector(state => state.vault.vaults);
-    const field = useSelector(state => state.field.currentField)
+    const field = useSelector(state => state.field[selectedFieldId])
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [customers, setCustomers] = useState([]);
     const [customer_name, setCustomerName] = useState('');
@@ -35,8 +35,8 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
     };
 
     useEffect(() => {
-        console.log("🥎 selectedField:", selectedField)
-    }, [selectedField])
+        console.log("🥎 selectedField:", selectedFieldId)
+    }, [selectedFieldId])
 
     useEffect(() => {
         document.addEventListener('click', handleDocumentClick);
@@ -140,12 +140,12 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
             const vaultData = new FormData
             vaultData.append("customer_name", customer_name)
             vaultData.append("customer", newCustomer)
-            vaultData.append("field_id", selectedField.id)
+            vaultData.append("field_id", selectedFieldId)
             // vaultData.append("field_name", selectedField.field_id)
             vaultData.append("position", tmb)
-            vaultData.append("type", selectedField.type === "vault" ? vaultType : "couchbox")
-            vaultData.append("vault_id", selectedField.type === "vault" ? vault_id : null)
-            vaultData.append("order_number", selectedField.type === "vault" ? order_number : null)
+            vaultData.append("type", field.type === "vault" ? vaultType : "couchbox")
+            vaultData.append("vault_id", field.type === "vault" ? vault_id : null)
+            vaultData.append("order_number", field.type === "vault" ? order_number : null)
             vaultData.append("attachment", attachment)
             vaultData.append("warehouse_id", warehouseId)
 
@@ -187,9 +187,9 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
                     </IconButton>
                 </div>
                 <div style={{ marginBottom: "5px" }}>
-                    <h4 id="modal-modal-title">{selectedField.type === "vault" ? "Add Vault" : "Add Couchbox"}</h4>
+                    <h4 id="modal-modal-title">{field.type === "vault" ? "Add Vault" : "Add Couchbox"}</h4>
                     <div className="vault-info">
-                        <div>Field: <span>{selectedField.field_id}</span></div>
+                        <div>Field: <span>{selectedFieldId}</span></div>
                         <div>Position: <span>{tmb}</span></div>
                     </div>
                 </div>
@@ -200,10 +200,8 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
                                 <FormLabel>Customer Name</FormLabel>
                                 <input
                                     type="text"
-                                    value={customer_name}
-                                    onChange={handleCustomerNameChange
-
-}
+                                    value={customer_name.toUpperCase()}
+                                    onChange={handleCustomerNameChange}
                                     required
                                 />
                                 {suggestedCustomers?.length > 0 && customer_name && (
@@ -234,7 +232,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
                     </div>
 
                     <div className="vault-order-number" style={{ gap: "1em" }}>
-                    {selectedField.type === "vault" && (
+                    {field.type === "vault" && (
                         <div style={{width: "100%", display: "flex", gap: "0.5em", justifyContent: "space-between"}}>
                         <FormGroup className="vault-order-number-item">
                             <FormLabel>Vault#</FormLabel>
@@ -282,7 +280,7 @@ export default function AddVaultModal({ onClose, selectedField, tmb, updateSelec
                     )}
                     </div>
                     <div style={{ height: "63%", marginTop: "1em" }}>
-                        <MiniWareHouse selectedField={selectedField} warehouseId={warehouseId} />
+                        <MiniWareHouse selectedField={field} warehouseId={warehouseId} />
                     </div>
                     <button type="submit" disabled={isSubmitting}>
                         {isSubmitting ? 'Submitting...' : 'Submit'}

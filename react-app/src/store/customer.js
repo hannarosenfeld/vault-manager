@@ -70,6 +70,7 @@ export const getCustomerThunk = (customerId) => async (dispatch) => {
 };
 
 export const getAllCustomersThunk = () => async (dispatch) => {
+  console.log('hitting get all customers thunk')
   try {
     const res = await fetch('/api/customers');
     if (res.ok) {
@@ -123,6 +124,7 @@ const customerReducer = (state = initialState, action) => {
         // currentCustomer: action.customer
       };    
     case GET_ALL_CUSTOMERS:
+      console.log('hitting get all customer reducer')
       return {
         ...state,
         customers: {
