@@ -19,30 +19,39 @@ const RenderTMB = ({
   const field = useSelector((state) => state.field[selectedFieldId]);
   const vaults = useSelector((state) => state.vault);
   const vaultIds = field.vaults;
-  const vaultsArr = vaultIds.map(id => vaults[id])
-  const [sortedVaults, setSortedVaults] = useState(null);
+  console.log("🥎 vaults: ", vaults)
+  const vaultsArr = vaultIds.map(id => vaults[id]);
+  const [sortedVaults, setSortedVaults] = useState({});
   const [topmostVault, setTopmostVault] = useState(null);
   const [isLoading, setIsLoadig] = useState(true);
   const { type } = field
 
   useEffect(() => {
+    setSortedVaults({});
     dispatch(getAllVaultsThunk(selectedFieldId))
   }, [selectedFieldId])
 
   useEffect(() => {
     const sortVaults = {};
-    vaultsArr.forEach(vault => {
-      sortVaults[vault.position] = vault;
-    });
-    setSortedVaults(sortVaults);
-    setIsLoadig(false)
-  }, [vaults]);
+    console.log("😎 vaultsArr", vaultsArr)
+    if (Object.keys(vaults).length) {
+      vaultsArr.forEach(vault => {
+        sortVaults[vault.position] = vault;
+      });
+
+      setSortedVaults(sortVaults);
+      setIsLoadig(false)
+    }
+  }, [vaults, selectedFieldId]);
+
+  const { T, M, M2, B } = sortedVaults
 
   const updateTopmostVault = () => {
     let topVault = null;
     for (let vault of vaultsArr) {
       if (!topVault || vault.position > topVault.position) {
         topVault = vault;
+        console.log("💁‍♀️", vault)
       }
     }
 
@@ -56,8 +65,6 @@ const RenderTMB = ({
     }
   }, [vaultsArr]);
 
-
-  const { T, M, M2, B } = sortedVaults
 
   return (
     <>

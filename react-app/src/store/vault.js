@@ -135,10 +135,12 @@ export const addVaultThunk = (vaultData) => async (dispatch) => {
 const initialState = {};
 
 const vaultReducer = (state = initialState, action) => {
-  let newState = { ...state }
+  let newState = {}
   switch (action.type) {
     case GET_ALL_VAULTS:
-      newState = { ...action.vaults }
+      newState = { ...state, ...action.vaults }
+      // const vaultKeys = Object.keys(action.vaults)
+      // vaultKeys.forEach(key => newState[key] = action.vaults[key]);
       return newState
     case ADD_VAULT:
       newState[action.vault.id] = action.vault
