@@ -53,30 +53,34 @@ def add_vault():
     try:
         if form.validate_on_submit():
             customer_name = form.data['customer_name']
-            customer = Customer.query.filter_by(name=customer_name).first()
+            order_name = form.data['order_number']
+
+            existent_customer = Customer.query.filter_by(name=customer_name).first()
+            existent_order = Order.query.filter_by(name=order_name).first()
 
             new_vault = Vault(
-                customer_id=customer.id if customer else None,
+                name=form.data['vault_id'],
+                customer_id = existent_customer.id if existent_customer else None,
                 field_id=form.data['field_id'],
-                # field_name=form.data['field_name'],
+                order_id=existent_order.id if existent_order else None,
                 position=form.data['position'],
-                vault_id=form.data['vault_id'],
-                order_number=form.data['order_number'],
                 type=form.data['type'],
-                warehouse_id=form.data['warehouse_id'],
             )
 
-            # check if the order_number exists
-            existent_order = Order.query.filter_by(order_number=new_vault.order_number).first()
+            test = db.session.add(new_vault)
+            db.session.commit()
 
-            if existent_order:
-                existent_order.order_vaults.append(new_vault)
+            print("🌸", test)
+
+            if not existent_customer:
+                new_customer = Customer(name=customer_name)
+                db.session.add(new_customer)
+                new_customer.vaults.append()
                 db.session.commit()
 
-            # if the order does not yet exist, create it and then add the new vault to its list of vaults
             if not existent_order:
-                new_order = Order(order_number=new_vault.order_number)  # Create a new order
-                new_order.order_vaults.append(new_vault)  # Add the created vault to the order
+                new_order = Order(name=order_name)
+                new_order.order_vaults.append(new_vault)
                 db.session.add(new_order)
                 db.session.commit()
 
@@ -117,7 +121,6 @@ def add_vault():
                 s3.upload_fileobj(attachment, s3_bucket_name, s3_key, ExtraArgs={'ContentType':'application/pdf'})
 
 
-            db.session.add(new_vault)
             db.session.commit()
 
             dict_new_vault = new_vault.to_dict()

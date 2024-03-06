@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllCustomersThunk, addCustomerThunk } from '../../../store/customer';
-import { addVaultThunk, getAllVaultsThunk } from '../../../store/vault';
+import { addVaultThunk } from '../../../store/vault';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -9,7 +9,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { FormGroup, FormLabel } from '@mui/material';
 import "./AddVaultModal.css"
 import MiniWareHouse from './MiniWareHouse';
-import { getAllFieldsThunk } from '../../../store/field';
+
 
 export default function AddVaultModal({ onClose, selectedFieldId, tmb, updateSelectedFieldVaults, warehouseId }) {
     const dispatch = useDispatch();
@@ -18,7 +18,6 @@ export default function AddVaultModal({ onClose, selectedFieldId, tmb, updateSel
     const vaultObj = useSelector(state => state.vault.vaults);
     const field = useSelector(state => state.field[selectedFieldId])
     const [isSubmitting, setIsSubmitting] = useState(false);
-    // const [customers, setCustomers] = useState([]);
     const [customer_name, setCustomerName] = useState('');
     const [vault_id, setVaultId] = useState('');
     const [order_number, setOrderNumber] = useState('');
