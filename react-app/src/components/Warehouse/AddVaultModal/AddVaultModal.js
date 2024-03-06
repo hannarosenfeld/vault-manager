@@ -11,7 +11,7 @@ import "./AddVaultModal.css"
 import MiniWareHouse from './MiniWareHouse';
 
 
-export default function AddVaultModal({ onClose, selectedFieldId, tmb, updateSelectedFieldVaults, warehouseId }) {
+export default function AddVaultModal({ onClose, selectedFieldId, warehouseId, tmb }) {
     const dispatch = useDispatch();
     const customersObj = useSelector(state => state.customer)
     const customers = Object.values(customersObj)
@@ -33,10 +33,6 @@ export default function AddVaultModal({ onClose, selectedFieldId, tmb, updateSel
             setSuggestedCustomers([]);
         }
     };
-
-    useEffect(() => {
-        console.log("🥎 selectedField:", selectedFieldId)
-    }, [selectedFieldId])
 
     useEffect(() => {
         document.addEventListener('click', handleDocumentClick);
@@ -61,29 +57,12 @@ export default function AddVaultModal({ onClose, selectedFieldId, tmb, updateSel
         };
     }, []);
 
-    // useEffect(() => {
-    //     if (customersObj && customersObj.customers) {
-    //         setCustomers(Object.values(customersObj.customers));
-    //     }
-    // }, [customersObj]);
-
     useEffect(() => {
         dispatch(getAllCustomersThunk());
-        // dispatch(getAllVaultsThunk());
-        // dispatch(getAllFieldsThunk());
-        // dispatch(getFieldThunk(selectedField.id));
     }, [dispatch]);
 
-    // useEffect(() => {
-    //     const filteredCustomers = customers?.filter(
-    //         (customer) =>
-    //             customer?.name?.toLowerCase().includes(customer_name.toLowerCase())
-    //     );
-    //     setSuggestedCustomers(filteredCustomers);
-    // }, [customers, customer_name]);
-
     const handleCustomerNameChange = (e) => {
-        const enteredName = e.target.value;
+        const enteredName = e.target.value.toUpperCase();
         setCustomerName(enteredName);
 
         if (enteredName) {
@@ -141,7 +120,6 @@ export default function AddVaultModal({ onClose, selectedFieldId, tmb, updateSel
             vaultData.append("customer_name", customer_name)
             vaultData.append("customer", newCustomer)
             vaultData.append("field_id", selectedFieldId)
-            // vaultData.append("field_name", selectedField.field_id)
             vaultData.append("position", tmb)
             vaultData.append("type", field.type === "vault" ? vaultType : "couchbox")
             vaultData.append("vault_id", field.type === "vault" ? vault_id : null)
@@ -151,11 +129,11 @@ export default function AddVaultModal({ onClose, selectedFieldId, tmb, updateSel
 
             const newVault = await dispatch(addVaultThunk(vaultData));
 
-            if (newVault) {
-                const updateSelectedFieldVaultsThing = await updateSelectedFieldVaults(newVault);
-            } else {
-                console.error('updatedVault is null or undefined');
-            }
+            // if (newVault) {
+            //     const updateSelectedFieldVaultsThing = await updateSelectedFieldVaults(newVault);
+            // } else {
+            //     console.error('updatedVault is null or undefined');
+            // }
 
             onClose(newVault);
             setIsSubmitting(false);
