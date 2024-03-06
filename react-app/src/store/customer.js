@@ -72,8 +72,10 @@ export const getCustomerThunk = (customerId) => async (dispatch) => {
 export const getAllCustomersThunk = () => async (dispatch) => {
   console.log('hitting get all customers thunk')
   try {
-    const res = await fetch('/api/customers');
+    const res = await fetch('/api/customers/');
+    console.log('getting res => ', res)
     if (res.ok) {
+      console.log('hitting OKAY')
       const data = await res.json();
       dispatch(getAllCustomersAction(data));
       return data;
@@ -116,6 +118,7 @@ export const addCustomerThunk = (customerData) => async (dispatch) => {
 const initialState = {};
 
 const customerReducer = (state = initialState, action) => {
+  let newState = {};
   switch (action.type) {
     case GET_CUSTOMER:
       return {
@@ -125,13 +128,8 @@ const customerReducer = (state = initialState, action) => {
       };    
     case GET_ALL_CUSTOMERS:
       console.log('hitting get all customer reducer')
-      return {
-        ...state,
-        customers: {
-          ...state.customers,
-          ...action.customers
-        }
-      };
+      newState = { ...state, ...action.customers }
+      return newState;
     case ADD_CUSTOMER:
       return {
         ...state,

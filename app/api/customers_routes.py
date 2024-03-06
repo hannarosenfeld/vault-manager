@@ -20,8 +20,9 @@ def all_customers():
     """
     Query for all customers and returns them in a list of customer dictionaries
     """
+    print('✅✅✅✅✅ Hiting get customer route')
     customers = Customer.query.all()
-    return {'customers': [customer.to_dict() for customer in customers]}
+    return {customer.id : customer.to_dict() for customer in customers}
 
 
 # @customers_routes.route('/<int:id>')

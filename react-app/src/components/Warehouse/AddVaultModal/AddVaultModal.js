@@ -13,11 +13,12 @@ import { getAllFieldsThunk } from '../../../store/field';
 
 export default function AddVaultModal({ onClose, selectedFieldId, tmb, updateSelectedFieldVaults, warehouseId }) {
     const dispatch = useDispatch();
-    const customersObj = useSelector(state => state.customer.customers)
+    const customersObj = useSelector(state => state.customer)
+    const customers = Object.values(customersObj)
     const vaultObj = useSelector(state => state.vault.vaults);
     const field = useSelector(state => state.field[selectedFieldId])
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [customers, setCustomers] = useState([]);
+    // const [customers, setCustomers] = useState([]);
     const [customer_name, setCustomerName] = useState('');
     const [vault_id, setVaultId] = useState('');
     const [order_number, setOrderNumber] = useState('');
@@ -61,11 +62,11 @@ export default function AddVaultModal({ onClose, selectedFieldId, tmb, updateSel
         };
     }, []);
 
-    useEffect(() => {
-        if (customersObj && customersObj.customers) {
-            setCustomers(Object.values(customersObj.customers));
-        }
-    }, [customersObj]);
+    // useEffect(() => {
+    //     if (customersObj && customersObj.customers) {
+    //         setCustomers(Object.values(customersObj.customers));
+    //     }
+    // }, [customersObj]);
 
     useEffect(() => {
         dispatch(getAllCustomersThunk());
@@ -74,13 +75,13 @@ export default function AddVaultModal({ onClose, selectedFieldId, tmb, updateSel
         // dispatch(getFieldThunk(selectedField.id));
     }, [dispatch]);
 
-    useEffect(() => {
-        const filteredCustomers = customers?.filter(
-            (customer) =>
-                customer?.name?.toLowerCase().includes(customer_name.toLowerCase())
-        );
-        setSuggestedCustomers(filteredCustomers);
-    }, [customers, customer_name]);
+    // useEffect(() => {
+    //     const filteredCustomers = customers?.filter(
+    //         (customer) =>
+    //             customer?.name?.toLowerCase().includes(customer_name.toLowerCase())
+    //     );
+    //     setSuggestedCustomers(filteredCustomers);
+    // }, [customers, customer_name]);
 
     const handleCustomerNameChange = (e) => {
         const enteredName = e.target.value;
@@ -204,7 +205,23 @@ export default function AddVaultModal({ onClose, selectedFieldId, tmb, updateSel
                                     onChange={handleCustomerNameChange}
                                     required
                                 />
-                                {suggestedCustomers?.length > 0 && customer_name && (
+                                {/* {suggestedCustomers?.length > 0 && customer_name && (
+                                    <div className="suggested-customers-container">
+                                        <Paper elevation={3}>
+                                            <ul className="suggested-customers-list">
+                                                {suggestedCustomers.map((customer) => (
+                                                    <li
+                                                        key={customer.id}
+                                                        onClick={() => handleSuggestedCustomerClick(customer)}
+                                                    >
+                                                        {customer.name}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </Paper>
+                                    </div>
+                                )} */}
+                                {customer_name && (
                                     <div className="suggested-customers-container">
                                         <Paper elevation={3}>
                                             <ul className="suggested-customers-list">
