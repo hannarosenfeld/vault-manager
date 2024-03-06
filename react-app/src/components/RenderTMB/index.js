@@ -39,9 +39,9 @@ const RenderTMB = ({
         sortVaults[vault.position] = vault;
       });
 
-      setSortedVaults(sortVaults);
-      setIsLoadig(false)
+      setSortedVaults(sortVaults)
     }
+    setIsLoadig(false)
   }, [vaults, selectedFieldId]);
 
   const { T, M, M2, B } = sortedVaults
