@@ -25,18 +25,11 @@ const RenderTMB = ({
   const [isLoading, setIsLoadig] = useState(true);
   const { type } = field
 
-  // 🚨 TODO: The Add Vault Button is currently not showing
-  let onlyBottom;
-  let onlyMiddle;
-  let onlyFirstMiddle;
-  let onlyTop;
-
   useEffect(() => {
     dispatch(getAllVaultsThunk(selectedFieldId))
   }, [selectedFieldId])
 
   useEffect(() => {
-    // console.log("🚨", vaultsArr)
     const sortVaults = {};
     vaultsArr.forEach(vault => {
       sortVaults[vault.position] = vault;
@@ -44,22 +37,6 @@ const RenderTMB = ({
     setSortedVaults(sortVaults);
     setIsLoadig(false)
   }, [vaults]);
-
-  // useEffect(() => {
-  //   if (sortedVaults) {
-  //     console.log("🍄 sortedVaults: ", sortedVaults)
-  //     onlyBottom = sortedVaults["B"] ? false : true;
-  //     onlyMiddle = !sortedVaults["M"] && sortedVaults["B"];
-  //     onlyFirstMiddle = type === "couchbox-T" && !sortedVaults["M2"] && sortedVaults["M"];
-  //     onlyTop = !sortedVaults["T"] && ((type === "couchbox-T" && sortedVaults["M1"]) || sortedVaults["M"])
-  //   }
-  //   console.log(
-  //     "💖 onlyBottom:", onlyBottom,
-  //     "\n💖 onlyFirstMiddle: ", onlyFirstMiddle,
-  //     "\n💖 onlyMiddle: ", onlyMiddle,
-  //     "\n💖 onlyTop: ", onlyTop
-  //     )
-  // }, [sortedVaults])
 
   const updateTopmostVault = () => {
     let topVault = null;
@@ -70,7 +47,6 @@ const RenderTMB = ({
     }
 
     setTopmostVault(topVault);
-    console.log("🥎 topmostVault: ",topmostVault)
   };
 
   useEffect(() => {
