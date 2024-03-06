@@ -71,11 +71,11 @@ const RenderTMB = ({
         <div className="selected-field-vaults-tmb" style={{ gridTemplateRows: type === "couchbox" ? "repeat(4,1fr)" : ""}}>
           <div className="top field-row">
             <span className="position">T</span>
-            { onlyTop && sortedVaults.full && type === "vault" && (
+            {/* { onlyTop && sortedVaults.full && type === "vault" && (
               <div style={{ color: "red" }}>
                 <span className="material-symbols-outlined">warning</span>Field is full
               </div>
-            )}
+            )} */}
             { !T && M && B ? (
               <AddVaultButton position="T" handleOpenModal={handleOpenModal} fieldType={type}/>
             ) 
