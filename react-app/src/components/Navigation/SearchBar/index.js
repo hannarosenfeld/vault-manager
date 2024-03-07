@@ -23,7 +23,7 @@ function SearchBar() {
 
   useEffect(() => {
     dispatch(getAllOrdersThunk())
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     axios.get('/api/customers')
@@ -41,7 +41,7 @@ function SearchBar() {
       .catch((error) => {
         console.error('Error fetching orders:', error);
       });
-  }, []);
+  }, [dispatch]);
   
 
   useEffect(() => {
@@ -51,7 +51,7 @@ function SearchBar() {
     return () => {
       window.removeEventListener('click', handleWindowClick);
     };
-  }, []);
+  }, [dispatch]);
 
   const handleWindowClick = (e) => {
     // Check if the click event occurred outside the suggestion box

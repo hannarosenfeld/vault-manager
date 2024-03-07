@@ -29,7 +29,7 @@ const RenderTMB = ({
   useEffect(() => {
     setSortedVaults({});
     dispatch(getAllVaultsThunk(selectedFieldId))
-  }, [selectedFieldId])
+  }, [dispatch, selectedFieldId])
 
   useEffect(() => {
     const sortVaults = {};
@@ -41,7 +41,7 @@ const RenderTMB = ({
       setSortedVaults(sortVaults)
     }
     setIsLoadig(false)
-  }, [vaults, selectedFieldId]);
+  }, [dispatch, vaults, selectedFieldId]);
 
   const { T, M, M2, B } = sortedVaults
 
@@ -61,7 +61,7 @@ const RenderTMB = ({
     if (vaults && vaults.length > 0) {
       updateTopmostVault();
     }
-  }, [vaultsArr]);
+  }, [dispatch, vaultsArr]);
 
 
   return (

@@ -1,22 +1,18 @@
-import { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
-
-
 export default function MiniWareHouse({ selectedField, warehouseId }) {
-    const dispatch = useDispatch();
 
-    const sortFields = (fields) => {
-        const sortedFields = {};
-        let sortedFieldsArr;
+    // const sortFields = (fields) => {
+    //     const sortedFields = {};
+    //     let sortedFieldsArr;
 
-        for (let field of fields) {
-            sortedFields[field.id] = field
-        }
+    //     for (let field of fields) {
+    //         sortedFields[field.id] = field
+    //     }
 
-        sortedFieldsArr = Object.values(sortedFields)
+    //     sortedFieldsArr = Object.values(sortedFields)
 
-        return sortedFieldsArr
-    }
+    //     return sortedFieldsArr
+    // }
+    
     return(
         <div className="warehouse-wrapper" style={{height: "100%", padding:"0"}}>
             <div className="warehouse" style={{height: "100%"}}>

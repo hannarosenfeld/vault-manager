@@ -116,7 +116,7 @@ export default function AddVaultModal({ onClose, selectedFieldId, warehouseId, t
                 console.log(`Vault number ${vault_id} is unique.`);
             }
 
-            const vaultData = new FormData
+            const vaultData = new FormData()
             vaultData.append("customer_name", customer_name)
             vaultData.append("customer", newCustomer)
             vaultData.append("field_id", selectedFieldId)
@@ -258,7 +258,7 @@ export default function AddVaultModal({ onClose, selectedFieldId, warehouseId, t
                         <select
                             className="form-select form-select-lg"
                             style={{ fontSize: "1em", marginLeft: "-0.5em", marginTop: "0.4em" }}
-                            aria-aria-label=".form-select-lg example"
+                            // aria-aria-label=".form-select-lg example"
                             value={vaultType}
                             onChange={(e) => setVaultType(e.target.value)}
                         >

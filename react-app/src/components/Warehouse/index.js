@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from '@mui/material/Modal';
 import CircularProgress from '@mui/material/CircularProgress';
 import AddVaultModal from "./AddVaultModal/AddVaultModal.js"
 import RenderTMB from "../RenderTMB";
 import ConfirmStaging from "./ConfirmStaging";
-import "./Warehouse.css"
-import { getAllFieldsThunk, editFieldThunk } from "../../store/field.js";
-import { useHistory, useParams } from "react-router-dom";  
+import { getAllFieldsThunk } from "../../store/field.js";
+import { useParams } from "react-router-dom";  
 import { getAllWarehousesThunk } from "../../store/warehouse.js";
 import { getAllCustomersThunk } from "../../store/customer.js";
+
+import "./Warehouse.css"
+
+
 
 export default function Warehouse() {
     const dispatch = useDispatch();
@@ -18,16 +21,12 @@ export default function Warehouse() {
     const fields = useSelector(state => state.field)
     const searchResult = useSelector(state => state.search.fields);
     const [selectedFieldId, setSelectedFieldId] = useState(null);
-    let [top, setTop] = useState(null);
-    let [middle, setMiddle] = useState(null);
-    let [bottom, setBottom] = useState(null);
     const [position, setPosition] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] = useState(false);
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
     const [toggleSelected, setToggleSelected] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [warehouseKey, setWarehouseKey] = useState(1);
 
     useEffect(() => {
         setSelectedFieldId(null);
@@ -104,12 +103,6 @@ export default function Warehouse() {
         setSelectedVaultToStage(null);
         setIsConfirmStagingModalOpen(false);
     }
-
-    const updateVaultPosition = (position) => {
-        if (position === "T") setTop(null);
-        if (position === "M") setMiddle(null);
-        if (position === "B") setBottom(null);
-    };
 
     function fieldGenerator() {
         const res = [];
@@ -265,7 +258,6 @@ export default function Warehouse() {
                                 onClose={handleCloseModal}
                                 selectedFieldId={selectedFieldId}
                                 tmb={position}
-                                // updateSelectedFieldVaults={updateSelectedFieldVaults} // Pass the function here
                                 warehouseId={warehouseId}
                             />
                         </>
@@ -274,11 +266,7 @@ export default function Warehouse() {
                         <>
                             <ConfirmStaging
                                 vault={selectedVaultToStage}
-                                // vaultCustomer={selectedVaultToStage?.customer.name}
-                                // vaultNumber={selectedVaultToStage?.vault_id}
-                                // vaultId={selectedVaultToStage?.id}
                                 onClose={closeConfirmStagingModal}
-                                updateVaultPosition={updateVaultPosition}
                             />
                         </>
                     </Modal>

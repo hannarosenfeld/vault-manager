@@ -1,4 +1,3 @@
-import Warehouse from "../Warehouse";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
 import { getAllWarehousesThunk } from "../../store/warehouse";
@@ -12,7 +11,7 @@ export default function Index() {
 
     useEffect(() => {
         dispatch(getAllWarehousesThunk());
-    }, [])
+    }, [dispatch])
 
     return(
         <div className="wrapper" style={{marginTop: "1em"}}>

@@ -26,7 +26,7 @@ function LoginFormPage() {
     <div className="login-page-container">
       <div className="login-page-content">
       <div className="login-header">
-        <img src={naglee} />
+        <img alt="naglee-logo" src={naglee} />
       </div>
       <form onSubmit={handleSubmit}>
         <ul style={{color: "var(--red)"}}>

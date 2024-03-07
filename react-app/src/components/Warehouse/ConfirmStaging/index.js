@@ -18,7 +18,7 @@ export default function ConfirmStaging({
     const handleSubmit = async (e) => {
         e.preventDefault();
         updateVaultPosition(vault.position);
-        const updatedVault = await dispatch(addVaultToStageThunk(vaultId));
+        // const updatedVault = await dispatch(addVaultToStageThunk(vaultId));
         await dispatch(getAllFieldsThunk())
         onClose();
     }
