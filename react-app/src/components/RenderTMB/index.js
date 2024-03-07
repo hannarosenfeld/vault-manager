@@ -19,7 +19,6 @@ const RenderTMB = ({
   const field = useSelector((state) => state.field[selectedFieldId]);
   const vaults = useSelector((state) => state.vault);
   const vaultIds = field.vaults;
-  console.log("🥎 vaults: ", vaults)
   const vaultsArr = []
   vaultIds.forEach(id => (vaults[id]) ?  vaultsArr.push(vaults[id]) : null);
   const [sortedVaults, setSortedVaults] = useState({});
@@ -34,7 +33,6 @@ const RenderTMB = ({
 
   useEffect(() => {
     const sortVaults = {};
-    console.log("😎 vaultsArr", vaultsArr)
     if (Object.keys(vaults).length) {
       vaultsArr.forEach(vault => {
         sortVaults[vault.position] = vault;
@@ -52,7 +50,6 @@ const RenderTMB = ({
     for (let vault of vaultsArr) {
       if (!topVault || vault.position > topVault.position) {
         topVault = vault;
-        console.log("💁‍♀️", vault)
       }
     }
 

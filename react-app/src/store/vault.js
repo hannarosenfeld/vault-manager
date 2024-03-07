@@ -92,7 +92,6 @@ export const deleteVaultThunk = (vaultId) => async (dispatch) => {
 // };
 
 export const getAllVaultsThunk = (fieldId) => async (dispatch) => {
-  console.log('hitting getallvaults thunk')
   try {
     const res = await fetch(`/api/vaults/${fieldId}`);
     if (res.ok) {

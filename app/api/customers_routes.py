@@ -20,11 +20,11 @@ def all_customers():
     """
     Query for all customers and returns them in a list of customer dictionaries
     """
-    print('✅✅✅✅✅ Hiting get customer route')
     customers = Customer.query.all()
     return {customer.id : customer.to_dict() for customer in customers}
 
 
+#  ?? When I uncomment this, all forklifts turn grey. WHY lol?
 # @customers_routes.route('/<int:id>')
 # def single_customer(id):
 #     """

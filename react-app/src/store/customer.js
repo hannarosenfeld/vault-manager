@@ -52,9 +52,9 @@ export const updateCustomerNameThunk = (customerId, newName) => async (dispatch)
 };
 
 export const getCustomerThunk = (customerId) => async (dispatch) => {
-  console.log("🦚", customerId)
   try {
-    const res = await fetch(`/api/customers/${customerId}`); // Adjust the API endpoint
+    const res = await fetch(`/api/customers/${customerId}`); 
+    // TODO: How is this even working?? The route is commented out. Check customer route in backend
     if (res.ok) {
       const data = await res.json();
       dispatch(getCustomerAction(data));
@@ -70,12 +70,9 @@ export const getCustomerThunk = (customerId) => async (dispatch) => {
 };
 
 export const getAllCustomersThunk = () => async (dispatch) => {
-  console.log('hitting get all customers thunk')
   try {
     const res = await fetch('/api/customers/');
-    console.log('getting res => ', res)
     if (res.ok) {
-      console.log('hitting OKAY')
       const data = await res.json();
       dispatch(getAllCustomersAction(data));
       return data;
@@ -127,7 +124,6 @@ const customerReducer = (state = initialState, action) => {
         // currentCustomer: action.customer
       };    
     case GET_ALL_CUSTOMERS:
-      console.log('hitting get all customer reducer')
       newState = { ...state, ...action.customers }
       return newState;
     case ADD_CUSTOMER:
