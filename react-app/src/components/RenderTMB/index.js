@@ -23,7 +23,7 @@ const RenderTMB = ({
   vaultIds.forEach(id => (vaults[id]) ?  vaultsArr.push(vaults[id]) : null);
   const [sortedVaults, setSortedVaults] = useState({});
   const [topmostVault, setTopmostVault] = useState(null);
-  const [isLoading, setIsLoadig] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const { type } = field
 
   useEffect(() => {
@@ -40,8 +40,17 @@ const RenderTMB = ({
 
       setSortedVaults(sortVaults)
     }
-    setIsLoadig(false)
+    setIsLoading(false)
   }, [dispatch, vaults, selectedFieldId]);
+
+  // useEffect(() => {
+  //   const timeout = setTimeout(() => {
+  //     setIsLoading(false)
+  //   }, 1000);
+
+  //   // Cleanup function to clear the timeout if the component unmounts
+  //   return () => clearTimeout(timeout);
+  // },[dispatch, selectedFieldId])
 
   const { T, M, M2, B } = sortedVaults
 
