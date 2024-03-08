@@ -2,13 +2,9 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 export default function MiniWareHouse({ selectedFieldId, warehouseId }) {
-    console.log('hitting mini warehouse');
     let fields = [];
-    const warehouse = useSelector((state) => state.warehouse[warehouseId])
-    const allFields = useSelector(state => state.field)
-
-    console.log("🥎", warehouseId, selectedFieldId)
-
+    const warehouse = useSelector((state) => state.warehouse[warehouseId]);
+    const allFields = useSelector(state => state.field);
 
     function fieldGenerator(fields) {
         const res = [];
@@ -22,19 +18,23 @@ export default function MiniWareHouse({ selectedFieldId, warehouseId }) {
                     <div className="field"
                                 key={field.id}
                                 style={{
-                                    backgroundColor: `${
-                                        field.vaults.length === 3 || field.full ? "var(--red)" :
-                                            field.vaults.length === 2 ? "var(--yellow)" :
-                                                field.vaults.length === 1 ? "var(--green)" :
-                                                    "var(--lightgrey)"
-                                    }`,
-                                    border: `${selectedFieldId === field.id ? "3px solid var(--blue)" : "none"}`,
+                                    backgroundColor: selectedFieldId === field.id
+                                    ? "var(--blue)"
+                                    : field.vaults.length
+                                    ? "rgba(234, 55, 61, 0.3)"
+                                    : selectedFieldId !== field.id
+                                    ? "rgba(203, 203, 203, 0.5)"
+                                    : "var(--lightgrey)",
+                                borderColor:
+                                    selectedFieldId === field.id
+                                    ? "var(--blue)"
+                                    : "transparent",
                                     marginBottom: `${field.type === "couchbox-T" ? "-2.2em" : ''}`,
                                     width: `${field.type === "couchbox-B" ? "0px" : ''}`,
                                     zIndex: `${field.type === "couchbox-B" ? "100" : 'none'}`,
                                 }}
                             >
-                                {field.type === "couchbox-B" ? "" : <div className="field-number">{field.name}</div>}
+                                {field.type === "couchbox-B" ? "" : <div style={{color: selectedFieldId === field.id ?  "var(--white)" : "rgba(80, 80, 80, 0.5)" }} className="field-number">{field.name}</div>}
 
                             </div>)
                 }
