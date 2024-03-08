@@ -18,7 +18,8 @@ export default function Warehouse() {
     const dispatch = useDispatch();
     const { warehouseId } = useParams(); 
     const warehouse = useSelector(state => state.warehouse[warehouseId]);
-    const fields = useSelector(state => state.field)
+    let allFields = useSelector(state => state.field);
+    let fields;
     const searchResult = useSelector(state => state.search.fields);
     const [selectedFieldId, setSelectedFieldId] = useState(null);
     const [position, setPosition] = useState(null);
@@ -28,9 +29,9 @@ export default function Warehouse() {
     const [toggleSelected, setToggleSelected] = useState(false);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        setSelectedFieldId(null);
-    }, [warehouse?.id])
+    // useEffect(() => {
+    //     setSelectedFieldId(null);
+    // }, [warehouse?.id])
 
     useEffect(() => {
         const warehouseInfo = dispatch(getAllWarehousesThunk());
@@ -106,7 +107,7 @@ export default function Warehouse() {
 
     function fieldGenerator() {
         const res = [];
-            let temp = Object.values(fields).sort((a,b) => a.name-b.name)
+            let temp = fields.sort((a,b) => a.name-b.name)
             for (let i = 0; i < warehouse.rows; i++) {
                 for (let j = 0; j < warehouse.rows; j++) {
                     let field = temp[j*warehouse.rows+i]
@@ -134,6 +135,11 @@ export default function Warehouse() {
         return res.map((el) => <>{el}</>)
     }
 
+    if (!warehouse) return null
+
+    if (warehouse) {
+        fields = warehouse.fields.map(id => allFields[id])
+    }
 
     return (
         <div className="warehouse-wrapper wrapper">
