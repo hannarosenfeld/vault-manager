@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-// import { getCustomerThunk } from '../../store/customer';
 
 const VaultInstance = ({ topmostVault, vault, handleStageClick, handleEditClick }) => {
-  const dispatch = useDispatch();
   const customer = useSelector(state => state.customer[vault.customer_id]);
 
   return (
