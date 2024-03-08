@@ -24,7 +24,7 @@ def all_customers():
     return {customer.id : customer.to_dict() for customer in customers}
 
 
-#  ?? When I uncomment this, all forklifts turn grey. WHY lol?
+#  ! DEPRICATED !
 # @customers_routes.route('/<int:id>')
 # def single_customer(id):
 #     """

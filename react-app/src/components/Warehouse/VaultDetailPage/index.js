@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getCustomerThunk } from '../../../store/customer';
 import { getAllVaultAttachmentsThunk } from '../../../store/attachment';
 
 const VaultDetailPage = () => {

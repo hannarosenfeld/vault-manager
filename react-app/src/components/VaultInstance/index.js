@@ -1,25 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getCustomerThunk } from '../../store/customer';
+// import { getCustomerThunk } from '../../store/customer';
 
 const VaultInstance = ({ topmostVault, vault, handleStageClick, handleEditClick }) => {
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(true);
   const customer = useSelector(state => state.customer[vault.customer_id]);
-
-  useEffect(() => {
-    dispatch(getCustomerThunk(vault.customer_id))
-      .then(() => setIsLoading(false))
-      .catch(error => {
-        console.error('Error fetching customer data:', error);
-        setIsLoading(false);
-      });
-  }, [dispatch, vault.customer_id]);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
