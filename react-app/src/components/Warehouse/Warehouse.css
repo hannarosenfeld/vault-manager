@@ -11,7 +11,6 @@
     grid-gap: 1%;
 }
 
-
 .field-info {
     margin-bottom: 5px;
     display: grid; 
@@ -45,16 +44,14 @@
     }
 }
 
-
-
-.row {
+/* .row {
     display: flex;
     flex-direction: column;
 }
 
 .row-id {
     margin: 0 auto;
-}
+} */
 
 .fields {
     margin-top: 5px;
@@ -67,6 +64,7 @@
 .field {
     border-radius: 3px;
     display: flex;
+    max-height: 2em;
 }
 
 .field-number {
@@ -76,8 +74,6 @@
     margin: 0 auto;
     align-self: center;
 }
-
-
 
 .edit-symbols {
     display: flex;
@@ -97,10 +93,10 @@
     cursor: pointer;
 }
 
-
-.selected-field {
+/* .selected-field {
     border: 3px solid var(--blue); 
-  }
+    background: red;
+  } */
   
   .loading-animation-container {
     display: flex;
