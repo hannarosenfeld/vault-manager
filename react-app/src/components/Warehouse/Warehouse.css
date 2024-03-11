@@ -104,3 +104,11 @@
     align-items: center;
     height: 100vh; /* Set the height to cover the entire viewport */
 }
+
+
+@media screen and (min-width: 1200px) {
+    .field {
+        max-height: 4em;
+
+    }
+}
