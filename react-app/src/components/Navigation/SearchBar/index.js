@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './SearchBar.css';
-import axios from 'axios';
+// import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllOrdersThunk } from '../../../store/order';
 import { searchThunk } from '../../../store/search';
 import { setSearchOffAction } from '../../../store/search';
+import { getAllCustomersThunk } from '../../../store/customer';
 
 function SearchBar() {
   const dispatch = useDispatch();
@@ -23,25 +24,26 @@ function SearchBar() {
 
   useEffect(() => {
     dispatch(getAllOrdersThunk())
+    dispatch(getAllCustomersThunk())
   }, [dispatch])
 
-  useEffect(() => {
-    axios.get('/api/customers')
-      .then((response) => {
-        setCustomers(response.data.customers);
-      })
-      .catch((error) => {
-        console.error('Error fetching customers:', error);
-      });
+  // useEffect(() => {
+  //   dispatch(getAllCustomersThunk())
+  //     .then((response) => {
+  //       setCustomers(response.data.customers);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error fetching customers:', error);
+  //     });
   
-    axios.get('/api/orders')
-      .then((response) => {
-        setOrders(response.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching orders:', error);
-      });
-  }, [dispatch]);
+  //   axios.get('/api/orders')
+  //     .then((response) => {
+  //       setOrders(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error fetching orders:', error);
+  //     });
+  // }, [dispatch]);
   
 
   useEffect(() => {

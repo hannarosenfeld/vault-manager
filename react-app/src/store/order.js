@@ -26,7 +26,7 @@ const getAllOrdersAction = (orders) => ({
   
 export const getAllOrdersThunk = () => async (dispatch) => {
     try {
-        const res = await fetch('/api/orders');
+        const res = await fetch('/api/orders/');
         if (res.ok) {
         const data = await res.json();
         dispatch(getAllOrdersAction(data));

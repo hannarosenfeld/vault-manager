@@ -152,8 +152,11 @@ def manage_vault(id):
         form['csrf_token'].data = request.cookies['csrf_token']
 
         if form.validate_on_submit():
-            vault.customer_name = form.data['customer_name']
-            vault.vault_id = form.data['vault_id']
+
+            # customer = Customer.query.get(vault.customer_id)
+            # customer.name = 
+            # vault.customer_name = form.data['customer_name']
+            vault.name = form.data['name']
             vault.order_number = form.data['order_number']
 
             # Handle file uploads

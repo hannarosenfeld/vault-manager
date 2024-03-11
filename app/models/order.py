@@ -22,6 +22,6 @@ class Order(db.Model, UserMixin):
             'id': self.id,
             'name': self.name,
             'vaults': [vault.id for vault in self.order_vaults],
-            'warehouses': [warehouse.id for warehouse in self.order_warehouses],
-            'fields': [field.id for field in self.order_fields]
+            # 'warehouses': [warehouse.id for warehouse in self.order_warehouses],
+            # 'fields': [field.id for field in self.order_fields]
         }

@@ -23,8 +23,8 @@ def add_vault_to_stage(vault_id):
     """
     Add a vault to the stage
     """
-    stage = Stage.query.get(1) 
-    warehouse = Warehouse.query.get(1)
+    # stage = Stage.query.get(1) 
+    # warehouse = Warehouse.query.get(1)
 
     if not stage:
         return jsonify({'errors': 'Stage not found'}), 404

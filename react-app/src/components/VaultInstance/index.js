@@ -8,7 +8,7 @@ const VaultInstance = ({ topmostVault, vault, handleStageClick, handleEditClick 
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
       <div style={{ display: 'flex', width: '60%', gap: '5px' }}>
-        <div>{customer.name}</div>
+        {/* <div>{customer.name}</div> */}
         <div>{vault.name}</div>
         <div style={{ color: 'var(--red)' }}>
           <b>{vault.type}</b>

@@ -56,6 +56,7 @@ app.register_blueprint(attachment_routes, url_prefix='/api/attachments')
 
 db.init_app(app)
 Migrate(app, db)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 # Application Security
 CORS(app)

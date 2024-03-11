@@ -1,12 +1,16 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, Flask
 from app.models import db, Order
+from flask_cors import CORS, cross_origin
 
 order_routes = Blueprint('orders', __name__)
 
 @order_routes.route('/')
+@cross_origin()
 def get_all_rows():
     orders = Order.query.all()
-    return jsonify([order.to_dict() for order in orders])
+    response = { order.id: order.to_dict() for order in orders }
+    # response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 @order_routes.route('/<int:id>')
 def get_order(id):
