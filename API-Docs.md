@@ -299,6 +299,7 @@ This is the documentation for all api routes and responses
         ```json
             { "name" : {
                     "id": 1,
+                    "name": "order name",
                     "warehouses": [1],
                     "fields": [1],
                     "vaults": [1, 2], 

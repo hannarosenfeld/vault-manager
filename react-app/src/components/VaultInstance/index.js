@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-const VaultInstance = ({ topmostVault, vault, handleStageClick, handleEditClick }) => {
+const VaultInstance = ({ topmostVault, vault, handleStageClick }) => {
   const customer = useSelector(state => state.customer[vault.customer_id]);
 
   return (
@@ -24,7 +24,6 @@ const VaultInstance = ({ topmostVault, vault, handleStageClick, handleEditClick 
         </span>
         <Link to={`/vaults/${vault?.id}/edit`} className="edit-link">
           <span
-            // onClick={() => handleEditClick(vault)}
             style={{ color: '#0074D9' }}
             className="material-symbols-outlined"
           >

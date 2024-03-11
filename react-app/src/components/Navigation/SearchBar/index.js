@@ -25,26 +25,7 @@ function SearchBar() {
   useEffect(() => {
     dispatch(getAllOrdersThunk())
     dispatch(getAllCustomersThunk())
-  }, [dispatch])
-
-  // useEffect(() => {
-  //   dispatch(getAllCustomersThunk())
-  //     .then((response) => {
-  //       setCustomers(response.data.customers);
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error fetching customers:', error);
-  //     });
-  
-  //   axios.get('/api/orders')
-  //     .then((response) => {
-  //       setOrders(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error fetching orders:', error);
-  //     });
-  // }, [dispatch]);
-  
+  }, [dispatch])  
 
   useEffect(() => {
     // Add a click event listener to the window

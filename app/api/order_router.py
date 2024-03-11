@@ -8,9 +8,7 @@ order_routes = Blueprint('orders', __name__)
 @cross_origin()
 def get_all_rows():
     orders = Order.query.all()
-    response = { order.id: order.to_dict() for order in orders }
-    # response.headers.add('Access-Control-Allow-Origin', '*')
-    return response
+    return { order.id: order.to_dict() for order in orders }
 
 @order_routes.route('/<int:id>')
 def get_order(id):

@@ -12,6 +12,8 @@ def seed_orders():
 
     db.session.commit()
 
+    return [o1, o2, o3]
+
 def undo_orders():
     if environment == "production":
         db.session.execute(f"TRUNCATE table {SCHEMA}.orders RESTART IDENTITY CASCADE;")

@@ -166,65 +166,10 @@ export default function Warehouse() {
                         )}
                     </div>
                     <div className="warehouse">
-                        {/* {() => {
-                            let idx = 0;
-                            for (let i = 0; i < warehouse.columns; i++) {
-                                for (let i = 0; i < warehouse.rows; i++) {
 
-                                    <div
-                                        className="field"
-                                        key={field.id}
-                                        style={{
-                                            backgroundColor: `${
-                                                field?.vaults?.length === 3 || field.full ? "var(--red)" :
-                                                    field?.vaults?.length === 2 ? "var(--yellow)" :
-                                                        field?.vaults?.length === 1 ? "var(--green)" :
-                                                            "var(--lightgrey)"
-                                            }`,
-                                            border: `${selectedField?.id === field?.id ? "3px solid var(--blue)" : "none"}`,
-                                            marginBottom: `${field.type === "couchbox" ? "-2.2em" : ''}`,
-                                            width: `${field.bottom_couch_box ? "0px" : ''}`,
-                                            zIndex: `${field.bottom_couch_box ? "100" : 'none'}`,
-                                        }}
-                                        onClick={() => handleFieldClick(field)}
-                                    >
-                                        {field.bottom_couch_box ? "" : field.type === "vault" ? <div className="field-number">{row.name}{index + 1}</div> : field.type === "couchbox" ? <div className="field-number">{row.name}{index + 1} / {row.name}{index + 2}</div> : ''}
-                                    </div>
-
-                                }
-                        }}
-                        } */}
                         {fields ? fieldGenerator(fields): null}
                         {/* {rowsArr?.map((row) => (
                             <div className="row" key={row.id}>
-                                {!searchResult && (
-                                    <div className="fields">
-                                        {row.fields.map((field, index) => {
-                                            return (
-                                                <div
-                                                    className="field"
-                                                    key={field.id}
-                                                    style={{
-                                                        backgroundColor: `${
-                                                            field?.vaults?.length === 3 || field.full ? "var(--red)" :
-                                                                field?.vaults?.length === 2 ? "var(--yellow)" :
-                                                                    field?.vaults?.length === 1 ? "var(--green)" :
-                                                                        "var(--lightgrey)"
-                                                        }`,
-                                                        border: `${selectedField?.id === field?.id ? "3px solid var(--blue)" : "none"}`,
-                                                        marginBottom: `${field.type === "couchbox" ? "-2.2em" : ''}`,
-                                                        width: `${field.bottom_couch_box ? "0px" : ''}`,
-                                                        zIndex: `${field.bottom_couch_box ? "100" : 'none'}`,
-                                                    }}
-                                                    onClick={() => handleFieldClick(field, row, index)}
-                                                >
-                                                    {field.bottom_couch_box ? "" : field.type === "vault" ? <div className="field-number">{row.name}{index + 1}</div> : field.type === "couchbox" ? <div className="field-number">{row.name}{index + 1} / {row.name}{index + 2}</div> : ''}
-                                                </div>
-                                            );
-                                        })}
-
-                                    </div>
-                                )}
                                 {searchResult && (
                                     <div className="fields">
                                         {row.fields.map((field, index) => (
