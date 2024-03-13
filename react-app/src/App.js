@@ -66,10 +66,10 @@ function App() {
               <Warehouse />
             </Route>          
 
-            <Route path="/vaults/:vaultId/edit">
+            <Route path="/warehouse/:warehouseId/field/:fieldId/vaults/:vaultId/edit">
               <EditVaultPage />
             </Route>
-            <Route path="/vaults/:vaultId/detail">
+            <Route path="/warehouse/:warehouseId/field/:fieldId/vaults/:vaultId/detail">
               <VaultDetailPage/>
             </Route>
             <Route path="/stage">

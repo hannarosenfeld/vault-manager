@@ -152,6 +152,7 @@ def manage_vault(id):
         form['csrf_token'].data = request.cookies['csrf_token']
 
         if form.validate_on_submit():
+            print('✅✅✅✅✅ ', form.data)
 
             # customer = Customer.query.get(vault.customer_id)
             # customer.name = 

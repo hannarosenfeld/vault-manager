@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './EditVaultPage.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-import { editVaultThunk } from '../../../store/vault';
+import { editVaultThunk, getAllVaultsThunk } from '../../../store/vault';
 import { updateCustomerNameThunk } from '../../../store/customer';
 import { deleteVaultThunk } from '../../../store/vault';
 import Button from '@mui/material/Button';
@@ -15,56 +15,56 @@ import DeleteAttachmentConfirmationModal from './DeleteAttachmentConfirmationMod
 const EditVaultPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { vaultId } = useParams();
+  const { warehouseId, fieldId, vaultId } = useParams();
   const vault = useSelector((state) => state.vault[vaultId]);
-  const customer = useSelector((state) => state.customer[vault?.customer_id])
-  const order = useSelector((state) => state.order)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [newAttachments, setNewAttachments] = useState([]);
   const [selectedAttachment, setSelectedAttachment] = useState(null);
   const [isDeleteAttachmentModalOpen, setIsDeleteAttachmentModalOpen] = useState(false);
   const [reload, setReload] = useState(false)
-  const [customerName, setCustomerName] = useState(customer?.name)
-  const [vaultName, setVaultName] = useState(vault?.name)
-  const [orderNumber, setOrderNumber] = useState(order[vault?.order_id]?.name)
+  const [customerName, setCustomerName] = useState()
+  const [vaultName, setVaultName] = useState()
+  const [orderNumber, setOrderNumber] = useState()
 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         await dispatch(getAllVaultAttachmentsThunk(vaultId));
-        setIsLoading(false);
+        await dispatch(getAllVaultsThunk(fieldId))
+        // console.log(dispatched)
+        // setIsLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
-        setIsLoading(false);
+        // setIsLoading(false);
       }
     };
 
     fetchData();
   }, [dispatch, vaultId, reload === true]);
 
+  useEffect(() => {
+    if (vault) {
+      setCustomerName(vault.customer_name)
+      setVaultName(vault.name)
+      setOrderNumber(vault.order_name)
+      setIsLoading(false);
+    } else setIsLoading(true);
+  }, [dispatch, vault])
+
   const handleSave = async (e) => {
     e.preventDefault();
-
-    const formData = {
-      customer_name: customerName,
-      name: vaultName,
-      order_number: orderNumber,
-      new_attachments: newAttachments
-    }
-
     const vaultData = new FormData
-    vaultData.append("customer_name", formData.customer_name)
-    vaultData.append("vault_id", formData.vault_id)
-    vaultData.append("order_number", formData.order_number)
+    vaultData.append("customer_name", customerName)
+    vaultData.append("name", vaultName)
+    vaultData.append("order_number", orderNumber)
 
-    formData.new_attachments.forEach((attachment, index) => {
+    newAttachments.forEach((attachment, index) => {
       vaultData.append(`attachment${index}`, attachment)
     })
-      
     try {
-      await dispatch(updateCustomerNameThunk(vault.customer.id, formData.customer_name));
+      await dispatch(updateCustomerNameThunk(vault.customer_id, customerName));
       await dispatch(editVaultThunk(vault.id, vaultData));
       history.push('/');
     } catch (error) {
@@ -126,7 +126,7 @@ const EditVaultPage = () => {
                   id="customer_name"
                   name="customer_name"
                   value={customerName}
-                  onChange={(e) => {setCustomerName(e.target.value)}}
+                  onChange={(e) => {setCustomerName(e.target.value.toUpperCase())}}
                   required
                   className="form-control"
                 />

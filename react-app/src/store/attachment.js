@@ -1,8 +1,14 @@
 const GET_VAULT_ATTACHMENTS = "attachment/GET_VAULT_ATTACHMENTS"
+const DELETE_VAULT_ATTACHMENT = "attachment/DELETE_VAULT_ATTACHMENT"
 
 export const getVaultAttachmentsAction = (attachments) => ({
     type: GET_VAULT_ATTACHMENTS,
     attachments
+})
+
+export const deleteVaultAttachmentAction = (attachmentId) => ({
+    type: DELETE_VAULT_ATTACHMENT,
+    attachmentId
 })
 
 export const getAllVaultAttachmentsThunk = (vaultId) => async (dispatch) => {
@@ -17,37 +23,42 @@ export const getAllVaultAttachmentsThunk = (vaultId) => async (dispatch) => {
           return err;
         }
       } catch (error) {
-        console.error("Error fetching field:", error);
+        console.error("Error fetching attachment: ", error);
         return error;
       }
 }
 
 export const deleteAttachmentThunk = (vaultId, attachmentData) => async (dispatch) => {
-  const attachmentId = attachmentData.get("attachment_id")
+  let attachmentId = attachmentData.get("attachment_id")
   try {
     const res = await fetch(`/api/attachments/${vaultId}/${attachmentId}`, {
       method: 'DELETE',
       body: attachmentData
     });
-    } catch (error) {
-      console.error("Error fetching field:", error);
-      return error;
+    if (res.ok) {
+      const data = await res.json();
+      dispatch(deleteVaultAttachmentAction(data));
+      return data;
     }
+  } catch (error) {
+    console.error("Error deleting attachment: ", error);
+    return error;
+  }
 }
 
-const initialState = {
-    vaultAttachments: {},
-};
-
+const initialState = {};
 
 const attachmentReducer = (state = initialState, action) => {
+    let newState = {}
     switch(action.type) {
-        case GET_VAULT_ATTACHMENTS:
-            return {
-                ...state,
-                vaultAttachments: action.attachments,
-            };
-        default: return state
+      case GET_VAULT_ATTACHMENTS:
+        newState = { ...state, ...action.attachments }
+        return newState
+      case DELETE_VAULT_ATTACHMENT:
+        newState = { ...state }
+        delete newState[action.attachmentId]
+        return newState
+      default: return state
     }
 
 }

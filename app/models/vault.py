@@ -37,8 +37,10 @@ class Vault(db.Model, UserMixin):
             'name': self.name,
             'field_id': self.field_id,
             'customer_id': self.customer_id,
+            'customer_name': self.customer.name,
             'position': self.position,
             'order_id': self.order_id,
+            'order_name': self.order.name,
             'type': self.type,
             'attachments': [attachment.to_dict() for attachment in self.attachments],
             # 'warehouse_id': self.warehouse_id

@@ -12,8 +12,7 @@ const RenderTMB = ({
   handleStageClick, 
   handleOpenModal, 
   handleToggleChange, 
-  toggleSelected, 
-  warehouse
+  toggleSelected
  }) => {
   const dispatch = useDispatch();
   const field = useSelector((state) => state.field[selectedFieldId]);
