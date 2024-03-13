@@ -64,7 +64,7 @@
 .field {
     border-radius: 3px;
     display: flex;
-    max-height: 2em;
+    max-height: 2rem;
 }
 
 .field-number {
@@ -106,9 +106,3 @@
 }
 
 
-@media screen and (min-width: 1200px) {
-    .field {
-        max-height: 4em;
-
-    }
-}
