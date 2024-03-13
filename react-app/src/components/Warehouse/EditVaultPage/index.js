@@ -17,7 +17,7 @@ const EditVaultPage = () => {
   const history = useHistory();
   const { vaultId } = useParams();
   const vault = useSelector((state) => state.vault[vaultId]);
-  const customer = useSelector((state) => state.customer[vault.customer_id])
+  const customer = useSelector((state) => state.customer[vault?.customer_id])
   const order = useSelector((state) => state.order)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -25,23 +25,10 @@ const EditVaultPage = () => {
   const [selectedAttachment, setSelectedAttachment] = useState(null);
   const [isDeleteAttachmentModalOpen, setIsDeleteAttachmentModalOpen] = useState(false);
   const [reload, setReload] = useState(false)
-  const [customerName, setCustomerName] = useState(customer.name)
-  const [vaultName, setVaultName] = useState(vault.name)
-  const [orderNumber, setOrderNumber] = useState(order[vault.order_id].name)
+  const [customerName, setCustomerName] = useState(customer?.name)
+  const [vaultName, setVaultName] = useState(vault?.name)
+  const [orderNumber, setOrderNumber] = useState(order[vault?.order_id]?.name)
 
-
-  // useEffect(() => {
-  //   if (vault && vault.customer) {
-  //     setFormData({
-  //       customer_name: vault.customer.name,
-  //       vault_id: vault.vault_id,
-  //       order_number: vault.order_number,
-  //       new_attachments : newAttachments,
-  //       attachment_to_delete: selectedAttachment,
-  //     })
-  //     setIsLoading(false)
-  //   } else setIsLoading(true)
-  // }, [vault, newAttachments, selectedAttachment])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,18 +51,17 @@ const EditVaultPage = () => {
       customer_name: customerName,
       name: vaultName,
       order_number: orderNumber,
-      new_attachments: newAttachments,
-      attachment_to_delete: atta
+      new_attachments: newAttachments
     }
 
     const vaultData = new FormData
-      vaultData.append("customer_name", formData.customer_name)
-      vaultData.append("vault_id", formData.vault_id)
-      vaultData.append("order_number", formData.order_number)
+    vaultData.append("customer_name", formData.customer_name)
+    vaultData.append("vault_id", formData.vault_id)
+    vaultData.append("order_number", formData.order_number)
 
-      formData.new_attachments.forEach((attachment, index) => {
-        vaultData.append(`attachment${index}`, attachment)
-      })
+    formData.new_attachments.forEach((attachment, index) => {
+      vaultData.append(`attachment${index}`, attachment)
+    })
       
     try {
       await dispatch(updateCustomerNameThunk(vault.customer.id, formData.customer_name));
@@ -107,8 +93,8 @@ const EditVaultPage = () => {
 
   const confirmDeleteAttachment = async () => {
     const attachmentData = new FormData
-      attachmentData.append("attachment_id", formData.attachment_to_delete.id)
-      attachmentData.append("attachment_to_delete", formData.attachment_to_delete.unique_name)
+      attachmentData.append("attachment_id", selectedAttachment.id)
+      attachmentData.append("attachment_to_delete", selectedAttachment.unique_name)
 
     await dispatch(deleteAttachmentThunk(vault.id, attachmentData))
 
@@ -139,8 +125,8 @@ const EditVaultPage = () => {
                   type="text"
                   id="customer_name"
                   name="customer_name"
-                  value={formData.customer_name}
-                  onChange={(e) => setFormData({ ...formData, customer_name: e.target.value })}
+                  value={customerName}
+                  onChange={(e) => {setCustomerName(e.target.value)}}
                   required
                   className="form-control"
                 />
@@ -151,8 +137,8 @@ const EditVaultPage = () => {
                   type="text"
                   id="vault_id"
                   name="vault_id"
-                  value={formData.vault_id}
-                  onChange={(e) => setFormData({ ...formData, vault_id: e.target.value })}
+                  value={vaultName}
+                  onChange={(e) => setVaultName(e.target.value)}
                   required
                   className="form-control"
                 />
@@ -163,8 +149,8 @@ const EditVaultPage = () => {
                   type="text"
                   id="order_number"
                   name="order_number"
-                  value={formData.order_number}
-                  onChange={(e) => setFormData({ ...formData, order_number: e.target.value })}
+                  value={orderNumber}
+                  onChange={(e) => setOrderNumber(e.target.value)}
                   required
                   className="form-control"
                 />
@@ -174,14 +160,14 @@ const EditVaultPage = () => {
                 <label>Attachment</label>
                 <input
                     type="file"
-                    onChange={(e) => setNewAttachments([...newAttachments,e.target.files[0]])}
+                    onChange={(e) => setNewAttachments([...newAttachments, e.target.files[0]])}
                 />
               </div>
 
               <div className="form-group">
                 <strong>Attachments</strong>
                 <div className="attachments" >
-                {attachments.map((attachment) => (
+                {vault && vault.attachments.map((attachment) => (
                   <div className='attachment' key={attachment.id} style={{display: "flex", alignItems: "center", gap: "3px"}}>
                     <span className="material-symbols-outlined" style={{ fontSize: '1.5em' }}>
                       file_present

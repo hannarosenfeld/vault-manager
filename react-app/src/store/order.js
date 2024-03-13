@@ -120,11 +120,11 @@ const orderReducer = (state = initialState, action) => {
     case GET_ORDER:
       newState = { ...state }
       newState[action.order.id] = action.order;
-      return order
+      return newState
     case ADD_ORDER:
       newState = { ...state }
       newState[action.order.id] = action.order;
-      return order
+      return newState
 
     // case UPDATE_ORDER_NUMBER:
     //   const updatedOrder = { ...state.orders[action.orderId], orderNumber: action.newOrderNumber };
