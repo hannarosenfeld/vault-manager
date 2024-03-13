@@ -29,6 +29,7 @@ const EditVaultPage = () => {
 
 
   useEffect(() => {
+    if (!vault) {
     const fetchData = async () => {
       try {
         await dispatch(getAllVaultAttachmentsThunk(vaultId));
@@ -42,6 +43,7 @@ const EditVaultPage = () => {
     };
 
     fetchData();
+    }
   }, [dispatch, vaultId, reload === true]);
 
   useEffect(() => {
