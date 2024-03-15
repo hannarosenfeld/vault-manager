@@ -12,7 +12,6 @@ const VaultDetailPage = () => {
     const vaultId = parseInt(params.vaultId);
     const fieldId = parseInt(params.fieldId);
     const vaultObj = useSelector((state) => state.vault[vaultId]);
-    // const attachmentsObj = useSelector((state) => state.attachment);
     const attachments = vaultObj?.attachments;
     const [loading, setLoading] = useState(true);
 
@@ -21,6 +20,8 @@ const VaultDetailPage = () => {
     const handleAttachmentClick = (fileUrl) => {
         setSelectedPDF(fileUrl);
     };
+
+    console.log("😬", vaultObj)
 
     useEffect(() => {
         if (vaultObj) setLoading(false);
@@ -40,7 +41,7 @@ const VaultDetailPage = () => {
                                 <strong>Vault</strong> #{vaultObj.name}
                             </div>
                             <div>
-                                <strong>Order</strong> #{vaultObj.order_number}
+                                <strong>Order</strong> #{vaultObj.order_name}
                             </div>
                             <div>
                                 <strong>Customer</strong> {vaultObj.customer_name}
@@ -58,7 +59,6 @@ const VaultDetailPage = () => {
                             <strong className="mb-3">Attachments</strong>
                             {attachments.map((attachment) => (
                                 <div
-                                    // style={{cursor: "pointer"}}
                                     className="d-flex attachment"
                                     key={attachment.id}
                                     onClick={() => handleAttachmentClick(attachment.file_url)}
