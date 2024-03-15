@@ -67,10 +67,8 @@ def add_vault():
                 type=form.data['type'],
             )
 
-            test = db.session.add(new_vault)
+            db.session.add(new_vault)
             db.session.commit()
-
-            print("🌸", test)
 
             if not existent_customer:
                 new_customer = Customer(name=customer_name)
@@ -89,11 +87,6 @@ def add_vault():
             # TODO check conditionally if production or local, if local field.vaults.count() == 1
             if field.type == "couchbox" and field.vaults.count() == 3:
                 field.full = True
-
-            elif field.vaults.count() == 2:
-                for vault in field.vaults:
-                    if vault.type == "T" and new_vault.type == "T":
-                        field.full = True
 
             # Handle file upload
             attachment = form.data['attachment']
@@ -152,8 +145,6 @@ def manage_vault(id):
         form['csrf_token'].data = request.cookies['csrf_token']
 
         if form.validate_on_submit():
-            print('✅✅✅✅✅ ', form.data)
-
             # customer = Customer.query.get(vault.customer_id)
             # customer.name = 
             # vault.customer_name = form.data['customer_name']

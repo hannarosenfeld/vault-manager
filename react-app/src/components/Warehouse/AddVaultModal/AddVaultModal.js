@@ -263,11 +263,7 @@ export default function AddVaultModal({ onClose, selectedFieldId, warehouseId, t
                             onChange={(e) => setVaultType(e.target.value)}
                         >
                             <option value="S">Standard</option>
-                            {field?.vaults?.length === 2 &&
-                            field.vaults[0].type !== "S" &&
-                            field.vaults[1].type !== "S" ? null : (
                             <option value="T">Tall</option>
-                            )}
                         </select>
                         </div>
                         </div>
