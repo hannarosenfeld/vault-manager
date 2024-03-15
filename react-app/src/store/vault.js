@@ -1,9 +1,10 @@
 // const GET_VAULT = "vault/GET_VAULT";
-const GET_ALL_VAULTS = "vault/GET_ALL_VAULTS"; // Add this new action type
-const ADD_VAULT = "vault/ADD_VAULT"; // Add this new action type
+import { addVaultToStageAction } from "./stage";
+const GET_ALL_VAULTS = "vault/GET_ALL_VAULTS";
+const ADD_VAULT = "vault/ADD_VAULT";
 const EDIT_VAULT = "vault/EDIT_VAULT";
 const DELETE_VAULT = "vault/DELETE_VAULT";
-
+const STAGE_VAULT = "vault/STAGE_VAULT";
 
 const editVaultAction = (vault) => ({
   type: EDIT_VAULT,
@@ -30,9 +31,14 @@ const addVaultAction = (vault) => ({
   vault
 });
 
+const stageVaultAction = (vault) => ({
+  type: STAGE_VAULT,
+  vault
+})
+
 
 export const editVaultThunk = (vaultId, vaultData) => async (dispatch) => {
-  console.log("🔥 in edit vault thunk", vaultId, vaultData)
+  console.log("! in edit vault thunk", vaultId, vaultData)
   try {
     const res = await fetch(`/api/vaults/${vaultId}`, {
       method: 'PUT',
@@ -42,6 +48,31 @@ export const editVaultThunk = (vaultId, vaultData) => async (dispatch) => {
     if (res.ok) {
       const data = await res.json();
       dispatch(editVaultAction(data)); // Update the state with the edited vault
+      return data;
+    } else {
+      const err = await res.json();
+      console.error("Error editing vault:", err);
+      return err;
+    }
+  } catch (error) {
+    console.error("Error editing vault:", error);
+    return error;
+  }
+};
+
+
+export const stageVaultThunk = (vaultId, vaultData) => async (dispatch) => {
+  console.log("🔫 in stage vault thunk", vaultId, vaultData)
+  try {
+    const res = await fetch(`/api/vaults/${vaultId}`, {
+      method: 'PUT',
+      body: vaultData
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      dispatch(stageVaultAction(data));
+      dispatch(addVaultToStageAction(data));
       return data;
     } else {
       const err = await res.json();
@@ -149,8 +180,13 @@ const vaultReducer = (state = initialState, action) => {
       newState[action.vault.id] = action.vault
       return newState
     case DELETE_VAULT:
+      console.log("💖 in delete", newState)
       delete newState[action.vaultId];
       return newState
+    // case STAGE_VAULT:
+    //   newState = { ...state }
+    //   delete newState[action.vaultId];
+    //   return newState
     default:
       return newState;
   }
