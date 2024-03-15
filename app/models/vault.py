@@ -12,7 +12,7 @@ class Vault(db.Model, UserMixin):
     name = db.Column(db.String(100), nullable=False)
     field_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('fields.id'), ondelete='CASCADE'))
     order_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('orders.id'), ondelete='CASCADE'))
-    position = db.Column(db.String(100), nullable=False)
+    position = db.Column(db.String(100))
     type = db.Column(db.String)
     customer_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('customers.id'), ondelete='CASCADE'))
     

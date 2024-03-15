@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getAllVaultAttachmentsThunk } from '../../../store/attachment';
-import { getAllVaultsThunk } from '../../../store/vault';
+import { getAllVaultAttachmentsThunk } from '../../../../store/attachment';
+import { getAllVaultsThunk } from '../../../../store/vault';
 import "./VaultDetailPage.css";
 
 

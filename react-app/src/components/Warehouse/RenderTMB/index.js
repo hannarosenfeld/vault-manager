@@ -1,16 +1,15 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AddVaultButton from "./AddVaultButton";
-import VaultInstance from "../VaultInstance";
+import VaultInstance from "./VaultInstance";
 import { useState } from "react";
+import { getAllVaultsThunk } from "../../../store/vault";
 import "./RenderTMB.css";
-import { getAllVaultsThunk } from "../../store/vault";
-
 
 const RenderTMB = ({ 
   selectedFieldId, 
   handleStageClick, 
-  handleOpenModal, 
+  handleOpenAddVaultModal, 
   handleToggleChange, 
   toggleSelected
  }) => {
@@ -41,6 +40,8 @@ const RenderTMB = ({
     }
     setIsLoading(false)
   }, [dispatch, vaults, selectedFieldId]);
+
+  console.log("🔥", vaults)
 
   // useEffect(() => {
   //   const timeout = setTimeout(() => {
@@ -90,7 +91,7 @@ const RenderTMB = ({
               </div>
             )} */}
             { !T && M && B ? (
-              <AddVaultButton position="T" handleOpenModal={handleOpenModal} fieldType={type}/>
+              <AddVaultButton position="T" handleOpenAddVaultModal={handleOpenAddVaultModal} fieldType={type}/>
             ) 
             : sortedVaults["T"] ? (
               <VaultInstance
@@ -108,7 +109,7 @@ const RenderTMB = ({
             <div className="middle-top middle field-row">
               <span className='position'>M2</span>
               { !M2 && M && B ? (
-                <AddVaultButton position="M2" handleOpenModal={handleOpenModal} fieldType={type}/>
+                <AddVaultButton position="M2" handleOpenAddVaultModal={handleOpenAddVaultModal} fieldType={type}/>
               ) : sortedVaults["M2"]? (
                 <VaultInstance
                   position="M2"
@@ -124,7 +125,7 @@ const RenderTMB = ({
           <div className="middle-bottom middle field-row">
             { type === "vault" ? <span className='position'>M</span> : type === "couchbox" ? <span className='position'>M1</span> : "" }
             {B && !M ? (
-              <AddVaultButton position="M" handleOpenModal={handleOpenModal} fieldType={type}/>
+              <AddVaultButton position="M" handleOpenAddVaultModal={handleOpenAddVaultModal} fieldType={type}/>
             ) : sortedVaults["M"] ? (
               <VaultInstance
                 position="M"
@@ -139,7 +140,7 @@ const RenderTMB = ({
           <div className="bottom field-row">
             <span className="position">B</span>
             {!B ? (
-              <AddVaultButton position="B" handleOpenModal={handleOpenModal} fieldType={type}/>
+              <AddVaultButton position="B" handleOpenAddVaultModal={handleOpenAddVaultModal} fieldType={type}/>
             ) : sortedVaults["B"] ? (
               <VaultInstance
                 position="B"

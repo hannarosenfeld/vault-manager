@@ -3,9 +3,9 @@ import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
 import { useDispatch, useSelector } from "react-redux";
-import RenderTMB from "../../RenderTMB";
-// import { rowCreator } from "../../utility";
 import { getAllWarehousesThunk  } from "../../../store/warehouse";
+
+import RenderTMB from "../../Warehouse/RenderTMB";
 import "./StageToWareHouseModal.css";
 
 

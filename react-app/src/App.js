@@ -8,8 +8,8 @@ import Navigation from "./components/Navigation";
 import Index from "./components/Index";
 import Warehouse from "./components/Warehouse";
 import StagedVaults from "./components/StagedVaults";
-import EditVaultPage from "./components/Warehouse/EditVaultPage";
-import VaultDetailPage from "./components/Warehouse/VaultDetailPage";
+import EditVaultPage from "./components/Warehouse/RenderTMB/EditVaultPage";
+import VaultDetailPage from "./components/Warehouse/RenderTMB/VaultDetailPage";
 import AddWarehouseForm from "./components/AddWareHouse";
 import { getAllWarehousesThunk } from "./store/warehouse";
 

@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from '@mui/material/Modal';
 import CircularProgress from '@mui/material/CircularProgress';
-import AddVaultModal from "./AddVaultModal/AddVaultModal.js"
-import RenderTMB from "../RenderTMB";
-import ConfirmStaging from "./ConfirmStaging";
 import { getAllFieldsThunk } from "../../store/field.js";
 import { useParams } from "react-router-dom";  
 import { getAllWarehousesThunk } from "../../store/warehouse.js";
 import { getAllCustomersThunk } from "../../store/customer.js";
+
+import RenderTMB from "./RenderTMB";
+import AddVaultModal from "./RenderTMB/AddVaultModal/AddVaultModal.js"
+import ConfirmStaging from "./RenderTMB/ConfirmStaging/index.js";
 
 import "./Warehouse.css"
 
@@ -21,8 +22,8 @@ export default function Warehouse() {
     let allFields = useSelector(state => state.field);
     let fields;
     const searchResult = useSelector(state => state.search.fields);
-    const [selectedFieldId, setSelectedFieldId] = useState(null);
     const [position, setPosition] = useState(null);
+    const [selectedFieldId, setSelectedFieldId] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] = useState(false);
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
@@ -43,11 +44,11 @@ export default function Warehouse() {
             .catch(() => setLoading(false));
     }, [dispatch, warehouseId])
 
-    useEffect(() => {
-        if (selectedVaultToStage) {
-            openConfirmStagingModal();
-        }
-    }, [selectedVaultToStage]);
+    // useEffect(() => {
+    //     if (selectedVaultToStage) {
+    //         openConfirmStagingModal();
+    //     }
+    // }, [selectedVaultToStage]);
 
     // const handleToggleChange = () => {
     //     const newToggleSelected = !toggleSelected;
@@ -82,7 +83,7 @@ export default function Warehouse() {
     };
 
     // Function to open the modal and log the statement
-    const handleOpenModal = async (position) => {
+    const handleOpenAddVaultModal = async (position) => {
         await setPosition(position);
         setIsModalOpen(true);
     };
@@ -92,11 +93,7 @@ export default function Warehouse() {
     };
 
     const handleStageClick = async (vault) => {
-        await setSelectedVaultToStage(vault);
-        await setPosition(position);
-    };
-
-    const openConfirmStagingModal = () => {
+        setSelectedVaultToStage(vault);
         setIsConfirmStagingModalOpen(true);
     };
 
@@ -154,7 +151,7 @@ export default function Warehouse() {
                             <RenderTMB
                                 selectedFieldId={selectedFieldId}
                                 handleStageClick={handleStageClick}
-                                handleOpenModal={handleOpenModal}
+                                handleOpenAddVaultModal={handleOpenAddVaultModal}
                                 // handleToggleChange={handleToggleChange}
                                 toggleSelected={toggleSelected}
                                 warehouse={warehouse}
@@ -207,7 +204,7 @@ export default function Warehouse() {
                             <AddVaultModal
                                 onClose={handleCloseModal}
                                 selectedFieldId={selectedFieldId}
-                                tmb={position}
+                                position={position}
                                 warehouseId={warehouseId}
                             />
                         </>

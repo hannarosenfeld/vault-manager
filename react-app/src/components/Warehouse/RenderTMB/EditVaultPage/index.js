@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import './EditVaultPage.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-import { editVaultThunk, getAllVaultsThunk } from '../../../store/vault';
-import { updateCustomerNameThunk } from '../../../store/customer';
-import { deleteVaultThunk } from '../../../store/vault';
+import { deleteVaultThunk, editVaultThunk, getAllVaultsThunk } from '../../../../store/vault';
+import { updateCustomerNameThunk } from '../../../../store/customer';
 import Button from '@mui/material/Button';
 import { useParams } from 'react-router-dom';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
-import { getAllVaultAttachmentsThunk, deleteAttachmentThunk } from '../../../store/attachment';
+import { getAllVaultAttachmentsThunk, deleteAttachmentThunk } from '../../../../store/attachment';
 import DeleteAttachmentConfirmationModal from './DeleteAttachmentConfirmationModal';
 
 

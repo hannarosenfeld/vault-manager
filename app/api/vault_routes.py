@@ -145,6 +145,13 @@ def manage_vault(id):
         form['csrf_token'].data = request.cookies['csrf_token']
 
         if form.validate_on_submit():
+            if form.data['staging'] : 
+                vault.field_id = None
+                vault.position = None
+
+                db.session.commit()
+                return vault.to_dict()   
+
             # customer = Customer.query.get(vault.customer_id)
             # customer.name = 
             # vault.customer_name = form.data['customer_name']

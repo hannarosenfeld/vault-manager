@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllCustomersThunk, addCustomerThunk } from '../../../store/customer';
-import { addVaultThunk } from '../../../store/vault';
+import { getAllCustomersThunk, addCustomerThunk } from '../../../../store/customer';
+import { addVaultThunk } from '../../../../store/vault';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -11,7 +11,7 @@ import "./AddVaultModal.css"
 import MiniWareHouse from './MiniWareHouse';
 
 
-export default function AddVaultModal({ onClose, selectedFieldId, warehouseId, tmb }) {
+export default function AddVaultModal({ onClose, selectedFieldId, warehouseId, position }) {
     const dispatch = useDispatch();
     const customersObj = useSelector(state => state.customer)
     const customers = Object.values(customersObj)
@@ -120,7 +120,7 @@ export default function AddVaultModal({ onClose, selectedFieldId, warehouseId, t
             vaultData.append("customer_name", customer_name)
             vaultData.append("customer", newCustomer)
             vaultData.append("field_id", selectedFieldId)
-            vaultData.append("position", tmb)
+            vaultData.append("position", position)
             vaultData.append("type", field.type === "vault" ? vaultType : "couchbox")
             vaultData.append("vault_id", field.type === "vault" ? vault_id : null)
             vaultData.append("order_number", field.type === "vault" ? order_number : null)
@@ -168,7 +168,7 @@ export default function AddVaultModal({ onClose, selectedFieldId, warehouseId, t
                     <h4 id="modal-modal-title">{field.type === "vault" ? "Add Vault" : "Add Couchbox"}</h4>
                     <div className="vault-info">
                         <div>Field: <span>{selectedFieldId}</span></div>
-                        <div>Position: <span>{tmb}</span></div>
+                        <div>Position: <span>{position}</span></div>
                     </div>
                 </div>
                 <form className="add-vault-form" onSubmit={handleSubmit} enctype="multipart/form-data">
