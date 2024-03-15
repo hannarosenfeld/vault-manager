@@ -32,7 +32,7 @@ const VaultDetailPage = () => {
     return (
         <>
 
-            {vaultObj && vaultObj.customer_name ? (
+            {vaultObj && vaultObj.customer_name && !loading ? (
                 <div className="container mt-3 wrapper">
                     <div className="card" style={{ marginBottom: '20px' }}>
                         <div className="card-body">
@@ -77,7 +77,12 @@ const VaultDetailPage = () => {
                         </div>
                     </div>
                 </div>
-            ) : <div>...Loading</div>}
+            ) :  <div style={{paddingTop: "8em", justifyContent: "center", display: "flex", alignItems: "center", alignContent: "center"}}>
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            }
         </>
     );
 };
