@@ -123,6 +123,24 @@ export const deleteVaultThunk = (vaultId) => async (dispatch) => {
 //   }
 // };
 
+export const getVaultsThunk = () => async (dispatch) => {
+  try {
+    const res = await fetch(`/api/vaults`);
+    if (res.ok) {
+      const data = await res.json();
+      dispatch(getAllVaultsAction(data));
+      return data;
+    } else {
+      const err = await res.json();
+      console.error("Error fetching vaults:", err); // Log the error
+      return err;
+    }
+  } catch (error) {
+    console.error("Error fetching vaults:", error);
+    return error;
+  }
+};
+
 export const getAllVaultsThunk = (fieldId) => async (dispatch) => {
   try {
     const res = await fetch(`/api/vaults/${fieldId}`);
@@ -165,6 +183,7 @@ export const addVaultThunk = (vaultData) => async (dispatch) => {
 
 const initialState = {};
 
+
 const vaultReducer = (state = initialState, action) => {
   let newState = {}
   switch (action.type) {
@@ -179,14 +198,16 @@ const vaultReducer = (state = initialState, action) => {
     case EDIT_VAULT:
       newState[action.vault.id] = action.vault
       return newState
+    // TODO: Revise DELETE thunk
     case DELETE_VAULT:
       console.log("💖 in delete", newState)
       delete newState[action.vaultId];
       return newState
-    // case STAGE_VAULT:
-    //   newState = { ...state }
-    //   delete newState[action.vaultId];
-    //   return newState
+    case STAGE_VAULT:
+      
+      newState = { ...state }
+      delete newState[action.vaultId];
+      return newState
     default:
       return newState;
   }

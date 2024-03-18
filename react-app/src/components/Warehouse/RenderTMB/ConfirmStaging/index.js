@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { editVaultThunk } from '../../../../store/vault';
+import { editVaultThunk, stageVaultThunk } from '../../../../store/vault';
 import "./ConfirmStaging.css"
 
 
@@ -18,7 +18,7 @@ export default function ConfirmStaging({
         let vaultData = new FormData()
         vaultData.append("staging", true)
     
-        dispatch(editVaultThunk(vault.id, vaultData))
+        dispatch(stageVaultThunk(vault.id, vaultData))
         // const updatedVault = await dispatch(addVaultToStageThunk(vaultId));
         onClose();
     }

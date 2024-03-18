@@ -12,12 +12,19 @@ import EditVaultPage from "./components/Warehouse/RenderTMB/EditVaultPage";
 import VaultDetailPage from "./components/Warehouse/RenderTMB/VaultDetailPage";
 import AddWarehouseForm from "./components/AddWareHouse";
 import { getAllWarehousesThunk } from "./store/warehouse";
+import { getAllVaultsThunk } from "./store/vault";
+
 
 function App() {
   const dispatch = useDispatch();
   const history = useHistory();
+  const vaults = useSelector(state => state.vaults);
   const [isLoaded, setIsLoaded] = useState(false);
 	const sessionUser = useSelector(state => state.session.user);
+
+  useEffect(() => {
+    if (vaults && Object.values(vaults).length) dispatch(getAllVaultsThunk)
+  }, [vaults])
 
   // useEffect(()=>{
   //   console.log("💖", currentWarehouse.warehouse_id)

@@ -10,8 +10,8 @@ def get_stage_info():
     """
     Retrieve information about the stage
     """
-    stage = Stage.query.get(1)  # Assuming there is only one stage with ID 1
-
+    # stage = Stage.query.get(1)  # Assuming there is only one stage with ID 1
+    
     if not stage:
         return {'errors': 'Stage not found'}, 404
 

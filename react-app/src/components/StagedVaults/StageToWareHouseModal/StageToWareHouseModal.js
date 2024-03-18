@@ -4,7 +4,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllWarehousesThunk  } from "../../../store/warehouse";
-
+import MiniWareHouse from "./MiniWareHouse";
 import RenderTMB from "../../Warehouse/RenderTMB";
 import "./StageToWareHouseModal.css";
 
@@ -12,10 +12,9 @@ import "./StageToWareHouseModal.css";
 export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   const dispatch = useDispatch();
   const [selectedWarehouse, setSelectedWarehouse] = useState(1);
-  const vaults = useSelector(state => state.vault.vaults);
+  // const vaults = useSelector(state => state.vault.vaults);
   const warehousesObj = useSelector(state => state.warehouse);
   const warehouses = Object.values(warehousesObj)
-
   const [selectedField, setSelectedField] = useState(null);
   const [selectedFieldIndex, setSelectedFieldIndex] = useState(0);
   const [selectedRow, setSelectedRow] = useState(null);
@@ -31,13 +30,13 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
     dispatch(getAllWarehousesThunk());
   }, []);
 
-  useEffect(() => {
-    vaultsArr = Object.values(vaults);
-  }, [vaults]);
+  // useEffect(() => {
+  //   vaultsArr = Object.values(vaults);
+  // }, [vaults]);
 
-  useEffect(() => {
-    vaultsArr = Object.values(vaults);
-  }, [vaults]);
+  // useEffect(() => {
+  //   vaultsArr = Object.values(vaults);
+  // }, [vaults]);
 
   const handleFieldClick = async (field, row, index) => {
     setLoadingVaults(true);
@@ -118,8 +117,8 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
               <div style={{display: "flex"}}>
               <div className="vault-info">
                 <h3>Selected Vault Information</h3>
-                <p><b>Customer:</b> {selectedVault.customer.name}</p>
-                <p><b>Vault ID:</b> {selectedVault.vault_id}</p>
+                <p><b>Customer:</b> {selectedVault.customer_name}</p>
+                <p><b>Vault ID:</b> {selectedVault.name}</p>
               </div>
               <div className="warehouses-button-container">
                 {warehouses.map(warehouse => (
@@ -138,6 +137,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
                   )}
                 </div>
                 <div className="warehouse" style={{height: "60%"}}>
+                  <MiniWareHouse warehouseId={selectedWarehouse.id} fields={fields}/>
                   {/* <div className="row" key={row.id}>
                     <div className="fields">
                     {row.fields.map((field, index) => (

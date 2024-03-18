@@ -23,9 +23,9 @@ def validation_errors_to_error_messages(validation_errors):
             errorMessages.append(f'{field} : {error}')
     return errorMessages
 
-# Get all vaultIds 
+
 @vault_routes.route('/<int:field_id>')
-def all_vaults(field_id):
+def all_field_vaults(field_id):
     """
     Query for all vaults and returns them in a list of vault dictionaries
     """
@@ -35,13 +35,22 @@ def all_vaults(field_id):
     return { vault.id : vault.to_dict() for vault in vaults }
 
 
-@vault_routes.route('/<int:id>')
-def single_vault(id):
+@vault_routes.route('/')
+def all_vaults():
     """
-    Query for a vault by id and returns that vault in a dictionary
+    Query for all vaults and returns them in a list of vault dictionaries
     """
-    vault = Vault.query.get(id)
-    return vault.to_dict()
+    vaults = Vault.query.all()
+    return { vault.id : vault.to_dict() for vault in vaults }
+
+
+# @vault_routes.route('/<int:id>')
+# def single_vault(id):
+#     """
+#     Query for a vault by id and returns that vault in a dictionary
+#     """
+#     vault = Vault.query.get(id)
+#     return vault.to_dict()
 
 
 @vault_routes.route('/', methods=['POST'])

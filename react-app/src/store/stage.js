@@ -104,10 +104,9 @@ export const removeVaultFromStageThunk = (vaultId) => async (dispatch) => {
   }
 };
 
-const initialState = {
-  stageInfo: {},
-  stagedVaults: [],
-};
+
+const initialState = {};
+
 
 const stageReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -117,10 +116,9 @@ const stageReducer = (state = initialState, action) => {
         stageInfo: action.payload,
       };
     case ADD_VAULT_TO_STAGE:
-      return {
-        ...state,
-        stagedVaults: [...state.stagedVaults, action.payload],
-      };    
+      let newState = { ...state }
+      newState[action.vault.id] = action.vault;
+      return newState;  
     case GET_ALL_STAGED_VAULTS:
       return {
         ...state,
