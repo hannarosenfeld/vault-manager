@@ -125,7 +125,7 @@ export const deleteVaultThunk = (vaultId) => async (dispatch) => {
 
 export const getVaultsThunk = () => async (dispatch) => {
   try {
-    const res = await fetch(`/api/vaults`);
+    const res = await fetch(`/api/vaults/`);
     if (res.ok) {
       const data = await res.json();
       dispatch(getAllVaultsAction(data));

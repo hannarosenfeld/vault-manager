@@ -137,7 +137,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
                   )}
                 </div>
                 <div className="warehouse" style={{height: "60%"}}>
-                  <MiniWareHouse warehouseId={selectedWarehouse.id} fields={fields}/>
+                  <MiniWareHouse warehouseId={selectedWarehouse}/>
                   {/* <div className="row" key={row.id}>
                     <div className="fields">
                     {row.fields.map((field, index) => (

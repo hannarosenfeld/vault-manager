@@ -23,7 +23,8 @@ function App() {
 	const sessionUser = useSelector(state => state.session.user);
 
   useEffect(() => {
-    if (vaults && Object.values(vaults).length) dispatch(getAllVaultsThunk)
+    // if (vaults && Object.values(vaults).length) dispatch(getAllVaultsThunk())
+    dispatch(getAllVaultsThunk())
   }, [vaults])
 
   // useEffect(()=>{
