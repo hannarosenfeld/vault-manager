@@ -32,16 +32,20 @@ export default function MiniWareHouse({ warehouseId, setSelectedField, selectedF
                                 key={field.id}
                                 onClick={() => setSelectedField(field)}
                                 style={{
-                                    backgroundColor: "var(--lightgrey)",
+                                    backgroundColor: `${
+                                        field.vaults.length === 3 || field.full ? "var(--red)" :
+                                            field.vaults.length === 2 ? "var(--yellow)" :
+                                                field.vaults.length === 1 ? "var(--green)" :
+                                                    "var(--lightgrey)"
+                                    }`,                                    
                                     border: `${selectedField && (selectedField?.id === field.id) ? "3px solid var(--blue)": "transparent"}`,
                                     marginBottom: `${field.type === "couchbox-T" ? "-2.2em" : 'none'}`,
                                     width: `${field.type === "couchbox-B" ? "0px" : '100%'}`,
                                     zIndex: `${field.type === "couchbox-B" ? "100" : 'none'}`,
                                     marginBottom: `${selectedField && (selectedField?.id === field.id) ? "-6px": "none"}`,
-
                                 }}
                             >
-                                {field.type === "couchbox-B" ? "" : <div style={{color: "rgba(80, 80, 80, 0.5)"}} className="field-number">{field.name}</div>}
+                                {field.type === "couchbox-B" ? "" : <div style={{color: "var(--black)"}} className="field-number">{field.name}</div>}
 
                             </div>
                     )
