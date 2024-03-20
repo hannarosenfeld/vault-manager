@@ -76,7 +76,7 @@ const RenderTMB = ({
     }
   }, [dispatch, vaultsArr]);
 
-console.log('field ', field)
+ 
   return (
     <div style={{display: "flex"}}>
     {isLoading ? (

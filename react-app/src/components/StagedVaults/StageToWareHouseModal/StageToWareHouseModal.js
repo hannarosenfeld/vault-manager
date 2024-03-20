@@ -120,7 +120,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
             <div>
               <div style={{display: "flex"}}>
               <div className="vault-info">
-                <h3>Selected Vault Information</h3>
+                <h4>Selected Vault Information</h4>
                 <p><b>Customer:</b> {selectedVault.customer_name}</p>
                 <p><b>Vault ID:</b> {selectedVault.name}</p>
               </div>
@@ -130,8 +130,8 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
                 ))}
               </div>
               </div>
-              <div >
-                <div style={{height: "10em", marginBottom: "0.6em", padding: "0 0.3em"}}>
+              <div>
+                <div style={{padding: "0 0.3em", marginBottom: "0.7em"}}>
                   {selectedField ? (
                     <RenderTMB 
                       handleOpenModal={openConfirmationModal} 
@@ -139,7 +139,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
                       selectedVault={selectedVault}
                     />
                   ) : (
-                    <div>
+                    <div style={{height: "9em"}}>
                       Select a field to view its info
                     </div>
                   )}
