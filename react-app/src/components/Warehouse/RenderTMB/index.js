@@ -78,7 +78,7 @@ const RenderTMB = ({
 
 console.log('field ', field)
   return (
-    <>
+    <div style={{display: "flex"}}>
     {isLoading ? (
       <div style={{width: "100%", display: "flex", alignItems: "center", marginLeft: "50%", alignContent: "center"}}>
         <div class="spinner-border text-primary" role="status">
@@ -86,7 +86,7 @@ console.log('field ', field)
         </div>
     </div>
     ) : (
-        <div className="selected-field-vaults-tmb" style={{ gridTemplateRows: type === "couchbox" ? "repeat(4,1fr)" : ""}}>
+        <div className="selected-field-vaults-tmb" style={{ gridTemplateRows: type === "couchbox" ? "repeat(4,1fr)" : "", height: "100%", width: "65%"}}>
           <div className="top field-row">
             <span className="position">T</span>
             {/* { onlyTop && sortedVaults.full && type === "vault" && (
@@ -159,8 +159,9 @@ console.log('field ', field)
         </div>
     )}
     {/* Toggle Field Type Switch */}
-      <div className={`selected-field-box ${toggleSelected ? 'toggled' : ''}`}>
-      <div className="form-check form-switch" >
+    <div className={`selected-field-box ${toggleSelected ? 'toggled' : ''}`}>
+      <div className="field-info-box">
+      {/* <div className="form-check form-switch" >
         <input
           className="form-check-input"
           type="checkbox"
@@ -175,10 +176,11 @@ console.log('field ', field)
         >
           {toggleSelected || type === "couchbox" ? 'Couchbox' : 'Vault' }
         </label>
-      </div>    
-        <div className="selected-field-name">{field.name}</div>
+      </div>     */}
+        <div className="selected-field-name" style={{margin: "0 auto"}}>{field.name}</div>
+      </div> 
       </div>
-    </>
+    </div>
   );
 };
 

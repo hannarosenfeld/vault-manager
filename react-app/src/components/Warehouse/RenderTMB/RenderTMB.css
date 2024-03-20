@@ -1,33 +1,33 @@
 .selected-field-box {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
+    width: 35%;
 }
 
-.form-check {
-    grid-column: 3 / 3;
-    grid-row: 1 / 1;
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    color: orange;
+.field-info-box {
+    min-height: 100%;
+    display: flex;
+    align-items: center;
 }
-  
-.form-check-input {
+
+/* .form-check {
+
+}
+   */
+.field-row {
+    height: 4em;
+}
+
+/* .form-check-input {
     grid-column: 2 / 3;
-}
+} */
 
 .selected-field-name {
-    grid-column: 2 / 3;
-    grid-row: 2 / 3;
-    justify-self: center;
-    align-self: center;
     font-size: 2rem;
 }
 
-.form-check-input:checked {
+/* .form-check-input:checked {
     background-color: orange;
     border-color: orange;
-}
+} */
 
 .form-check-input:focus {
     box-shadow: 0 0 0.25rem orange;

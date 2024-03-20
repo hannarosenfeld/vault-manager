@@ -130,8 +130,8 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
                 ))}
               </div>
               </div>
-              <div className="warehouse-wrapper">
-                <div className="field-info">
+              <div >
+                <div style={{height: "10em", marginBottom: "0.6em", padding: "0 0.3em"}}>
                   {selectedField ? (
                     <RenderTMB 
                       handleOpenModal={openConfirmationModal} 
