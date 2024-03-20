@@ -12,7 +12,7 @@ import EditVaultPage from "./components/Warehouse/RenderTMB/EditVaultPage";
 import VaultDetailPage from "./components/Warehouse/RenderTMB/VaultDetailPage";
 import AddWarehouseForm from "./components/AddWareHouse";
 import { getAllWarehousesThunk } from "./store/warehouse";
-import { getAllVaultsThunk } from "./store/vault";
+import { getVaultsThunk } from "./store/vault";
 
 
 function App() {
@@ -23,8 +23,8 @@ function App() {
 	const sessionUser = useSelector(state => state.session.user);
 
   useEffect(() => {
-    // if (vaults && Object.values(vaults).length) dispatch(getAllVaultsThunk())
-    dispatch(getAllVaultsThunk())
+    // if (vaults && Object.values(vaults).length) dispatch(getAllFieldVaultsThunk())
+    dispatch(getVaultsThunk())
   }, [vaults])
 
   // useEffect(()=>{

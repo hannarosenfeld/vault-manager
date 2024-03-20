@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AddVaultButton from "./AddVaultButton";
 import VaultInstance from "./VaultInstance";
 import { useState } from "react";
-import { getAllVaultsThunk } from "../../../store/vault";
+import { getAllFieldVaultsThunk } from "../../../store/vault";
 import "./RenderTMB.css";
 
 const RenderTMB = ({ 
@@ -11,7 +11,8 @@ const RenderTMB = ({
   handleStageClick, 
   handleOpenAddVaultModal, 
   handleToggleChange, 
-  toggleSelected
+  toggleSelected,
+  selectedVault
  }) => {
   const dispatch = useDispatch();
   const field = useSelector((state) => state.field[selectedFieldId]);
@@ -26,13 +27,12 @@ const RenderTMB = ({
 
   useEffect(() => {
     console.log("💖 selectedFieldId", selectedFieldId)
-
   }, [selectedFieldId])
 
 
   useEffect(() => {
     setSortedVaults({});
-    dispatch(getAllVaultsThunk(selectedFieldId))
+    dispatch(getAllFieldVaultsThunk(selectedFieldId))
   }, [dispatch, selectedFieldId])
 
   useEffect(() => {
@@ -76,7 +76,7 @@ const RenderTMB = ({
     }
   }, [dispatch, vaultsArr]);
 
-
+console.log('field ', field)
   return (
     <>
     {isLoading ? (

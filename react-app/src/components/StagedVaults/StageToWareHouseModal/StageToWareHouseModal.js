@@ -136,6 +136,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
                     <RenderTMB 
                       handleOpenModal={openConfirmationModal} 
                       selectedFieldId={selectedField.id}
+                      selectedVault={selectedVault}
                     />
                   ) : (
                     <div>

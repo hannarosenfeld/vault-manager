@@ -139,7 +139,7 @@ export const getVaultsThunk = () => async (dispatch) => {
   }
 };
 
-export const getAllVaultsThunk = (fieldId) => async (dispatch) => {
+export const getAllFieldVaultsThunk = (fieldId) => async (dispatch) => {
   try {
     const res = await fetch(`/api/vaults/${fieldId}`);
     if (res.ok) {
