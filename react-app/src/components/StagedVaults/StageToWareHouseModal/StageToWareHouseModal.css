@@ -30,6 +30,7 @@
 
 .warehouse-wrapper {
     max-height: 100%;
+    padding: 0 0.3em !important;
 }
 
 .fields {
