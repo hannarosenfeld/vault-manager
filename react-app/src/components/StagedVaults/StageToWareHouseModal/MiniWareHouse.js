@@ -40,9 +40,10 @@ export default function MiniWareHouse({ warehouseId, setSelectedField, selectedF
                                     }`,                                    
                                     border: `${selectedField && (selectedField?.id === field.id) ? "3px solid var(--blue)": "transparent"}`,
                                     marginBottom: `${field.type === "couchbox-T" ? "-2.2em" : 'none'}`,
+                                    height: "1.5em",
                                     width: `${field.type === "couchbox-B" ? "0px" : '100%'}`,
                                     zIndex: `${field.type === "couchbox-B" ? "100" : 'none'}`,
-                                    marginBottom: `${selectedField && (selectedField?.id === field.id) ? "-6px": "none"}`,
+                                    // padding: `${selectedField && (selectedField?.id === field.id) ? "5px": "0"}`,
                                 }}
                             >
                                 {field.type === "couchbox-B" ? "" : <div style={{color: "var(--black)"}} className="field-number">{field.name}</div>}
