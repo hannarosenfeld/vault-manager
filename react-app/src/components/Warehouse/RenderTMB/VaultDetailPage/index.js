@@ -21,8 +21,6 @@ const VaultDetailPage = () => {
         setSelectedPDF(fileUrl);
     };
 
-    console.log("😬", vaultObj)
-
     useEffect(() => {
         if (vaultObj) setLoading(false);
         else dispatch(getAllVaultsThunk(fieldId));

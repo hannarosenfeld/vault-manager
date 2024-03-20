@@ -19,16 +19,8 @@ export default function StagedVaults() {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log("🧼", vaults)
     if (Object.values(vaults).length) stagedArr = Object.values(vaults).filter(vault => (!vault.field_id && !vault.position))
-    console.log("🍝", stagedArr)
   }, [vaults])
-
-  useEffect(() => {
-    console.log("😊 hitting useEffect")
-    if (stagedArr.length) console.log("💅🏻", stagedArr)
-  }, [stagedArr])
-
 
   // Function to truncate a string to a specified length
   const truncateString = (str, maxLength) => {

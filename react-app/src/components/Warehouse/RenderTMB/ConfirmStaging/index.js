@@ -10,8 +10,6 @@ export default function ConfirmStaging({
     onClose, 
   }) {
 
-    console.log("💁‍♀️", vault)
-
     const dispatch = useDispatch();
     const handleSubmit = async (e) => {
         e.preventDefault();

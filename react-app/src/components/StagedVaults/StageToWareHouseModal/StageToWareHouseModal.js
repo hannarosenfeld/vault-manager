@@ -27,6 +27,10 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   let vaultsArr;
 
   useEffect(() => {
+    console.log("👏🏻 selectedField in stage", selectedField)
+  }, [selectedField])
+
+  useEffect(() => {
     dispatch(getAllWarehousesThunk());
   }, []);
 
@@ -129,40 +133,17 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
               <div className="warehouse-wrapper">
                 <div className="field-info">
                   {selectedField ? (
-                    <RenderTMB handleOpenModal={openConfirmationModal} selectedField={selectedField}/>
+                    <RenderTMB 
+                      handleOpenModal={openConfirmationModal} 
+                      selectedFieldId={selectedField.id}
+                    />
                   ) : (
                     <div>
                       Select a field to view its info
                     </div>
                   )}
                 </div>
-                <div className="warehouse" style={{height: "60%"}}>
-                  <MiniWareHouse warehouseId={selectedWarehouse}/>
-                  {/* <div className="row" key={row.id}>
-                    <div className="fields">
-                    {row.fields.map((field, index) => (
-                        <div
-                          className="field"
-                          key={field.id}
-                          style={{
-                            backgroundColor: `${
-                                field?.vaults?.length === 3 || field.full ? "var(--red)" :
-                                field?.vaults?.length === 2 ? "var(--yellow)" :
-                                field?.vaults?.length === 1 ? "var(--green)" :
-                                "var(--lightgrey)"
-                            }`,
-                            border: selectedField?.id === field?.id ? "3px solid var(--blue)" : "",
-                            marginBottom: `${field.type === "couchbox" ? "-1.7em" : ''}`,
-                            width: `${field.bottom_couch_box ? "0px" : ''}`,                              
-                        }}   
-                          onClick={() => handleFieldClick(field, row, index)}
-                        >
-                  {field.bottom_couch_box ? "" : field.type === "vault" ? <div className="field-number">{row.name}{index + 1}</div> : field.type === "couchbox" ? <div className="field-number">{row.name}{index + 1} / {row.name}{index + 2}</div> : ''}
-                        </div>
-                      ))}
-                    </div>
-                  </div> */}
-                </div>
+                  <MiniWareHouse warehouseId={selectedWarehouse} setSelectedField={setSelectedField} selectedField={selectedField}/>                
               </div>
             </div>
           )}

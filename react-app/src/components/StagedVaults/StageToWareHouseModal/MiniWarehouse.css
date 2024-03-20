@@ -1,0 +1,7 @@
+.mini-warehouse {
+    /* width: 100vw; */
+    height: 80%;
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    grid-gap: 1%;
+}

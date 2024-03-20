@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 
 const VaultInstance = ({ topmostVault, vault, handleStageClick }) => {
-  console.log("💖", vault)
   const customer = useSelector(state => state.customer[vault.customer_id]);
   const { warehouseId } = useParams()
   return (

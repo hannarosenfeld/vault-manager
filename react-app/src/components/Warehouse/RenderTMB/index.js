@@ -25,6 +25,12 @@ const RenderTMB = ({
   const { type } = field
 
   useEffect(() => {
+    console.log("💖 selectedFieldId", selectedFieldId)
+
+  }, [selectedFieldId])
+
+
+  useEffect(() => {
     setSortedVaults({});
     dispatch(getAllVaultsThunk(selectedFieldId))
   }, [dispatch, selectedFieldId])
@@ -40,8 +46,6 @@ const RenderTMB = ({
     }
     setIsLoading(false)
   }, [dispatch, vaults, selectedFieldId]);
-
-  console.log("🔥", vaults)
 
   // useEffect(() => {
   //   const timeout = setTimeout(() => {
