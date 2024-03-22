@@ -203,3 +203,19 @@ def manage_vault(id):
         field.full = False
         db.session.commit()
         return {'message': 'Vault deleted successfully'}
+
+
+@vault_routes.route('/moveVault/<int:selected_field_id>/<int:vault_id>/<string:position>', methods=['PUT'])
+# TODO: in the future, add a form for moving vault and take in vault info through form body, not through the route
+@login_required
+def move_vault_to_warehouse(selected_field_id, vault_id, position):
+    vault = Vault.query.get(vault_id)
+    if (vault):
+        vault.field_id = selected_field_id
+        vault.position = position
+        db.session.commit()
+        return vault.to_dict()
+
+    else:
+        return {"message" : "vault not found"}
+

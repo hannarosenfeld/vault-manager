@@ -1,7 +1,7 @@
 const GET_STAGE_INFO = 'stage/GET_STAGE_INFO';
 export const ADD_VAULT_TO_STAGE = 'stage/ADD_VAULT_TO_STAGE';
 const GET_ALL_STAGED_VAULTS = 'stage/GET_ALL_STAGED_VAULTS';
-const REMOVE_VAULT_FROM_STAGE = 'stage/REMOVE_VAULT_FROM_STAGE';
+export const REMOVE_VAULT_FROM_STAGE = 'stage/REMOVE_VAULT_FROM_STAGE';
 
 export const getStageInfoAction = (stageInfo) => ({
   type: GET_STAGE_INFO,
@@ -10,7 +10,7 @@ export const getStageInfoAction = (stageInfo) => ({
 
 export const addVaultToStageAction = (vault) => ({
   type: ADD_VAULT_TO_STAGE,
-  payload: vault,
+  vault,
 });
 
 export const getAllStagedVaultsAction = (vaults) => ({
@@ -20,7 +20,7 @@ export const getAllStagedVaultsAction = (vaults) => ({
 
 export const removeVaultFromStageAction = (vaultId) => ({
   type: REMOVE_VAULT_FROM_STAGE,
-  payload: vaultId,
+  vaultId,
 });
 
 export const getStageInfoThunk = () => async (dispatch) => {
@@ -109,6 +109,7 @@ const initialState = {};
 
 
 const stageReducer = (state = initialState, action) => {
+  let newState;
   switch (action.type) {
     case GET_STAGE_INFO:
       return {
@@ -116,7 +117,7 @@ const stageReducer = (state = initialState, action) => {
         stageInfo: action.payload,
       };
     case ADD_VAULT_TO_STAGE:
-      let newState = { ...state }
+      newState = { ...state }
       newState[action.vault.id] = action.vault;
       return newState;  
     case GET_ALL_STAGED_VAULTS:
@@ -125,10 +126,10 @@ const stageReducer = (state = initialState, action) => {
         stagedVaults: action.payload,
       };
     case REMOVE_VAULT_FROM_STAGE:
-      return {
-        ...state,
-        stagedVaults: state.stagedVaults.filter((vault) => vault !== action.payload),
-      };
+      newState = { ...state };
+      // console.log("🧠: ", vault)
+      delete newState[action.vaultId];
+      return newState;
     default:
       return state;
   }

@@ -4,13 +4,16 @@ import CloseIcon from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllWarehousesThunk  } from "../../../store/warehouse";
+import { moveVaultFromStageToWarehouseThunk } from "../../../store/vault";
 import MiniWareHouse from "./MiniWareHouse";
 import RenderTMB from "../../Warehouse/RenderTMB";
 import "./StageToWareHouseModal.css";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 
 export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [selectedWarehouse, setSelectedWarehouse] = useState(1);
   // const vaults = useSelector(state => state.vault.vaults);
   const warehousesObj = useSelector(state => state.warehouse);
@@ -34,6 +37,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
     dispatch(getAllWarehousesThunk());
   }, []);
 
+
   // useEffect(() => {
   //   vaultsArr = Object.values(vaults);
   // }, [vaults]);
@@ -50,42 +54,44 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
     setLoadingVaults(false);
   };
   
-  const openConfirmationModal = (position) => {
-    setPosition(position);
-    setConfirmationModalOpen(true);
-  };
+  // const openConfirmationModal = (position) => {
+  //   setPosition(position);
+  //   setConfirmationModalOpen(true);
+  // };
 
-  const closeConfirmationModal = () => {
-    setConfirmationModalOpen(false);
-  };
+  // const closeConfirmationModal = () => {
+  //   setConfirmationModalOpen(false);
+  // };
 
   const moveVault = async (vault, position) => {
+    console.log("💁‍♀️ we are hitting moveVault", vault, position)
     if (loadingVaults) {
       // Don't proceed if vaults are still loading
       return;
     }
   
     if (selectedField) {
-      // await dispatch(moveVaultFromStageToWarehouseThunk(vault.id, selectedField.id, fieldName, position));
-  
-      closeConfirmationModal();
-      closeModal();
+
+      await dispatch(moveVaultFromStageToWarehouseThunk(vault.id, selectedField.id, position))
+      .then(history.push("/stage"))
+      // closeConfirmationModal();
+      // closeModal();
     }
   };
   
-  const ConfirmationModal = () => {
-    return (
-       <div className="modal-container">
-        <div className="modal-content">
-          <p style={{ marginBottom: "1em" }}>Are you sure you want to move the vault to the warehouse?</p>
-          <div style={{ display: "flex", margin: "0 auto", float: "right", gap: "1em" }}>
-            <Button variant="contained" onClick={() => moveVault(selectedVault, position)}>Yes</Button>
-            <Button variant="outlined" color="error" onClick={closeConfirmationModal}>No</Button>
-          </div>
-        </div>
-      </div>
-    );
-  };
+  // const ConfirmationModal = () => {
+  //   return (
+  //      <div className="modal-container">
+  //       <div className="modal-content">
+  //         <p style={{ marginBottom: "1em" }}>Are you sure you want to move the vault to the warehouse?</p>
+  //         <div style={{ display: "flex", margin: "0 auto", float: "right", gap: "1em" }}>
+  //           <Button variant="contained" onClick={() => moveVault(selectedVault, position)}>Yes</Button>
+  //           <Button variant="outlined" color="error" onClick={closeConfirmationModal}>No</Button>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // };
   
 //   const sortFields = (fields) => {
 //     const sortedFields = {};
@@ -134,9 +140,9 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
                 <div style={{padding: "0 0.3em", marginBottom: "0.7em"}}>
                   {selectedField ? (
                     <RenderTMB 
-                      handleOpenModal={openConfirmationModal} 
                       selectedFieldId={selectedField.id}
                       selectedVault={selectedVault}
+                      moveVault={moveVault}
                     />
                   ) : (
                     <div style={{height: "9em"}}>
@@ -149,7 +155,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
             </div>
           )}
         </div>
-        {confirmationModalOpen && <ConfirmationModal fieldId={selectedField.id} />}
+        {/* {confirmationModalOpen && <ConfirmationModal fieldId={selectedField.id} />} */}
       </div>
     </div>
   );

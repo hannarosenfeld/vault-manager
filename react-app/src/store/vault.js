@@ -1,10 +1,11 @@
 // const GET_VAULT = "vault/GET_VAULT";
-import { addVaultToStageAction } from "./stage";
+import { addVaultToStageAction, removeVaultFromStageAction } from "./stage";
 const GET_ALL_VAULTS = "vault/GET_ALL_VAULTS";
 const ADD_VAULT = "vault/ADD_VAULT";
 const EDIT_VAULT = "vault/EDIT_VAULT";
 const DELETE_VAULT = "vault/DELETE_VAULT";
 const STAGE_VAULT = "vault/STAGE_VAULT";
+const MOVE_VAULT_FROM_STAGE_TO_WAREHOUSE = "vault/MOVE_VAULT_FROM_STAGE_TO_WAREHOUSE"
 
 const editVaultAction = (vault) => ({
   type: EDIT_VAULT,
@@ -33,6 +34,11 @@ const addVaultAction = (vault) => ({
 
 const stageVaultAction = (vault) => ({
   type: STAGE_VAULT,
+  vault
+})
+
+const moveVaultFromStageToWarehouseAction = (vault) => ({
+  type: MOVE_VAULT_FROM_STAGE_TO_WAREHOUSE,
   vault
 })
 
@@ -82,6 +88,27 @@ export const stageVaultThunk = (vaultId, vaultData) => async (dispatch) => {
     return error;
   }
 };
+
+export const moveVaultFromStageToWarehouseThunk = (vaultId, selectedFieldId, position) => async (dispatch) => {
+  try {
+    const res = await fetch(`/api/vaults/moveVault/${selectedFieldId}/${vaultId}/${position}`, {
+      method: 'PUT',
+    })
+    if (res.ok) {
+      const data = await res.json();
+      dispatch(moveVaultFromStageToWarehouseAction(data));
+      dispatch(removeVaultFromStageAction(vaultId))
+      return data;
+    } else {
+      const err = await res.json();
+      console.error("Error moving vault to warehouse:", err);
+      return err;
+    }
+  } catch (error) {
+    console.error("Error moving vault:", error);
+    return error;
+  }
+}
 
 export const deleteVaultThunk = (vaultId) => async (dispatch) => {
 
@@ -201,7 +228,10 @@ const vaultReducer = (state = initialState, action) => {
       delete newState[action.vaultId];
       return newState
     case STAGE_VAULT:
-      
+      newState = { ...state }
+      delete newState[action.vaultId];
+      return newState
+    case MOVE_VAULT_FROM_STAGE_TO_WAREHOUSE:
       newState = { ...state }
       delete newState[action.vaultId];
       return newState
