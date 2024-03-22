@@ -67,7 +67,7 @@ const EditVaultPage = () => {
     try {
       await dispatch(updateCustomerNameThunk(vault.customer_id, customerName));
       await dispatch(editVaultThunk(vault.id, vaultData));
-      history.push('/');
+      history.push(`/warehouse/${warehouseId}`);
     } catch (error) {
       console.error('Error saving vault:', error);
     }

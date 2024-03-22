@@ -32,9 +32,9 @@ const addVaultAction = (vault) => ({
   vault
 });
 
-const stageVaultAction = (vault) => ({
+const stageVaultAction = (vaultId) => ({
   type: STAGE_VAULT,
-  vault
+  vaultId
 })
 
 const moveVaultFromStageToWarehouseAction = (vault) => ({
@@ -75,7 +75,7 @@ export const stageVaultThunk = (vaultId, vaultData) => async (dispatch) => {
 
     if (res.ok) {
       const data = await res.json();
-      dispatch(stageVaultAction(data));
+      dispatch(stageVaultAction(vaultId));
       dispatch(addVaultToStageAction(data));
       return data;
     } else {

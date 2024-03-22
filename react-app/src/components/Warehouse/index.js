@@ -214,6 +214,7 @@ export default function Warehouse() {
                             <ConfirmStaging
                                 vault={selectedVaultToStage}
                                 onClose={closeConfirmStagingModal}
+                                // warehouseId={warehouseId}
                             />
                         </>
                     </Modal>

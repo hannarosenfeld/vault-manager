@@ -3,20 +3,22 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { editVaultThunk, stageVaultThunk } from '../../../../store/vault';
 import "./ConfirmStaging.css"
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 
 export default function ConfirmStaging({ 
     vault, 
     onClose, 
+    // warehouseId
   }) {
-
+    const history = useHistory();
     const dispatch = useDispatch();
     const handleSubmit = async (e) => {
         e.preventDefault();
         let vaultData = new FormData()
         vaultData.append("staging", true)
-    
         dispatch(stageVaultThunk(vault.id, vaultData))
+        // history.push(`/warehouse/${warehouseId}`)
         // const updatedVault = await dispatch(addVaultToStageThunk(vaultId));
         onClose();
     }
