@@ -30,59 +30,23 @@ export default function Warehouse() {
     const [toggleSelected, setToggleSelected] = useState(false);
     const [loading, setLoading] = useState(true);
 
-    // useEffect(() => {
-    //     setSelectedFieldId(null);
-    // }, [warehouse?.id])
-
     useEffect(() => {
         const warehouseInfo = dispatch(getAllWarehousesThunk());
         dispatch(getAllCustomersThunk())
         const fields = dispatch(getAllFieldsThunk(warehouseId))
+
 
         Promise.all([warehouseInfo])
             .then(() => setLoading(false))
             .catch(() => setLoading(false));
     }, [dispatch, warehouseId])
 
-    // useEffect(() => {
-    //     if (selectedVaultToStage) {
-    //         openConfirmStagingModal();
-    //     }
-    // }, [selectedVaultToStage]);
-
-    // const handleToggleChange = () => {
-    //     const newToggleSelected = !toggleSelected;
-
-    //     // If it's switching back to "Vault," update the selectedField type
-    //     const updatedSelectedField = {
-    //         ...selectedField,
-    //         type: newToggleSelected ? "couchbox" : "vault",
-    //     };
-
-    //     // Update the local state
-    //     setToggleSelected(newToggleSelected);
-
-    //     // Dispatch actions to update Redux store
-    //     // dispatch(getFieldThunk(selectedField.id));
-
-    //     window.location.reload(true);
-    //     window.location.reload(false);
-    // };
-
-    // const updateSelectedFieldVaults = async (newVault) => {
-    //     if (selectedField && newVault?.field_id === selectedField.id) {
-    //         const updatedTop = newVault.position === "T" ? newVault : top;
-    //         const updatedMiddle = newVault.position === "M" ? newVault : middle;
-    //         const updatedBottom = newVault.position === "B" ? newVault : bottom;
-    //     }
-    // };
 
     const handleFieldClick = async (id) => {
         await setToggleSelected(false);
         await setSelectedFieldId(id);
     };
 
-    // Function to open the modal and log the statement
     const handleOpenAddVaultModal = async (position) => {
         await setPosition(position);
         setIsModalOpen(true);
@@ -139,12 +103,12 @@ export default function Warehouse() {
 
     return (
         <div className="warehouse-wrapper wrapper">
-            {loading && ( // Show loading animation if loading state is true
+            {loading && ( 
                 <div className="loading-animation-container"> 
                 <CircularProgress  size={75} />
             </div>
             )}
-            {!loading && ( // Render warehouse content when loading is complete
+            {!loading && ( 
                 <>
                     <div className="field-info">
                         {selectedFieldId ? (
@@ -200,23 +164,20 @@ export default function Warehouse() {
                         ))} */}
                     </div>
                     <Modal open={isModalOpen}>
-                        <>
-                            <AddVaultModal
-                                onClose={handleCloseModal}
-                                selectedFieldId={selectedFieldId}
-                                position={position}
-                                warehouseId={warehouseId}
-                            />
-                        </>
+                        <AddVaultModal
+                            onClose={handleCloseModal}
+                            selectedFieldId={selectedFieldId}
+                            position={position}
+                            warehouseId={warehouseId}
+                        />
                     </Modal>
                     <Modal open={isConfirmStagingModalOpen} onClose={setIsConfirmStagingModalOpen}>
-                        <>
-                            <ConfirmStaging
-                                vault={selectedVaultToStage}
-                                onClose={closeConfirmStagingModal}
-                                // warehouseId={warehouseId}
-                            />
-                        </>
+                        <ConfirmStaging
+                            vault={selectedVaultToStage}
+                            onClose={closeConfirmStagingModal}
+                            warehouseId={warehouseId}
+                            // fieldId={selectedFieldId}
+                        />
                     </Modal>
                 </>
             )}

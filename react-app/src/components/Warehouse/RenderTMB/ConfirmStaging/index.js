@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { editVaultThunk, stageVaultThunk } from '../../../../store/vault';
+import { editVaultThunk, getAllFieldVaultsThunk, stageVaultThunk } from '../../../../store/vault';
 import "./ConfirmStaging.css"
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
@@ -9,7 +9,8 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 export default function ConfirmStaging({ 
     vault, 
     onClose, 
-    // warehouseId
+    warehouseId,
+    // fieldId
   }) {
     const history = useHistory();
     const dispatch = useDispatch();
@@ -18,7 +19,8 @@ export default function ConfirmStaging({
         let vaultData = new FormData()
         vaultData.append("staging", true)
         dispatch(stageVaultThunk(vault.id, vaultData))
-        // history.push(`/warehouse/${warehouseId}`)
+        history.push(`/warehouse/${warehouseId}`)
+        // dispatch(getAllFieldVaultsThunk(fieldId))
         // const updatedVault = await dispatch(addVaultToStageThunk(vaultId));
         onClose();
     }
