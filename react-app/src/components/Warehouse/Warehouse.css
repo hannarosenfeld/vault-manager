@@ -99,7 +99,8 @@
 
 
 @media (min-width: 800px) {
-    .field {
+    .miniwarehouse-field {
         max-height: 4rem;
+        background-color: red;
     }
 }

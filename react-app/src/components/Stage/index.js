@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllStagedVaultsThunk } from "../../store/stage";
 import { getVaultsThunk } from "../../store/vault";
 import StageToWareHouseModal from "./StageToWareHouseModal/StageToWareHouseModal";
 import "./Stage.css";
+
 
 export default function Stage() {
   const dispatch = useDispatch();

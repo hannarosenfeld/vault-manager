@@ -137,7 +137,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
               </div>
               </div>
               <div>
-                <div style={{padding: "0 0.3em", marginBottom: "0.7em"}}>
+                <div className="field-info">
                   {selectedField ? (
                     <RenderTMB 
                       selectedFieldId={selectedField.id}
