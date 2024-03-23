@@ -11,7 +11,7 @@ function Navigation({ isLoaded }) {
   const sessionUser = useSelector((state) => state.session.user);
 
   return (
-    <div className="wrapper" style={{ padding: '5px 10px' }}>
+    <div className="wrapper nav-container">
       <ul className="navigation">
         <li className="home-button">
           <NavLink exact to="/">

@@ -1,19 +1,27 @@
+.rendertmb-container {
+    border: 2px solid orangered;
+    display: flex;
+    height: 100%;
+    margin: 1em 0;
+}
+
+.rendertmb-loading-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-left: 50%;
+    align-content: center;
+}
+
 .selected-field-box {
     width: 35%;
+    border: 2px solid blue;
 }
 
 .field-info-box {
     min-height: 100%;
     display: flex;
     align-items: center;
-}
-
-/* .form-check {
-
-}
-   */
-.field-row {
-    height: 4em;
 }
 
 /* .form-check-input {
@@ -45,6 +53,7 @@
 
   .selected-field-vaults-tmb {
     min-height: 100%;
+    width: 65%;
   }
 
 

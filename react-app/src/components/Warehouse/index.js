@@ -102,7 +102,7 @@ export default function Warehouse() {
     }
 
     return (
-        <div className="warehouse-wrapper wrapper">
+        <div className="warehouse-wrapper">
             {loading && ( 
                 <div className="loading-animation-container"> 
                 <CircularProgress  size={75} />

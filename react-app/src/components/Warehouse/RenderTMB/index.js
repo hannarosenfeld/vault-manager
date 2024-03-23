@@ -79,15 +79,15 @@ const RenderTMB = ({
 
  
   return (
-    <div style={{display: "flex"}}>
+    <div className="rendertmb-container">
     {isLoading ? (
-      <div style={{width: "100%", display: "flex", alignItems: "center", marginLeft: "50%", alignContent: "center"}}>
+      <div className="rendertmb-loading-container">
         <div class="spinner-border text-primary" role="status">
           <span class="sr-only">Loading...</span>
         </div>
     </div>
     ) : (
-        <div className="selected-field-vaults-tmb" style={{ gridTemplateRows: type === "couchbox" ? "repeat(4,1fr)" : "", height: "100%", width: "65%"}}>
+        <div className="selected-field-vaults-tmb" style={{ gridTemplateRows: type === "couchbox" ? "repeat(4,1fr)" : ""}}>
           <div className="top field-row">
             <span className="position">T</span>
             {/* { onlyTop && sortedVaults.full && type === "vault" && (
