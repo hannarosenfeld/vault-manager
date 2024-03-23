@@ -17,6 +17,7 @@
     width: 100%;
     max-width: 800px;
     height: 100%;
+    overflow: scroll;
 }
 
 .vault-info {
