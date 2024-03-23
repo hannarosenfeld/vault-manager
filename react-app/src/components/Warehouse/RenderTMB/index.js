@@ -96,7 +96,7 @@ const RenderTMB = ({
               </div>
             )} */}
             { !T && M && B ? (
-              <AddVaultButton position="T" handleOpenAddVaultModal={handleOpenAddVaultModal} moveVault={moveVault} fieldType={type}/>
+              <AddVaultButton position="T" vault={selectedVault} handleOpenAddVaultModal={handleOpenAddVaultModal} moveVault={moveVault} fieldType={type}/>
             ) 
             : sortedVaults["T"] ? (
               <VaultInstance
