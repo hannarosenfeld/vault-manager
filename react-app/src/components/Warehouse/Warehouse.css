@@ -45,7 +45,7 @@
 .field {
     border-radius: 3px;
     display: flex;
-    max-height: 2rem;
+    height: 95%
 }
 
 .field-number {
@@ -98,9 +98,8 @@
 }
 
 
-@media (min-width: 800px) {
-    .miniwarehouse-field {
-        max-height: 4rem;
-        background-color: red;
+/* @media (min-height: 900px) {
+    .miniwarehouse-field, .field {
+        height: 95% !important;
     }
-}
+} */
