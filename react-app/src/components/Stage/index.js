@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getVaultsThunk } from "../../store/vault";
+// import { getAllStagedVaultsThunk } from "../../store/stage";
 import StageToWareHouseModal from "./StageToWareHouseModal/StageToWareHouseModal";
 import "./Stage.css";
-
 
 export default function Stage() {
   const dispatch = useDispatch();
@@ -11,15 +11,22 @@ export default function Stage() {
   const vaults = useSelector(state => state.vault);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedVault, setSelectedVault] = useState(null);
-  let stagedArr = [];
+  const [loading, setLoading] = useState(true);
+  const [stagedArr, setStagedArr] = useState(null);
 
   useEffect(() => {
-    // dispatch(getAllStagedVaultsThunk());
-    dispatch(getVaultsThunk())
+    const fetchData = async () => {
+      let res = await dispatch(getVaultsThunk())
+      setStagedArr(Object.values(res).filter(vault => (!vault.field_id && !vault.position)))
+    }
+    fetchData()
   }, [dispatch]);
 
   useEffect(() => {
-    if (Object.values(vaults).length) stagedArr = Object.values(vaults).filter(vault => (!vault.field_id && !vault.position))
+    if (Object.values(vaults).length) {
+      setStagedArr(Object.values(vaults).filter(vault => (!vault.field_id && !vault.position)))
+      setLoading(false);
+    }
   }, [vaults])
 
   // Function to truncate a string to a specified length
@@ -36,10 +43,18 @@ export default function Stage() {
   };
 
   return (
+    <>
+    {loading ? (
+      <div className="rendertmb-loading-container">
+        <div class="spinner-border text-primary" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+      ) : (
     <div className="page-wrapper">
       <div className="hazard-border">
         <div className="staged-containers">
-        {Object.values(vaults).filter(vault => (!vault.field_id && !vault.position)).map(vault => (
+        {stagedArr.length ? stagedArr.map(vault => (
           <div
             key={vault.id}
             className="vault"
@@ -48,10 +63,11 @@ export default function Stage() {
             <p style={{marginBottom: "0"}}><b>{truncateString(vault.customer_name, 6)}</b></p>
             <p>{vault.name}</p>
           </div>
-        ))}
+        )): <>No staged vaults</>}
         </div>
       </div>
       {isModalOpen && <StageToWareHouseModal selectedVault={selectedVault} closeModal={() => setIsModalOpen(false)} />}
-    </div>
+    </div>)}
+    </>
   );
 }

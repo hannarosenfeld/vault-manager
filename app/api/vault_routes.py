@@ -43,6 +43,13 @@ def all_vaults():
     vaults = Vault.query.all()
     return { vault.id : vault.to_dict() for vault in vaults }
 
+@vault_routes.route('/staged')
+def all_vaults_staged():
+    """
+    Query for all vaults and returns them in a list of vault dictionaries
+    """
+    vaults = Vault.query.filter_by(field_id=None)
+    return { vault.id : vault.to_dict() for vault in vaults }
 
 # @vault_routes.route('/<int:id>')
 # def single_vault(id):

@@ -13,9 +13,9 @@ export const addVaultToStageAction = (vault) => ({
   vault,
 });
 
-export const getAllStagedVaultsAction = (vaults) => ({
+export const getAllStagedVaultsAction = (stagedVaults) => ({
   type: GET_ALL_STAGED_VAULTS,
-  payload: vaults,
+  stagedVaults,
 });
 
 export const removeVaultFromStageAction = (vaultId) => ({
@@ -68,11 +68,11 @@ export const addVaultToStageThunk = (vaultId) => async (dispatch) => {
 
 export const getAllStagedVaultsThunk = () => async (dispatch) => {
   try {
-    const response = await fetch('/api/stage/vaults');
+    const response = await fetch('/api/vaults/staged');
     if (response.ok) {
-      const vaults = await response.json();
-      dispatch(getAllStagedVaultsAction(vaults.staged_vaults));
-      return vaults;
+      const stagedVaults = await response.json();
+      dispatch(getAllStagedVaultsAction(stagedVaults));
+      return stagedVaults;
     } else {
       const errorData = await response.json();
       console.error('Error fetching staged vaults:', errorData.errors);
@@ -121,14 +121,12 @@ const stageReducer = (state = initialState, action) => {
       newState[action.vault.id] = action.vault;
       return newState;  
     case GET_ALL_STAGED_VAULTS:
-      return {
-        ...state,
-        stagedVaults: action.payload,
-      };
+      newState = { ...state, ...action.stagedVaults }
+      return newState
     case REMOVE_VAULT_FROM_STAGE:
       newState = { ...state };
-      // console.log("🧠: ", vault)
       delete newState[action.vaultId];
+      console.log("🧠: ", newState);
       return newState;
     default:
       return state;

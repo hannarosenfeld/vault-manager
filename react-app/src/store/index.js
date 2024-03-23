@@ -16,7 +16,6 @@ const rootReducer = combineReducers({
   session,
   user: userReducer,
   vault: vaultReducer,
-  // row: rowReducer,
   field: fieldReducer,
   customer: customerReducer,
   stage: stageReducer,

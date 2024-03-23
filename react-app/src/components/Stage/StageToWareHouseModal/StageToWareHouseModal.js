@@ -4,7 +4,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllWarehousesThunk  } from "../../../store/warehouse";
-import { moveVaultFromStageToWarehouseThunk } from "../../../store/vault";
+import { moveVaultFromStageToWarehouseThunk, getVaultsThunk } from "../../../store/vault";
 import MiniWareHouse from "./MiniWareHouse";
 import RenderTMB from "../../Warehouse/RenderTMB";
 import "./StageToWareHouseModal.css";
@@ -73,9 +73,10 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
     if (selectedField) {
 
       await dispatch(moveVaultFromStageToWarehouseThunk(vault.id, selectedField.id, position))
+      .then(dispatch(getVaultsThunk()))
       .then(history.push("/stage"))
       // closeConfirmationModal();
-      // closeModal();
+      closeModal();
     }
   };
   
