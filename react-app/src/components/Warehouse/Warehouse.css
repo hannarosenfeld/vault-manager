@@ -1,7 +1,6 @@
 .warehouse-wrapper {
     padding: 0 15px;
     height: fit-content;
-    border: 2px solid firebrick;
     height: 93.5vh;
     max-width: 800px;
     margin: 0 auto;
@@ -13,12 +12,9 @@
     display: grid;
     grid-template-columns: repeat(9, 1fr);
     grid-gap: 1%;
-    border: 2px solid hotpink;
-    margin: 1em 0;
-}
+ }
 
 .field-info {
-    border: 2px solid seagreen;
     margin-bottom: 5px;
     height: 18vh;
 }
@@ -37,26 +33,6 @@
     font-weight: bold;
     color: var(--grey);
 }
-
-
-@media only screen and (max-width: 768px) {
-    .selected-field-vaults-tmb .top,
-    .selected-field-vaults-tmb .middle,
-    .selected-field-vaults-tmb .bottom {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-}
-
-/* .row {
-    display: flex;
-    flex-direction: column;
-}
-
-.row-id {
-    margin: 0 auto;
-} */
 
 .fields {
     margin-top: 5px;
@@ -111,3 +87,19 @@
 }
 
 
+@media only screen and (max-width: 768px) {
+    .selected-field-vaults-tmb .top,
+    .selected-field-vaults-tmb .middle,
+    .selected-field-vaults-tmb .bottom {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+
+@media (min-width: 800px) {
+    .field {
+        max-height: 4rem;
+    }
+}

@@ -1,8 +1,6 @@
 .rendertmb-container {
-    border: 2px solid orangered;
     display: flex;
     height: 100%;
-    margin: 1em 0;
 }
 
 .rendertmb-loading-container {
@@ -15,7 +13,6 @@
 
 .selected-field-box {
     width: 35%;
-    border: 2px solid blue;
 }
 
 .field-info-box {
