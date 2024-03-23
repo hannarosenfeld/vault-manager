@@ -7,7 +7,7 @@ import LoginFormPage from "./components/LoginFormPage";
 import Navigation from "./components/Navigation";
 import Index from "./components/Index";
 import Warehouse from "./components/Warehouse";
-import StagedVaults from "./components/StagedVaults";
+import Stage from "./components/Stage";
 import EditVaultPage from "./components/Warehouse/RenderTMB/EditVaultPage";
 import VaultDetailPage from "./components/Warehouse/RenderTMB/VaultDetailPage";
 import AddWarehouseForm from "./components/AddWareHouse";
@@ -81,7 +81,7 @@ function App() {
               <VaultDetailPage/>
             </Route>
             <Route path="/stage">
-              <StagedVaults />
+              <Stage />
             </Route>
             <Route path="/add-user">
               <SignupFormPage />

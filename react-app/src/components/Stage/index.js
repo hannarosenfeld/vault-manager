@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllStagedVaultsThunk } from "../../store/stage";
 import { getVaultsThunk } from "../../store/vault";
 import StageToWareHouseModal from "./StageToWareHouseModal/StageToWareHouseModal";
-import "./StagedVaults.css";
+import "./Stage.css";
 
-export default function StagedVaults() {
+export default function Stage() {
   const dispatch = useDispatch();
   // const staged = useSelector((state) => state.stage);
   const vaults = useSelector(state => state.vault);
