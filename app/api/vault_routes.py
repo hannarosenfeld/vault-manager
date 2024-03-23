@@ -25,6 +25,7 @@ def validation_errors_to_error_messages(validation_errors):
 
 
 @vault_routes.route('/<int:field_id>')
+@login_required
 def all_field_vaults(field_id):
     """
     Query for all vaults and returns them in a list of vault dictionaries
@@ -36,6 +37,7 @@ def all_field_vaults(field_id):
 
 
 @vault_routes.route('/')
+@login_required
 def all_vaults():
     """
     Query for all vaults and returns them in a list of vault dictionaries
@@ -44,6 +46,7 @@ def all_vaults():
     return { vault.id : vault.to_dict() for vault in vaults }
 
 @vault_routes.route('/staged')
+@login_required
 def all_vaults_staged():
     """
     Query for all vaults and returns them in a list of vault dictionaries
