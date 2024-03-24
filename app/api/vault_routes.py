@@ -162,11 +162,12 @@ def manage_vault(id):
 
         if form.validate_on_submit():
             if form.data['staging'] : 
+                field_id = vault.field_id
                 vault.field_id = None
                 vault.position = None
 
                 db.session.commit()
-                return vault.to_dict()   
+                return { 'vault': vault.to_dict(), 'field_id': field_id }
 
             # customer = Customer.query.get(vault.customer_id)
             # customer.name = 

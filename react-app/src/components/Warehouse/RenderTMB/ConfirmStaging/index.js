@@ -19,8 +19,9 @@ export default function ConfirmStaging({
         let vaultData = new FormData()
         vaultData.append("staging", true)
         dispatch(stageVaultThunk(vault.id, vaultData))
-        history.push(`/warehouse/${warehouseId}`)
-        // dispatch(getAllFieldVaultsThunk(fieldId))
+        dispatch(getAllFieldVaultsThunk(vault.field_id)) // !!! ATTENTION: this is a hacky way to update our field vaults after stagin (so the forklift icon of the then "topmost" vault is clickable/yellow). ideally we want the topmostvault function to run again with the remaining vaults.
+
+        // history.push(`/warehouse/${warehouseId}`)
         // const updatedVault = await dispatch(addVaultToStageThunk(vaultId));
         onClose();
     }
