@@ -10,7 +10,8 @@ const RenderTMB = ({
   selectedFieldId, 
   handleStageClick, 
   handleOpenAddVaultModal, 
-  handleToggleChange, 
+  toggleFieldType, 
+  toggleFieldFull,
   toggleSelected,
   selectedVault,
   moveVault
@@ -156,7 +157,7 @@ const RenderTMB = ({
                 role="switch"
                 id="flexSwitchCheckDefault"
                 checked={toggleSelected || type === "couchbox" }
-                onChange={handleToggleChange}
+                onChange={toggleFieldType}
               />
               <label className={`field-type-label ${type === 'vault' ? 'vault-label' : 'couchbox-label'}`}>
                 {toggleSelected || type === "couchbox" ? 'couchbox' : 'vault' }
@@ -169,7 +170,7 @@ const RenderTMB = ({
                 role="switch"
                 id="flexSwitchCheckDefault"
                 checked="true"
-                // onChange={handleToggleChange}
+                onChange={toggleFieldFull}
               />
               <label>
                 full
