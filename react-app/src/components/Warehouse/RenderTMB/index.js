@@ -145,27 +145,39 @@ const RenderTMB = ({
           </div>
         </div>
     )}
-    {/* Toggle Field Type Switch */}
     <div className={`selected-field-box ${toggleSelected ? 'toggled' : ''}`}>
       <div className="field-info-box">
-      {/* <div className="form-check form-switch" >
-        <input
-          className="form-check-input"
-          type="checkbox"
-          role="switch"
-          id="flexSwitchCheckDefault"
-          checked={toggleSelected || type === "couchbox" }
-          onChange={handleToggleChange}
-        />
-        <label
-          className={`field-type-label ${type === 'vault' ? 'vault-label' : 'couchbox-label'}`}
-          style={{fontSize: "0.8em", paddingRight: "0.5em"}}
-        >
-          {toggleSelected || type === "couchbox" ? 'Couchbox' : 'Vault' }
-        </label>
-      </div>     */}
-        <div className="selected-field-name" style={{margin: "0 auto"}}>{field.name}</div>
-      </div> 
+        <div className="selected-field-name">{field.name}</div>
+          <div className="field-switches">
+            <div className="form-check form-switch toggle-container" >
+              <input
+                className="form-check-input"
+                type="checkbox"
+                role="switch"
+                id="flexSwitchCheckDefault"
+                checked={toggleSelected || type === "couchbox" }
+                onChange={handleToggleChange}
+              />
+              <label className={`field-type-label ${type === 'vault' ? 'vault-label' : 'couchbox-label'}`}>
+                {toggleSelected || type === "couchbox" ? 'couchbox' : 'vault' }
+              </label>
+            </div>
+            <div className="form-check form-switch toggle-container" >
+              <input
+                className="form-check-input"
+                type="checkbox"
+                role="switch"
+                id="flexSwitchCheckDefault"
+                checked="true"
+                // onChange={handleToggleChange}
+              />
+              <label>
+                full
+                {/* {toggleSelected || type === "couchbox" ? 'Couchbox' : 'Vault' } */}
+              </label>
+            </div>            
+          </div>
+        </div> 
       </div>
     </div>
   );
