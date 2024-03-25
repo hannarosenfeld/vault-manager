@@ -92,7 +92,7 @@ function SearchBar() {
   };
 
   const handleClearSelectedItem = async () => {
-    const order = selectedItem.order_number ? true : false
+    const order = selectedItem.name ? true : false
     const customer = selectedItem.name ? true : false
     await dispatch(setSearchOffAction());
     setSelectedItem(null);

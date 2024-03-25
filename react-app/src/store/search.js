@@ -11,6 +11,7 @@ export const setSearchOffAction = () => ({
 });
 
 export const searchThunk = (item, type) => async (dispatch) => {
+  console.log("🥥", item)
   try {
     let res = await fetch(`/api/search/${type}/${item.id}`)
     if (res.ok) {
@@ -34,6 +35,7 @@ const initialState = {
 const searchReducer = (state = initialState, action) => {
   switch (action.type) {
     case SEARCH_ON:
+      console.log('🥐',action.payload)
         return {
             ...state,
             fields: action.payload
