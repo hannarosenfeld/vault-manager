@@ -47,7 +47,6 @@ const RenderTMB = ({
   const { T, M, M2, B } = sortedVaults
 
   const updateTopmostVault = () => {
-    // console.log.log("🦄", topmostVault)
     let topVault = null;
     for (let vault of vaultsArr) {
       if (!topVault || vault.position > topVault.position) {
@@ -59,8 +58,6 @@ const RenderTMB = ({
   };
 
   useEffect(() => {
-      console.log("🦕", vaultsArr)
-    // updateTopmostVault()
     if (vaultsArr && vaultsArr.length > 0) {
       updateTopmostVault();
     }

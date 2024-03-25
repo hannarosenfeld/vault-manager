@@ -126,7 +126,6 @@ const stageReducer = (state = initialState, action) => {
     case REMOVE_VAULT_FROM_STAGE:
       newState = { ...state };
       delete newState[action.vaultId];
-      console.log("🧠: ", newState);
       return newState;
     default:
       return state;

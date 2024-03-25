@@ -67,7 +67,6 @@ export const editVaultThunk = (vaultId, vaultData) => async (dispatch) => {
 
 
 export const stageVaultThunk = (vaultId, vaultData) => async (dispatch) => {
-  console.log("🦛 hitting stage vault thunk!!!!")
   try {
     const res = await fetch(`/api/vaults/${vaultId}`, {
       method: 'PUT',
@@ -76,10 +75,8 @@ export const stageVaultThunk = (vaultId, vaultData) => async (dispatch) => {
 
     if (res.ok) {
       const data = await res.json();
-      console.log("🐠 data: ", data)
       dispatch(stageVaultAction(data));
       dispatch(addVaultToStageAction(data));
-      console.log("🦐 data after dispatch: ", data)
       return data;
     } else {
       const err = await res.json();
@@ -231,7 +228,6 @@ const vaultReducer = (state = initialState, action) => {
       delete newState[action.vaultId];
       return newState
     case STAGE_VAULT:
-      console.log("👒", action.stagingInfo)
       newState = { ...state }
       delete newState[action.stagingInfo.vault.id];
       return newState

@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { editVaultThunk, getAllFieldVaultsThunk, stageVaultThunk } from '../../../../store/vault';
+import { getAllFieldVaultsThunk, stageVaultThunk } from '../../../../store/vault';
 import "./ConfirmStaging.css"
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
@@ -9,20 +9,14 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 export default function ConfirmStaging({ 
     vault, 
     onClose, 
-    warehouseId,
-    // fieldId
   }) {
-    const history = useHistory();
     const dispatch = useDispatch();
     const handleSubmit = async (e) => {
         e.preventDefault();
         let vaultData = new FormData()
         vaultData.append("staging", true)
         dispatch(stageVaultThunk(vault.id, vaultData))
-        dispatch(getAllFieldVaultsThunk(vault.field_id)) // !!! ATTENTION: this is a hacky way to update our field vaults after stagin (so the forklift icon of the then "topmost" vault is clickable/yellow). ideally we want the topmostvault function to run again with the remaining vaults.
-
-        // history.push(`/warehouse/${warehouseId}`)
-        // const updatedVault = await dispatch(addVaultToStageThunk(vaultId));
+        dispatch(getAllFieldVaultsThunk(vault.field_id)) // !!! ATTENTION: this is a hacky way to update our field vaults after stagin (so the forklift icon of the then "topmost" vault is clickable/yellow). ideally we want the topmostvault function (see RenderTMB) to run again with the remaining vaults.
         onClose();
     }
 

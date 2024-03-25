@@ -33,11 +33,8 @@ const EditVaultPage = () => {
       try {
         await dispatch(getAllVaultAttachmentsThunk(vaultId));
         await dispatch(getAllFieldVaultsThunk(fieldId))
-        // console.log(dispatched)
-        // setIsLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
-        // setIsLoading(false);
       }
     };
 

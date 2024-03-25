@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './SearchBar.css';
-// import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllOrdersThunk } from '../../../store/order';
 import { searchThunk } from '../../../store/search';
