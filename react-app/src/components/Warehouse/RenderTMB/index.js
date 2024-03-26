@@ -10,7 +10,8 @@ const RenderTMB = ({
   selectedFieldId, 
   handleStageClick, 
   handleOpenAddVaultModal, 
-  handleToggleChange, 
+  toggleFieldType, 
+  toggleFieldFull,
   toggleSelected,
   selectedVault,
   moveVault
@@ -18,17 +19,12 @@ const RenderTMB = ({
   const dispatch = useDispatch();
   const field = useSelector((state) => state.field[selectedFieldId]);
   const vaults = useSelector((state) => state.vault);
-  const vaultIds = field.vaults;
   const vaultsArr = []
-  vaultIds.forEach(id => (vaults[id]) ?  vaultsArr.push(vaults[id]) : null);
+  field.vaults.forEach(id => (vaults[id]) ?  vaultsArr.push(vaults[id]) : null);
   const [sortedVaults, setSortedVaults] = useState({});
   const [topmostVault, setTopmostVault] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const { type } = field
-
-  useEffect(() => {
-    console.log("💖 selectedFieldId", selectedFieldId)
-  }, [selectedFieldId])
 
 
   useEffect(() => {
@@ -48,14 +44,6 @@ const RenderTMB = ({
     setIsLoading(false)
   }, [dispatch, vaults, selectedFieldId]);
 
-  // useEffect(() => {
-  //   const timeout = setTimeout(() => {
-  //     setIsLoading(false)
-  //   }, 1000);
-
-  //   // Cleanup function to clear the timeout if the component unmounts
-  //   return () => clearTimeout(timeout);
-  // },[dispatch, selectedFieldId])
 
   const { T, M, M2, B } = sortedVaults
 
@@ -71,8 +59,7 @@ const RenderTMB = ({
   };
 
   useEffect(() => {
-    updateTopmostVault()
-    if (vaults && vaults.length > 0) {
+    if (vaultsArr && vaultsArr.length > 0) {
       updateTopmostVault();
     }
   }, [dispatch, vaultsArr]);
@@ -159,27 +146,39 @@ const RenderTMB = ({
           </div>
         </div>
     )}
-    {/* Toggle Field Type Switch */}
     <div className={`selected-field-box ${toggleSelected ? 'toggled' : ''}`}>
       <div className="field-info-box">
-      {/* <div className="form-check form-switch" >
-        <input
-          className="form-check-input"
-          type="checkbox"
-          role="switch"
-          id="flexSwitchCheckDefault"
-          checked={toggleSelected || type === "couchbox" }
-          onChange={handleToggleChange}
-        />
-        <label
-          className={`field-type-label ${type === 'vault' ? 'vault-label' : 'couchbox-label'}`}
-          style={{fontSize: "0.8em", paddingRight: "0.5em"}}
-        >
-          {toggleSelected || type === "couchbox" ? 'Couchbox' : 'Vault' }
-        </label>
-      </div>     */}
-        <div className="selected-field-name" style={{margin: "0 auto"}}>{field.name}</div>
-      </div> 
+        <div className="selected-field-name">{field.name}</div>
+          <div className="field-switches">
+            <div className="form-check form-switch toggle-container" >
+              <input
+                className="form-check-input"
+                type="checkbox"
+                role="switch"
+                id="flexSwitchCheckDefault"
+                checked={toggleSelected || type === "couchbox" }
+                onChange={toggleFieldType}
+              />
+              <label className={`field-type-label ${type === 'vault' ? 'vault-label' : 'couchbox-label'}`}>
+                {toggleSelected || type === "couchbox" ? 'couchbox' : 'vault' }
+              </label>
+            </div>
+            <div className="form-check form-switch toggle-container" >
+              <input
+                className="form-check-input"
+                type="checkbox"
+                role="switch"
+                id="flexSwitchCheckDefault"
+                checked="true"
+                onChange={toggleFieldFull}
+              />
+              <label>
+                full
+                {/* {toggleSelected || type === "couchbox" ? 'Couchbox' : 'Vault' } */}
+              </label>
+            </div>            
+          </div>
+        </div> 
       </div>
     </div>
   );

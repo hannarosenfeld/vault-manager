@@ -38,7 +38,7 @@ export const updateCustomerNameThunk = (customerId, newName) => async (dispatch)
 
     if (res.ok) {
       const updatedCustomer = await res.json();
-      dispatch(updateCustomerNameAction(customerId, newName)); // Update the state with the new name
+      dispatch(updateCustomerNameAction(customerId, newName));
       return updatedCustomer;
     } else {
       const err = await res.json();

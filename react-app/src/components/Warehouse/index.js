@@ -66,6 +66,14 @@ export default function Warehouse() {
         setIsConfirmStagingModalOpen(false);
     }
 
+    const toggleFieldType = () => {
+        console.log("🥝 hiii")
+    }
+
+    const toggleFieldFull = () => {
+        console.log("🍓 hiii")
+    }
+
     function fieldGenerator() {
         const res = [];
             let temp = fields.sort((a,b) => a.name-b.name)
@@ -116,7 +124,8 @@ export default function Warehouse() {
                                 selectedFieldId={selectedFieldId}
                                 handleStageClick={handleStageClick}
                                 handleOpenAddVaultModal={handleOpenAddVaultModal}
-                                // handleToggleChange={handleToggleChange}
+                                toggleFieldType={toggleFieldType}
+                                toggleFieldFull={toggleFieldFull}
                                 toggleSelected={toggleSelected}
                                 warehouse={warehouse}
                             />

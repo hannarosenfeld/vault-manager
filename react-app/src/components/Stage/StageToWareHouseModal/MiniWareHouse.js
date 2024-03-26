@@ -13,20 +13,12 @@ export default function MiniWareHouse({ warehouseId, setSelectedField, selectedF
         fields = dispatch(getAllFieldsThunk(warehouseId));
     }, [warehouseId])
 
-    useEffect(() => {
-        if (selectedField) console.log("💁‍♀️ selectedField:", selectedField.id, allFields[selectedField.id])
-    }, [selectedField])
-
     function fieldGenerator(fields) {
         const res = [];
-        console.log('🧼 miniwarehouse: fields in generator', fields)
             let temp = fields.sort((a,b) => a.name-b.name)
-            console.log('hitting field generator')
             for (let i = 0; i < warehouse.rows; i++) {
                 for (let j = 0; j < warehouse.rows; j++) {
                     let field = temp[j*warehouse.rows+i]
-                    // console.log(field ? "selectedField:", selectedField.id, field.id : '')
-
                     field && res.push(
                     <div className="miniwarehouse-field"
                                 key={field.id}

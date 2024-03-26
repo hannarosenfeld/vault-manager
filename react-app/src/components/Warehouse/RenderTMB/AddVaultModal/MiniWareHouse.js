@@ -8,9 +8,7 @@ export default function MiniWareHouse({ selectedFieldId, warehouseId }) {
 
     function fieldGenerator(fields) {
         const res = [];
-        console.log('fields in generator', fields)
             let temp = fields.sort((a,b) => a.name-b.name)
-            console.log('hitting field generator')
             for (let i = 0; i < warehouse.rows; i++) {
                 for (let j = 0; j < warehouse.rows; j++) {
                     let field = temp[j*warehouse.rows+i]

@@ -1,3 +1,4 @@
+import { STAGE_VAULT } from "./vault";
 const GET_ALL_FIELDS = "field/GET_ALL_FIELDS";
 const EDIT_FIELD = "field/EDIT_FIELD";
 
@@ -66,6 +67,14 @@ const fieldReducer = (state = initialState, action) => {
     case GET_ALL_FIELDS:
       newState = { ...newState, ...action.fields }
       return newState
+    case STAGE_VAULT:
+        const fieldId = action.stagingInfo.field_id
+        const field = newState[fieldId]
+        let fieldVaults = field.vaults
+        let index = fieldVaults.indexOf(action.stagingInfo.vault.id)
+        field.vaults = [...fieldVaults.slice(0, index), ...fieldVaults.slice(index+1)]
+        
+        return newState
     default:
       return state;
   }

@@ -23,18 +23,11 @@ function App() {
 	const sessionUser = useSelector(state => state.session.user);
 
   useEffect(() => {
-    // if (vaults && Object.values(vaults).length) dispatch(getAllFieldVaultsThunk())
     dispatch(getVaultsThunk())
   }, [vaults])
 
-  // useEffect(()=>{
-  //   console.log("💖", currentWarehouse.warehouse_id)
-  // }, [currentWarehouse])
-
   const onAddWarehouseSubmit = async () => {
-    // await currentWarehouse
     await dispatch(getAllWarehousesThunk());    
-    // history.push(`/warehouse/${currentWarehouse.warehouse_id}`);
     history.push("/");
   }
 

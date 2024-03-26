@@ -1,26 +1,33 @@
-import React, { useState, useEffect, useRef } from 'react';
-import './SearchBar.css';
-// import axios from 'axios';
+import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllOrdersThunk } from '../../../store/order';
 import { searchThunk } from '../../../store/search';
 import { setSearchOffAction } from '../../../store/search';
 import { getAllCustomersThunk } from '../../../store/customer';
 
+import './SearchBar.css';
+
 function SearchBar() {
   const dispatch = useDispatch();
   const suggestionBoxRef = useRef(null);
+  const customersState = useSelector(state => state.customer);
+  const ordersState = useSelector(state => state.order);
+  const [customers, setCustomers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
-  const [customers, setCustomers] = useState([]);
   const [orders, setOrders] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const searchItem = useSelector(state => state.search.fields);
 
-  
   useEffect(() => {
-    console.log("🔎", searchItem)
-  }, [searchItem])
+    const customerArr = Object.values(customersState);
+    if (customerArr.length) setCustomers(customerArr);
+  }, [customersState])
+
+  useEffect(() => {
+    const orderArr = Object.values(ordersState);
+    if (orderArr.length) setOrders(orderArr);
+  }, [ordersState])
 
   useEffect(() => {
     dispatch(getAllOrdersThunk())
@@ -46,15 +53,23 @@ function SearchBar() {
 
   const handleInputChange = (e) => {
     const value = e.target.value;
-    setSearchTerm(value);
+    if (value === "") {
+      setSearchTerm(null);
+      setSuggestions(null);
+      return
+    }
+    else setSearchTerm(value);
+
 
     const filteredCustomers = customers.filter((customer) =>
       customer.name.toLowerCase().includes(value.toLowerCase())
     );
 
     const filteredOrders = orders.filter((order) =>
-      order.order_number.toLowerCase().includes(value.toLowerCase())
+      order.name.toLowerCase().includes(value.toLowerCase())
     );
+
+    console.log("🍈 search matches: ", filteredOrders)
 
     // Concatenate the filtered customers and orders for suggestions
     const combinedSuggestions = [...filteredCustomers, ...filteredOrders];
@@ -77,7 +92,7 @@ function SearchBar() {
   };
 
   const handleClearSelectedItem = async () => {
-    const order = selectedItem.order_number ? true : false
+    const order = selectedItem.name ? true : false
     const customer = selectedItem.name ? true : false
     await dispatch(setSearchOffAction());
     setSelectedItem(null);
@@ -129,7 +144,7 @@ function SearchBar() {
           <button onClick={handleSearch}>
             <span className="material-symbols-outlined">search</span>
           </button>
-          {suggestions.length > 0 && (
+          {suggestions?.length > 0 && (
             <div ref={suggestionBoxRef} className="suggestion-box">
               <ul>
                 {suggestions.map((item) => (

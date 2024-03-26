@@ -4,7 +4,7 @@ const GET_ALL_VAULTS = "vault/GET_ALL_VAULTS";
 const ADD_VAULT = "vault/ADD_VAULT";
 const EDIT_VAULT = "vault/EDIT_VAULT";
 const DELETE_VAULT = "vault/DELETE_VAULT";
-const STAGE_VAULT = "vault/STAGE_VAULT";
+export const STAGE_VAULT = "vault/STAGE_VAULT";
 const MOVE_VAULT_FROM_STAGE_TO_WAREHOUSE = "vault/MOVE_VAULT_FROM_STAGE_TO_WAREHOUSE"
 
 const editVaultAction = (vault) => ({
@@ -32,9 +32,9 @@ const addVaultAction = (vault) => ({
   vault
 });
 
-const stageVaultAction = (vaultId) => ({
+const stageVaultAction = (stagingInfo) => ({
   type: STAGE_VAULT,
-  vaultId
+  stagingInfo
 })
 
 const moveVaultFromStageToWarehouseAction = (vault) => ({
@@ -75,7 +75,7 @@ export const stageVaultThunk = (vaultId, vaultData) => async (dispatch) => {
 
     if (res.ok) {
       const data = await res.json();
-      dispatch(stageVaultAction(vaultId));
+      dispatch(stageVaultAction(data));
       dispatch(addVaultToStageAction(data));
       return data;
     } else {
@@ -229,7 +229,7 @@ const vaultReducer = (state = initialState, action) => {
       return newState
     case STAGE_VAULT:
       newState = { ...state }
-      delete newState[action.vaultId];
+      delete newState[action.stagingInfo.vault.id];
       return newState
     case MOVE_VAULT_FROM_STAGE_TO_WAREHOUSE:
       newState = { ...state }

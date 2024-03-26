@@ -24,14 +24,8 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   const [position, setPosition] = useState(null);
   const [confirmationModalOpen, setConfirmationModalOpen] = useState(false);
   const [loadingVaults, setLoadingVaults] = useState(false);
-
-
   let fieldName = selectedRow && selectedFieldIndex ? selectedRow + selectedFieldIndex : null;
   let vaultsArr;
-
-  useEffect(() => {
-    console.log("👏🏻 selectedField in stage", selectedField)
-  }, [selectedField])
 
   useEffect(() => {
     dispatch(getAllWarehousesThunk());
@@ -64,19 +58,16 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   // };
 
   const moveVault = async (vault, position) => {
-    console.log("💁‍♀️ we are hitting moveVault", vault, position)
     if (loadingVaults) {
-      // Don't proceed if vaults are still loading
       return;
     }
-  
     if (selectedField) {
-
       await dispatch(moveVaultFromStageToWarehouseThunk(vault.id, selectedField.id, position))
-      .then(dispatch(getVaultsThunk()))
-      .then(history.push("/stage"))
+      await dispatch(getVaultsThunk())
+
+      // .then(history.push("/stage"))
       // closeConfirmationModal();
-      closeModal();
+     closeModal();
     }
   };
   
@@ -94,19 +85,6 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   //   );
   // };
   
-//   const sortFields = (fields) => {
-//     const sortedFields = {};
-//     let sortedFieldsArr;
-
-//     for (let field of fields) {
-//         sortedFields[field.id] = field
-//     }
-
-//     sortedFieldsArr = Object.values(sortedFields)
-
-//     return sortedFieldsArr
-// }
-
   const toggleWarehouse = async(warehouseId) => {  
     setSelectedWarehouse(warehouseId);
   }
