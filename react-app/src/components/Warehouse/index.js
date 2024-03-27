@@ -29,6 +29,7 @@ export default function Warehouse() {
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
     const [toggleSelected, setToggleSelected] = useState(false);
     const [loading, setLoading] = useState(true);
+    console.log('warehouse ',warehouse)
 
     useEffect(() => {
         const warehouseInfo = dispatch(getAllWarehousesThunk());
@@ -72,10 +73,10 @@ export default function Warehouse() {
         
         const formData = {"name": topField.name, "field_id_1": topField.id, "field_id_2": bottomField.id}
         if (type === "couchbox-T") {
-            formData["field_type"] = "vault"
+            formData["type"] = "vault"
             dispatch(editFieldThunk(formData))
         } else if (type === "vault") {
-            formData["field_type"] = "couchbox"
+            formData["type"] = "couchbox"
             const topName = topField.name.match(/^([a-zA-Z]+)\d/);
             const bottomName = bottomField.name.match(/^([a-zA-Z]+)\d/);
             if (bottomName || topName[1] === bottomName[1]) {
@@ -92,9 +93,11 @@ export default function Warehouse() {
     function fieldGenerator() {
         const res = [];
             let temp = fields.sort((a,b) => a.name-b.name)
+            console.log("😇 temp warehouse fields",temp)
             for (let i = 0; i < warehouse.rows; i++) {
-                for (let j = 0; j < warehouse.rows; j++) {
-                    let field = temp[j*warehouse.rows+i]
+                for (let j = 0; j < temp.length; j++) {
+                    let field = temp[j*warehouse.columns+i]
+                    // let field = temp[j]
                     field && res.push(
                         <div className='field'
                             key={field.id}

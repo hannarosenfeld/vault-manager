@@ -10,7 +10,7 @@ import Warehouse from "./components/Warehouse";
 import Stage from "./components/Stage";
 import EditVaultPage from "./components/Warehouse/RenderTMB/EditVaultPage";
 import VaultDetailPage from "./components/Warehouse/RenderTMB/VaultDetailPage";
-import AddWarehouseForm from "./components/AddWareHouse";
+import AddWarehouseForm from "./components/AddWarehouse";
 import { getAllWarehousesThunk } from "./store/warehouse";
 import { getVaultsThunk } from "./store/vault";
 

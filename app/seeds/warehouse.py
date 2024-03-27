@@ -5,8 +5,8 @@ def seed_warehouse(users, fields, orders):
     warehouse = Warehouse()
 
     warehouse.name = "Warehouse 3"
-    warehouse.cols = 9
-    warehouse.rows = 12
+    warehouse.cols = 12
+    warehouse.rows = 9
     warehouse.warehouse_fields = fields
     warehouse.users = users
     warehouse.orders = orders

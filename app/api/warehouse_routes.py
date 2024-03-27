@@ -134,25 +134,25 @@ def add_warehouse():
         warehouse_id = warehouse.id
 
         # Create colums and fields
-        for col_num in range(1, cols + 1):
-            col_name = chr(ord('A') + (col_num - 1) % 26)
-            # row = Row(name=col_name, warehouse=warehouse)
-            # db.session.add(row)
-
-        for field_num in range(1, cols + 1):
-            field_name = f"{col_name}{field_num}"
-            field = Field(
-                name=field_name,
-                warehouse_id = warehouse_id, #might change this to warehouse.id
-                full=False,
-                type='vault',
-                vaults=[]
-                # row=row,
-                # field_id=field_id,
-                # warehouse=warehouse,
-                # bottom_couchbox_field=False,
-            )
-            db.session.add(field)        
+        print('🙃 ', rows, cols)
+        for i in range(1, rows + 1):
+            row_char = chr(64+i)
+            for field_num in range(1, cols + 1):
+                # row = Row(name=col_name, warehouse=warehouse)
+                # db.session.add(row)
+                field_name = f"{row_char}{field_num}"
+                field = Field(
+                    name=field_name,
+                    warehouse_id = warehouse_id, #might change this to warehouse.id
+                    full=False,
+                    type='vault',
+                    vaults=[]
+                    # row=row,
+                    # field_id=field_id,
+                    # warehouse=warehouse,
+                    # bottom_couchbox_field=False,
+                )
+                db.session.add(field)        
 
         db.session.commit()
 

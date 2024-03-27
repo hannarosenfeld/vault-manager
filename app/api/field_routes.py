@@ -48,7 +48,7 @@ def edit_field(id):
             print("EDIT FIELD FORM DATA ======> ", form.data)
 
             name = form.data['name']
-            field_type = form.data['field_type']
+            type = form.data['type']
             field_id_1 = form.data['field_id_1']
             field_id_2 = form.data['field_id_2']
             field1 = Field.query.get(field_id_1)
@@ -68,7 +68,7 @@ def edit_field(id):
                     count += 1
                 return count
 
-            if field_type == 'couchbox':
+            if type == 'couchbox':
 
                 print("🙃 =======> ", field1)
                 print("🙃 =======> ", field2.vaults)
@@ -79,10 +79,10 @@ def edit_field(id):
                 if not field2:
                     return jsonify(message="Field 2 not found"), 404
 
-                if field1.field_type == 'vault' and field2.field_type == 'vault':
+                if field1.type == 'vault' and field2.type == 'vault':
                     print('🥹 hittingggg')
-                    field1.field_type = 'couchbox-T'
-                    field2.field_type = 'couchbox-B'
+                    field1.type = 'couchbox-T'
+                    field2.type = 'couchbox-B'
                 else:
                     return jsonify(message="Cannot switch to couchbox")
 
@@ -90,14 +90,14 @@ def edit_field(id):
 
                 return jsonify([field1.to_dict(), field2.to_dict()])
 
-            if field_type == 'vault':
+            if type == 'vault':
 
                 if checkVaultCount(field1.vaults) > 0:
                     return jsonify(message="Please stage all vaults in field to continue")
 
-                if field1.field_type == 'couchbox-T' and field2.field_type == 'couchbox-B':
-                    field1.field_type = 'vault'
-                    field2.field_type = 'vault'
+                if field1.type == 'couchbox-T' and field2.type == 'couchbox-B':
+                    field1.type = 'vault'
+                    field2.type = 'vault'
                 else: 
                     return jsonify(message="Cannot switch to vault")
                 
