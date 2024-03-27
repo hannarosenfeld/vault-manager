@@ -21,6 +21,8 @@ export default function Warehouse() {
     const warehouse = useSelector(state => state.warehouse[warehouseId]);
     let allFields = useSelector(state => state.field);
     let fields;
+    const [sortedFields, setSortedFields] = useState(null);
+    const [loadedSortedFields, setLoadedSortedFields] = useState(false);
     const searchResult = useSelector(state => state.search.fields);
     const [position, setPosition] = useState(null);
     const [selectedFieldId, setSelectedFieldId] = useState(null);
@@ -42,6 +44,18 @@ export default function Warehouse() {
             .catch(() => setLoading(false));
     }, [dispatch, warehouseId])
 
+
+    useEffect(() => {
+        if (fields) {
+        try {
+            setSortedFields(fields.sort((a,b) => a.name-b.name));
+          } catch (error) {
+            console.log(error);
+          } finally {
+            setLoadedSortedFields(true);
+          }
+    }
+    }, [fields, allFields])
 
     const handleFieldClick = async (id) => {
         await setToggleSelected(false);
@@ -90,39 +104,56 @@ export default function Warehouse() {
         dispatch(editSingleFieldThunk(fieldId, {}))
     }
 
+    
     function fieldGenerator() {
-        const res = [];
-            let temp = fields.sort((a,b) => a.name-b.name)
-            console.log("😇 temp warehouse fields",temp)
-            for (let i = 0; i < warehouse.rows; i++) {
-                for (let j = 0; j < temp.length; j++) {
-                    let field = temp[j*warehouse.columns+i]
-                    // let field = temp[j]
-                    field && res.push(
-                        <div className='field'
-                            key={field.id}
-                            style={{
-                                backgroundColor: `${
-                                    field.vaults.length === 3 || field.full ? "var(--red)" :
-                                        field.vaults.length === 2 ? "var(--yellow)" :
-                                            field.vaults.length === 1 ? "var(--green)" :
-                                                "var(--lightgrey)"
-                                }`,
-                                border: `${
-                                    selectedFieldId === field.id ? "3px solid var(--blue)" : 
-                                    searchResult && searchResult?.includes(field.id) ? "3px solid var(--blue)" :
-                                    "none"
-                                }`,
-                                marginBottom: `${field.type === "couchbox-T" ? "-2.2em" : '-2.2em'}`,
-                                width: `${field.type === "couchbox-B" ? "0px" : ''}`,
-                                zIndex: `${field.type === "couchbox-B" ? "100" : 'none'}`,
-                            }}
-                            onClick={() => handleFieldClick(field.id)}
-                        >{field.type === "couchbox-B" ? "" : <div className="field-number">{field.name}</div>}</div>
-                    )
-                }
-        }
-        return res.map((el) => <>{el}</>)
+            // const res = [];
+            // let temp = fields.sort((a,b) => a.name-b.name)
+            console.log("😇 temp warehouse fields", sortedFields)
+            // temp.map(field => console.log(field.name))
+            if (loadedSortedFields) {
+            return (
+                <div 
+                    style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(9, 1fr)",
+                        gridTemplateRows: "repeat(12,1fr)"
+                    }}
+                >
+                    {sortedFields?.map(field => (
+                        <div>{field.name}</div>
+                    ))}
+                </div>
+            )
+            }
+        //     for (let i = 0; i < warehouse.rows; i++) {
+        //         for (let j = 0; j < temp.length; j++) {
+        //             let field = temp[j*warehouse.columns+i]
+        //             // let field = temp[j]
+        //             field && res.push(
+        //                 <div className='field'
+        //                     key={field.id}
+        //                     style={{
+        //                         backgroundColor: `${
+        //                             field.vaults.length === 3 || field.full ? "var(--red)" :
+        //                                 field.vaults.length === 2 ? "var(--yellow)" :
+        //                                     field.vaults.length === 1 ? "var(--green)" :
+        //                                         "var(--lightgrey)"
+        //                         }`,
+        //                         border: `${
+        //                             selectedFieldId === field.id ? "3px solid var(--blue)" : 
+        //                             searchResult && searchResult?.includes(field.id) ? "3px solid var(--blue)" :
+        //                             "none"
+        //                         }`,
+        //                         marginBottom: `${field.type === "couchbox-T" ? "-2.2em" : '-2.2em'}`,
+        //                         width: `${field.type === "couchbox-B" ? "0px" : ''}`,
+        //                         zIndex: `${field.type === "couchbox-B" ? "100" : 'none'}`,
+        //                     }}
+        //                     onClick={() => handleFieldClick(field.id)}
+        //                 >{field.type === "couchbox-B" ? "" : <div className="field-number">{field.name}</div>}</div>
+        //             )
+        //         }
+        // }
+        // return res.map((el) => <>{el}</>)
     }
 
     if (!warehouse) return null
@@ -133,7 +164,7 @@ export default function Warehouse() {
 
     return (
         <div className="warehouse-wrapper">
-            {loading && ( 
+            {loading || !loadedSortedFields && ( 
                 <div className="loading-animation-container"> 
                 <CircularProgress  size={75} />
             </div>
