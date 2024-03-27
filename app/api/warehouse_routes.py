@@ -134,13 +134,13 @@ def add_warehouse():
         warehouse_id = warehouse.id
 
         # Create colums and fields
-        print('🙃 ', rows, cols)
-        for i in range(1, rows + 1):
-            row_char = chr(64+i)
-            for field_num in range(1, cols + 1):
+        print('🙃 ', 'rows: ', rows,'cols:', cols)
+        for i in range(1, cols + 1):
+            col_char = chr(64+i)
+            for field_num in range(1, rows + 1):
                 # row = Row(name=col_name, warehouse=warehouse)
                 # db.session.add(row)
-                field_name = f"{row_char}{field_num}"
+                field_name = f"{col_char}{field_num}"
                 field = Field(
                     name=field_name,
                     warehouse_id = warehouse_id, #might change this to warehouse.id
@@ -153,8 +153,7 @@ def add_warehouse():
                     # bottom_couchbox_field=False,
                 )
                 db.session.add(field)        
-
-        db.session.commit()
+                db.session.commit()
 
         return jsonify(warehouse.to_dict()), 201
 
