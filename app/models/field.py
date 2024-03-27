@@ -11,7 +11,7 @@ class Field(db.Model, UserMixin):
 
     id = db.Column(db.Integer, primary_key=True, unique=True)
     name = db.Column(db.String(20))
-    type = db.Column(db.String, default="vault")
+    field_type = db.Column(db.String, default="vault")
     vaults = db.relationship('Vault', back_populates='field', foreign_keys='Vault.field_id', lazy='dynamic')
     full = db.Column(db.Boolean, default=False)
 
@@ -26,7 +26,7 @@ class Field(db.Model, UserMixin):
         return {
             'id': self.id,
             'name': self.name,
-            'type': self.type,
+            'type': self.field_type,
             'vaults': [vault.id for vault in self.vaults],
             'warehouse_id': self.warehouse_id,
             'full': self.full,

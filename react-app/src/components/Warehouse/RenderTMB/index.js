@@ -17,6 +17,7 @@ const RenderTMB = ({
   moveVault
  }) => {
   const dispatch = useDispatch();
+  const fields = useSelector((state) => state.field);
   const field = useSelector((state) => state.field[selectedFieldId]);
   const vaults = useSelector((state) => state.vault);
   const vaultsArr = []
@@ -156,11 +157,11 @@ const RenderTMB = ({
                 type="checkbox"
                 role="switch"
                 id="flexSwitchCheckDefault"
-                checked={toggleSelected || type === "couchbox" }
-                onChange={toggleFieldType}
+                checked={type === "couchbox-T"}
+                onChange={() => toggleFieldType(type, fields[selectedFieldId], fields[selectedFieldId+1])}
               />
               <label className={`field-type-label ${type === 'vault' ? 'vault-label' : 'couchbox-label'}`}>
-                {toggleSelected || type === "couchbox" ? 'couchbox' : 'vault' }
+                {type === 'couchbox-T' ? 'couchbox' : 'vault'}
               </label>
             </div>
             <div className="form-check form-switch toggle-container" >

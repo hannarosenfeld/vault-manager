@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from '@mui/material/Modal';
 import CircularProgress from '@mui/material/CircularProgress';
-import { getAllFieldsThunk } from "../../store/field.js";
+import { editFieldThunk, getAllFieldsThunk } from "../../store/field.js";
 import { useParams } from "react-router-dom";  
 import { getAllWarehousesThunk } from "../../store/warehouse.js";
 import { getAllCustomersThunk } from "../../store/customer.js";
@@ -66,8 +66,25 @@ export default function Warehouse() {
         setIsConfirmStagingModalOpen(false);
     }
 
-    const toggleFieldType = () => {
-        console.log("🥝 hiii")
+    const toggleFieldType = (type, topField, bottomField) => {
+        console.log('🙃 hitting toggle field')
+        console.log('🙃 ', type, topField, bottomField)
+        if (topField.vaults.length || bottomField.vaults.length) return alert("Please empty top and bottom fields before switching field type!")
+        if (!bottomField) return new Error({"message": "There needs to be a field below in order to turn this field into a couchbox"})
+        
+        const formData = {"name": topField.name, "field_id_1": topField.id, "field_id_2": bottomField.id}
+        if (type === "couchbox-T") {
+            formData["field_type"] = "vault"
+            dispatch(editFieldThunk(formData))
+        } else if (type === "vault") {
+            formData["field_type"] = "couchbox"
+            const topName = topField.name.match(/^([a-zA-Z]+)\d/);
+            const bottomName = bottomField.name.match(/^([a-zA-Z]+)\d/);
+            console.log("🥝 hiii", topField)
+            if (topName[1] === bottomName[1]) {
+                dispatch(editFieldThunk(formData))
+            } else return new Error({"message": "This field cannot be turned into a couchbox"})
+        }
     }
 
     const toggleFieldFull = () => {

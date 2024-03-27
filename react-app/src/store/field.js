@@ -3,9 +3,9 @@ const GET_ALL_FIELDS = "field/GET_ALL_FIELDS";
 const EDIT_FIELD = "field/EDIT_FIELD";
 
 
-const editFieldAction = (field) => ({
+const editFieldAction = (fields) => ({
   type: EDIT_FIELD,
-  field
+  fields
 })
 
 const getAllFieldsAction = (fields) => ({
@@ -16,7 +16,7 @@ const getAllFieldsAction = (fields) => ({
 
 export const editFieldThunk = (fieldData) => async (dispatch) => {
   try {
-    const res = await fetch(`/api/fields/${fieldData.id}`, {
+    const res = await fetch(`/api/fields/${fieldData.field_id_1}/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -25,6 +25,7 @@ export const editFieldThunk = (fieldData) => async (dispatch) => {
     });
     if (res.ok) {
       const data = await res.json();
+      console.log('hitting res in thunk')
       dispatch(editFieldAction(data));
       return data;
     } else {
@@ -61,9 +62,11 @@ const fieldReducer = (state = initialState, action) => {
   let newState = { ...state };
   switch (action.type) {
     case EDIT_FIELD:
-      const {id, name, type, vaults, warehouseId, full} = action.field;
-      newState[id] = {name, type, vaults, warehouseId, full};
-      return state
+      const [topField, bottomField] = action.fields
+      console.log(topField, bottomField)
+      newState[topField.id] = topField
+      newState[bottomField.id] = bottomField
+      return newState
     case GET_ALL_FIELDS:
       newState = { ...newState, ...action.fields }
       return newState
