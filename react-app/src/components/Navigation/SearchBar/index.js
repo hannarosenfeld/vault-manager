@@ -69,16 +69,12 @@ function SearchBar() {
       order.name.toLowerCase().includes(value.toLowerCase())
     );
 
-    console.log("🍈 search matches: ", filteredOrders)
-
-    // Concatenate the filtered customers and orders for suggestions
     const combinedSuggestions = [...filteredCustomers, ...filteredOrders];
 
     setSuggestions(combinedSuggestions);
   };
 
   const handleSelectItem = async (item) => {
-    // Set the selected customer and clear the search term
     setSelectedItem(item);
     setSearchTerm('');
 
@@ -86,9 +82,6 @@ function SearchBar() {
     const customer = item.name ? true : false
 
     await dispatch(searchThunk(item, order ? "order" : customer ? "customer" : "no type specified"));
-
-    // Dispatch the setSelectedItemThunk with the selected customer's ID
-    // await dispatch(setSelectedItemThunk(customer.id));
   };
 
   const handleClearSelectedItem = async () => {

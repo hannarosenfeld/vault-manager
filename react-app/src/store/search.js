@@ -11,13 +11,16 @@ export const setSearchOffAction = () => ({
 });
 
 export const searchThunk = (item, type) => async (dispatch) => {
+  console.log("💁‍♀️", item, type)
   try {
     let res = await fetch(`/api/search/${type}/${item.id}`)
     if (res.ok) {
+      console.log("🌗", res)
         const data = await res.json();
         dispatch(setSearchOnAction(data));
         return data;
     } else {
+      console.log("🍄", res)
         const err = await res.json();
         return err;
     }
