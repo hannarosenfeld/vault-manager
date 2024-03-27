@@ -84,7 +84,7 @@ const RenderTMB = ({
               </div>
             )} */}
             { !T && M && B ? (
-              <AddVaultButton position="T" vault={selectedVault} handleOpenAddVaultModal={handleOpenAddVaultModal} moveVault={moveVault} fieldType={type}/>
+              <AddVaultButton position="T" vault={selectedVault} handleOpenAddVaultModal={handleOpenAddVaultModal} moveVault={moveVault} fieldType={type} isFull={field.full}/>
             ) 
             : sortedVaults["T"] ? (
               <VaultInstance
@@ -102,7 +102,7 @@ const RenderTMB = ({
             <div className="middle-top middle field-row">
               <span className='position'>M2</span>
               { !M2 && M && B ? (
-                <AddVaultButton position="M2" vault={selectedVault} handleOpenAddVaultModal={handleOpenAddVaultModal} moveVault={moveVault} fieldType={type}/>
+                <AddVaultButton position="M2" vault={selectedVault} handleOpenAddVaultModal={handleOpenAddVaultModal} moveVault={moveVault} fieldType={type} isFull={field.full}/>
               ) : sortedVaults["M2"]? (
                 <VaultInstance
                   position="M2"
@@ -118,7 +118,7 @@ const RenderTMB = ({
           <div className="middle-bottom middle field-row">
             { type === "vault" ? <span className='position'>M</span> : type === "couchbox" ? <span className='position'>M1</span> : "" }
             {B && !M ? (
-              <AddVaultButton position="M" vault={selectedVault} handleOpenAddVaultModal={handleOpenAddVaultModal} moveVault={moveVault} fieldType={type}/>
+              <AddVaultButton position="M" vault={selectedVault} handleOpenAddVaultModal={handleOpenAddVaultModal} moveVault={moveVault} fieldType={type} isFull={field.full}/>
             ) : sortedVaults["M"] ? (
               <VaultInstance
                 position="M"
@@ -133,7 +133,7 @@ const RenderTMB = ({
           <div className="bottom field-row">
             <span className="position">B</span>
             {!B ? (
-              <AddVaultButton position="B" vault={selectedVault} handleOpenAddVaultModal={handleOpenAddVaultModal} moveVault={moveVault} fieldType={type}/>
+              <AddVaultButton position="B" vault={selectedVault} handleOpenAddVaultModal={handleOpenAddVaultModal} moveVault={moveVault} fieldType={type} isFull={field.full}/>
             ) : sortedVaults["B"] ? (
               <VaultInstance
                 position="B"
@@ -170,8 +170,8 @@ const RenderTMB = ({
                 type="checkbox"
                 role="switch"
                 id="flexSwitchCheckDefault"
-                checked="true"
-                onChange={toggleFieldFull}
+                checked={field.full}
+                onChange={() => toggleFieldFull(field.id)}
               />
               <label>
                 full

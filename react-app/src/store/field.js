@@ -1,11 +1,17 @@
 import { STAGE_VAULT } from "./vault";
 const GET_ALL_FIELDS = "field/GET_ALL_FIELDS";
 const EDIT_FIELD = "field/EDIT_FIELD";
+const EDIT_SINGLE_FIELD = "field/EDIT_SINGLE_FIELD";
 
 
 const editFieldAction = (fields) => ({
   type: EDIT_FIELD,
   fields
+})
+
+const editSingleFieldAction = (field) => ({
+  type: EDIT_SINGLE_FIELD,
+  field
 })
 
 const getAllFieldsAction = (fields) => ({
@@ -27,6 +33,28 @@ export const editFieldThunk = (fieldData) => async (dispatch) => {
       const data = await res.json();
       console.log('hitting res in thunk')
       dispatch(editFieldAction(data));
+      return data;
+    } else {
+      const err = await res.json();
+      return err;
+    }
+  } catch (error) {
+    console.error("Error editting field:", error);
+    return error;
+  }
+};
+export const editSingleFieldThunk = (fieldId, data) => async (dispatch) => {
+  try {
+    const res = await fetch(`/api/fields/single/${fieldId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+    if (res.ok) {
+      const data = await res.json();
+      dispatch(editSingleFieldAction(data));
       return data;
     } else {
       const err = await res.json();
@@ -63,9 +91,11 @@ const fieldReducer = (state = initialState, action) => {
   switch (action.type) {
     case EDIT_FIELD:
       const [topField, bottomField] = action.fields
-      console.log(topField, bottomField)
       newState[topField.id] = topField
       newState[bottomField.id] = bottomField
+      return newState
+    case EDIT_SINGLE_FIELD:
+      newState[action.field.id] = action.field
       return newState
     case GET_ALL_FIELDS:
       newState = { ...newState, ...action.fields }

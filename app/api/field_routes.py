@@ -12,6 +12,30 @@ def get_all_fields(warehouseId):
     return jsonify({ field.id : field.to_dict() for field in fields })
 
 
+@field_routes.route('/single/<int:id>', methods=['PUT'])
+def edit_single_field(id):
+
+    form = EditFieldForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    try:
+        if form.validate_on_submit():
+
+            field1 = Field.query.get(id)
+
+            field1.full = not(field1.full)
+
+            db.session.commit()
+            return jsonify(field1.to_dict())
+
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+    return jsonify({'errors': validation_errors_to_error_messages(form.errors)}), 400
+
+
+
 @field_routes.route('/<int:id>/', methods=['PUT'])
 def edit_field(id):
 
@@ -27,7 +51,6 @@ def edit_field(id):
             field_type = form.data['field_type']
             field_id_1 = form.data['field_id_1']
             field_id_2 = form.data['field_id_2']
-
             field1 = Field.query.get(field_id_1)
             field2 = Field.query.get(field_id_2)
 
@@ -81,10 +104,6 @@ def edit_field(id):
                 db.session.commit()
 
                 return jsonify([field1.to_dict(), field2.to_dict()])
-
-
-            db.session.commit()
-            return jsonify(field1.to_dict())
 
 
     except Exception as e:
