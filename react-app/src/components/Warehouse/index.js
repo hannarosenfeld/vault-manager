@@ -116,11 +116,33 @@ export default function Warehouse() {
                     style={{
                         display: "grid",
                         gridTemplateColumns: "repeat(9, 1fr)",
-                        gridTemplateRows: "repeat(12,1fr)"
+                        gridTemplateRows: "repeat(12,1fr)",
+                        gridAutoFlow: 'column',
+                        width: "100%",
+                        border: "2px solid red"
                     }}
                 >
                     {sortedFields?.map(field => (
-                        <div>{field.name}</div>
+                        <div
+                        key={field.id}
+                        style={{
+                            backgroundColor: `${
+                                field.vaults.length === 3 || field.full ? "var(--red)" :
+                                    field.vaults.length === 2 ? "var(--yellow)" :
+                                        field.vaults.length === 1 ? "var(--green)" :
+                                            "var(--lightgrey)"
+                            }`,
+                            border: `${
+                                selectedFieldId === field.id ? "3px solid var(--blue)" : 
+                                searchResult && searchResult?.includes(field.id) ? "3px solid var(--blue)" :
+                                "none"
+                            }`,
+                            marginBottom: `${field.type === "couchbox-T" ? "-2.2em" : '-2.2em'}`,
+                            width: `${field.type === "couchbox-B" ? "0px" : ''}`,
+                            zIndex: `${field.type === "couchbox-B" ? "100" : 'none'}`,
+                        }}
+                        onClick={() => handleFieldClick(field.id)}
+                        >{field.type === "couchbox-B" ? "" : <div className="field-number">{field.name}</div>}</div>
                     ))}
                 </div>
             )
