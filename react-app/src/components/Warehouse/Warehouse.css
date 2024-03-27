@@ -1,18 +1,14 @@
 .warehouse-wrapper {
     padding: 0 15px;
-    height: fit-content;
-    height: 93.5vh;
+    min-height: 75vh;
     max-width: 800px;
     margin: 0 auto;
 }
 
 .warehouse {
     width: 100%;
-    height: 75vh;
-    display: grid;
-    grid-template-columns: repeat(9, 1fr);
-    grid-gap: 1%;
- }
+    height: 100%;
+}
 
 .field-info {
     margin-bottom: 5px;
@@ -36,16 +32,11 @@
 
 .fields {
     margin-top: 5px;
-    height: 100%;    
-    display: grid;
-    grid-template-rows: repeat(12, 1fr);
-    grid-gap: 1%;
 }
 
 .field {
     border-radius: 3px;
     display: flex;
-    height: 95%
 }
 
 .field-number {

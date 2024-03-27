@@ -118,12 +118,14 @@ export default function Warehouse() {
                         gridTemplateColumns: "repeat(9, 1fr)",
                         gridTemplateRows: "repeat(12,1fr)",
                         gridAutoFlow: 'column',
+                        gridGap: "0.5em",
                         width: "100%",
-                        border: "2px solid red"
+                        height: "75vh",
                     }}
                 >
                     {sortedFields?.map(field => (
                         <div
+                        className="field"
                         key={field.id}
                         style={{
                             backgroundColor: `${
