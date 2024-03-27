@@ -83,7 +83,7 @@ export default function Warehouse() {
             console.log("🥝 hiii", topField)
             if (topName[1] === bottomName[1]) {
                 dispatch(editFieldThunk(formData))
-            } else return new Error({"message": "This field cannot be turned into a couchbox"})
+            } else return alert("Can't switch to a couchbox on the last row")
         }
     }
 
@@ -98,7 +98,7 @@ export default function Warehouse() {
                 for (let j = 0; j < warehouse.rows; j++) {
                     let field = temp[j*warehouse.rows+i]
                     field && res.push(
-                        <div className="field"
+                        <div className='field'
                             key={field.id}
                             style={{
                                 backgroundColor: `${
