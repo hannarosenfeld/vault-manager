@@ -117,14 +117,13 @@ export default function Warehouse() {
                         width: "100%",
                         height: "75vh",
                     }}
-                >
+                >   
                     {sortedFields?.map(field => (
                     <div
                         className="field"
                         key={field.id}
                         style={{
                             backgroundColor: `${
-                                !field.vaults?.length ? "var(--lightgrey)" :
                                 field.vaults?.length === 3 || field.full ? "var(--red)" :
                                 field.vaults?.length === 2 ? "var(--yellow)" :
                                 field.vaults?.length === 1 ? "var(--green)" :
