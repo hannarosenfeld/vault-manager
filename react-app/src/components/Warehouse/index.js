@@ -114,8 +114,8 @@ export default function Warehouse() {
                 <div 
                     style={{
                         display: "grid",
-                        gridTemplateColumns: "repeat(9, 1fr)",
-                        gridTemplateRows: "repeat(12,1fr)",
+                        gridTemplateColumns: `repeat(${warehouse.columns}, 1fr)`,
+                        gridTemplateRows: `repeat(${warehouse.rows}, 1fr)`,
                         gridAutoFlow: 'column',
                         gridGap: "0.5em",
                         width: "100%",
@@ -139,7 +139,7 @@ export default function Warehouse() {
                                 searchResult && searchResult?.includes(field.id) ? "3px solid var(--blue)" :
                                 "none"
                             }`,
-                            marginBottom: `${field.type === "couchbox-T" ? "-2.2em" : '-2.2em'}`,
+                            marginBottom: `${field.type === "couchbox-T" ? "-2.2em" : '0'}`,
                             width: `${field.type === "couchbox-B" ? "0px" : ''}`,
                             zIndex: `${field.type === "couchbox-B" ? "100" : 'none'}`,
                         }}
