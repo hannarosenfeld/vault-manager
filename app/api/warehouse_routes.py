@@ -138,8 +138,6 @@ def add_warehouse():
         for i in range(1, cols + 1):
             col_char = chr(64+i)
             for field_num in range(1, rows + 1):
-                # row = Row(name=col_name, warehouse=warehouse)
-                # db.session.add(row)
                 field_name = f"{col_char}{field_num}"
                 field = Field(
                     name=field_name,
@@ -147,10 +145,6 @@ def add_warehouse():
                     full=False,
                     type='vault',
                     vaults=[]
-                    # row=row,
-                    # field_id=field_id,
-                    # warehouse=warehouse,
-                    # bottom_couchbox_field=False,
                 )
                 db.session.add(field)        
                 db.session.commit()
