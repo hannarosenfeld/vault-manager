@@ -11,7 +11,7 @@ class Warehouse(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
+    name = db.Column(db.String, unique=True)
     rows = db.Column(db.Integer)
     cols = db.Column(db.Integer)
     warehouse_fields = db.relationship('Field', back_populates='warehouse', foreign_keys='Field.warehouse_id')
