@@ -38,7 +38,6 @@ export default function Warehouse() {
         dispatch(getAllCustomersThunk())
         const fields = dispatch(getAllFieldsThunk(warehouseId))
 
-
         Promise.all([warehouseInfo])
             .then(() => setLoading(false))
             .catch(() => setLoading(false));
@@ -46,7 +45,7 @@ export default function Warehouse() {
 
 
     useEffect(() => {
-        if (fields) {
+        if (!loading && fields) {
         try {
             setSortedFields(fields.sort((a,b) => a.name-b.name));
           } catch (error) {
@@ -110,7 +109,7 @@ export default function Warehouse() {
             // let temp = fields.sort((a,b) => a.name-b.name)
             console.log("😇 temp warehouse fields", sortedFields)
             // temp.map(field => console.log(field.name))
-            if (loadedSortedFields) {
+            if (!loading && loadedSortedFields) {
             return (
                 <div 
                     style={{
@@ -124,11 +123,12 @@ export default function Warehouse() {
                     }}
                 >
                     {sortedFields?.map(field => (
-                        <div
+                    <div
                         className="field"
                         key={field.id}
                         style={{
                             backgroundColor: `${
+                                !field.vaults?.length ? "var(--lightgrey)" :
                                 field.vaults?.length === 3 || field.full ? "var(--red)" :
                                 field.vaults?.length === 2 ? "var(--yellow)" :
                                 field.vaults?.length === 1 ? "var(--green)" :
@@ -144,7 +144,7 @@ export default function Warehouse() {
                             zIndex: `${field.type === "couchbox-B" ? "100" : 'none'}`,
                         }}
                         onClick={() => handleFieldClick(field.id)}
-                        >{field.type === "couchbox-B" ? "" : <div className="field-number">{field.name}</div>}</div>
+                    >{field.type === "couchbox-B" ? "" : <div className="field-number">{field.name}</div>}</div>
                     ))}
                 </div>
             )
@@ -193,7 +193,7 @@ export default function Warehouse() {
                 <CircularProgress  size={75} />
             </div>
             )}
-            {!loading && ( 
+            {!loading && loadedSortedFields && ( 
                 <>
                     <div className="field-info">
                         {selectedFieldId ? (
