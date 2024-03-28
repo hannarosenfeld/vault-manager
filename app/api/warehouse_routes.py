@@ -155,6 +155,9 @@ def add_warehouse():
                 db.session.add(field)        
                 db.session.commit()
 
+            db.session.commit()
+        db.session.commit()
+
         return jsonify(warehouse.to_dict()), 201
 
     except Exception as e:
