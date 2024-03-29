@@ -16,6 +16,9 @@ class Order(db.Model, UserMixin):
     warehouses = db.relationship('Warehouse', secondary=warehouse_orders, back_populates='orders', cascade='all, delete')
     fields = db.relationship('Field', secondary=field_orders, back_populates='orders', cascade='all, delete')
 
+    company_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('companies.id')))
+    company = db.relationship('Company', back_populates='company_orders')
+
     
     def to_dict(self):
         return {
@@ -23,5 +26,6 @@ class Order(db.Model, UserMixin):
             'name': self.name,
             'vaults': [vault.id for vault in self.order_vaults],
             'warehouses': [warehouse.id for warehouse in self.warehouses],
-            'fields': [field.id for field in self.fields]
+            'fields': [field.id for field in self.fields],
+            'companyId' : self.company_id
         }

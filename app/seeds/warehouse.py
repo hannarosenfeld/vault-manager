@@ -14,6 +14,8 @@ def seed_warehouse(users, fields, orders):
     db.session.add(warehouse)
     db.session.commit()
 
+    return [warehouse]
+
 def undo_warehouse():
     if environment == "production":
         db.session.execute(f"TRUNCATE table {SCHEMA}.warehouse RESTART IDENTITY CASCADE;")
