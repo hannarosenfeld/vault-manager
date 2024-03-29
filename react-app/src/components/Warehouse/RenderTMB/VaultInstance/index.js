@@ -3,17 +3,23 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 
-const VaultInstance = ({ topmostVault, vault, handleStageClick }) => {
+const VaultInstance = ({ topmostVault, vault, handleStageClick, fieldType }) => {
   const customer = useSelector(state => state.customer[vault.customer_id]);
   const { warehouseId } = useParams()
+
+  console.log("💖", vault)
+
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
       <div style={{ display: 'flex', width: '60%', gap: '5px' }}>
         <div>{customer.name}</div>
+        { fieldType !== "couchbox-T" ? (
         <div>{vault.name}</div>
+        ) : (
         <div style={{ color: 'var(--red)' }}>
           <b>{vault.type}</b>
         </div>
+        )}
       </div>
       <div className="edit-symbols">
         <span

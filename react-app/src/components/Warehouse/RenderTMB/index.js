@@ -93,6 +93,7 @@ const RenderTMB = ({
                 vault={sortedVaults["T"]}
                 handleStageClick={handleStageClick}
                 topmostVault={topmostVault?.id === sortedVaults["T"].id ? true : false}
+                fieldType={type}
               />
             ) 
             : (
@@ -110,6 +111,7 @@ const RenderTMB = ({
                   vault={sortedVaults["M2"]}
                   handleStageClick={handleStageClick}
                   topmostVault={topmostVault?.id === sortedVaults["M2"].id ? true : false}
+                  fieldType={type}
                 />
               ) : (
                 ""
@@ -126,6 +128,7 @@ const RenderTMB = ({
                 vault={sortedVaults["M"]}
                 handleStageClick={handleStageClick}
                 topmostVault={topmostVault?.id === sortedVaults["M"].id ? true : false}
+                fieldType={type}
               />
             ) : (
               ""
@@ -141,6 +144,7 @@ const RenderTMB = ({
                 vault={sortedVaults["B"]}
                 handleStageClick={handleStageClick}
                 topmostVault={topmostVault?.id === sortedVaults["B"].id ? true : false}
+                fieldType={type}
               />
             ) : (
               ""
