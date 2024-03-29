@@ -22,10 +22,10 @@ class Company(db.Model, UserMixin):
     company_users = db.relationship('User', back_populates='company', foreign_keys='User.company_id')
 
     # warehouses - one to many
-    warehouses = db.relationship('Warehouse', back_populates='company', foreign_keys='Warehouse.company_id')
+    company_warehouses = db.relationship('Warehouse', back_populates='company', foreign_keys='Warehouse.company_id')
 
     # customers - many to many
-    company_customers = db.relationship('Customers', secondary=company_customers, back_populates='customer_companies', cascade='all, delete')
+    company_customers = db.relationship('Customer', secondary=company_customers, back_populates='customer_companies', cascade='all, delete')
 
 
     def to_dict(self):
