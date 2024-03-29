@@ -83,7 +83,7 @@ export default function Warehouse() {
 
     const toggleFieldType = (type, topField, bottomField) => {
         if (!bottomField) return alert("Can't switch to a couchbox on the last row")
-        if (topField.vaults.length || bottomField.vaults.length) return alert("Please empty top and bottom fields before switching field type!")
+        if (topField.vaults.length || bottomField.vaults.length) return alert("Please empty field before switching field type!")
         
         const formData = {"name": topField.name, "field_id_1": topField.id, "field_id_2": bottomField.id}
         if (type === "couchbox-T") {
