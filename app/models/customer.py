@@ -13,7 +13,7 @@ class Customer(db.Model, UserMixin):
     name = db.Column(db.String(100), nullable=False)
 
     vaults = db.relationship('Vault', back_populates='customer')
-    companies = db.relationship('Warehouse', secondary=company_customers, back_populates='companies', cascade='all, delete')
+    customer_companies = db.relationship('Company', secondary=company_customers, back_populates='company_customers', cascade='all, delete')
 
     # orders = db.relationship('Order', back_populates='customer')
 
@@ -22,6 +22,6 @@ class Customer(db.Model, UserMixin):
             'id': self.id,
             'name': self.name,
             'vaults': [vault.id for vault in self.vaults], 
-            'companies': [company.id for company in self.companies]
+            'companies': [company.id for company in self.customer_companies]
             # 'orders': [order.id for order in self.orders], 
         }

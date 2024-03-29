@@ -3,6 +3,7 @@ from sqlalchemy.sql import text
 
 
 def seed_customers():
+    console.log('✅ hitting seed customers')
     c1 = Customer(
         name="OFFICE FURNITURE"
     )

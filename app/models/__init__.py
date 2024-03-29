@@ -9,5 +9,5 @@ from .attachment import Attachment
 from .warehouse_users import warehouse_users
 from .warehouse_orders import warehouse_orders
 from .field_orders import field_orders
-from .company import company
+from .company import Company
 from .company_customers import company_customers

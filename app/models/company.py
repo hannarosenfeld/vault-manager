@@ -14,22 +14,18 @@ class Company(db.Model, UserMixin):
     address = db.Column(db.String())
     phone = db.Column(db.String(100))
     logo = db.Column(db.String())
-    
-    vaults = db.relationship('Vault', back_populates='field', foreign_keys='Vault.field_id', lazy='dynamic')
-    field_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('fields.id'), ondelete='CASCADE'))
-    field = db.relationship('Field', back_populates='vaults', foreign_keys='Vault.field_id')
 
     # orders - one to many
-    company_orders = db.relationship('Company', back_populates='order', foreign_keys='Company.order_id')
+    company_orders = db.relationship('Order', back_populates='company', foreign_keys='Order.company_id')
 
     # user - one to many
-    company_users = db.relationship('Company', back_populates='user', foreign_keys='Company.user_id')
+    company_users = db.relationship('User', back_populates='company', foreign_keys='User.company_id')
 
     # warehouses - one to many
-    company_warehouses = db.relationship('Company', back_populates='warehouse', foreign_keys='Company.warehouse_id')
+    warehouses = db.relationship('Warehouse', back_populates='company', foreign_keys='Warehouse.company_id')
 
     # customers - many to many
-    customers = db.relationship('Customers', secondary=company_customers, back_populates='companies', cascade='all, delete')
+    company_customers = db.relationship('Customers', secondary=company_customers, back_populates='customer_companies', cascade='all, delete')
 
 
     def to_dict(self):

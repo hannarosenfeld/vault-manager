@@ -4,9 +4,7 @@ from .vaults import seed_vaults, undo_vaults
 from .customers import seed_customers, undo_customers
 from .fields import seed_fields, undo_fields
 from .companies import seed_companies, undo_companies
-# from .rows import seed_rows, undo_rows
 from .warehouse import seed_warehouse, undo_warehouse
-# from .stage import seed_stage, undo_stage 
 from .orders import seed_orders, undo_orders
 from app.models import Field, Warehouse, Customer, Company, User, Order, Vault
 
@@ -21,12 +19,12 @@ seed_commands = AppGroup('seed')
 def seed():
     # if environment == 'production' or environment == 'development':
         # Seed data if any of the tables is empty
-        companies = None
         users = None
         fields = None
         customers = None
         orders = None
         warehouses = None
+        companies = None
 
         if not User.query.all(): 
             users = seed_users()  
@@ -45,11 +43,9 @@ def seed():
 
 @seed_commands.command('undo')
 def undo():
-    # undo_stage()
+    undo_companies()
     undo_vaults()
     undo_fields()
-    # undo_rows()
     undo_customers()
     undo_users()
     undo_warehouse()
-    undo_companies()
