@@ -38,6 +38,7 @@ export default function MiniWareHouse({ selectedFieldId, warehouseId }) {
                             marginBottom: `${field.type === "couchbox-T" ? "-2.6em" : '0'}`,
                             width: `${field.type === "couchbox-B" ? "0px" : ''}`,
                             zIndex: `${field.type === "couchbox-B" ? "100" : 'none'}`,
+                            maxHeight: "3.5em"
                         }}
                     >{field.type === "couchbox-B" ? "" : <div className="field-number">{field.name}</div>}</div>
                     ))}

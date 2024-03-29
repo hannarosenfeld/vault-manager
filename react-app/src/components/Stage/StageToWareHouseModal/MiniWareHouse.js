@@ -35,7 +35,8 @@ export default function MiniWareHouse({ warehouseId, setSelectedField, selectedF
                                     width: `${field.type === "couchbox-B" ? "0px" : '100%'}`,
                                     zIndex: `${field.type === "couchbox-B" ? "100" : 'none'}`,
                                     display: "flex",
-                                    alignItems: "center"
+                                    alignItems: "center",
+                                    // height: `${field.type === "couchbox-T" ? "10em" : '100%'}`,
                                     // padding: `${selectedField && (selectedField?.id === field.id) ? "5px": "0"}`,
                                 }}
                             >

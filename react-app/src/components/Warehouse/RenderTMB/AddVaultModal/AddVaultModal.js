@@ -242,17 +242,6 @@ export default function AddVaultModal({ onClose, selectedFieldId, warehouseId, p
                             </div>
                             )}
                         </FormGroup>
-
-                        <FormGroup className="vault-order-number-item">
-                            <FormLabel>Order#</FormLabel>
-                            <input
-                            type="text"
-                            value={order_number}
-                            onChange={(e) => setOrderNumber(e.target.value)}
-                            required
-                            />
-                        </FormGroup>
-
                         <div style={{width: "20%"}}>
                         <FormLabel>Vault Type</FormLabel>
                         <select
@@ -268,6 +257,16 @@ export default function AddVaultModal({ onClose, selectedFieldId, warehouseId, p
                         </div>
                         </div>
                     )}
+
+                        <FormGroup className="vault-order-number-item">
+                            <FormLabel>Order#</FormLabel>
+                            <input
+                            type="text"
+                            value={order_number}
+                            onChange={(e) => setOrderNumber(e.target.value)}
+                            required
+                            />
+                        </FormGroup>
                     </div>
                         <MiniWareHouse selectedFieldId={selectedFieldId} warehouseId={warehouseId} />
                     <button type="submit" disabled={isSubmitting}>
