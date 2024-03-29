@@ -27,6 +27,7 @@ const RenderTMB = ({
   const [isLoading, setIsLoading] = useState(true);
   const { type } = field
 
+  console.log("🥐", field.type)
 
   useEffect(() => {
     setSortedVaults({});
@@ -98,7 +99,7 @@ const RenderTMB = ({
               ""
             )}
           </div>
-          { type === "couchbox" && 
+          { type === "couchbox-T" && 
             <div className="middle-top middle field-row">
               <span className='position'>M2</span>
               { !M2 && M && B ? (
@@ -116,7 +117,7 @@ const RenderTMB = ({
             </div>
           }
           <div className="middle-bottom middle field-row">
-            { type === "vault" ? <span className='position'>M</span> : type === "couchbox" ? <span className='position'>M1</span> : "" }
+            { type === "vault" ? <span className='position'>M</span> : type === "couchbox-T" ? <span className='position'>M1</span> : "" }
             {B && !M ? (
               <AddVaultButton position="M" vault={selectedVault} handleOpenAddVaultModal={handleOpenAddVaultModal} moveVault={moveVault} fieldType={type} isFull={field.full}/>
             ) : sortedVaults["M"] ? (
