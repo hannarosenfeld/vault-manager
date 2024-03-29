@@ -5,9 +5,11 @@ from app.models import Warehouse, Field, Vault, db
 warehouse_routes = Blueprint('warehouse', __name__)
 
 # /user/<int:user_id>
-@warehouse_routes.route('/int:company_id', methods=['GET'])
+# @warehouse_routes.route('/int:company_id', methods=['GET'])
+@warehouse_routes.route('/', methods=['GET'])
 @login_required
-def get_warehouses(company_id):
+# def get_warehouses(company_id):
+def get_warehouses():
     """
     Retrieve all warehouses
     """

@@ -14,7 +14,10 @@ const VaultInstance = ({ topmostVault, vault, handleStageClick, fieldType }) => 
       <div style={{ display: 'flex', width: '60%', gap: '5px' }}>
         <div>{customer.name}</div>
         { fieldType !== "couchbox-T" ? (
-        <div>{vault.name}</div>
+          <div style={{display: 'flex', gap: '0.5em'}}>
+            <div>{vault.name}</div>
+            <b style={{color: "var(--red)"}}>{vault.type}</b>
+          </div>
         ) : (
         <div style={{ color: 'var(--red)' }}>
           <b>{vault.type}</b>
