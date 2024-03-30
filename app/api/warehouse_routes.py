@@ -4,25 +4,22 @@ from app.models import Warehouse, Field, Vault, db
 
 warehouse_routes = Blueprint('warehouse', __name__)
 
-# /user/<int:user_id>
-# @warehouse_routes.route('/int:company_id', methods=['GET'])
+
 @warehouse_routes.route('/', methods=['GET'])
 @login_required
-# def get_warehouses(company_id):
 def get_warehouses():
     """
     Retrieve all warehouses
     """
-    #if current_user.company_id == company_id:
+    company_id = current_user.company_id
+    warehouses = Warehouse.query.filter(Warehouse.company_id == company_id).all()
 
-    # else return unauthorized
-    
-    warehouses = Warehouse.query.all()
+    print("🐬", warehouses)
 
     if not warehouses:
         return {'errors': 'No warehouses found!'}, 404
 
-    return {warehouse.id: warehouse.to_dict() for warehouse in warehouses}
+    return [warehouse.to_dict() for warehouse in warehouses]
 
 
 @warehouse_routes.route('/<int:warehouse_id>', methods=['GET'])

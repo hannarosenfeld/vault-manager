@@ -60,20 +60,18 @@ export const getAllWarehousesThunk = () => async (dispatch) => {
 const initialState = {};
 
 const warehouseReducer = (state = initialState, action) => {
-  let newState = {}
+  let newState = {...state}
   switch (action.type) {
     case GET_ALL_WAREHOUSES:
-      // const payload = Object.values(action.warehouses)
-        state = { ...state, ...action.warehouses }
-        // payload.forEach((warehouse) => {
-        //   state.warehouses[warehouse.id] = warehouse
-        // })
-        return state
+        const warehouses = action.warehouses
+        warehouses.map(warehouse => {
+          newState[warehouse.id] = warehouse
+        })
+        return newState;
     case ADD_WAREHOUSE:
       return {
         ...state,
         warehouses: [...state.warehouses, action.payload],
-        // currentWarehouse: action.payload
       };
     default:
       return state;

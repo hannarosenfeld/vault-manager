@@ -6,11 +6,9 @@ import { editFieldThunk, getAllFieldsThunk, editSingleFieldThunk } from "../../s
 import { useParams } from "react-router-dom";  
 import { getAllWarehousesThunk } from "../../store/warehouse.js";
 import { getAllCustomersThunk } from "../../store/customer.js";
-
 import RenderTMB from "./RenderTMB";
 import AddVaultModal from "./RenderTMB/AddVaultModal/AddVaultModal.js"
 import ConfirmStaging from "./RenderTMB/ConfirmStaging/index.js";
-
 import "./Warehouse.css"
 
 

@@ -20,21 +20,11 @@ function App() {
   const history = useHistory();
   const [isLoaded, setIsLoaded] = useState(false);
 	const sessionUser = useSelector(state => state.session.user);
-  const companies = useSelector(state => state.company)
-  let company;
 
   const onAddWarehouseSubmit = async () => {
     await dispatch(getAllWarehousesThunk());    
     history.push("/");
   }
-
-  useEffect(() => {
-    if (sessionUser) company = companies[sessionUser.companyId]
-  }, [sessionUser])
-
-  useEffect(() => {
-    console.log("🧏🏻‍♀️", company)
-  }, [company])
 
   useEffect(() => {
     dispatch(authenticate())
@@ -59,8 +49,8 @@ function App() {
         <>
         <Navigation isLoaded={isLoaded} />
           <Switch>
-            <Route exact path="/">
-              <Index />
+            <Route exact path="/" >
+              <Index company={sessionUser.company} />
             </Route>
             
             <Route exact path="/signup">
@@ -71,7 +61,7 @@ function App() {
               <AddWarehouseForm onAddWarehouseSubmit={onAddWarehouseSubmit}/>
             </Route>                  
 
-            <Route exact path="/warehouse/:warehouseId"> 
+            <Route exact path="/:companyName/warehouse/:warehouseId"> 
               <Warehouse />
             </Route>          
 

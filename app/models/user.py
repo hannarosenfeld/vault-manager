@@ -36,5 +36,6 @@ class User(db.Model, UserMixin):
             'id': self.id,
             'username': self.username,
             'email': self.email,
-            'companyId': self.company_id
+            'companyId': self.company_id,
+            'company' : self.company.to_dict()
         }
