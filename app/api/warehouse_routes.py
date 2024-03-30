@@ -14,8 +14,6 @@ def get_warehouses():
     company_id = current_user.company_id
     warehouses = Warehouse.query.filter(Warehouse.company_id == company_id).all()
 
-    print("🐬", warehouses)
-
     if not warehouses:
         return {'errors': 'No warehouses found!'}, 404
 
@@ -40,6 +38,7 @@ def add_warehouse():
     """
     Add a new warehouse along with rows and fields.
     """
+    company_id = current_user.company_id
     data = request.json
     name = data.get('name')
     rows = data.get('numRows')
@@ -52,6 +51,7 @@ def add_warehouse():
         warehouse.name = name
         warehouse.rows = rows
         warehouse.cols = cols
+        warehouse.company_id = company_id
         db.session.commit()
 
         # Fetch warehouse with associated rows and fields

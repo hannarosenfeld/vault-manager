@@ -8,7 +8,6 @@ const AddWarehouseForm = ({ onAddWarehouseSubmit }) => {
   const [name, setName] = useState('');
   const [numRows, setNumRows] = useState('');
   const [numCols, setNumCols] = useState('');
-  // const [numFieldsPerRow, setNumFieldsPerRow] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,14 +15,12 @@ const AddWarehouseForm = ({ onAddWarehouseSubmit }) => {
       name,
       numRows: parseInt(numRows),
       numCols: parseInt(numCols)
-      // numFieldsPerRow: parseInt(numFieldsPerRow)
     };
 
     await dispatch(addWarehouseThunk(warehouseData));
     setName('');
     setNumRows('');
     setNumCols('');
-    // setNumFieldsPerRow('');
     onAddWarehouseSubmit();
   };
 
