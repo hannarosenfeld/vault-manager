@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector} from "react-redux";
 import { Route, Switch, useHistory } from "react-router-dom";
 import { authenticate } from "./store/session";
+import { getAllWarehousesThunk } from "./store/warehouse";
+import { getCompaniesThunk } from "./store/company";
+
 import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import Navigation from "./components/Navigation";
@@ -10,9 +13,7 @@ import Warehouse from "./components/Warehouse";
 import Stage from "./components/Stage";
 import EditVaultPage from "./components/Warehouse/RenderTMB/EditVaultPage";
 import VaultDetailPage from "./components/Warehouse/RenderTMB/VaultDetailPage";
-import AddWarehouseForm from "./components/AddWarehouse";
-import { getAllWarehousesThunk } from "./store/warehouse";
-import { getCompaniesThunk } from "./store/company";
+import AddWarehouse from "./components/AddWarehouse";
 
 
 function App() {
@@ -58,7 +59,7 @@ function App() {
             </Route>        
             
             <Route exact path="/warehouse/add-warehouse">
-              <AddWarehouseForm onAddWarehouseSubmit={onAddWarehouseSubmit}/>
+              <AddWarehouse onAddWarehouseSubmit={onAddWarehouseSubmit}/>
             </Route>                  
 
             <Route exact path="/:companyName/warehouse/:warehouseId"> 

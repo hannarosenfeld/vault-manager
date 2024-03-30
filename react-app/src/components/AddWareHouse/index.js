@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { addWarehouseThunk } from '../../store/warehouse';
 
 
-const AddWarehouseForm = ({ onAddWarehouseSubmit }) => {
+const AddWarehouse = ({ onAddWarehouseSubmit }) => {
   const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [numRows, setNumRows] = useState('');
