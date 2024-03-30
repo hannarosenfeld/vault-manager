@@ -114,7 +114,7 @@ export default function Warehouse() {
                         gridTemplateColumns: `repeat(${warehouse.columns}, 1fr)`,
                         gridTemplateRows: `repeat(${warehouse.rows}, 1fr)`,
                         gridAutoFlow: 'column',
-                        gridGap: "0.5em",
+                        gridGap: "1%",
                         width: "100%",
                         height: "75vh",
                     }}
@@ -137,7 +137,7 @@ export default function Warehouse() {
                                 searchResult && searchResult?.includes(field.id) ? "3px solid var(--blue)" :
                                 "none"
                             }`,
-                            height: `${field.type === "couchbox-T" ? "225%" : '100%'}`,
+                            height: `${field.type === "couchbox-T" ? "209%" : '100%'}`,
                             marginBottom: `${field.type === "couchbox-T" ? "-2.6em" : '0'}`,
                             width: `${field.type === "couchbox-B" ? "0px" : ''}`,
                             zIndex: `${field.type === "couchbox-B" ? "100" : 'none'}`,
