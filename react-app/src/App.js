@@ -47,7 +47,7 @@ function App() {
       )}
       {isLoaded && sessionUser && (
         <>
-        <Navigation isLoaded={isLoaded} />
+        <Navigation isLoaded={isLoaded} company={sessionUser.company} />
           <Switch>
             <Route exact path="/" >
               <Index company={sessionUser.company} />

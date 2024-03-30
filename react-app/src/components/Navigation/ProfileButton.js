@@ -10,7 +10,7 @@ import "./Navigation.css";
 import { getAllWarehousesThunk } from "../../store/warehouse";
 
 
-function ProfileButton({ user }) {
+function ProfileButton({ user, company }) {
   const dispatch = useDispatch();
   const [showDrawer, setShowDrawer] = useState(false);
   const warehousesObj = useSelector(state => state.warehouse)
@@ -70,7 +70,7 @@ function ProfileButton({ user }) {
               button 
               onClick={visitWarehouse}
               component={NavLink} 
-              to={`/warehouse/${warehouse.id}`}
+              to={`/${company.name.toLowerCase()}/warehouse/${warehouse.id}`}
               style={{display: "flex", gap: "5px"}}>
               <ListItemText primary={warehouse.name} />
             </ListItem>  
