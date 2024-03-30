@@ -10,11 +10,11 @@ import "./Navigation.css";
 import { getAllWarehousesThunk } from "../../store/warehouse";
 
 
-
-function ProfileButton({ user }) {
+function ProfileButton({ user, company }) {
   const dispatch = useDispatch();
   const [showDrawer, setShowDrawer] = useState(false);
-  const warehouses = useSelector(state => state.warehouse.warehouses)
+  const warehousesObj = useSelector(state => state.warehouse)
+  const warehouses = Object.values(warehousesObj)
 
   useEffect(() => {
     dispatch(getAllWarehousesThunk())
@@ -27,6 +27,10 @@ function ProfileButton({ user }) {
   const closeDrawer = () => {
     setShowDrawer(false);
   };
+
+  const visitWarehouse = () => {
+    closeDrawer();
+  }
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -64,9 +68,9 @@ function ProfileButton({ user }) {
               { warehouses?.map(warehouse => (
               <ListItem 
               button 
-              onClick={closeDrawer}
+              onClick={visitWarehouse}
               component={NavLink} 
-              to={`/warehouse/${warehouse.id}`}
+              to={`/${company.name.toLowerCase()}/warehouse/${warehouse.id}`}
               style={{display: "flex", gap: "5px"}}>
               <ListItemText primary={warehouse.name} />
             </ListItem>  

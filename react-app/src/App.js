@@ -7,32 +7,30 @@ import LoginFormPage from "./components/LoginFormPage";
 import Navigation from "./components/Navigation";
 import Index from "./components/Index";
 import Warehouse from "./components/Warehouse";
-import StagedVaults from "./components/StagedVaults";
-import EditVaultPage from "./components/Warehouse/EditVaultPage";
-import VaultDetailPage from "./components/Warehouse/VaultDetailPage";
-import AddWarehouseForm from "./components/AddWareHouse";
-import { getAllWarehousesThunk, getWarehouseInfoThunk } from "./store/warehouse";
+import Stage from "./components/Stage";
+import EditVaultPage from "./components/Warehouse/RenderTMB/EditVaultPage";
+import VaultDetailPage from "./components/Warehouse/RenderTMB/VaultDetailPage";
+import AddWarehouseForm from "./components/AddWarehouse";
+import { getAllWarehousesThunk } from "./store/warehouse";
+import { getCompaniesThunk } from "./store/company";
+
 
 function App() {
   const dispatch = useDispatch();
   const history = useHistory();
-  // const currentWarehouse = useSelector(state => state.warehouse.currentWarehouse)
   const [isLoaded, setIsLoaded] = useState(false);
 	const sessionUser = useSelector(state => state.session.user);
 
-  // useEffect(()=>{
-  //   console.log("💖", currentWarehouse.warehouse_id)
-  // }, [currentWarehouse])
-
   const onAddWarehouseSubmit = async () => {
-    // await currentWarehouse
     await dispatch(getAllWarehousesThunk());    
-    // history.push(`/warehouse/${currentWarehouse.warehouse_id}`);
     history.push("/");
   }
 
   useEffect(() => {
     dispatch(authenticate())
+      .then(async () => {
+         await dispatch(getCompaniesThunk());
+      })
       .then(() => {
         setIsLoaded(true);
       });
@@ -49,10 +47,10 @@ function App() {
       )}
       {isLoaded && sessionUser && (
         <>
-        <Navigation isLoaded={isLoaded} />
+        <Navigation isLoaded={isLoaded} company={sessionUser.company} />
           <Switch>
-            <Route exact path="/">
-              <Index />
+            <Route exact path="/" >
+              <Index company={sessionUser.company} />
             </Route>
             
             <Route exact path="/signup">
@@ -63,22 +61,26 @@ function App() {
               <AddWarehouseForm onAddWarehouseSubmit={onAddWarehouseSubmit}/>
             </Route>                  
 
-            <Route exact path="/warehouse/:warehouseId"> 
+            <Route exact path="/:companyName/warehouse/:warehouseId"> 
               <Warehouse />
             </Route>          
 
-            <Route path="/vaults/:vaultId/edit">
+            <Route path="/warehouse/:warehouseId/field/:fieldId/vaults/:vaultId/edit">
               <EditVaultPage />
             </Route>
-            <Route path="/vaults/:vaultId/detail">
+
+            <Route path="/warehouse/:warehouseId/field/:fieldId/vaults/:vaultId/detail">
               <VaultDetailPage/>
             </Route>
+
             <Route path="/stage">
-              <StagedVaults />
+              <Stage />
             </Route>
+
             <Route path="/add-user">
               <SignupFormPage />
             </Route>
+
             <Route path="/login" >
               <LoginFormPage />
             </Route>

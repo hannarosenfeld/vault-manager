@@ -1,5 +1,7 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from flask_login import UserMixin
+from .warehouse_orders import warehouse_orders
+from .field_orders import field_orders
 
 
 class Order(db.Model, UserMixin):
@@ -9,13 +11,21 @@ class Order(db.Model, UserMixin):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    order_number = db.Column(db.String)
+    name = db.Column(db.String)
+    order_vaults = db.relationship('Vault', back_populates="order")
+    warehouses = db.relationship('Warehouse', secondary=warehouse_orders, back_populates='orders', cascade='all, delete')
+    fields = db.relationship('Field', secondary=field_orders, back_populates='orders', cascade='all, delete')
 
-    order_vaults = db.relationship('Vault', back_populates="order", lazy='joined')
+    company_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('companies.id')))
+    company = db.relationship('Company', back_populates='company_orders')
 
+    
     def to_dict(self):
         return {
             'id': self.id,
-            'order_number': self.order_number,
-            'order_vaults': [vault.to_dict() for vault in self.order_vaults]
+            'name': self.name,
+            'vaults': [vault.id for vault in self.order_vaults],
+            'warehouses': [warehouse.id for warehouse in self.warehouses],
+            'fields': [field.id for field in self.fields],
+            'companyId' : self.company_id
         }

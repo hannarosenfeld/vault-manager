@@ -1,25 +1,20 @@
-from app.models import db, Warehouse, Row, Field, Vault, environment, SCHEMA
+from app.models import db, Warehouse, Field, Vault, environment, SCHEMA
 from sqlalchemy.sql import text
 
-def seed_warehouse():
-    # Create a warehouse instance
+def seed_warehouse(users, fields, orders):
     warehouse = Warehouse()
-    
-    # Retrieve all rows and fields
-    rows = Row.query.all()
-    fields = Field.query.all()
-    
-    # Retrieve the Vault instances you want to include in the warehouse
-    vaults = Vault.query.filter(Vault.id.in_([1, 2, 3])).all()  # Replace [1, 2, 3] with the actual IDs of the vaults you want to include
-    
-    # Associate rows, fields, and vaults with the warehouse
-    warehouse.warehouse_rows = rows
-    warehouse.warehouse_fields = fields
-    warehouse.warehouse_vaults = vaults
+
     warehouse.name = "Warehouse 3"
-    
+    warehouse.cols = 9
+    warehouse.rows = 12
+    warehouse.warehouse_fields = fields
+    warehouse.users = users
+    warehouse.orders = orders
+
     db.session.add(warehouse)
     db.session.commit()
+
+    return [warehouse]
 
 def undo_warehouse():
     if environment == "production":

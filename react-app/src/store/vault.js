@@ -1,14 +1,11 @@
-const GET_VAULT = "vault/GET_VAULT";
-const GET_ALL_VAULTS = "vault/GET_ALL_VAULTS"; // Add this new action type
-const ADD_VAULT = "vault/ADD_VAULT"; // Add this new action type
+// const GET_VAULT = "vault/GET_VAULT";
+import { addVaultToStageAction, removeVaultFromStageAction } from "./stage";
+const GET_ALL_VAULTS = "vault/GET_ALL_VAULTS";
+const ADD_VAULT = "vault/ADD_VAULT";
 const EDIT_VAULT = "vault/EDIT_VAULT";
 const DELETE_VAULT = "vault/DELETE_VAULT";
-const GET_FIELD_VAULTS = "vault/GET_FIELD_VAULTS";
-
-const getFieldVaultsAction = (vaults) => ({
-  type: GET_FIELD_VAULTS,
-  vaults
-})
+export const STAGE_VAULT = "vault/STAGE_VAULT";
+const MOVE_VAULT_FROM_STAGE_TO_WAREHOUSE = "vault/MOVE_VAULT_FROM_STAGE_TO_WAREHOUSE"
 
 const editVaultAction = (vault) => ({
   type: EDIT_VAULT,
@@ -20,10 +17,10 @@ const deleteVaultAction = (vaultId) => ({
   vaultId
 });
 
-export const getVaultAction = (vault) => ({
-  type: GET_VAULT,
-  payload: vault,
-});
+// export const getVaultAction = (vault) => ({
+//   type: GET_VAULT,
+//   payload: vault,
+// });
 
 const getAllVaultsAction = (vaults) => ({
   type: GET_ALL_VAULTS,
@@ -35,22 +32,16 @@ const addVaultAction = (vault) => ({
   vault
 });
 
-export const getFieldVaultsThunk = (fieldId) => async (dispatch) => {
-  try {
-    const res = await fetch(`/api/fields/${fieldId}/vaults`);
-    // if (res.ok) {
-    //   const data = await res.json()
-    //   await dispatch(getFieldVaultsAction(data))
-    // } else {
-    //   const err = await res.json();
-    //   console.error("Error getting field vaults:", err);
-    //   return err;
-    // }
-  } catch (error) {
-    console.error("Error fetching field vaults:", error);
-    // Handle errors if needed
-  }
-};
+const stageVaultAction = (stagingInfo) => ({
+  type: STAGE_VAULT,
+  stagingInfo
+})
+
+const moveVaultFromStageToWarehouseAction = (vault) => ({
+  type: MOVE_VAULT_FROM_STAGE_TO_WAREHOUSE,
+  vault
+})
+
 
 export const editVaultThunk = (vaultId, vaultData) => async (dispatch) => {
   try {
@@ -74,6 +65,51 @@ export const editVaultThunk = (vaultId, vaultData) => async (dispatch) => {
   }
 };
 
+
+export const stageVaultThunk = (vaultId, vaultData) => async (dispatch) => {
+  try {
+    const res = await fetch(`/api/vaults/${vaultId}`, {
+      method: 'PUT',
+      body: vaultData
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      dispatch(stageVaultAction(data));
+      dispatch(addVaultToStageAction(data));
+      return data;
+    } else {
+      const err = await res.json();
+      console.error("Error editing vault:", err);
+      return err;
+    }
+  } catch (error) {
+    console.error("Error editing vault:", error);
+    return error;
+  }
+};
+
+export const moveVaultFromStageToWarehouseThunk = (vaultId, selectedFieldId, position) => async (dispatch) => {
+  try {
+    const res = await fetch(`/api/vaults/moveVault/${selectedFieldId}/${vaultId}/${position}`, {
+      method: 'PUT',
+    })
+    if (res.ok) {
+      const data = await res.json();
+      dispatch(moveVaultFromStageToWarehouseAction(data));
+      dispatch(removeVaultFromStageAction(vaultId))
+      return data;
+    } else {
+      const err = await res.json();
+      console.error("Error moving vault to warehouse:", err);
+      return err;
+    }
+  } catch (error) {
+    console.error("Error moving vault:", error);
+    return error;
+  }
+}
+
 export const deleteVaultThunk = (vaultId) => async (dispatch) => {
 
   try {
@@ -95,27 +131,44 @@ export const deleteVaultThunk = (vaultId) => async (dispatch) => {
   }
 };
 
+// export const getVaultThunk = (vaultId) => async (dispatch) => {
+//   try {
+//     const res = await fetch(`/api/vaults/${vaultId}`); // Adjust the API endpoint
+//     if (res.ok) {
+//       const data = await res.json();
+//       dispatch(getVaultAction(data));
+//       return data;
+//     } else {
+//       const err = await res.json();
+//       return err;
+//     }
+//   } catch (error) {
+//     console.error("Error fetching vault:", error);
+//     return error;
+//   }
+// };
 
-export const getVaultThunk = (vaultId) => async (dispatch) => {
+export const getVaultsThunk = () => async (dispatch) => {
   try {
-    const res = await fetch(`/api/vaults/${vaultId}`); // Adjust the API endpoint
+    const res = await fetch(`/api/vaults/`);
     if (res.ok) {
       const data = await res.json();
-      dispatch(getVaultAction(data));
+      dispatch(getAllVaultsAction(data));
       return data;
     } else {
       const err = await res.json();
+      console.error("Error fetching vaults:", err); // Log the error
       return err;
     }
   } catch (error) {
-    console.error("Error fetching vault:", error);
+    console.error("Error fetching vaults:", error);
     return error;
   }
 };
 
-export const getAllVaultsThunk = () => async (dispatch) => {
+export const getAllFieldVaultsThunk = (fieldId) => async (dispatch) => {
   try {
-    const res = await fetch('/api/vaults/');
+    const res = await fetch(`/api/vaults/${fieldId}`);
     if (res.ok) {
       const data = await res.json();
       dispatch(getAllVaultsAction(data));
@@ -153,68 +206,37 @@ export const addVaultThunk = (vaultData) => async (dispatch) => {
 };
 
 
-const initialState = {
-  vaults: {},
-  currentVault: {},
-  fieldVaults: {}
-};
+const initialState = {};
+
 
 const vaultReducer = (state = initialState, action) => {
+  let newState = {}
   switch (action.type) {
-    case GET_FIELD_VAULTS:
-      return {
-        ...state,
-        fieldVaults: {
-          ...state.fieldVaults,
-          [action.fieldId]: action.vaults
-        }
-      };    
-    case GET_VAULT:
-      return {
-        ...state,
-        vaults: {
-          ...state.vaults,
-          [action.payload.id]: action.payload
-        },
-        currentVault: action.payload
-      };
     case GET_ALL_VAULTS:
-      return {
-        ...state,
-        vaults: {
-          ...state.vaults,
-          ...action.vaults
-        }
-      };
+      newState = { ...state, ...action.vaults }
+      // const vaultKeys = Object.keys(action.vaults)
+      // vaultKeys.forEach(key => newState[key] = action.vaults[key]);
+      return newState
     case ADD_VAULT:
-      return {
-        ...state,
-        vaults: {
-          ...state.vaults,
-          [action.vault.id]: action.vault
-        }
-      };
+      newState[action.vault.id] = action.vault
+      return newState
     case EDIT_VAULT:
-      return {
-        ...state,
-        vaults: {
-          ...state.vaults,
-          [action.vault.id]: action.vault
-        },
-        currentVault: {}
-      };
+      newState[action.vault.id] = action.vault
+      return newState
+    // TODO: Revise DELETE thunk
     case DELETE_VAULT:
-      // Create a copy of the state.vaults object without the deleted vault
-      const updatedVaults = { ...state.vaults };
-      delete updatedVaults[action.vaultId];
-
-      return {
-        ...state,
-        vaults: updatedVaults
-      };
-      
+      delete newState[action.vaultId];
+      return newState
+    case STAGE_VAULT:
+      newState = { ...state }
+      delete newState[action.stagingInfo.vault.id];
+      return newState
+    case MOVE_VAULT_FROM_STAGE_TO_WAREHOUSE:
+      newState = { ...state }
+      delete newState[action.vaultId];
+      return newState
     default:
-      return state;
+      return newState;
   }
 };
 

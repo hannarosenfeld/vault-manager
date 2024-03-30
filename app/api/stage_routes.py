@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required
-from app.models import Stage, Warehouse, Row, Field, Vault, db
+from app.models import Warehouse, Field, Vault, db
 
 stage_routes = Blueprint('stage', __name__)
 
@@ -10,8 +10,8 @@ def get_stage_info():
     """
     Retrieve information about the stage
     """
-    stage = Stage.query.get(1)  # Assuming there is only one stage with ID 1
-
+    # stage = Stage.query.get(1)  # Assuming there is only one stage with ID 1
+    
     if not stage:
         return {'errors': 'Stage not found'}, 404
 
@@ -23,8 +23,8 @@ def add_vault_to_stage(vault_id):
     """
     Add a vault to the stage
     """
-    stage = Stage.query.get(1) 
-    warehouse = Warehouse.query.get(1)
+    # stage = Stage.query.get(1) 
+    # warehouse = Warehouse.query.get(1)
 
     if not stage:
         return jsonify({'errors': 'Stage not found'}), 404

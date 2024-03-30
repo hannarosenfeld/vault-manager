@@ -38,7 +38,7 @@ export const updateCustomerNameThunk = (customerId, newName) => async (dispatch)
 
     if (res.ok) {
       const updatedCustomer = await res.json();
-      dispatch(updateCustomerNameAction(customerId, newName)); // Update the state with the new name
+      dispatch(updateCustomerNameAction(customerId, newName));
       return updatedCustomer;
     } else {
       const err = await res.json();
@@ -53,7 +53,8 @@ export const updateCustomerNameThunk = (customerId, newName) => async (dispatch)
 
 export const getCustomerThunk = (customerId) => async (dispatch) => {
   try {
-    const res = await fetch(`/api/customers/${customerId}`); // Adjust the API endpoint
+    const res = await fetch(`/api/customers/${customerId}`); 
+    // TODO: How is this even working?? The route is commented out. Check customer route in backend
     if (res.ok) {
       const data = await res.json();
       dispatch(getCustomerAction(data));
@@ -70,7 +71,7 @@ export const getCustomerThunk = (customerId) => async (dispatch) => {
 
 export const getAllCustomersThunk = () => async (dispatch) => {
   try {
-    const res = await fetch('/api/customers');
+    const res = await fetch('/api/customers/');
     if (res.ok) {
       const data = await res.json();
       dispatch(getAllCustomersAction(data));
@@ -111,30 +112,20 @@ export const addCustomerThunk = (customerData) => async (dispatch) => {
   }
 };
 
-const initialState = {
-  customers: {},
-  currentCustomer: {},
-};
+const initialState = {};
 
 const customerReducer = (state = initialState, action) => {
+  let newState = {};
   switch (action.type) {
     case GET_CUSTOMER:
       return {
-        ...state,
-        customers: {
-          ...state.customers,
+          ...state,
           [action.customer.id]: action.customer
-        },
-        currentCustomer: action.customer
+        // currentCustomer: action.customer
       };    
     case GET_ALL_CUSTOMERS:
-      return {
-        ...state,
-        customers: {
-          ...state.customers,
-          ...action.customers
-        }
-      };
+      newState = { ...state, ...action.customers }
+      return newState;
     case ADD_CUSTOMER:
       return {
         ...state,

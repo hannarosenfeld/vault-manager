@@ -1,4 +1,4 @@
-import React, { useImperativeHandle, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addWarehouseThunk } from '../../store/warehouse';
 
@@ -7,20 +7,20 @@ const AddWarehouseForm = ({ onAddWarehouseSubmit }) => {
   const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [numRows, setNumRows] = useState('');
-  const [numFieldsPerRow, setNumFieldsPerRow] = useState('');
+  const [numCols, setNumCols] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const warehouseData = {
       name,
       numRows: parseInt(numRows),
-      numFieldsPerRow: parseInt(numFieldsPerRow)
+      numCols: parseInt(numCols)
     };
 
     await dispatch(addWarehouseThunk(warehouseData));
     setName('');
     setNumRows('');
-    setNumFieldsPerRow('');
+    setNumCols('');
     onAddWarehouseSubmit();
   };
 
@@ -40,8 +40,8 @@ const AddWarehouseForm = ({ onAddWarehouseSubmit }) => {
           <label>Number of Rows:</label>
           <input
             type="number"
-            value={numRows}
-            onChange={(e) => setNumRows(e.target.value)}
+            value={numCols}
+            onChange={(e) => setNumCols(e.target.value)}
             required
           />
         </div>
@@ -49,8 +49,8 @@ const AddWarehouseForm = ({ onAddWarehouseSubmit }) => {
           <label>Number of Fields per Row:</label>
           <input
             type="number"
-            value={numFieldsPerRow}
-            onChange={(e) => setNumFieldsPerRow(e.target.value)}
+            value={numRows}
+            onChange={(e) => setNumRows(e.target.value)}
             required
           />
         </div>

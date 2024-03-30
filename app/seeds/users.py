@@ -5,15 +5,18 @@ from sqlalchemy.sql import text
 # Adds a demo user, you can add other users here if you want
 def seed_users():
     admin = User(
-        username='admin', email='operations@nagleegroup.com', password='Naglee1525'
+        username='admin', email='operations@nagleegroup.com', password='Naglee1525', company_id=1
     )
     hanna = User(
-        username='hanna', email='hanna@rosenfeld.com', password='1234'
+        username='hanna', email='hanna@rosenfeld.com', password='1234', company_id=1
     )
 
     db.session.add(admin)
     db.session.add(hanna)
     db.session.commit()
+
+    return [admin, hanna]
+
 
 
 # Uses a raw SQL query to TRUNCATE or DELETE the users table. SQLAlchemy doesn't

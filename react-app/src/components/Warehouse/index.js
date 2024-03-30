@@ -1,87 +1,66 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from '@mui/material/Modal';
 import CircularProgress from '@mui/material/CircularProgress';
-import AddVaultModal from "./AddVaultModal/AddVaultModal.js"
-import RenderTMB from "../RenderTMB";
-import ConfirmStaging from "./ConfirmStaging";
+import { editFieldThunk, getAllFieldsThunk, editSingleFieldThunk } from "../../store/field.js";
+import { useParams } from "react-router-dom";  
+import { getAllWarehousesThunk } from "../../store/warehouse.js";
+import { getAllCustomersThunk } from "../../store/customer.js";
+import RenderTMB from "./RenderTMB";
+import AddVaultModal from "./RenderTMB/AddVaultModal/AddVaultModal.js"
+import ConfirmStaging from "./RenderTMB/ConfirmStaging/index.js";
 import "./Warehouse.css"
-import { getFieldThunk, toggleCouchBoxFieldThunk } from "../../store/field.js";
-import { useHistory, useParams } from "react-router-dom";  
-import { getWarehouseInfoThunk } from "../../store/warehouse.js";
+
+
 
 export default function Warehouse() {
     const dispatch = useDispatch();
     const { warehouseId } = useParams(); 
-    const rowsArr = useSelector(state => state.warehouse.currentWarehouse.rows);
-    const warehouseFields = useSelector(state => state.warehouse.currentWarehouse.fields);
-    const warehouse = useSelector(state => state.warehouse.currentWarehouse)
+    const warehouse = useSelector(state => state.warehouse[warehouseId]);
+    let allFields = useSelector(state => state.field);
+    let fields;
+    const [sortedFields, setSortedFields] = useState(null);
+    const [loadedSortedFields, setLoadedSortedFields] = useState(false);
     const searchResult = useSelector(state => state.search.fields);
-    const [selectedField, setSelectedField] = useState(null);
-    let [top, setTop] = useState(null);
-    let [middle, setMiddle] = useState(null);
-    let [bottom, setBottom] = useState(null);
     const [position, setPosition] = useState(null);
+    const [selectedFieldId, setSelectedFieldId] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] = useState(false);
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
     const [toggleSelected, setToggleSelected] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [warehouseKey, setWarehouseKey] = useState(1);
+
 
     useEffect(() => {
-        setSelectedField(null);
-    }, [warehouse.id])
-
-    useEffect(() => {
-        const warehouseInfo = dispatch(getWarehouseInfoThunk(warehouseId))
+        setSelectedFieldId(null)
+        const warehouseInfo = dispatch(getAllWarehousesThunk());
+        dispatch(getAllCustomersThunk())
+        const fields = dispatch(getAllFieldsThunk(warehouseId))
 
         Promise.all([warehouseInfo])
             .then(() => setLoading(false))
             .catch(() => setLoading(false));
     }, [dispatch, warehouseId])
 
+
     useEffect(() => {
-        if (selectedVaultToStage) {
-            openConfirmStagingModal();
-        }
-    }, [selectedVaultToStage]);
+        if (!loading && fields) {
+        try {
+            setSortedFields(fields.sort((a,b) => a.name-b.name));
+          } catch (error) {
+            console.log(error);
+          } finally {
+            setLoadedSortedFields(true);
+          }
+    }
+    }, [fields, allFields])
 
-    const handleToggleChange = () => {
-        const newToggleSelected = !toggleSelected;
-
-        // If it's switching back to "Vault," update the selectedField type
-        const updatedSelectedField = {
-            ...selectedField,
-            type: newToggleSelected ? "couchbox" : "vault",
-        };
-
-        // Update the local state
-        setToggleSelected(newToggleSelected);
-
-        // Dispatch actions to update Redux store
-        dispatch(toggleCouchBoxFieldThunk(selectedField.id));
-        dispatch(getFieldThunk(selectedField.id));
-
-        window.location.reload(true);
-        window.location.reload(false);
-    };
-
-    const updateSelectedFieldVaults = async (newVault) => {
-        if (selectedField && newVault?.field_id === selectedField.id) {
-            const updatedTop = newVault.position === "T" ? newVault : top;
-            const updatedMiddle = newVault.position === "M" ? newVault : middle;
-            const updatedBottom = newVault.position === "B" ? newVault : bottom;
-        }
-    };
-
-    const handleFieldClick = async (field, row, index) => {
+    const handleFieldClick = async (id) => {
         await setToggleSelected(false);
-        await setSelectedField(field);
+        await setSelectedFieldId(id);
     };
 
-    // Function to open the modal and log the statement
-    const handleOpenModal = async (position) => {
+    const handleOpenAddVaultModal = async (position) => {
         await setPosition(position);
         setIsModalOpen(true);
     };
@@ -90,21 +69,8 @@ export default function Warehouse() {
         setIsModalOpen(false);
     };
 
-    const handleStageClick = async (vault, position) => {
-        if (
-            (position === "T") ||
-            (position === "M" && !top) ||
-            (position === "B" && !middle)
-        ) {
-            console.log("Staging Allowed!");
-            await setSelectedVaultToStage(vault);
-            await setPosition(position);
-        } else {
-            console.log("Staging not allowed for this vault position.");
-        }
-    };
-
-    const openConfirmStagingModal = () => {
+    const handleStageClick = async (vault) => {
+        setSelectedVaultToStage(vault);
         setIsConfirmStagingModalOpen(true);
     };
 
@@ -113,28 +79,98 @@ export default function Warehouse() {
         setIsConfirmStagingModalOpen(false);
     }
 
-    const updateVaultPosition = (position) => {
-        if (position === "T") setTop(null);
-        if (position === "M") setMiddle(null);
-        if (position === "B") setBottom(null);
-    };
+    const toggleFieldType = (type, topField, bottomField) => {
+        if (!bottomField) return alert("Can't switch to a couchbox on the last row")
+        if (topField.vaults.length || bottomField.vaults.length) return alert("Please empty field before switching field type!")
+        
+        const formData = {"name": topField.name, "field_id_1": topField.id, "field_id_2": bottomField.id}
+        if (type === "couchbox-T") {
+            formData["type"] = "vault"
+            dispatch(editFieldThunk(formData))
+        } else if (type === "vault") {
+            formData["type"] = "couchbox"
+            const topName = topField.name.match(/^([a-zA-Z]+)\d/);
+            const bottomName = bottomField.name.match(/^([a-zA-Z]+)\d/);
+            if (bottomName || topName[1] === bottomName[1]) {
+                dispatch(editFieldThunk(formData))
+            } else return alert("Can't switch to a couchbox on the last row")
+        }
+    }
+
+    const toggleFieldFull = (fieldId) => {
+        dispatch(editSingleFieldThunk(fieldId, {}))
+    }
+
+    
+    function fieldGenerator() {
+        if (!loading && loadedSortedFields) {
+            return (
+                <div 
+                    style={{
+                        display: "grid",
+                        gridTemplateColumns: `repeat(${warehouse.columns}, 1fr)`,
+                        gridTemplateRows: `repeat(${warehouse.rows}, 1fr)`,
+                        gridAutoFlow: 'column',
+                        gridGap: "1%",
+                        width: "100%",
+                        height: "75vh",
+                        marginBottom: "1rem"
+                    }}
+                >   
+                    {sortedFields?.map(field => (
+                    <div
+                        className="field"
+                        key={field.id}
+                        style={{
+                            backgroundColor: `${
+                                field.vaults?.length === 3 && field.type === "vault" || field.full ? "var(--red)" :
+                                field.vaults?.length === 4 && field.type === "couchbox-T" || field.full ? "var(--red)" :
+                                field.vaults?.length === 3 && field.type === "couchbox-T" || field.full ? "var(--yellow)" :
+                                field.vaults?.length === 2 ? "var(--yellow)" :
+                                field.vaults?.length === 1 ? "var(--green)" :
+                                "var(--lightgrey)"
+                            }`,
+                            border: `${
+                                selectedFieldId === field.id ? "3px solid var(--blue)" : 
+                                searchResult && searchResult?.includes(field.id) ? "3px solid var(--blue)" :
+                                "none"
+                            }`,
+                            height: `${field.type === "couchbox-T" ? "209%" : '100%'}`,
+                            marginBottom: `${field.type === "couchbox-T" ? "-2.6em" : '0'}`,
+                            width: `${field.type === "couchbox-B" ? "0px" : ''}`,
+                            zIndex: `${field.type === "couchbox-B" ? "100" : 'none'}`,
+                        }}
+                        onClick={() => handleFieldClick(field.id)}
+                    >{field.type === "couchbox-B" ? "" : <div className="field-number">{field.name}</div>}</div>
+                    ))}
+                </div>
+            )
+        }
+    }
+
+    if (!warehouse) return null
+
+    if (warehouse) {
+        fields = warehouse.fields.map(id => allFields[id])
+    }
 
     return (
-        <div className="warehouse-wrapper wrapper">
-            {loading && ( // Show loading animation if loading state is true
+        <div className="warehouse-wrapper">
+            {loading || !loadedSortedFields && ( 
                 <div className="loading-animation-container"> 
                 <CircularProgress  size={75} />
             </div>
             )}
-            {!loading && ( // Render warehouse content when loading is complete
+            {!loading && loadedSortedFields && ( 
                 <>
                     <div className="field-info">
-                        {selectedField ? (
+                        {selectedFieldId ? (
                             <RenderTMB
-                                selectedField={selectedField}
+                                selectedFieldId={selectedFieldId}
                                 handleStageClick={handleStageClick}
-                                handleOpenModal={handleOpenModal}
-                                handleToggleChange={handleToggleChange}
+                                handleOpenAddVaultModal={handleOpenAddVaultModal}
+                                toggleFieldType={toggleFieldType}
+                                toggleFieldFull={toggleFieldFull}
                                 toggleSelected={toggleSelected}
                                 warehouse={warehouse}
                             />
@@ -145,90 +181,23 @@ export default function Warehouse() {
                         )}
                     </div>
                     <div className="warehouse">
-                        {rowsArr?.map((row) => (
-                            <div className="row" key={row.id}>
-                                {!searchResult && (
-                                    <div className="fields">
-                                        {row.fields.map((field, index) => {
-                                            return (
-                                                <div
-                                                    className="field"
-                                                    key={field.id}
-                                                    style={{
-                                                        backgroundColor: `${
-                                                            field?.vaults?.length === 3 || field.full ? "var(--red)" :
-                                                                field?.vaults?.length === 2 ? "var(--yellow)" :
-                                                                    field?.vaults?.length === 1 ? "var(--green)" :
-                                                                        "var(--lightgrey)"
-                                                        }`,
-                                                        border: `${selectedField?.id === field?.id ? "3px solid var(--blue)" : "none"}`,
-                                                        marginBottom: `${field.type === "couchbox" ? "-2.2em" : ''}`,
-                                                        width: `${field.bottom_couch_box ? "0px" : ''}`,
-                                                        zIndex: `${field.bottom_couch_box ? "100" : 'none'}`,
-                                                    }}
-                                                    onClick={() => handleFieldClick(field, row, index)}
-                                                >
-                                                    {field.bottom_couch_box ? "" : field.type === "vault" ? <div className="field-number">{row.name}{index + 1}</div> : field.type === "couchbox" ? <div className="field-number">{row.name}{index + 1} / {row.name}{index + 2}</div> : ''}
-                                                </div>
-                                            );
-                                        })}
-
-                                    </div>
-                                )}
-                                {searchResult && (
-                                    <div className="fields">
-                                        {row.fields.map((field, index) => (
-                                            <div
-                                                className="field"
-                                                key={field.id}
-                                                style={{
-                                                    backgroundColor: `${
-                                                        field.vaults.length === 3 || field.full && searchResult.includes(field.id) ? "var(--red)" :
-                                                            field.vaults.length === 3 || field.full && !searchResult.includes(field.id) ? "rgba(234, 55, 61, 0.8)" :
-                                                                field.vaults.length === 2 && searchResult.includes(field.id) ? "var(--yellow)" :
-                                                                    field.vaults.length === 2 && !searchResult.includes(field.id) ? "rgba(255, 209, 102, 0.8)" :
-                                                                        field.vaults.length === 1 && searchResult.includes(field.id) ? "var(--green)" :
-                                                                            field.vaults.length === 1 && !searchResult.includes(field.id) ? "rgba(75, 181, 67, 0.8)" :
-                                                                                "rgba(203,203,203,0.8)"
-                                                    }`,
-                                                    filter: !searchResult.includes(field.id) ? "brightness(25%)" : "brightness(120%)",
-                                                    border: `${selectedField?.id === field?.id ? "3px solid var(--blue)" : ""}`,
-                                                    marginBottom: `${field.type === "couchbox" ? "-2.2em" : ''}`,
-                                                    width: `${field.bottom_couch_box ? "0px" : ''}`,
-                                                    zIndex: `${field.bottom_couch_box ? "100" : 'none'}`
-                                                }}
-                                                onClick={() => handleFieldClick(field, row, index)}
-                                            >
-                                                {field.bottom_couch_box ? "" : field.type === "vault" ? <div className="field-number">{row.name}{index + 1}</div> : field.type === "couchbox" ? <div className="field-number">{row.name}{index + 1} / {row.name}{index + 2}</div> : ''}
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                        ))}
+                        {fields ? fieldGenerator(fields): null}
                     </div>
                     <Modal open={isModalOpen}>
-                        <>
-                            <AddVaultModal
-                                onClose={handleCloseModal}
-                                selectedField={selectedField}
-                                tmb={position}
-                                updateSelectedFieldVaults={updateSelectedFieldVaults} // Pass the function here
-                                warehouseId={warehouseId}
-                            />
-                        </>
+                        <AddVaultModal
+                            onClose={handleCloseModal}
+                            selectedFieldId={selectedFieldId}
+                            position={position}
+                            warehouseId={warehouseId}
+                        />
                     </Modal>
                     <Modal open={isConfirmStagingModalOpen} onClose={setIsConfirmStagingModalOpen}>
-                        <>
-                            <ConfirmStaging
-                                vault={selectedVaultToStage}
-                                vaultCustomer={selectedVaultToStage?.customer.name}
-                                vaultNumber={selectedVaultToStage?.vault_id}
-                                vaultId={selectedVaultToStage?.id}
-                                onClose={closeConfirmStagingModal}
-                                updateVaultPosition={updateVaultPosition}
-                            />
-                        </>
+                        <ConfirmStaging
+                            vault={selectedVaultToStage}
+                            onClose={closeConfirmStagingModal}
+                            warehouseId={warehouseId}
+                            // fieldId={selectedFieldId}
+                        />
                     </Modal>
                 </>
             )}

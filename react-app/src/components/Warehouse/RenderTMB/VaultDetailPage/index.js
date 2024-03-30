@@ -1,44 +1,48 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getVaultThunk } from '../../../store/vault';
-import { getCustomerThunk } from '../../../store/customer';
-import { getAllVaultAttachmentsThunk } from '../../../store/attachment';
+import { getAllVaultAttachmentsThunk } from '../../../../store/attachment';
+import { getAllFieldVaultsThunk } from '../../../../store/vault';
+import "./VaultDetailPage.css";
+
 
 const VaultDetailPage = () => {
     const dispatch = useDispatch();
     const params = useParams();
     const vaultId = parseInt(params.vaultId);
-    const vaultObj = useSelector((state) => state.vault.currentVault);
-    const attachmentsObj = useSelector((state) => state.attachment.vaultAttachments);
-    const attachments = Object.values(attachmentsObj);
+    const fieldId = parseInt(params.fieldId);
+    const vaultObj = useSelector((state) => state.vault[vaultId]);
+    const attachments = vaultObj?.attachments;
+    const [loading, setLoading] = useState(true);
+
     const [selectedPDF, setSelectedPDF] = useState(null);
-
-
-    useEffect(() => {
-        dispatch(getVaultThunk(vaultId));
-        dispatch(getAllVaultAttachmentsThunk(vaultId));
-    }, [vaultId]);
 
     const handleAttachmentClick = (fileUrl) => {
         setSelectedPDF(fileUrl);
     };
 
+    useEffect(() => {
+        if (vaultObj) setLoading(false);
+        else dispatch(getAllFieldVaultsThunk(fieldId));
+    }, [vaultObj])
+
+
     return (
         <>
-            {vaultObj && vaultObj.customer && (
+
+            {vaultObj && vaultObj.customer_name && !loading ? (
                 <div className="container mt-3 wrapper">
                     <div className="card" style={{ marginBottom: '20px' }}>
                         <div className="card-body">
                             <h2 className="card-title">Vault Detail View</h2>
                             <div>
-                                <strong>Vault</strong> #{vaultObj.vault_id}
+                                <strong>Vault</strong> #{vaultObj.name}
                             </div>
                             <div>
-                                <strong>Order</strong> #{vaultObj.order_number}
+                                <strong>Order</strong> #{vaultObj.order_name}
                             </div>
                             <div>
-                                <strong>Customer</strong> {vaultObj.customer.name}
+                                <strong>Customer</strong> {vaultObj.customer_name}
                             </div>
                             
                             {/* FUTURE FEATURE: show more information about customer vaults 
@@ -53,7 +57,7 @@ const VaultDetailPage = () => {
                             <strong className="mb-3">Attachments</strong>
                             {attachments.map((attachment) => (
                                 <div
-                                    className="d-flex"
+                                    className="d-flex attachment"
                                     key={attachment.id}
                                     onClick={() => handleAttachmentClick(attachment.file_url)}
                                 >
@@ -71,7 +75,12 @@ const VaultDetailPage = () => {
                         </div>
                     </div>
                 </div>
-            )}
+            ) :  <div style={{paddingTop: "8em", justifyContent: "center", display: "flex", alignItems: "center", alignContent: "center"}}>
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            }
         </>
     );
 };

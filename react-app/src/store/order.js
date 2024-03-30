@@ -26,7 +26,7 @@ const getAllOrdersAction = (orders) => ({
   
 export const getAllOrdersThunk = () => async (dispatch) => {
     try {
-        const res = await fetch('/api/orders');
+        const res = await fetch('/api/orders/');
         if (res.ok) {
         const data = await res.json();
         dispatch(getAllOrdersAction(data));
@@ -109,38 +109,23 @@ export const addOrderThunk = (orderData) => async (dispatch) => {
   }
 };
 
-const initialState = {
-  orders: {},
-  currentOrder: {},
-};
+const initialState = {};
 
 const orderReducer = (state = initialState, action) => {
+  let newState = {};
   switch (action.type) {
     case GET_ALL_ORDERS:
-      return {
-        ...state,
-        orders: {
-          ...state.orders,
-          ...action.orders,
-        },
-      };    
+      newState = { ...state, ...action.orders }
+      return newState    
     case GET_ORDER:
-      return {
-        ...state,
-        orders: {
-          ...state.orders,
-          [action.order.id]: action.order,
-        },
-        currentOrder: action.order,
-      };
+      newState = { ...state }
+      newState[action.order.id] = action.order;
+      return newState
     case ADD_ORDER:
-      return {
-        ...state,
-        orders: {
-          ...state.orders,
-          [action.order.id]: action.order,
-        },
-      };
+      newState = { ...state }
+      newState[action.order.id] = action.order;
+      return newState
+
     // case UPDATE_ORDER_NUMBER:
     //   const updatedOrder = { ...state.orders[action.orderId], orderNumber: action.newOrderNumber };
     //   return {

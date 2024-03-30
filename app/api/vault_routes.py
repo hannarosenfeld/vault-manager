@@ -24,6 +24,17 @@ def validation_errors_to_error_messages(validation_errors):
     return errorMessages
 
 
+@vault_routes.route('/<int:field_id>')
+def all_field_vaults(field_id):
+    """
+    Query for all vaults and returns them in a list of vault dictionaries
+    """
+    field = Field.query.get(field_id)
+    vault_ids = field.to_dict()['vaults']
+    vaults = [Vault.query.get(id) for id in vault_ids]
+    return { vault.id : vault.to_dict() for vault in vaults }
+
+
 @vault_routes.route('/')
 def all_vaults():
     """
@@ -32,14 +43,21 @@ def all_vaults():
     vaults = Vault.query.all()
     return { vault.id : vault.to_dict() for vault in vaults }
 
+@vault_routes.route('/staged')
+def all_vaults_staged():
+    """
+    Query for all vaults and returns them in a list of vault dictionaries
+    """
+    vaults = Vault.query.filter_by(field_id=None)
+    return { vault.id : vault.to_dict() for vault in vaults }
 
-@vault_routes.route('/<int:id>')
-def single_vault(id):
-    """
-    Query for a vault by id and returns that vault in a dictionary
-    """
-    vault = Vault.query.get(id)
-    return vault.to_dict()
+# @vault_routes.route('/<int:id>')
+# def single_vault(id):
+#     """
+#     Query for a vault by id and returns that vault in a dictionary
+#     """
+#     vault = Vault.query.get(id)
+#     return vault.to_dict()
 
 
 @vault_routes.route('/', methods=['POST'])
@@ -51,32 +69,32 @@ def add_vault():
     try:
         if form.validate_on_submit():
             customer_name = form.data['customer_name']
-            customer = Customer.query.filter_by(name=customer_name).first()
+            order_name = form.data['order_number']
+
+            existent_customer = Customer.query.filter_by(name=customer_name).first()
+            existent_order = Order.query.filter_by(name=order_name).first()
 
             new_vault = Vault(
-                customer_name=form.data['customer_name'],
-                customer=customer,
-                customer_id=customer.id if customer else None,
+                name=form.data['vault_id'],
+                customer_id = existent_customer.id if existent_customer else None,
                 field_id=form.data['field_id'],
-                # field_name=form.data['field_name'],
+                order_id=existent_order.id if existent_order else None,
                 position=form.data['position'],
-                vault_id=form.data['vault_id'],
-                order_number=form.data['order_number'],
                 type=form.data['type'],
-                warehouse_id=form.data['warehouse_id'],
             )
 
-            # check if the order_number exists
-            existent_order = Order.query.filter_by(order_number=new_vault.order_number).first()
+            db.session.add(new_vault)
+            db.session.commit()
 
-            if existent_order:
-                existent_order.order_vaults.append(new_vault)
+            if not existent_customer:
+                new_customer = Customer(name=customer_name)
+                db.session.add(new_customer)
+                new_customer.vaults.append()
                 db.session.commit()
 
-            # if the order does not yet exist, create it and then add the new vault to its list of vaults
             if not existent_order:
-                new_order = Order(order_number=new_vault.order_number)  # Create a new order
-                new_order.order_vaults.append(new_vault)  # Add the created vault to the order
+                new_order = Order(name=order_name)
+                new_order.order_vaults.append(new_vault)
                 db.session.add(new_order)
                 db.session.commit()
 
@@ -85,11 +103,6 @@ def add_vault():
             # TODO check conditionally if production or local, if local field.vaults.count() == 1
             if field.type == "couchbox" and field.vaults.count() == 3:
                 field.full = True
-
-            elif field.vaults.count() == 2:
-                for vault in field.vaults:
-                    if vault.type == "T" and new_vault.type == "T":
-                        field.full = True
 
             # Handle file upload
             attachment = form.data['attachment']
@@ -117,7 +130,6 @@ def add_vault():
                 s3.upload_fileobj(attachment, s3_bucket_name, s3_key, ExtraArgs={'ContentType':'application/pdf'})
 
 
-            db.session.add(new_vault)
             db.session.commit()
 
             dict_new_vault = new_vault.to_dict()
@@ -149,8 +161,18 @@ def manage_vault(id):
         form['csrf_token'].data = request.cookies['csrf_token']
 
         if form.validate_on_submit():
-            vault.customer_name = form.data['customer_name']
-            vault.vault_id = form.data['vault_id']
+            if form.data['staging'] : 
+                field_id = vault.field_id
+                vault.field_id = None
+                vault.position = None
+
+                db.session.commit()
+                return { 'vault': vault.to_dict(), 'field_id': field_id }
+
+            # customer = Customer.query.get(vault.customer_id)
+            # customer.name = 
+            # vault.customer_name = form.data['customer_name']
+            vault.name = form.data['name']
             vault.order_number = form.data['order_number']
 
             # Handle file uploads
@@ -189,3 +211,19 @@ def manage_vault(id):
         field.full = False
         db.session.commit()
         return {'message': 'Vault deleted successfully'}
+
+
+@vault_routes.route('/moveVault/<int:selected_field_id>/<int:vault_id>/<string:position>', methods=['PUT'])
+# TODO: in the future, add a form for moving vault and take in vault info through form body, not through the route
+@login_required
+def move_vault_to_warehouse(selected_field_id, vault_id, position):
+    vault = Vault.query.get(vault_id)
+    if (vault):
+        vault.field_id = selected_field_id
+        vault.position = position
+        db.session.commit()
+        return vault.to_dict()
+
+    else:
+        return {"message" : "vault not found"}
+

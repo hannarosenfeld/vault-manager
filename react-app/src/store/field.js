@@ -1,21 +1,16 @@
-import { GET_WAREHOUSE_INFO } from "./warehouse";
-const GET_FIELD = "field/GET_FIELD";
+import { STAGE_VAULT } from "./vault";
 const GET_ALL_FIELDS = "field/GET_ALL_FIELDS";
-const TOGGLE_COUCHBOX_FIELD = "field/TOGGLE_COUCHBOX_FIELD"
-const GET_FIELD_VAULTS = "vault/GET_FIELD_VAULTS";
+const EDIT_FIELD = "field/EDIT_FIELD";
+const EDIT_SINGLE_FIELD = "field/EDIT_SINGLE_FIELD";
 
-const getFieldVaultsAction = (vaults) => ({
-  type: GET_FIELD_VAULTS,
-  vaults
+
+const editFieldAction = (fields) => ({
+  type: EDIT_FIELD,
+  fields
 })
 
-const getFieldAction = (field) => ({
-  type: GET_FIELD,
-  field
-});
-
-const toggleCouchBoxFieldAction = (field) => ({
-  type: TOGGLE_COUCHBOX_FIELD,
+const editSingleFieldAction = (field) => ({
+  type: EDIT_SINGLE_FIELD,
   field
 })
 
@@ -24,66 +19,55 @@ const getAllFieldsAction = (fields) => ({
   fields
 });
 
-export const getFieldVaultsThunk = (fieldId) => async (dispatch) => {
+
+export const editFieldThunk = (fieldData) => async (dispatch) => {
   try {
-    const res = await fetch(`/api/fields/${fieldId}/vaults`);
-
-    if (res.ok) {
-      const data = await res.json();
-      dispatch(getFieldVaultsAction(data));
-    } else {
-      const errorMessage = await res.text(); // Get the error message
-      console.error(`Error fetching field vaults: ${errorMessage}`);
-      // Handle the error, e.g., show a notification or dispatch another action
-    }
-  } catch (error) {
-    console.error("Error fetching field vaults:", error);
-    // Handle other types of errors if needed
-  }
-};
-
-
-export const toggleCouchBoxFieldThunk = (fieldId) => async (dispatch) => {
-  try {
-    const res = await fetch(`/api/fields/${fieldId}`, {
+    const res = await fetch(`/api/fields/${fieldData.field_id_1}/`, {
       method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(fieldData)
     });
     if (res.ok) {
       const data = await res.json();
-      dispatch(toggleCouchBoxFieldAction(data));
+      dispatch(editFieldAction(data));
       return data;
     } else {
       const err = await res.json();
       return err;
     }
   } catch (error) {
-    console.error("Error toggling field:", error);
+    console.error("Error editting field:", error);
     return error;
   }
 };
-
-// Thunk action creator for getting a single field
-export const getFieldThunk = (fieldId) => async (dispatch) => {
+export const editSingleFieldThunk = (fieldId, data) => async (dispatch) => {
   try {
-    const res = await fetch(`/api/fields/${fieldId}`);
+    const res = await fetch(`/api/fields/single/${fieldId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
     if (res.ok) {
       const data = await res.json();
-      dispatch(getFieldAction(data));
+      dispatch(editSingleFieldAction(data));
       return data;
     } else {
       const err = await res.json();
       return err;
     }
   } catch (error) {
-    console.error("Error fetching field:", error);
+    console.error("Error editting field:", error);
     return error;
   }
 };
 
-// Thunk action creator for getting all fields
-export const getAllFieldsThunk = () => async (dispatch) => {
+export const getAllFieldsThunk = (warehouseId) => async (dispatch) => {
   try {
-    const res = await fetch('/api/fields/');
+    const res = await fetch(`/api/fields/${warehouseId}`);
     if (res.ok) {
       const data = await res.json();
       dispatch(getAllFieldsAction(data));
@@ -99,56 +83,30 @@ export const getAllFieldsThunk = () => async (dispatch) => {
   }
 };
 
-const initialState = {
-  fields: {},
-  currentField: {},
-  fieldVaults: {}
-};
+const initialState = {};
 
 const fieldReducer = (state = initialState, action) => {
+  let newState = { ...state };
   switch (action.type) {
-    case TOGGLE_COUCHBOX_FIELD:
-      return {
-        ...state,
-        fields: {
-          ...state.fields,
-          [action.field.id]: action.field
-        }
-      }
-    case GET_FIELD:
-      return {
-        ...state,
-        fields: {
-          ...state.fields,
-          [action.field.id]: action.field
-        },
-        currentField: action.field
-      };
+    case EDIT_FIELD:
+      const [topField, bottomField] = action.fields
+      newState[topField.id] = topField
+      newState[bottomField.id] = bottomField
+      return newState
+    case EDIT_SINGLE_FIELD:
+      newState[action.field.id] = action.field
+      return newState
     case GET_ALL_FIELDS:
-      return {
-        ...state,
-        fields: action.fields
-      };
-      case GET_WAREHOUSE_INFO:
-        return {
-          ...state,
-          fields: {
-            ...state.fields,
-            ...action.payload.fields
-          },
-        };
-      
-      case GET_FIELD_VAULTS:
-        const updatedFieldVaults = action.vaults.reduce((accumulator, vault) => {
-          accumulator[vault.position] = vault;
-          return accumulator;
-        }, {});
-      
-        return {
-          ...state,
-          fieldVaults: updatedFieldVaults
-        };
-           
+      newState = { ...newState, ...action.fields }
+      return newState
+    case STAGE_VAULT:
+        const fieldId = action.stagingInfo.field_id
+        const field = newState[fieldId]
+        let fieldVaults = field.vaults
+        let index = fieldVaults.indexOf(action.stagingInfo.vault.id)
+        field.vaults = [...fieldVaults.slice(0, index), ...fieldVaults.slice(index+1)]
+        
+        return newState
     default:
       return state;
   }

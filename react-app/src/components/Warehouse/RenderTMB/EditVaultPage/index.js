@@ -2,82 +2,69 @@ import React, { useState, useEffect } from 'react';
 import './EditVaultPage.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-import { editVaultThunk, getVaultThunk } from '../../../store/vault';
-import { updateCustomerNameThunk } from '../../../store/customer';
-import { deleteVaultThunk } from '../../../store/vault';
+import { deleteVaultThunk, editVaultThunk, getAllFieldVaultsThunk } from '../../../../store/vault';
+import { updateCustomerNameThunk } from '../../../../store/customer';
 import Button from '@mui/material/Button';
 import { useParams } from 'react-router-dom';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
-import { getAllVaultAttachmentsThunk, deleteAttachmentThunk } from '../../../store/attachment';
+import { getAllVaultAttachmentsThunk, deleteAttachmentThunk } from '../../../../store/attachment';
 import DeleteAttachmentConfirmationModal from './DeleteAttachmentConfirmationModal';
 
 
 const EditVaultPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { vaultId } = useParams();
-  const vaultObj = useSelector((state) => state.vault.currentVault);
-  const attachmentsObj = useSelector((state) => state.attachment.vaultAttachments);
-  const attachments = Object.values(attachmentsObj);
+  const { warehouseId, fieldId, vaultId } = useParams();
+  const vault = useSelector((state) => state.vault[vaultId]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [newAttachments, setNewAttachments] = useState([]);
   const [selectedAttachment, setSelectedAttachment] = useState(null);
   const [isDeleteAttachmentModalOpen, setIsDeleteAttachmentModalOpen] = useState(false);
   const [reload, setReload] = useState(false)
+  const [customerName, setCustomerName] = useState()
+  const [vaultName, setVaultName] = useState()
+  const [orderNumber, setOrderNumber] = useState()
 
-  const [formData, setFormData] = useState({
-    customer_name: null,
-    vault_id: null,
-    order_number: null,
-    new_attachments: null,
-    attachment_to_delete: null
-  });
 
   useEffect(() => {
-    if (vaultObj && vaultObj.customer) {
-      setFormData({
-        customer_name: vaultObj.customer.name,
-        vault_id: vaultObj.vault_id,
-        order_number: vaultObj.order_number,
-        new_attachments : newAttachments,
-        attachment_to_delete: selectedAttachment,
-      })
-      setIsLoading(false)
-    } else setIsLoading(true)
-  }, [vaultObj, newAttachments, selectedAttachment])
-
-  useEffect(() => {
+    if (!vault) {
     const fetchData = async () => {
       try {
-        await dispatch(getVaultThunk(vaultId));
         await dispatch(getAllVaultAttachmentsThunk(vaultId));
-        setIsLoading(false);
+        await dispatch(getAllFieldVaultsThunk(fieldId))
       } catch (error) {
         console.error('Error fetching data:', error);
-        setIsLoading(false);
       }
     };
 
     fetchData();
+    }
   }, [dispatch, vaultId, reload === true]);
+
+  useEffect(() => {
+    if (vault) {
+      setCustomerName(vault.customer_name)
+      setVaultName(vault.name)
+      setOrderNumber(vault.order_name)
+      setIsLoading(false);
+    } else setIsLoading(true);
+  }, [dispatch, vault])
 
   const handleSave = async (e) => {
     e.preventDefault();
-
     const vaultData = new FormData
-      vaultData.append("customer_name", formData.customer_name)
-      vaultData.append("vault_id", formData.vault_id)
-      vaultData.append("order_number", formData.order_number)
+    vaultData.append("customer_name", customerName)
+    vaultData.append("name", vaultName)
+    vaultData.append("order_number", orderNumber)
 
-      formData.new_attachments.forEach((attachment, index) => {
-        vaultData.append(`attachment${index}`, attachment)
-      })
-      
+    newAttachments.forEach((attachment, index) => {
+      vaultData.append(`attachment${index}`, attachment)
+    })
     try {
-      await dispatch(updateCustomerNameThunk(vaultObj.customer.id, formData.customer_name));
-      await dispatch(editVaultThunk(vaultObj.id, vaultData));
-      history.push('/');
+      await dispatch(updateCustomerNameThunk(vault.customer_id, customerName));
+      await dispatch(editVaultThunk(vault.id, vaultData));
+      history.push(`/warehouse/${warehouseId}`);
     } catch (error) {
       console.error('Error saving vault:', error);
     }
@@ -88,9 +75,9 @@ const EditVaultPage = () => {
   };
 
   const confirmDelete = async () => {
-    await dispatch(deleteVaultThunk(vaultObj.id));
+    await dispatch(deleteVaultThunk(vault.id));
     await setIsDeleteModalOpen(false);
-    history.push('/');
+    history.push(`/warehouse/${warehouseId}`);
   };
 
   const closeDeleteModal = () => {
@@ -104,10 +91,10 @@ const EditVaultPage = () => {
 
   const confirmDeleteAttachment = async () => {
     const attachmentData = new FormData
-      attachmentData.append("attachment_id", formData.attachment_to_delete.id)
-      attachmentData.append("attachment_to_delete", formData.attachment_to_delete.unique_name)
+      attachmentData.append("attachment_id", selectedAttachment.id)
+      attachmentData.append("attachment_to_delete", selectedAttachment.unique_name)
 
-    await dispatch(deleteAttachmentThunk(vaultObj.id, attachmentData))
+    await dispatch(deleteAttachmentThunk(vault.id, attachmentData))
 
     setReload(true)
     setIsDeleteAttachmentModalOpen(false);
@@ -136,8 +123,8 @@ const EditVaultPage = () => {
                   type="text"
                   id="customer_name"
                   name="customer_name"
-                  value={formData.customer_name}
-                  onChange={(e) => setFormData({ ...formData, customer_name: e.target.value })}
+                  value={customerName}
+                  onChange={(e) => {setCustomerName(e.target.value.toUpperCase())}}
                   required
                   className="form-control"
                 />
@@ -148,8 +135,8 @@ const EditVaultPage = () => {
                   type="text"
                   id="vault_id"
                   name="vault_id"
-                  value={formData.vault_id}
-                  onChange={(e) => setFormData({ ...formData, vault_id: e.target.value })}
+                  value={vaultName}
+                  onChange={(e) => setVaultName(e.target.value)}
                   required
                   className="form-control"
                 />
@@ -160,8 +147,8 @@ const EditVaultPage = () => {
                   type="text"
                   id="order_number"
                   name="order_number"
-                  value={formData.order_number}
-                  onChange={(e) => setFormData({ ...formData, order_number: e.target.value })}
+                  value={orderNumber}
+                  onChange={(e) => setOrderNumber(e.target.value)}
                   required
                   className="form-control"
                 />
@@ -171,14 +158,14 @@ const EditVaultPage = () => {
                 <label>Attachment</label>
                 <input
                     type="file"
-                    onChange={(e) => setNewAttachments([...newAttachments,e.target.files[0]])}
+                    onChange={(e) => setNewAttachments([...newAttachments, e.target.files[0]])}
                 />
               </div>
 
               <div className="form-group">
                 <strong>Attachments</strong>
                 <div className="attachments" >
-                {attachments.map((attachment) => (
+                {vault && vault.attachments.map((attachment) => (
                   <div className='attachment' key={attachment.id} style={{display: "flex", alignItems: "center", gap: "3px"}}>
                     <span className="material-symbols-outlined" style={{ fontSize: '1.5em' }}>
                       file_present
@@ -224,7 +211,7 @@ const EditVaultPage = () => {
         isOpen={isDeleteModalOpen}
         onClose={closeDeleteModal}
         onDelete={confirmDelete}
-        vault={vaultObj}
+        vault={vault}
       />
     </div>
   );

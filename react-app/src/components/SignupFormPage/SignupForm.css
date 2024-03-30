@@ -27,7 +27,7 @@ form {
     flex-direction: column;
 }
 
-label {
+.signup-container label {
     margin: 10px 0;
     font-weight: bold;
     text-align: left;

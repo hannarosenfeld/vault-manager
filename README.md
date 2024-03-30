@@ -146,3 +146,9 @@ your site just below the name of the Web Service at the top of the page.
 
 [Render.com]: https://render.com/
 [Dashboard]: https://dashboard.render.com/
+[Store State Docs](STORESTATE.md)
+-
+[API Docs](API-Docs.md)
+-
+[User Stories](USERSTORIES.md)
+-

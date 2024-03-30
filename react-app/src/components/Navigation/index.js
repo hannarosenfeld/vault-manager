@@ -7,11 +7,11 @@ import SearchBar from './SearchBar';
 import './Navigation.css';
 import naglee from './naglee.png';
 
-function Navigation({ isLoaded }) {
+function Navigation({ isLoaded, company }) {
   const sessionUser = useSelector((state) => state.session.user);
 
   return (
-    <div className="wrapper" style={{ padding: '5px 10px' }}>
+    <div className="wrapper nav-container">
       <ul className="navigation">
         <li className="home-button">
           <NavLink exact to="/">
@@ -25,7 +25,7 @@ function Navigation({ isLoaded }) {
         )}
         {isLoaded && (
           <li>
-            <ProfileButton user={sessionUser} />
+            <ProfileButton user={sessionUser} company={company} />
           </li>
         )}
       </ul>

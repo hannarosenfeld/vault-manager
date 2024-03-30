@@ -1,4 +1,4 @@
-// constants
+import { GET_USER } from "./user";
 const SET_USER = "session/SET_USER";
 const REMOVE_USER = "session/REMOVE_USER";
 
@@ -97,6 +97,8 @@ const initialState = { user: null };
 
 export default function reducer(state = initialState, action) {
 	switch (action.type) {
+		case GET_USER:
+			return state;
 		case SET_USER:
 			return { user: action.payload };
 		case REMOVE_USER:

@@ -1,5 +1,6 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from flask_login import UserMixin
+from .field_orders import field_orders
 
 
 class Field(db.Model, UserMixin):
@@ -9,26 +10,25 @@ class Field(db.Model, UserMixin):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True, unique=True)
-    row_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('rows.id')))
-    field_id = db.Column(db.String(20))
-    vaults = db.relationship('Vault', back_populates='field', foreign_keys='Vault.field_id', lazy='dynamic')
-    row = db.relationship('Row', back_populates='fields')
-    warehouse_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('warehouse.id')))
-    warehouse = db.relationship('Warehouse', back_populates='warehouse_fields')
-    full = db.Column(db.Boolean, default=False)
+    name = db.Column(db.String(20))
     type = db.Column(db.String, default="vault")
-    bottom_couchbox_field = db.Column(db.Boolean, default=False)
+    vaults = db.relationship('Vault', back_populates='field', foreign_keys='Vault.field_id', lazy='dynamic')
+    full = db.Column(db.Boolean, default=False)
 
-    def generate_field_id(self, row_name, numerical_identifier):
-        return f"{row_name}_{numerical_identifier:02d}"
-    
+    warehouse_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('warehouses.id')))
+    warehouse = db.relationship('Warehouse', back_populates='warehouse_fields')
+    orders = db.relationship('Order', secondary=field_orders, back_populates='fields', cascade='all, delete')
+
+    def generate_name(self, col_name, numerical_identifier):
+        return f"{col_name}_{numerical_identifier:02d}"
+
     def to_dict(self):
         return {
             'id': self.id,
-            'row_id': self.row_id,
-            'field_id': self.field_id,
-            'vaults': [vault.id for vault in self.vaults],
-            'full': self.full,
+            'name': self.name,
             'type': self.type,
-            'bottom_couch_box': self.bottom_couchbox_field            
+            'vaults': [vault.id for vault in self.vaults],
+            'warehouse_id': self.warehouse_id,
+            'full': self.full,
+            'orders': [order.id for order in self.orders]
         }

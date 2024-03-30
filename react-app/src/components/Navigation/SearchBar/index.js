@@ -1,49 +1,38 @@
-import React, { useState, useEffect, useRef } from 'react';
-import './SearchBar.css';
-import axios from 'axios';
+import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getWarehouseInfoThunk } from '../../../store/warehouse';
 import { getAllOrdersThunk } from '../../../store/order';
 import { searchThunk } from '../../../store/search';
 import { setSearchOffAction } from '../../../store/search';
+import { getAllCustomersThunk } from '../../../store/customer';
+
+import './SearchBar.css';
 
 function SearchBar() {
   const dispatch = useDispatch();
   const suggestionBoxRef = useRef(null);
+  const customersState = useSelector(state => state.customer);
+  const ordersState = useSelector(state => state.order);
+  const [customers, setCustomers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
-  const [customers, setCustomers] = useState([]);
   const [orders, setOrders] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const searchItem = useSelector(state => state.search.fields);
 
-  
   useEffect(() => {
-    console.log("🔎", searchItem)
-  }, [searchItem])
+    const customerArr = Object.values(customersState);
+    if (customerArr.length) setCustomers(customerArr);
+  }, [customersState])
+
+  useEffect(() => {
+    const orderArr = Object.values(ordersState);
+    if (orderArr.length) setOrders(orderArr);
+  }, [ordersState])
 
   useEffect(() => {
     dispatch(getAllOrdersThunk())
-  }, [])
-
-  useEffect(() => {
-    axios.get('/api/customers')
-      .then((response) => {
-        setCustomers(response.data.customers);
-      })
-      .catch((error) => {
-        console.error('Error fetching customers:', error);
-      });
-  
-    axios.get('/api/orders')
-      .then((response) => {
-        setOrders(response.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching orders:', error);
-      });
-  }, []);
-  
+    dispatch(getAllCustomersThunk())
+  }, [dispatch])  
 
   useEffect(() => {
     // Add a click event listener to the window
@@ -52,7 +41,7 @@ function SearchBar() {
     return () => {
       window.removeEventListener('click', handleWindowClick);
     };
-  }, []);
+  }, [dispatch]);
 
   const handleWindowClick = (e) => {
     // Check if the click event occurred outside the suggestion box
@@ -64,24 +53,28 @@ function SearchBar() {
 
   const handleInputChange = (e) => {
     const value = e.target.value;
-    setSearchTerm(value);
+    if (value === "") {
+      setSearchTerm(null);
+      setSuggestions(null);
+      return
+    }
+    else setSearchTerm(value);
+
 
     const filteredCustomers = customers.filter((customer) =>
       customer.name.toLowerCase().includes(value.toLowerCase())
     );
 
     const filteredOrders = orders.filter((order) =>
-      order.order_number.toLowerCase().includes(value.toLowerCase())
+      order.name.toLowerCase().includes(value.toLowerCase())
     );
 
-    // Concatenate the filtered customers and orders for suggestions
     const combinedSuggestions = [...filteredCustomers, ...filteredOrders];
 
     setSuggestions(combinedSuggestions);
   };
 
   const handleSelectItem = async (item) => {
-    // Set the selected customer and clear the search term
     setSelectedItem(item);
     setSearchTerm('');
 
@@ -89,17 +82,12 @@ function SearchBar() {
     const customer = item.name ? true : false
 
     await dispatch(searchThunk(item, order ? "order" : customer ? "customer" : "no type specified"));
-
-    // Dispatch the setSelectedItemThunk with the selected customer's ID
-    // await dispatch(setSelectedItemThunk(customer.id));
-    // await dispatch(getWarehouseInfoThunk());
   };
 
   const handleClearSelectedItem = async () => {
-    const order = selectedItem.order_number ? true : false
+    const order = selectedItem.name ? true : false
     const customer = selectedItem.name ? true : false
     await dispatch(setSearchOffAction());
-    await dispatch(getWarehouseInfoThunk());
     setSelectedItem(null);
   };
 
@@ -149,7 +137,7 @@ function SearchBar() {
           <button onClick={handleSearch}>
             <span className="material-symbols-outlined">search</span>
           </button>
-          {suggestions.length > 0 && (
+          {suggestions?.length > 0 && (
             <div ref={suggestionBoxRef} className="suggestion-box">
               <ul>
                 {suggestions.map((item) => (

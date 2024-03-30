@@ -1,86 +1,112 @@
-from flask import Blueprint, jsonify
-from app.models import db, Field, Vault, Row
+from flask import Blueprint, jsonify, request
+from app.models import db, Field, Vault
+from app.forms import EditFieldForm
 
 field_routes = Blueprint('fields', __name__)
 
 
-@field_routes.route('/')
-def get_all_fields():
+@field_routes.route('/<int:warehouseId>')
+def get_all_fields(warehouseId):
     fields = Field.query.all()
+    Field.query.filter_by(warehouse_id=warehouseId)
     return jsonify({ field.id : field.to_dict() for field in fields })
 
 
-@field_routes.route('/<int:id>', methods=['PUT'])
-def toggle_field_type(id):
-    field = Field.query.get(id)
+@field_routes.route('/single/<int:id>', methods=['PUT'])
+def edit_single_field(id):
 
-    if not field:
-        return jsonify(message="Field not found"), 404
+    form = EditFieldForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
 
-    sub_field_id = id + 1
-    sub_field = Field.query.get(sub_field_id)
+    try:
+        if form.validate_on_submit():
 
-    if not sub_field:
-        return jsonify(message="Subfield not found"), 404
+            field1 = Field.query.get(id)
 
-    if field.type == "vault" and sub_field.type == "vault":
-        field.type = "couchbox"
-        sub_field.type = "couchbox"
-        sub_field.bottom_couchbox_field = True
-    elif field.type == "couchbox" and sub_field.type == "couchbox":
-        field.type = "vault"
-        sub_field.type = "vault"
-        sub_field.bottom_couchbox_field = False
+            field1.full = not(field1.full)
 
-    db.session.commit()
-    return jsonify(field.to_dict())
+            db.session.commit()
+            return jsonify(field1.to_dict())
 
 
-@field_routes.route('/<field_id>')
-def get_field(field_id):
-    field_id = int(field_id)
-    field = Field.query.get(field_id)
-    if not field:
-        return jsonify(message="Field not found"), 404
-    return jsonify(field.to_dict())
-
-
-@field_routes.route('/<field_id>/vaults')
-def get_field_vaults(field_id):
-    field_id = int(field_id)
-    field = Field.query.get(field_id)
-    if not field:
-        return jsonify(message="Field not found"), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
     
-    field_vaults = []
-
-    if field.vaults:
-        for vault in field.vaults:
-            if vault and hasattr(vault, 'to_dict'):
-                field_vaults.append({
-                    'id': vault.id,
-                    'customer_id': vault.customer_id,
-                    'field_id': vault.field_id,
-                    # 'field_name': vault.field_name,
-                    'position': vault.position,
-                    'vault_id': vault.vault_id,
-                    'order_number': vault.order_number,
-                    'staged': vault.staged,
-                    'type': vault.type,
-                    'customer': vault.customer.to_summary_dict() if vault.customer else None,
-                    'attachments': [attachment.to_dict() for attachment in vault.attachments]
-                })
-
-    return jsonify([vault if not hasattr(vault, 'to_dict') else vault.to_dict() for vault in field_vaults])
+    return jsonify({'errors': validation_errors_to_error_messages(form.errors)}), 400
 
 
-@field_routes.route('/<field_id>/row')
-def get_field_row(field_id):
-    field = Field.query.get(field_id)
-    if not field:
-        return jsonify(message="Field not found"), 404
+
+@field_routes.route('/<int:id>/', methods=['PUT'])
+def edit_field(id):
+
+    form = EditFieldForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    try:
+        if form.validate_on_submit():
+
+            print("EDIT FIELD FORM DATA ======> ", form.data)
+
+            name = form.data['name']
+            type = form.data['type']
+            field_id_1 = form.data['field_id_1']
+            field_id_2 = form.data['field_id_2']
+            field1 = Field.query.get(field_id_1)
+            field2 = Field.query.get(field_id_2)
+
+
+            if not field1:
+                return jsonify(message="Field 1 not found"), 404
+
+            if not field2:
+                return jsonify(message="Field 2 not found"), 404
+
+
+            def checkVaultCount(vaults):
+                count = 0
+                for vault in vaults:
+                    count += 1
+                return count
+
+            if type == 'couchbox':
+
+                print("🙃 =======> ", field1)
+                print("🙃 =======> ", field2.vaults)
+
+                if checkVaultCount(field1.vaults) > 0 or checkVaultCount(field2.vaults) > 0:
+                    return jsonify(message="Please stage all vaults in fields to continue")
+
+                if not field2:
+                    return jsonify(message="Field 2 not found"), 404
+
+                if field1.type == 'vault' and field2.type == 'vault':
+                    print('🥹 hittingggg')
+                    field1.type = 'couchbox-T'
+                    field2.type = 'couchbox-B'
+                else:
+                    return jsonify(message="Cannot switch to couchbox")
+
+                db.session.commit()
+
+                return jsonify([field1.to_dict(), field2.to_dict()])
+
+            if type == 'vault':
+
+                if checkVaultCount(field1.vaults) > 0:
+                    return jsonify(message="Please stage all vaults in field to continue")
+
+                if field1.type == 'couchbox-T' and field2.type == 'couchbox-B':
+                    field1.type = 'vault'
+                    field2.type = 'vault'
+                else: 
+                    return jsonify(message="Cannot switch to vault")
+                
+                db.session.commit()
+
+                return jsonify([field1.to_dict(), field2.to_dict()])
+
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
     
-    row = Row.query.get(field.row_id).to_dict()
-
-    return jsonify(row)
-
+    return jsonify({'errors': validation_errors_to_error_messages(form.errors)}), 400
