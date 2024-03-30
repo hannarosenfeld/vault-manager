@@ -26,6 +26,7 @@
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
+    "v": "node -v",
     "start": "react-scripts start",
     "build": "CI=false && react-scripts build",
     "test": "react-scripts test",
