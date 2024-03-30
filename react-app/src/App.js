@@ -20,21 +20,20 @@ function App() {
   const history = useHistory();
   const [isLoaded, setIsLoaded] = useState(false);
 	const sessionUser = useSelector(state => state.session.user);
-  let companyId;
-  const companies = useSelector(state => state.companies)
+  const companies = useSelector(state => state.company)
+  let company;
 
   useEffect(() => {
     dispatch(getCompaniesThunk());
   }, [])
-  
-  useEffect(() => {
-    console.log("🌹", sessionUser)
-    if (sessionUser?.companyId) companyId = sessionUser.company_id;
-  }, [sessionUser])
 
   useEffect(() => {
-    console.log("🥝", companies)
-  }, [companies])
+    if (sessionUser.companyId && Object.values(companies).length) {
+    company = companies[sessionUser.companyId]
+    setIsLoaded(true);
+    }
+  }, [sessionUser, companies])
+
 
   const onAddWarehouseSubmit = async () => {
     await dispatch(getAllWarehousesThunk());    
@@ -43,9 +42,6 @@ function App() {
 
   useEffect(() => {
     dispatch(authenticate())
-      .then(() => {
-        setIsLoaded(true);
-      });
   }, [dispatch]);
 
   return (
@@ -69,19 +65,19 @@ function App() {
               <SignupFormPage />
             </Route>        
             
-            <Route exact path="/warehouse/add-warehouse">
+            <Route exact path="/:companyName/warehouse/add-warehouse">
               <AddWarehouseForm onAddWarehouseSubmit={onAddWarehouseSubmit}/>
             </Route>                  
 
-            <Route exact path="/warehouse/:warehouseId"> 
+            <Route exact path="/:companyName/warehouse/:warehouseId"> 
               <Warehouse />
             </Route>          
 
-            <Route path="/warehouse/:warehouseId/field/:fieldId/vaults/:vaultId/edit">
+            <Route path="/:companyName/warehouse/:warehouseId/field/:fieldId/vaults/:vaultId/edit">
               <EditVaultPage />
             </Route>
 
-            <Route path="/warehouse/:warehouseId/field/:fieldId/vaults/:vaultId/detail">
+            <Route path="/:companyName/warehouse/:warehouseId/field/:fieldId/vaults/:vaultId/detail">
               <VaultDetailPage/>
             </Route>
 

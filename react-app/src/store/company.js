@@ -6,11 +6,9 @@ const getCompaniesAction = (companies) => ({
 })
 
 export const getCompaniesThunk = () => async (dispatch) => {
-    console.log("😎")
     try {
     const res = await fetch("/api/companies")
     if (res.ok) {
-        console.log("😡", res)
         const data = await res.json()
         await dispatch(getCompaniesAction(data))
         return data
@@ -26,9 +24,14 @@ export const getCompaniesThunk = () => async (dispatch) => {
 const initialState = {};
 
 const companyReducer = (state = initialState, action) => {
+  const newState = { ...state }
   switch (action.type) {
     case GET_COMPANIES:
-        console.log("❤️‍🔥", action)
+        const companies = Object.values(action.companies)
+        companies.map(company => {
+            newState[company.id] = company
+        })
+    return newState;
     default:
       return state;
   }
