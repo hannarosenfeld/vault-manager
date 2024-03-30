@@ -29,15 +29,20 @@ function App() {
   }
 
   useEffect(() => {
+    if (sessionUser) company = companies[sessionUser.companyId]
+  }, [sessionUser])
+
+  useEffect(() => {
+    console.log("🧏🏻‍♀️", company)
+  }, [company])
+
+  useEffect(() => {
     dispatch(authenticate())
       .then(async () => {
          await dispatch(getCompaniesThunk());
       })
-      .then(async () => {
-        if (sessionUser) company = await companies[sessionUser.companyId];
-      })
       .then(() => {
-        if (company) setIsLoaded(true);
+        setIsLoaded(true);
       });
   }, [dispatch]);
 
