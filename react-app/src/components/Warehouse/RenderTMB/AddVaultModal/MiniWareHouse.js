@@ -26,10 +26,11 @@ export default function MiniWareHouse({ selectedFieldId, warehouseId }) {
                         key={field.id}
                         style={{
                             backgroundColor: `${
+                                selectedFieldId === field.id ? "var(--blue)" : 
                                 field.vaults?.length === 3 || field.full ? "var(--red)" :
                                 field.vaults?.length === 2 ? "var(--yellow)" :
                                 field.vaults?.length === 1 ? "var(--green)" :
-                                "var(--lightgrey)"
+                                "lightgrey"
                             }`,
                             border: `${
                                 selectedFieldId === field.id ? "3px solid var(--blue)" : 
@@ -38,9 +39,9 @@ export default function MiniWareHouse({ selectedFieldId, warehouseId }) {
                             marginBottom: `${field.type === "couchbox-T" ? "-2.6em" : '0'}`,
                             width: `${field.type === "couchbox-B" ? "0px" : ''}`,
                             zIndex: `${field.type === "couchbox-B" ? "100" : 'none'}`,
-                            maxHeight: "3.5em"
+                            maxHeight: "4.3em"
                         }}
-                    >{field.type === "couchbox-B" ? "" : <div className="field-number">{field.name}</div>}</div>
+                    >{field.type === "couchbox-B" ? "" : <div style={{color: `${selectedFieldId === field.id ? "var(--white)" : "default"}`}} className="field-number">{field.name}</div>}</div>
                     ))}
                 </div>
             )

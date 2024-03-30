@@ -165,7 +165,7 @@ export default function AddVaultModal({ onClose, selectedFieldId, warehouseId, p
                     </IconButton>
                 </div>
                 <div style={{ marginBottom: "5px" }}>
-                    <h4 id="modal-modal-title">{field.type === "vault" ? "Add Vault" : "Add Couchbox"}</h4>
+                    <h5 id="modal-modal-title">{field.type === "vault" ? "Add Vault" : "Add Couchbox"}</h5>
                     <div className="vault-info">
                         <div>Field: <span>{selectedFieldId}</span></div>
                         <div>Position: <span>{position}</span></div>
@@ -174,7 +174,7 @@ export default function AddVaultModal({ onClose, selectedFieldId, warehouseId, p
                 <form className="add-vault-form" onSubmit={handleSubmit} enctype="multipart/form-data">
                     <div style={{ display: "flex", gap: "0.2em", justifyContent: "space-between", alignItems: "baseline", alignContent: "baseline" }}>
                         <FormGroup style={{ width: "75%" }}>
-                            <div className="customer-input-container">
+                            <div className="customer-input-container" style={{marginBottom: "1em", width: "93.5%"}}>
                                 <FormLabel>Customer Name</FormLabel>
                                 <input
                                     type="text"
@@ -216,7 +216,7 @@ export default function AddVaultModal({ onClose, selectedFieldId, warehouseId, p
                                 )}
                             </div>
                         </FormGroup>
-                        <FormGroup className="vault-order-number-item">
+                        <FormGroup className="vault-order-number-item" style={{width: "45%"}}>
                             <FormLabel>Attachment</FormLabel>
                             <input
                                 type="file"
@@ -226,9 +226,18 @@ export default function AddVaultModal({ onClose, selectedFieldId, warehouseId, p
                     </div>
 
                     <div className="vault-order-number" style={{ gap: "1em" }}>
+                    <FormGroup className="vault-order-number-item" style={{width: "45%"}}>
+                            <FormLabel>Order#</FormLabel>
+                            <input
+                            type="text"
+                            value={order_number}
+                            onChange={(e) => setOrderNumber(e.target.value)}
+                            required
+                            />
+                        </FormGroup>
                     {field.type === "vault" && (
                         <div style={{width: "100%", display: "flex", gap: "0.5em", justifyContent: "space-between"}}>
-                        <FormGroup className="vault-order-number-item">
+                        <FormGroup className="vault-order-number-item" style={{width: "45%"}}>
                             <FormLabel>Vault#</FormLabel>
                             <input
                             type="text"
@@ -242,11 +251,11 @@ export default function AddVaultModal({ onClose, selectedFieldId, warehouseId, p
                             </div>
                             )}
                         </FormGroup>
-                        <div style={{width: "20%"}}>
+                        <div style={{width: "45%"}}>
                         <FormLabel>Vault Type</FormLabel>
                         <select
                             className="form-select form-select-lg"
-                            style={{ fontSize: "1em", marginLeft: "-0.5em", marginTop: "0.4em" }}
+                            style={{ fontSize: "1em", marginLeft: "-0.5em", marginTop: "0.4em"}}
                             // aria-aria-label=".form-select-lg example"
                             value={vaultType}
                             onChange={(e) => setVaultType(e.target.value)}
@@ -257,16 +266,6 @@ export default function AddVaultModal({ onClose, selectedFieldId, warehouseId, p
                         </div>
                         </div>
                     )}
-
-                        <FormGroup className="vault-order-number-item">
-                            <FormLabel>Order#</FormLabel>
-                            <input
-                            type="text"
-                            value={order_number}
-                            onChange={(e) => setOrderNumber(e.target.value)}
-                            required
-                            />
-                        </FormGroup>
                     </div>
                         <MiniWareHouse selectedFieldId={selectedFieldId} warehouseId={warehouseId} />
                     <button type="submit" disabled={isSubmitting}>
