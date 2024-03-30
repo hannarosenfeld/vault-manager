@@ -31,7 +31,7 @@ export default function Warehouse() {
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
     const [toggleSelected, setToggleSelected] = useState(false);
     const [loading, setLoading] = useState(true);
-    console.log('warehouse ',warehouse)
+
 
     useEffect(() => {
         setSelectedFieldId(null)
@@ -100,7 +100,6 @@ export default function Warehouse() {
     }
 
     const toggleFieldFull = (fieldId) => {
-        console.log('in toggle field', fieldId)
         dispatch(editSingleFieldThunk(fieldId, {}))
     }
 

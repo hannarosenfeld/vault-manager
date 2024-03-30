@@ -31,7 +31,6 @@ export const editFieldThunk = (fieldData) => async (dispatch) => {
     });
     if (res.ok) {
       const data = await res.json();
-      console.log('hitting res in thunk')
       dispatch(editFieldAction(data));
       return data;
     } else {

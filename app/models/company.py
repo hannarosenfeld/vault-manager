@@ -32,8 +32,8 @@ class Company(db.Model, UserMixin):
         return {
             'id': self.id,
             'name': self.name,
-            'orders': [order.id for order in self.orders], 
-            'users': [user.id for user in self.users], 
-            'warehouses': [warehouse.id for warehouse in self.warehouses], 
-            'customers': [customer.id for customer in self.customers], 
+            'orders': [order.id for order in self.company_orders], 
+            'users': [user.id for user in self.company_users], 
+            'warehouses': [warehouse.id for warehouse in self.company_warehouses], 
+            'customers': [customer.id for customer in self.company_customers], 
         }

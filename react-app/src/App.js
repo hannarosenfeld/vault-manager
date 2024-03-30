@@ -12,19 +12,29 @@ import EditVaultPage from "./components/Warehouse/RenderTMB/EditVaultPage";
 import VaultDetailPage from "./components/Warehouse/RenderTMB/VaultDetailPage";
 import AddWarehouseForm from "./components/AddWarehouse";
 import { getAllWarehousesThunk } from "./store/warehouse";
-import { getVaultsThunk } from "./store/vault";
+import { getCompaniesThunk } from "./store/company";
 
 
 function App() {
   const dispatch = useDispatch();
   const history = useHistory();
-  const vaults = useSelector(state => state.vaults);
   const [isLoaded, setIsLoaded] = useState(false);
 	const sessionUser = useSelector(state => state.session.user);
+  let companyId;
+  const companies = useSelector(state => state.companies)
 
   useEffect(() => {
-    dispatch(getVaultsThunk())
-  }, [vaults])
+    dispatch(getCompaniesThunk());
+  }, [])
+  
+  useEffect(() => {
+    console.log("🌹", sessionUser)
+    if (sessionUser?.companyId) companyId = sessionUser.company_id;
+  }, [sessionUser])
+
+  useEffect(() => {
+    console.log("🥝", companies)
+  }, [companies])
 
   const onAddWarehouseSubmit = async () => {
     await dispatch(getAllWarehousesThunk());    
@@ -70,15 +80,19 @@ function App() {
             <Route path="/warehouse/:warehouseId/field/:fieldId/vaults/:vaultId/edit">
               <EditVaultPage />
             </Route>
+
             <Route path="/warehouse/:warehouseId/field/:fieldId/vaults/:vaultId/detail">
               <VaultDetailPage/>
             </Route>
+
             <Route path="/stage">
               <Stage />
             </Route>
+
             <Route path="/add-user">
               <SignupFormPage />
             </Route>
+
             <Route path="/login" >
               <LoginFormPage />
             </Route>
