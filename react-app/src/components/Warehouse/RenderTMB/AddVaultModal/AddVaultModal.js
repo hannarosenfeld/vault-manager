@@ -172,7 +172,8 @@ export default function AddVaultModal({ onClose, selectedFieldId, warehouseId, p
                     </div>
                 </div>
                 <form className="add-vault-form" onSubmit={handleSubmit} enctype="multipart/form-data">
-                    <div style={{ display: "flex", gap: "0.2em", justifyContent: "space-between", alignItems: "baseline", alignContent: "baseline" }}>
+                    <div className='add-vault-form-input'>
+                    <div style={{ display: "flex", gap: "0.2em", justifyContent: "space-between", alignItems: "baseline", alignContent: "baseline"}}>
                         <FormGroup style={{ width: "75%" }}>
                             <div className="customer-input-container" style={{marginBottom: "1em", width: "93.5%"}}>
                                 <FormLabel>Customer Name</FormLabel>
@@ -267,8 +268,9 @@ export default function AddVaultModal({ onClose, selectedFieldId, warehouseId, p
                         </div>
                     )}
                     </div>
+                    </div>
                         <MiniWareHouse selectedFieldId={selectedFieldId} warehouseId={warehouseId} />
-                    <button type="submit" disabled={isSubmitting}>
+                    <button type="submit" disabled={isSubmitting} >
                         {isSubmitting ? 'Submitting...' : 'Submit'}
                     </button>
                 </form>

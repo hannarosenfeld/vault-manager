@@ -17,7 +17,8 @@ export default function MiniWareHouse({ selectedFieldId, warehouseId }) {
                         gridAutoFlow: 'column',
                         gridGap: "0.5em",
                         width: "100%",
-                        marginTop: "1em"
+                        height: "98%",
+                        marginTop: "1em",
                     }}
                 >   
                     {fields.map(field => (
@@ -36,7 +37,7 @@ export default function MiniWareHouse({ selectedFieldId, warehouseId }) {
                                 selectedFieldId === field.id ? "3px solid var(--blue)" : 
                                 "none"
                             }`,
-                            marginBottom: `${field.type === "couchbox-T" ? "-2.6em" : '0'}`,
+                            height: `${field.type === "couchbox-T" ? "225%" : '100%'}`,
                             width: `${field.type === "couchbox-B" ? "0px" : ''}`,
                             zIndex: `${field.type === "couchbox-B" ? "100" : 'none'}`,
                             maxHeight: "4.3em"
