@@ -23,7 +23,7 @@ export default function Index({ company }) {
             {warehouses.map(warehouse => (
                 <div className="card" style={{width: "18rem"}}>
                     <div class="card-body">
-                        <NavLink to={`/${company.name}/warehouse/${warehouse.id}`}>
+                        <NavLink to={`/${company.name.toLowerCase()}/warehouse/${warehouse.id}`}>
                         <h5 class="card-title">{warehouse.name}</h5>
                         </NavLink>
                     </div>
