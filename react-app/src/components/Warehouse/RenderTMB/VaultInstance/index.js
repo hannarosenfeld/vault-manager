@@ -7,8 +7,6 @@ const VaultInstance = ({ topmostVault, vault, handleStageClick, fieldType }) => 
   const customer = useSelector(state => state.customer[vault.customer_id]);
   const { warehouseId } = useParams()
 
-  console.log("💖", vault)
-
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
       <div style={{ display: 'flex', width: '60%', gap: '5px' }}>

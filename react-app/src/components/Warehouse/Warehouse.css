@@ -8,11 +8,12 @@
 .warehouse {
     width: 100%;
     height: 100%;
+    margin-top: 0.5em;
 }
 
 .field-info {
     margin-bottom: 5px;
-    height: 18vh;
+    height: 25vh;
 }
 
 .selected-field-vaults-tmb {

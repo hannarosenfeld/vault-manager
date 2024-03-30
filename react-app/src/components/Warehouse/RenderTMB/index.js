@@ -27,8 +27,6 @@ const RenderTMB = ({
   const [isLoading, setIsLoading] = useState(true);
   const { type } = field
 
-  console.log("🥐", field.type)
-
   useEffect(() => {
     setSortedVaults({});
     dispatch(getAllFieldVaultsThunk(selectedFieldId))
@@ -84,7 +82,7 @@ const RenderTMB = ({
                 <span className="material-symbols-outlined">warning</span>Field is full
               </div>
             )} */}
-            { !T && M && B ? (
+            { !T && M2 && M && B ? (
               <AddVaultButton position="T" vault={selectedVault} handleOpenAddVaultModal={handleOpenAddVaultModal} moveVault={moveVault} fieldType={type} isFull={field.full}/>
             ) 
             : sortedVaults["T"] ? (
