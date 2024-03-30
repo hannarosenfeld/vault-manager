@@ -117,6 +117,7 @@ export default function Warehouse() {
                         gridGap: "1%",
                         width: "100%",
                         height: "75vh",
+                        marginBottom: "1rem"
                     }}
                 >   
                     {sortedFields?.map(field => (
