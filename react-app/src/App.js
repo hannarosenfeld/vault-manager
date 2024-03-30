@@ -23,18 +23,6 @@ function App() {
   const companies = useSelector(state => state.company)
   let company;
 
-  useEffect(() => {
-    dispatch(getCompaniesThunk());
-  }, [])
-
-  useEffect(() => {
-    if (sessionUser.companyId && Object.values(companies).length) {
-    company = companies[sessionUser.companyId]
-    setIsLoaded(true);
-    }
-  }, [sessionUser, companies])
-
-
   const onAddWarehouseSubmit = async () => {
     await dispatch(getAllWarehousesThunk());    
     history.push("/");
@@ -42,6 +30,15 @@ function App() {
 
   useEffect(() => {
     dispatch(authenticate())
+      .then(async () => {
+         await dispatch(getCompaniesThunk());
+      })
+      .then(async () => {
+        if (sessionUser) company = await companies[sessionUser.companyId];
+      })
+      .then(() => {
+        if (company) setIsLoaded(true);
+      });
   }, [dispatch]);
 
   return (
@@ -65,19 +62,19 @@ function App() {
               <SignupFormPage />
             </Route>        
             
-            <Route exact path="/:companyName/warehouse/add-warehouse">
+            <Route exact path="/warehouse/add-warehouse">
               <AddWarehouseForm onAddWarehouseSubmit={onAddWarehouseSubmit}/>
             </Route>                  
 
-            <Route exact path="/:companyName/warehouse/:warehouseId"> 
+            <Route exact path="/warehouse/:warehouseId"> 
               <Warehouse />
             </Route>          
 
-            <Route path="/:companyName/warehouse/:warehouseId/field/:fieldId/vaults/:vaultId/edit">
+            <Route path="/warehouse/:warehouseId/field/:fieldId/vaults/:vaultId/edit">
               <EditVaultPage />
             </Route>
 
-            <Route path="/:companyName/warehouse/:warehouseId/field/:fieldId/vaults/:vaultId/detail">
+            <Route path="/warehouse/:warehouseId/field/:fieldId/vaults/:vaultId/detail">
               <VaultDetailPage/>
             </Route>
 
