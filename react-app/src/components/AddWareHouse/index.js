@@ -60,4 +60,4 @@ const AddWarehouse = ({ onAddWarehouseSubmit }) => {
   );
 };
 
-export default AddWarehouseForm;
+export default AddWarehouse;
