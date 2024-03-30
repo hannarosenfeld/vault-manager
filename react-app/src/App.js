@@ -5,6 +5,7 @@ import { authenticate } from "./store/session";
 import { getAllWarehousesThunk } from "./store/warehouse";
 import { getCompaniesThunk } from "./store/company";
 
+import AddWarehouse from "./components/AddWarehouse";
 import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import Navigation from "./components/Navigation";
@@ -13,7 +14,7 @@ import Warehouse from "./components/Warehouse";
 import Stage from "./components/Stage";
 import EditVaultPage from "./components/Warehouse/RenderTMB/EditVaultPage";
 import VaultDetailPage from "./components/Warehouse/RenderTMB/VaultDetailPage";
-import AddWarehouse from "./components/AddWarehouse";
+
 
 
 function App() {
