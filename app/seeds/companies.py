@@ -4,11 +4,11 @@ from sqlalchemy.sql import text
 
 def seed_companies(users, warehouses, orders, customers):
     c1 = Company(
-        company_users=users,
+        company_users=[1,2],
         name="Naglee",
-        company_orders=orders,
-        company_warehouses=warehouses,
-        company_customers=customers,
+        company_orders=[1,2,3],
+        company_warehouses=[1],
+        company_customers=[1,2,3],
         address="1525 Grand Central Ave, Elmira, NY 14901",
         phone="6077334671"
     )

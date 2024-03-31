@@ -26,6 +26,8 @@ def seed():
         warehouses = None
         companies = None
 
+        if not Company.query.all(): 
+            companies = seed_companies()              
         if not User.query.all(): 
             users = seed_users()  
         if not Customer.query.all(): 
@@ -38,14 +40,12 @@ def seed():
             warehouses = seed_warehouse(users, fields, orders)             
         if not Vault.query.all(): 
             seed_vaults(customers)
-        if not Company.query.all(): 
-            companies = seed_companies(users, warehouses, orders, customers)              
 
 @seed_commands.command('undo')
 def undo():
-    undo_companies()
     undo_vaults()
     undo_fields()
     undo_customers()
     undo_users()
     undo_warehouse()
+    undo_companies()    
