@@ -2,6 +2,7 @@ from app.models import db, Warehouse, Field, Vault, environment, SCHEMA
 from sqlalchemy.sql import text
 
 def seed_warehouse(users, fields, orders):
+    print("👰🏼‍♀️", users, orders)
     warehouse = Warehouse()
 
     warehouse.name = "Warehouse 3"
