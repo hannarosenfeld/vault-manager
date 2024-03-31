@@ -30,9 +30,6 @@ function App() {
 
   useEffect(() => {
     dispatch(authenticate())
-      .then(async () => {
-         await dispatch(getCompaniesThunk());
-      })
       .then(() => {
         setIsLoaded(true);
       });
