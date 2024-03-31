@@ -5,7 +5,7 @@ import { authenticate } from "./store/session";
 import { getAllWarehousesThunk } from "./store/warehouse";
 import { getCompaniesThunk } from "./store/company";
 
-import AddWarehouse from "./components/AddWarehouse";
+import AddWarehouseForm from "./components/AddWarehouseForm";
 import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import Navigation from "./components/Navigation";
@@ -60,7 +60,7 @@ function App() {
             </Route>        
             
             <Route exact path="/warehouse/add-warehouse">
-              <AddWarehouse onAddWarehouseSubmit={onAddWarehouseSubmit}/>
+              <AddWarehouseForm onAddWarehouseSubmit={onAddWarehouseSubmit}/>
             </Route>                  
 
             <Route exact path="/:companyName/warehouse/:warehouseId"> 
