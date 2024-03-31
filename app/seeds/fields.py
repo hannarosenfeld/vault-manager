@@ -10,9 +10,9 @@ def seed_fields(orders):
         for field_num in range(1, 13):
             name = f"{row_char}{field_num}"  # Use the letter for the row and e, warehouse_id=1nsure the number has at least one digit
             if (row_char == "C" and  i == "1"):
-                field = Field(name=name, warehouse_id=1, orders=orders)  # Use integer representation of row_id
+                field = Field(name=name, orders=orders)  # Use integer representation of row_id
             else: 
-                field = Field(name=name, warehouse_id=1)  # Use integer representation of row_id
+                field = Field(name=name)  # Use integer representation of row_id
             fields.append(field)
     db.session.add_all(fields)
     db.session.commit()
