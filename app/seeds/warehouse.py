@@ -2,13 +2,14 @@ from app.models import db, Warehouse, Field, Vault, environment, SCHEMA
 from sqlalchemy.sql import text
 
 def seed_warehouse(users, fields, orders):
-    print("👰🏼‍♀️", fields)
+    allFields = Field.query.all()
+    print("👰🏼‍♀️", allFields)
     warehouse = Warehouse()
 
     warehouse.name = "Warehouse 3"
     warehouse.cols = 9
     warehouse.rows = 12
-    warehouse.warehouse_fields = fields
+    warehouse.warehouse_fields = allFields
     warehouse.users = [1,2,3]
     warehouse.orders = [1,2,3]
 
