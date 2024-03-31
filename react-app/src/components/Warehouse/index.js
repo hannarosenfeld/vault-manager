@@ -46,7 +46,7 @@ export default function Warehouse() {
     useEffect(() => {
         if (!loading && fields) {
         try {
-            setSortedFields(fields.sort((a,b) => a.name-b.name));
+            setSortedFields(fields.sort((a,b) => a.id-b.id));
           } catch (error) {
             console.log(error);
           } finally {
