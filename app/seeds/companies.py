@@ -2,13 +2,14 @@ from app.models import db, Company, environment, SCHEMA
 from sqlalchemy.sql import text
 
 
-def seed_companies():
+def seed_companies(users, warehouses, orders, customers):
+    print("👰🏼‍♀️", users, warehouses, orders, customers)
     c1 = Company(
-        company_users=[1,2],
+        company_users=users,
         name="Naglee",
-        company_orders=[1,2,3],
-        company_warehouses=[1],
-        company_customers=[1,2,3],
+        company_orders=orders,
+        company_warehouses=warehouses,
+        company_customers=customers,
         address="1525 Grand Central Ave, Elmira, NY 14901",
         phone="6077334671"
     )
