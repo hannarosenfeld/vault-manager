@@ -2,7 +2,7 @@ from app.models import db, Company, environment, SCHEMA
 from sqlalchemy.sql import text
 
 
-def seed_companies(users, warehouses, orders, customers):
+def seed_companies():
     c1 = Company(
         company_users=[1,2],
         name="Naglee",
