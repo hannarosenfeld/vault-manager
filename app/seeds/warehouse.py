@@ -2,15 +2,15 @@ from app.models import db, Warehouse, Field, Vault, environment, SCHEMA
 from sqlalchemy.sql import text
 
 def seed_warehouse(users, fields, orders):
-    print("👰🏼‍♀️", users, orders)
+    print("👰🏼‍♀️", fields)
     warehouse = Warehouse()
 
     warehouse.name = "Warehouse 3"
     warehouse.cols = 9
     warehouse.rows = 12
     warehouse.warehouse_fields = fields
-    warehouse.users = users
-    warehouse.orders = orders
+    warehouse.users = [1,2,3]
+    warehouse.orders = [1,2,3]
 
     db.session.add(warehouse)
     db.session.commit()
