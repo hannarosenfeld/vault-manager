@@ -209,7 +209,7 @@ export default function Warehouse() {
                         )}
                     </div>
                     <div className="warehouse">
-                        {Object.values(allFields).length ? fieldGenerator(fields) : null}
+                        {fields ? fieldGenerator(fields) : null}
                     </div>
                     <Modal open={isModalOpen}>
                         <AddVaultModal
