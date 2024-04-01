@@ -29,7 +29,6 @@ export default function Warehouse() {
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
     const [toggleSelected, setToggleSelected] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [sortedObj, setSortedObj] = useState({});
 
     console.log("🌹 in warehouse component")
 
@@ -39,6 +38,8 @@ export default function Warehouse() {
 
     useEffect(() => {
         console.log("!!!! sortedFields: ", sortedFields)
+        if (sortedFields) setSortedFields(sortedFields.sort((a,b) => a.name-b.name))
+
     }, [sortedFields])
 
     useEffect(() => {
