@@ -30,6 +30,16 @@ export default function Warehouse() {
     const [toggleSelected, setToggleSelected] = useState(false);
     const [loading, setLoading] = useState(true);
 
+    console.log("🌹 in warehouse component")
+
+    useEffect(() => {
+        console.log("🌺 warehouse: ", warehouse)
+    }, [warehouse])
+
+
+    useEffect(() => {
+        console.log("!!!! sortedFields: ", sortedFields)
+    }, [sortedFields])
 
     useEffect(() => {
         setSelectedFieldId(null)

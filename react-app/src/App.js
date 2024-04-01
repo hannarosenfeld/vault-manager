@@ -27,7 +27,7 @@ function App() {
     history.push("/");
   }
 
-  console.log("😎 in App.js")
+  console.log("😎 in App.")
 
   useEffect(() => {
     console.log("💖 sessionUser: ", sessionUser)
