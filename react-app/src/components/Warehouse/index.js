@@ -130,8 +130,8 @@ export default function Warehouse() {
 
     
     function fieldGenerator(fields) {
-        console.log("🦐", fields)
-        if (!loading && fields) {
+        if (fields) {
+        // console.log("🦐", fields.map(field => console.log(field)))
             return (
                 <div 
                     style={{

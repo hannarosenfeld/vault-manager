@@ -97,10 +97,6 @@ const fieldReducer = (state = initialState, action) => {
       newState[action.field.id] = action.field
       return newState
     case GET_ALL_FIELDS:
-      console.log("🏄🏽", action.warehouseId)
-      // const warehouseId = parseInt(action.warehouseId)
-      // const fieldsArr = Object.values(action.fields).filter(field => field.warehouse_id === warehouseId).sort((a,b) => a.name - b.name)
-      // console.log("🌹 fieldsArr: ", fieldsArr)
       newState[action.warehouseId] = { ...action.fields }
       return newState
     case STAGE_VAULT:

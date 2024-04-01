@@ -21,6 +21,7 @@ const RenderTMB = ({
   const field = useSelector((state) => state.field[selectedFieldId]);
   const vaults = useSelector((state) => state.vault);
   const vaultsArr = []
+  console.log("🧖🏻‍♂️ field: ", field)
   field.vaults.forEach(id => (vaults[id]) ?  vaultsArr.push(vaults[id]) : null);
   const [sortedVaults, setSortedVaults] = useState({});
   const [topmostVault, setTopmostVault] = useState(null);
