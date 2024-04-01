@@ -17,7 +17,8 @@ export default function Warehouse() {
     const dispatch = useDispatch();
     const { warehouseId } = useParams(); 
     const warehouse = useSelector(state => state.warehouse[warehouseId]);
-    let allFields = useSelector(state => state.field);
+    let allFields = useSelector(state => state.field[warehouseId]);
+    const [loadedWarehouseFields, setLoadedWarehouseFields] = useState(false);
     const [fields, setFields] = useState(null);
 
     const [sortedFields, setSortedFields] = useState(null);
@@ -33,17 +34,23 @@ export default function Warehouse() {
     // const [sortedObj, setSortedObj] = useState(null);
 
     useEffect(() => {
-        // if (Object.values(allFields).length) setFields(Object.values(allFields).filter(field => (field.warehouse_id === warehouseId)).sort((a,b) => a.name - b.name))
-        if (Object.values(allFields)) setFields(Object.values(allFields))
-    }, [allFields])
+        setSelectedFieldId(null)
+        const warehouseInfo = dispatch(getAllWarehousesThunk());
+        dispatch(getAllCustomersThunk())
+        const fields = dispatch(getAllFieldsThunk(warehouseId))
+
+        Promise.all([warehouseInfo])
+            .then(() => setLoading(false))
+            .catch(() => setLoading(false));
+
+        Promise.all([fields])
+            .then(() => setLoadedWarehouseFields(true))
+            .catch(() => console.log("🚨 fields could not be loaded!"))
+    }, [dispatch, warehouseId])
 
     useEffect(() => {
-        if (fields) console.log("🌹 fields: ", fields)
-
-    }, [fields])
-
-
-
+        if (loadedWarehouseFields) setFields(Object.values(allFields).filter(field => field.warehouse_id === parseInt(warehouseId)).sort((a,b) => a.name - b.name))        
+    }, [loadedWarehouseFields])
 
     // useEffect(() => {
     //     console.log("!!!! sortedFields: ", sortedFields)
@@ -59,18 +66,6 @@ export default function Warehouse() {
     // useEffect(() => {
     //     if (Object.values(sortedObj).length) setLoading(false)
     // }, [sortedObj])
-
-
-    useEffect(() => {
-        setSelectedFieldId(null)
-        const warehouseInfo = dispatch(getAllWarehousesThunk());
-        dispatch(getAllCustomersThunk())
-        const fields = dispatch(getAllFieldsThunk(warehouseId))
-
-        Promise.all([warehouseInfo])
-            .then(() => setLoading(false))
-            .catch(() => setLoading(false));
-    }, [dispatch, warehouseId])
 
 
     // useEffect(async () => {

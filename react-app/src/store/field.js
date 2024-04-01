@@ -14,9 +14,9 @@ const editSingleFieldAction = (field) => ({
   field
 })
 
-const getAllFieldsAction = (fields) => ({
+const getAllFieldsAction = (fields, warehouseId) => ({
   type: GET_ALL_FIELDS,
-  fields
+  fields, warehouseId
 });
 
 
@@ -70,7 +70,7 @@ export const getAllFieldsThunk = (warehouseId) => async (dispatch) => {
     const res = await fetch(`/api/fields/${warehouseId}`);
     if (res.ok) {
       const data = await res.json();
-      dispatch(getAllFieldsAction(data));
+      dispatch(getAllFieldsAction(data, warehouseId));
       return data;
     } else {
       const err = await res.json();
@@ -97,7 +97,11 @@ const fieldReducer = (state = initialState, action) => {
       newState[action.field.id] = action.field
       return newState
     case GET_ALL_FIELDS:
-      newState = { ...newState, ...action.fields }
+      console.log("🏄🏽", action.warehouseId)
+      // const warehouseId = parseInt(action.warehouseId)
+      // const fieldsArr = Object.values(action.fields).filter(field => field.warehouse_id === warehouseId).sort((a,b) => a.name - b.name)
+      // console.log("🌹 fieldsArr: ", fieldsArr)
+      newState[action.warehouseId] = { ...action.fields }
       return newState
     case STAGE_VAULT:
         const fieldId = action.stagingInfo.field_id
