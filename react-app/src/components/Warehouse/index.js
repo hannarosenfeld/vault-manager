@@ -18,7 +18,7 @@ export default function Warehouse() {
     const { warehouseId } = useParams(); 
     const warehouse = useSelector(state => state.warehouse[warehouseId]);
     let allFields = useSelector(state => state.field);
-    const [fields, setFields] = useState(Object.values(allFields));
+    const [fields, setFields] = useState(null);
 
     const [sortedFields, setSortedFields] = useState(null);
     // const [loadedSortedFields, setLoadedSortedFields] = useState(false);
@@ -34,9 +34,16 @@ export default function Warehouse() {
 
     useEffect(() => {
         // if (Object.values(allFields).length) setFields(Object.values(allFields).filter(field => (field.warehouse_id === warehouseId)).sort((a,b) => a.name - b.name))
-        if (Object.values(allFields).length) console.log("🌹 fields: ", allFields)
+        if (Object.values(allFields)) setFields(Object.values(allFields))
+    }, [allFields])
+
+    useEffect(() => {
+        if (fields) console.log("🌹 fields: ", fields)
 
     }, [fields])
+
+
+
 
     // useEffect(() => {
     //     console.log("!!!! sortedFields: ", sortedFields)
