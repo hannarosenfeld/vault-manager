@@ -29,13 +29,13 @@ export default function Warehouse() {
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
     const [toggleSelected, setToggleSelected] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [sortedObj, setSortedObj] = useState({});
 
     console.log("🌹 in warehouse component")
 
     useEffect(() => {
         console.log("🌺 warehouse: ", warehouse)
     }, [warehouse])
-
 
     useEffect(() => {
         console.log("!!!! sortedFields: ", sortedFields)
@@ -53,13 +53,14 @@ export default function Warehouse() {
     }, [dispatch, warehouseId])
 
 
-    useEffect(() => {
+    useEffect(async () => {
         if (!loading && fields) {
         try {
-            setSortedFields(fields.sort((a,b) => a.id-b.id));
+            setSortedFields(fields.sort((a,b) => a.name-b.name))
           } catch (error) {
             console.log(error);
           } finally {
+            // setSortedObj(sortedFields.map(field => {sortedObj[field.name] = field}))
             setLoadedSortedFields(true);
           }
     }
