@@ -3,7 +3,6 @@ import { useDispatch, useSelector} from "react-redux";
 import { Route, Switch, useHistory } from "react-router-dom";
 import { authenticate } from "./store/session";
 import { getAllWarehousesThunk } from "./store/warehouse";
-import { getCompaniesThunk } from "./store/company";
 
 import AddWarehouseForm from "./components/AddWarehouseForm";
 import SignupFormPage from "./components/SignupFormPage";
@@ -27,6 +26,12 @@ function App() {
     await dispatch(getAllWarehousesThunk());    
     history.push("/");
   }
+
+  console.log("😎 in App.js")
+
+  useEffect(() => {
+    console.log("💖 sessionUser: ", sessionUser)
+  }, [sessionUser])
 
   useEffect(() => {
     dispatch(authenticate())
