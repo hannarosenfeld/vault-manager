@@ -90,11 +90,11 @@ const fieldReducer = (state = initialState, action) => {
   switch (action.type) {
     case EDIT_FIELD:
       const [topField, bottomField] = action.fields
-      newState[topField.id] = topField
-      newState[bottomField.id] = bottomField
+      console.log("😎", topField,bottomField)
+      newState[topField.warehouse_id][topField.id] = topField
+      newState[bottomField.warehouse_id][bottomField.id] = bottomField
       return newState
     case EDIT_SINGLE_FIELD:
-      console.log("😎", action.field)
       return {
         ...state,
         [action.field.warehouse_id]: {
