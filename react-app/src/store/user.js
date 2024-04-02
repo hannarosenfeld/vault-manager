@@ -40,9 +40,7 @@ const initialState = {};
 const userReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_USERS:
-            console.log("💖", action.users)           
         case GET_USER:
-            console.log("🏁", action)         
         default:
             return state;
     }

@@ -20,9 +20,6 @@ export default function Warehouse() {
     let allFields = useSelector(state => state.field[warehouseId]);
     const [loadedWarehouseFields, setLoadedWarehouseFields] = useState(false);
     const [fields, setFields] = useState(null);
-
-    const [sortedFields, setSortedFields] = useState(null);
-    // const [loadedSortedFields, setLoadedSortedFields] = useState(false);
     const searchResult = useSelector(state => state.search.fields);
     const [position, setPosition] = useState(null);
     const [selectedFieldId, setSelectedFieldId] = useState(null);
@@ -31,7 +28,7 @@ export default function Warehouse() {
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
     const [toggleSelected, setToggleSelected] = useState(false);
     const [loading, setLoading] = useState(true);
-    // const [sortedObj, setSortedObj] = useState(null);
+
 
     useEffect(() => {
         setSelectedFieldId(null)
@@ -54,36 +51,6 @@ export default function Warehouse() {
     useEffect(() => {
         if (loadedWarehouseFields) setFields(Object.values(allFields).filter(field => field.warehouse_id === parseInt(warehouseId)).sort((a,b) => a.name - b.name))        
     }, [loadedWarehouseFields])
-
-    // useEffect(() => {
-    //     console.log("!!!! sortedFields: ", sortedFields)
-    //     if (sortedFields) {
-    //         setTimeout(() => {
-    //             sortedFields.map(field => setSortedObj(sortedObj[field.name] = field))
-    //         }, 4000)
-    //         if (Object.values(sortedObj).length) setLoading(false)
-    //     }
-    //     // setSortedFields(sortedFields.sort((a,b) => a.name-b.name))
-    // }, [sortedFields])
-
-    // useEffect(() => {
-    //     if (Object.values(sortedObj).length) setLoading(false)
-    // }, [sortedObj])
-
-
-    // useEffect(async () => {
-    //     if (!loading && fields) {
-    //         console.log("🐬 fields: ", fields)
-    //     try {
-    //         setSortedFields(fields.sort((a,b) => a.name-b.name))
-    //       } catch (error) {
-    //         console.log(error);
-    //       } finally {
-    //         // setSortedObj(sortedFields.map(field => {sortedObj[field.name] = field}))
-    //         setLoadedSortedFields(true);
-    //       }
-    // }
-    // }, [fields, allFields])
 
     const handleFieldClick = async (id) => {
         await setToggleSelected(false);
@@ -134,7 +101,6 @@ export default function Warehouse() {
     
     function fieldGenerator(fields) {
         if (fields) {
-        // console.log("🦐", fields.map(field => console.log(field)))
             return (
                 <div 
                     style={{
@@ -181,10 +147,6 @@ export default function Warehouse() {
 
     if (!warehouse) return null
 
-    // if (warehouse) {
-    //     fields = warehouse.fields.map(id => allFields[id])
-    // }
-
     return (
         <div className="warehouse-wrapper">
             {loading  && ( 
@@ -227,7 +189,6 @@ export default function Warehouse() {
                             vault={selectedVaultToStage}
                             onClose={closeConfirmStagingModal}
                             warehouseId={warehouseId}
-                            // fieldId={selectedFieldId}
                         />
                     </Modal>
                 </>

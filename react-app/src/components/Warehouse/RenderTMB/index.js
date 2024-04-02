@@ -31,10 +31,6 @@ const RenderTMB = ({
 
 
   useEffect(() => {
-    if (fields) console.log("🧖🏻‍♂️ fields: ", fields)
-  }, [fields])
-
-  useEffect(() => {
     setSortedVaults({});
     dispatch(getAllFieldVaultsThunk(selectedFieldId))
   }, [dispatch, selectedFieldId])
