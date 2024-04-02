@@ -7,26 +7,32 @@ import { getAllFieldVaultsThunk } from "../../../store/vault";
 import "./RenderTMB.css";
 
 const RenderTMB = ({ 
-  selectedFieldId, 
+  selectedFieldId,
   handleStageClick, 
   handleOpenAddVaultModal, 
   toggleFieldType, 
   toggleFieldFull,
   toggleSelected,
   selectedVault,
-  moveVault
+  moveVault,
+  warehouse
  }) => {
   const dispatch = useDispatch();
-  const fields = useSelector((state) => state.field);
-  const field = useSelector((state) => state.field[selectedFieldId]);
+  const fields = useSelector((state) => state.field[warehouse.id]);
+  const field = useSelector((state) => state.field[warehouse.id][selectedFieldId]);
   const vaults = useSelector((state) => state.vault);
   const vaultsArr = []
-  console.log("🧖🏻‍♂️ field: ", field)
+
   field.vaults.forEach(id => (vaults[id]) ?  vaultsArr.push(vaults[id]) : null);
   const [sortedVaults, setSortedVaults] = useState({});
   const [topmostVault, setTopmostVault] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const { type } = field
+
+
+  useEffect(() => {
+    if (fields) console.log("🧖🏻‍♂️ fields: ", fields)
+  }, [fields])
 
   useEffect(() => {
     setSortedVaults({});

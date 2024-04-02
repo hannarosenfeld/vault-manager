@@ -35,6 +35,9 @@ export default function Warehouse() {
 
     useEffect(() => {
         setSelectedFieldId(null)
+    }, [])
+
+    useEffect(() => {
         const warehouseInfo = dispatch(getAllWarehousesThunk());
         dispatch(getAllCustomersThunk())
         const fields = dispatch(getAllFieldsThunk(warehouseId))
