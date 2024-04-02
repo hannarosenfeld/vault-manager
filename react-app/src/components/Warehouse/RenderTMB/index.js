@@ -23,12 +23,13 @@ const RenderTMB = ({
   const vaults = useSelector((state) => state.vault);
   const vaultsArr = []
 
-  field.vaults.forEach(id => (vaults[id]) ?  vaultsArr.push(vaults[id]) : null);
+  field?.vaults?.forEach(id => (vaults[id]) ?  vaultsArr.push(vaults[id]) : null);
   const [sortedVaults, setSortedVaults] = useState({});
   const [topmostVault, setTopmostVault] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const { type } = field
 
+  console.log("❤️‍🔥 field: ", field.vaults)
 
   useEffect(() => {
     setSortedVaults({});
@@ -164,7 +165,7 @@ const RenderTMB = ({
                 role="switch"
                 id="flexSwitchCheckDefault"
                 checked={type === "couchbox-T"}
-                onChange={() => toggleFieldType(type, fields[selectedFieldId], fields[selectedFieldId+1])}
+                onChange={() => toggleFieldType(type, field, fields[field.id+1])}
               />
               <label className={`field-type-label ${type === 'vault' ? 'vault-label' : 'couchbox-label'}`}>
                 {type === 'couchbox-T' ? 'couchbox' : 'vault'}

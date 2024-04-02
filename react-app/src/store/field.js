@@ -94,8 +94,14 @@ const fieldReducer = (state = initialState, action) => {
       newState[bottomField.id] = bottomField
       return newState
     case EDIT_SINGLE_FIELD:
-      newState[action.field.id] = action.field
-      return newState
+      console.log("😎", action.field)
+      return {
+        ...state,
+        [action.field.warehouse_id]: {
+        ...state[action.field.warehouse_id],
+        [action.field.id]: action.field
+      }
+    }
     case GET_ALL_FIELDS:
       newState[action.warehouseId] = { ...action.fields }
       return newState
