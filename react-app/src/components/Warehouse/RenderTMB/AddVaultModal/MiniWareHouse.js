@@ -1,11 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 export default function MiniWareHouse({ selectedFieldId, warehouseId }) {
-    let fields = [];
     const warehouse = useSelector((state) => state.warehouse[warehouseId]);
     const allFields = useSelector(state => state.field[warehouseId]);
-    
+    const [fields, setFields] = useState(null);
+
+    useEffect(() => {
+        if (allFields) setFields(Object.values(allFields).filter(field => field.warehouse_id === parseInt(warehouseId)).sort((a,b) => a.name - b.name))        
+    }, [allFields])
+
     function fieldGenerator(fields) {
             return (
                 <div 
@@ -48,12 +52,10 @@ export default function MiniWareHouse({ selectedFieldId, warehouseId }) {
     }
     if (!warehouse) return null
 
-    if (warehouse) fields = warehouse.fields.map(id => allFields[id])
-
     
     return(
         <div>
-            {fields.length && fieldGenerator(fields)}
+            {fields?.length && fieldGenerator(fields)}
         </div>
     )
 }

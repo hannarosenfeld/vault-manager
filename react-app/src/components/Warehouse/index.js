@@ -71,10 +71,10 @@ export default function Warehouse() {
         setIsConfirmStagingModalOpen(true);
     };
 
-    const closeConfirmStagingModal = () => {
+    const closeConfirmStagingModal = async () => {
         setSelectedVaultToStage(null);
         setIsConfirmStagingModalOpen(false);
-        window.location.reload(); // TODO: we need to find a better way to update the frontend without reloading the page
+        // window.location.reload(); // TODO: we need to find a better way to update the frontend without reloading the page
     }
 
     const toggleFieldType = (type, topField, bottomField) => {
@@ -101,6 +101,7 @@ export default function Warehouse() {
 
     const toggleFieldFull = (fieldId) => {
         dispatch(editSingleFieldThunk(fieldId, {}))
+
         window.location.reload(); // TODO: we need to find a better way to update the frontend without reloading the page
     }
 
