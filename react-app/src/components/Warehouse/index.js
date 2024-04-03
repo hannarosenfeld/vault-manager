@@ -137,7 +137,7 @@ export default function Warehouse() {
                                 searchResult && searchResult?.includes(field.id) ? "3px solid var(--blue)" :
                                 "none"
                             }`,
-                            height: `${field.type === "couchbox-T" ? "209%" : '100%'}`,
+                            height: `${field.type === "couchbox-T" ? "213%" : '100%'}`,
                             marginBottom: `${field.type === "couchbox-T" ? "-2.6em" : '0'}`,
                             width: `${field.type === "couchbox-B" ? "0px" : ''}`,
                             zIndex: `${field.type === "couchbox-B" ? "100" : 'none'}`,

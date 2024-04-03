@@ -35,18 +35,18 @@ export default function MiniWareHouse({ warehouseId, setSelectedField, selectedF
                                 onClick={() => setSelectedField(field)}
                                 style={{
                                     backgroundColor: `${
+                                        selectedField && (selectedField?.id === field.id) ? "var(--blue)":
                                         field?.vaults?.length === 3 || field.full ? "var(--red)" :
                                             field?.vaults?.length === 2 ? "var(--yellow)" :
                                                 field.vaults?.length === 1 ? "var(--green)" :
                                                     "var(--lightgrey)"
                                     }`,                                    
-                                    border: `${selectedField && (selectedField?.id === field.id) ? "3px solid var(--blue)": "transparent"}`,
-                                    marginBottom: `${field.type === "couchbox-T" ? "-2.2em" : 'none'}`,
+                                    // border: `${selectedField && (selectedField?.id === field.id) ? "2px solid var(--blue)": "transparent"}`,
+                                    // padding: `${selectedField && (selectedField?.id === field.id) ? "-2px" : 'none'}`,
                                     width: `${field.type === "couchbox-B" ? "0px" : '100%'}`,
                                     zIndex: `${field.type === "couchbox-B" ? "100" : 'none'}`,
-                                    display: "flex",
                                     alignItems: "center",
-                                    // height: `${field.type === "couchbox-T" ? "10em" : '100%'}`,
+                                    height: `${field.type === "couchbox-T" ? "213%" : '100%'}`,
                                     // padding: `${selectedField && (selectedField?.id === field.id) ? "5px": "0"}`,
                                 }}
                             >
