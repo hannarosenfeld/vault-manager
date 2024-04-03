@@ -13,7 +13,7 @@ def get_all_fields(warehouseId):
 
 
 @field_routes.route('/single/<int:id>', methods=['PUT'])
-def edit_single_field(id):
+def toggle_field_full(id):
 
     form = EditFieldForm()
     form['csrf_token'].data = request.cookies['csrf_token']

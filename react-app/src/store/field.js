@@ -1,16 +1,21 @@
 import { STAGE_VAULT } from "./vault";
 const GET_ALL_FIELDS = "field/GET_ALL_FIELDS";
-const EDIT_FIELD = "field/EDIT_FIELD";
-const EDIT_SINGLE_FIELD = "field/EDIT_SINGLE_FIELD";
+const EDIT_FIELD_TYPE = "field/EDIT_FIELD_TYPE";
+const TOGGLE_FIELD_FULL = "field/TOGGLE_FIELD_FULL";
+const SET_SELECTED_FIELD = "field/SET_SELECTED_FIELD";
 
+export const setSelectedFieldAction = (field) => ({
+  type: SET_SELECTED_FIELD,
+  field
+})
 
 const editFieldAction = (fields) => ({
-  type: EDIT_FIELD,
+  type: EDIT_FIELD_TYPE,
   fields
 })
 
 const editSingleFieldAction = (field) => ({
-  type: EDIT_SINGLE_FIELD,
+  type: TOGGLE_FIELD_FULL,
   field
 })
 
@@ -88,13 +93,18 @@ const initialState = {};
 const fieldReducer = (state = initialState, action) => {
   let newState = { ...state };
   switch (action.type) {
-    case EDIT_FIELD:
+    case SET_SELECTED_FIELD:
+      console.log("💖", action)
+      return {
+        ...state,
+        selectedField: action.field
+      }
+    case EDIT_FIELD_TYPE:
       const [topField, bottomField] = action.fields
-      console.log("😎", topField,bottomField)
       newState[topField.warehouse_id][topField.id] = topField
       newState[bottomField.warehouse_id][bottomField.id] = bottomField
       return newState
-    case EDIT_SINGLE_FIELD:
+    case TOGGLE_FIELD_FULL:
       return {
         ...state,
         [action.field.warehouse_id]: {
@@ -107,10 +117,6 @@ const fieldReducer = (state = initialState, action) => {
       return newState
     case STAGE_VAULT:
         const field = action.stagingInfo.field
-        // let fieldVaults = field.vaults
-        // let index = fieldVaults.indexOf(action.stagingInfo.vault.id)
-        // field.vaults = [...fieldVaults.slice(0, index), ...fieldVaults.slice(index+1)]
-        console.log("😖", field.vaults)
         return {
           ...state,
           [field.warehouse_id] : {

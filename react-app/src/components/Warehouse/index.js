@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from '@mui/material/Modal';
 import CircularProgress from '@mui/material/CircularProgress';
-import { editFieldThunk, getAllFieldsThunk, editSingleFieldThunk } from "../../store/field.js";
+import { editFieldThunk, getAllFieldsThunk, editSingleFieldThunk, setSelectedFieldAction } from "../../store/field.js";
 import { useParams } from "react-router-dom";  
 import { getAllWarehousesThunk } from "../../store/warehouse.js";
 import { getAllCustomersThunk } from "../../store/customer.js";
@@ -22,7 +22,7 @@ export default function Warehouse() {
     const [fields, setFields] = useState(null);
     const searchResult = useSelector(state => state.search.fields);
     const [position, setPosition] = useState(null);
-    const [selectedFieldId, setSelectedFieldId] = useState(null);
+    const selectedField = useSelector(state => state.field.selectedField);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] = useState(false);
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
@@ -30,11 +30,10 @@ export default function Warehouse() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        setSelectedFieldId(null);
+        dispatch(setSelectedFieldAction(null));
     }, [warehouseId])
 
     useEffect(() => {
-        setSelectedFieldId(null)
         setFields(null);
         setLoading(true);
         setLoadedWarehouseFields(false)
@@ -55,9 +54,15 @@ export default function Warehouse() {
         if (loadedWarehouseFields) setFields(Object.values(allFields).filter(field => field.warehouse_id === parseInt(warehouseId)).sort((a,b) => a.name - b.name))        
     }, [loadedWarehouseFields])
 
-    const handleFieldClick = async (id) => {
+    const handleFieldClick = async (field) => {
+        await setLoading(true);
         await setToggleSelected(false);
-        await setSelectedFieldId(id);
+
+        const setField = await dispatch(setSelectedFieldAction(field))
+
+        Promise.all([setField])
+            .then(() => setLoading(false))
+            .catch(() => console.log("🥐 couldn't set field"));
     };
 
     const handleOpenAddVaultModal = async (position) => {
@@ -81,8 +86,6 @@ export default function Warehouse() {
     }
 
     const toggleFieldType = (type, topField, bottomField) => {
-        console.log("🎖️", selectedFieldId, topField, bottomField)
-
         if (!bottomField) return alert("Can't switch to a couchbox on the last row")
         if (topField.vaults.length || bottomField.vaults.length) return alert("Please empty field before switching field type!")
         
@@ -108,7 +111,6 @@ export default function Warehouse() {
         window.location.reload(); // TODO: we need to find a better way to update the frontend without reloading the page
     }
 
-    
     function fieldGenerator(fields) {
         if (fields) {
             return (
@@ -138,7 +140,7 @@ export default function Warehouse() {
                                 "var(--lightgrey)"
                             }`,
                             border: `${
-                                selectedFieldId === field.id ? "3px solid var(--blue)" : 
+                                selectedField?.id === field.id ? "3px solid var(--blue)" : 
                                 searchResult && searchResult?.includes(field.id) ? "3px solid var(--blue)" :
                                 "none"
                             }`,
@@ -147,7 +149,7 @@ export default function Warehouse() {
                             width: `${field.type === "couchbox-B" ? "0px" : ''}`,
                             zIndex: `${field.type === "couchbox-B" ? "100" : 'none'}`,
                         }}
-                        onClick={() => handleFieldClick(field.id)}
+                        onClick={() => handleFieldClick(field)}
                     >{field.type === "couchbox-B" ? "" : <div className="field-number">{field.name}</div>}</div>
                     ))}
                 </div>
@@ -167,9 +169,8 @@ export default function Warehouse() {
             {!loading && ( 
                 <>
                     <div className="field-info">
-                        {selectedFieldId ? (
+                        {selectedField?.id ? (
                             <RenderTMB
-                                selectedFieldId={selectedFieldId}
                                 handleStageClick={handleStageClick}
                                 handleOpenAddVaultModal={handleOpenAddVaultModal}
                                 toggleFieldType={toggleFieldType}
@@ -189,7 +190,6 @@ export default function Warehouse() {
                     <Modal open={isModalOpen}>
                         <AddVaultModal
                             onClose={handleCloseModal}
-                            selectedFieldId={selectedFieldId}
                             position={position}
                             warehouseId={warehouseId}
                         />

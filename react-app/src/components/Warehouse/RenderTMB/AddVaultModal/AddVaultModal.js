@@ -11,12 +11,13 @@ import "./AddVaultModal.css"
 import MiniWareHouse from './MiniWareHouse';
 
 
-export default function AddVaultModal({ onClose, selectedFieldId, warehouseId, position }) {
+export default function AddVaultModal({ onClose, warehouseId, position }) {
     const dispatch = useDispatch();
     const customersObj = useSelector(state => state.customer)
     const customers = Object.values(customersObj)
     const vaultObj = useSelector(state => state.vault.vaults);
-    const field = useSelector(state => state.field[warehouseId][selectedFieldId])
+    const field = useSelector(state => state.field.selectedField)
+    const selectedFieldId = field.id
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [customer_name, setCustomerName] = useState('');
     const [vault_id, setVaultId] = useState('');
