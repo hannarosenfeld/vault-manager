@@ -15,6 +15,7 @@ const EditVaultPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { warehouseId, fieldId, vaultId } = useParams();
+  const warehouse = useSelector(state => state.warehouse[warehouseId]);
   const vault = useSelector((state) => state.vault[vaultId]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -25,7 +26,7 @@ const EditVaultPage = () => {
   const [customerName, setCustomerName] = useState()
   const [vaultName, setVaultName] = useState()
   const [orderNumber, setOrderNumber] = useState()
-
+  const companyName = warehouse.companyName.toLowerCase();
 
   useEffect(() => {
     if (!vault) {
@@ -64,7 +65,8 @@ const EditVaultPage = () => {
     try {
       await dispatch(updateCustomerNameThunk(vault.customer_id, customerName));
       await dispatch(editVaultThunk(vault.id, vaultData));
-      history.push(`/warehouse/${warehouseId}`);
+
+      history.push(`/${companyName}/warehouse/${warehouseId}`);
     } catch (error) {
       console.error('Error saving vault:', error);
     }
@@ -75,9 +77,10 @@ const EditVaultPage = () => {
   };
 
   const confirmDelete = async () => {
+    console.log("💖", vault)
     await dispatch(deleteVaultThunk(vault.id));
     await setIsDeleteModalOpen(false);
-    history.push(`/warehouse/${warehouseId}`);
+    history.push(`/${companyName}/warehouse/${warehouseId}`);
   };
 
   const closeDeleteModal = () => {

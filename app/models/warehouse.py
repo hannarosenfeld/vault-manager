@@ -31,6 +31,7 @@ class Warehouse(db.Model):
             'columns': self.cols,
             'fields': [field.id for field in self.warehouse_fields],
             'orders': [order.id for order in self.orders],
-            'companyId': self.company_id
+            'companyId': self.company_id,
+            'companyName': self.company.name
             # 'vaults': [vault.to_dict() for vault in self.warehouse_vaults],
         }
