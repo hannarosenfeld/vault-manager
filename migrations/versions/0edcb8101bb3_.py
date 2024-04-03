@@ -48,7 +48,7 @@ def upgrade():
     sa.PrimaryKeyConstraint('customer_id', 'company_id')
     )
     if environment == "production":
-        op.execute(f"ALTER TABLE users SET SCHEMA {SCHEMA};")
+        op.execute(f"ALTER TABLE company_customers SET SCHEMA {SCHEMA};")
 
     op.create_table('orders',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -58,7 +58,7 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     if environment == "production":
-        op.execute(f"ALTER TABLE company_customers SET SCHEMA {SCHEMA};")
+        op.execute(f"ALTER TABLE orders SET SCHEMA {SCHEMA};")
 
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
