@@ -30,7 +30,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
 
   useEffect(() => {
     dispatch(getAllWarehousesThunk());
-  }, []);
+  }, [selectedWarehouse]);
 
 
   // useEffect(() => {

@@ -12,16 +12,16 @@ export default function MiniWareHouse({ warehouseId, setSelectedField, selectedF
     const [fields, setFields] = useState(null);
 
     useEffect(() => {
-        const fields = dispatch(getAllFieldsThunk(warehouseId))
+        const warehouseFields = dispatch(getAllFieldsThunk(warehouseId))
 
-        Promise.all([fields])
+        Promise.all([warehouseFields])
             .then(() => setLoadedWarehouseFields(true))
             .catch(() => console.log("🚨 fields could not be loaded!"))
     }, [dispatch, warehouseId])
 
     useEffect(() => {
         if (loadedWarehouseFields) setFields(Object.values(allFields).filter(field => field.warehouse_id === parseInt(warehouseId)).sort((a,b) => a.name - b.name))        
-    }, [loadedWarehouseFields])
+    }, [loadedWarehouseFields, warehouseId])
 
     function fieldGenerator(fields) {
         const res = [];
