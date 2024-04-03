@@ -4,8 +4,7 @@ import { useSelector } from "react-redux";
 export default function MiniWareHouse({ selectedFieldId, warehouseId }) {
     let fields = [];
     const warehouse = useSelector((state) => state.warehouse[warehouseId]);
-    const allFields = useSelector(state => state.field);
-
+    const allFields = useSelector(state => state.field[warehouseId]);
     
     function fieldGenerator(fields) {
             return (

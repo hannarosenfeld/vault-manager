@@ -16,7 +16,7 @@ export default function AddVaultModal({ onClose, selectedFieldId, warehouseId, p
     const customersObj = useSelector(state => state.customer)
     const customers = Object.values(customersObj)
     const vaultObj = useSelector(state => state.vault.vaults);
-    const field = useSelector(state => state.field[selectedFieldId])
+    const field = useSelector(state => state.field[warehouseId][selectedFieldId])
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [customer_name, setCustomerName] = useState('');
     const [vault_id, setVaultId] = useState('');
