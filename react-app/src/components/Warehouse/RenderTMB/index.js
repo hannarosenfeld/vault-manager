@@ -18,7 +18,6 @@ const RenderTMB = ({
   warehouse
  }) => {
 
-
   const dispatch = useDispatch();
   const fields = useSelector((state) => state.field[warehouse.id]);
   const field = useSelector((state) => state.field[warehouse.id][selectedFieldId]);
@@ -30,7 +29,6 @@ const RenderTMB = ({
   const [topmostVault, setTopmostVault] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const { type } = field
-
 
   useEffect(() => {
     setSortedVaults({});
@@ -49,6 +47,11 @@ const RenderTMB = ({
     setIsLoading(false)
   }, [dispatch, vaults, selectedFieldId]);
 
+  useEffect(() => {
+    return () => {
+      selectedFieldId=null
+    };
+  }, []);
 
   const { T, M, M2, B } = sortedVaults
 

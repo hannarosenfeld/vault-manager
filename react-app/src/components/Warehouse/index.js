@@ -29,16 +29,15 @@ export default function Warehouse() {
     const [toggleSelected, setToggleSelected] = useState(false);
     const [loading, setLoading] = useState(true);
 
-
     useEffect(() => {
-        setSelectedFieldId(null)
-    }, [])
+        setSelectedFieldId(null);
+    }, [warehouseId])
 
     useEffect(() => {
         setSelectedFieldId(null)
         setFields(null);
         setLoading(true);
-        setLoadedWarehouseFields(false);
+        setLoadedWarehouseFields(false)
         const warehouseInfo = dispatch(getAllWarehousesThunk());
         dispatch(getAllCustomersThunk())
         const fields = dispatch(getAllFieldsThunk(warehouseId))
