@@ -18,6 +18,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   // const vaults = useSelector(state => state.vault.vaults);
   const warehousesObj = useSelector(state => state.warehouse);
   const warehouses = Object.values(warehousesObj)
+  const warehouse = useSelector(state => state.warehouse[selectedWarehouse])
   const [selectedField, setSelectedField] = useState(null);
   const [selectedFieldIndex, setSelectedFieldIndex] = useState(0);
   const [selectedRow, setSelectedRow] = useState(null);
@@ -122,6 +123,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
                       selectedFieldId={selectedField.id}
                       selectedVault={selectedVault}
                       moveVault={moveVault}
+                      warehouse={warehouse}
                     />
                   ) : (
                     <div style={{height: "9em"}}>

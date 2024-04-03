@@ -8,11 +8,20 @@ export default function MiniWareHouse({ warehouseId, setSelectedField, selectedF
     const dispatch = useDispatch();
     const warehouse = useSelector((state) => state.warehouse[warehouseId]);
     const allFields = useSelector((state) => state.field[warehouseId])
-    let fields = [];
+    const [loadedWarehouseFields, setLoadedWarehouseFields] = useState(false);
+    const [fields, setFields] = useState(null);
 
     useEffect(() => {
-        fields = dispatch(getAllFieldsThunk(warehouseId));
-    }, [warehouseId])
+        const fields = dispatch(getAllFieldsThunk(warehouseId))
+
+        Promise.all([fields])
+            .then(() => setLoadedWarehouseFields(true))
+            .catch(() => console.log("🚨 fields could not be loaded!"))
+    }, [dispatch, warehouseId])
+
+    useEffect(() => {
+        if (loadedWarehouseFields) setFields(Object.values(allFields).filter(field => field.warehouse_id === parseInt(warehouseId)).sort((a,b) => a.name - b.name))        
+    }, [loadedWarehouseFields])
 
     function fieldGenerator(fields) {
         const res = [];
@@ -51,13 +60,13 @@ export default function MiniWareHouse({ warehouseId, setSelectedField, selectedF
     }
     if (!warehouse) return null
 
-    if (warehouse) fields = warehouse.fields.map(id => allFields[id])
+    // if (warehouse) fields = warehouse.fields.map(id => allFields[id])
 
     
     return(
         <div className="warehouse-wrapper">
             <div className="mini-warehouse">
-                {fields.length && fieldGenerator(fields)}
+                {fields && fieldGenerator(fields)}
             </div>
          </div>   
     )
