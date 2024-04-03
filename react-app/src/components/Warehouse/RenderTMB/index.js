@@ -47,12 +47,6 @@ const RenderTMB = ({
     setIsLoading(false)
   }, [dispatch, vaults, selectedFieldId]);
 
-  useEffect(() => {
-    return () => {
-      selectedFieldId=null
-    };
-  }, []);
-
   const { T, M, M2, B } = sortedVaults
 
   const updateTopmostVault = () => {
