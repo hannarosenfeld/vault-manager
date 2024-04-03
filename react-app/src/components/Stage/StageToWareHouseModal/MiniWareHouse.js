@@ -4,9 +4,10 @@ import { getAllFieldsThunk } from "../../../store/field";
 import "./MiniWarehouse.css";
 
 export default function MiniWareHouse({ warehouseId, setSelectedField, selectedField}) {
+    console.log("🦋", warehouseId)
     const dispatch = useDispatch();
     const warehouse = useSelector((state) => state.warehouse[warehouseId]);
-    const allFields = useSelector((state) => state.field)
+    const allFields = useSelector((state) => state.field[warehouseId])
     let fields = [];
 
     useEffect(() => {
@@ -25,9 +26,9 @@ export default function MiniWareHouse({ warehouseId, setSelectedField, selectedF
                                 onClick={() => setSelectedField(field)}
                                 style={{
                                     backgroundColor: `${
-                                        field.vaults.length === 3 || field.full ? "var(--red)" :
-                                            field.vaults.length === 2 ? "var(--yellow)" :
-                                                field.vaults.length === 1 ? "var(--green)" :
+                                        field?.vaults?.length === 3 || field.full ? "var(--red)" :
+                                            field?.vaults?.length === 2 ? "var(--yellow)" :
+                                                field.vaults?.length === 1 ? "var(--green)" :
                                                     "var(--lightgrey)"
                                     }`,                                    
                                     border: `${selectedField && (selectedField?.id === field.id) ? "3px solid var(--blue)": "transparent"}`,
