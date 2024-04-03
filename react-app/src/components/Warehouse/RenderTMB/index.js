@@ -106,7 +106,7 @@ const RenderTMB = ({
           { type === "couchbox-T" && 
             <div className="middle-top middle field-row">
               <span className='position'>M2</span>
-              { !M2 && M && B ? (
+              { !T && !M2 && M && B ? (
                 <AddVaultButton position="M2" vault={selectedVault} handleOpenAddVaultModal={handleOpenAddVaultModal} moveVault={moveVault} fieldType={type} isFull={field.full}/>
               ) : sortedVaults["M2"]? (
                 <VaultInstance
