@@ -18,6 +18,7 @@ const RenderTMB = ({
   warehouse
  }) => {
 
+
   const dispatch = useDispatch();
   const fields = useSelector((state) => state.field[warehouse.id]);
   const field = useSelector((state) => state.field[warehouse.id][selectedFieldId]);
@@ -30,7 +31,6 @@ const RenderTMB = ({
   const [isLoading, setIsLoading] = useState(true);
   const { type } = field
 
-  console.log("❤️‍🔥 field: ", field.vaults)
 
   useEffect(() => {
     setSortedVaults({});
@@ -87,10 +87,11 @@ const RenderTMB = ({
                 <span className="material-symbols-outlined">warning</span>Field is full
               </div>
             )} */}
-            { !T && M2 && M && B ? (
+            { field.type === "couchbox-T" && !T && M2 && M && B ? (
               <AddVaultButton position="T" vault={selectedVault} handleOpenAddVaultModal={handleOpenAddVaultModal} moveVault={moveVault} fieldType={type} isFull={field.full}/>
-            ) 
-            : sortedVaults["T"] ? (
+              ) : field.type === "vault" && !sortedVaults.M2 && !T && M && B ? (
+                <AddVaultButton position="T" vault={selectedVault} handleOpenAddVaultModal={handleOpenAddVaultModal} moveVault={moveVault} fieldType={type} isFull={field.full}/>
+              ) : sortedVaults["T"] ? (
               <VaultInstance
                 position="T"
                 vault={sortedVaults["T"]}
