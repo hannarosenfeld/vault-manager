@@ -63,7 +63,7 @@ function App() {
               <Warehouse />
             </Route>          
 
-            <Route path="/warehouse/:warehouseId/field/:fieldId/vaults/:vaultId/edit">
+            <Route path="/:companyName/warehouse/:warehouseId/field/:fieldId/vaults/:vaultId/edit">
               <EditVaultPage />
             </Route>
 
