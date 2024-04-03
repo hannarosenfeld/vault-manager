@@ -106,13 +106,18 @@ const fieldReducer = (state = initialState, action) => {
       newState[action.warehouseId] = { ...action.fields }
       return newState
     case STAGE_VAULT:
-        const fieldId = action.stagingInfo.field_id
-        const field = newState[fieldId]
-        let fieldVaults = field.vaults
-        let index = fieldVaults.indexOf(action.stagingInfo.vault.id)
-        field.vaults = [...fieldVaults.slice(0, index), ...fieldVaults.slice(index+1)]
-        
-        return newState
+        const field = action.stagingInfo.field
+        // let fieldVaults = field.vaults
+        // let index = fieldVaults.indexOf(action.stagingInfo.vault.id)
+        // field.vaults = [...fieldVaults.slice(0, index), ...fieldVaults.slice(index+1)]
+        console.log("😖", field.vaults)
+        return {
+          ...state,
+          [field.warehouse_id] : {
+            ...state[field.warehouse_id],
+            [field.id] : field
+          }
+        }
     default:
       return state;
   }

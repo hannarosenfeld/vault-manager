@@ -165,9 +165,10 @@ def manage_vault(id):
                 field_id = vault.field_id
                 vault.field_id = None
                 vault.position = None
+                field = Field.query.get(field_id)
 
                 db.session.commit()
-                return { 'vault': vault.to_dict(), 'field_id': field_id }
+                return { 'vault': vault.to_dict(), 'field': field.to_dict() }
 
             # customer = Customer.query.get(vault.customer_id)
             # customer.name = 
