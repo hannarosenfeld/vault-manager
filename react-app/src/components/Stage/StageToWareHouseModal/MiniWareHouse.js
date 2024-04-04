@@ -6,10 +6,8 @@ import "./MiniWarehouse.css";
 export default function MiniWareHouse({ warehouseId}) {
     const dispatch = useDispatch();
     const warehouse = useSelector((state) => state.warehouse[warehouseId]);
-    console.log("🐳", warehouse)
     const allFields = useSelector((state) => state.field[warehouseId])
     const selectedField = useSelector(state => state.field.selectedField)
-    
     const [loadedWarehouseFields, setLoadedWarehouseFields] = useState(false);
     const [fields, setFields] = useState(null);
 
@@ -28,7 +26,7 @@ export default function MiniWareHouse({ warehouseId}) {
 
     function fieldGenerator(fields) {
         console.log("fields")
-        if (fields) {
+        if (loadedWarehouseFields && fields) {
             return (
                 <div
                     style={{
