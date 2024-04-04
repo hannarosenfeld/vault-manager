@@ -6,6 +6,7 @@ import "./MiniWarehouse.css";
 export default function MiniWareHouse({ warehouseId}) {
     const dispatch = useDispatch();
     const warehouse = useSelector((state) => state.warehouse[warehouseId]);
+    console.log("🐳", warehouse)
     const allFields = useSelector((state) => state.field[warehouseId])
     const selectedField = useSelector(state => state.field.selectedField)
     
@@ -13,6 +14,7 @@ export default function MiniWareHouse({ warehouseId}) {
     const [fields, setFields] = useState(null);
 
     useEffect(() => {
+        setLoadedWarehouseFields(false)
         const warehouseFields = dispatch(getAllFieldsThunk(warehouseId))
 
         Promise.all([warehouseFields])

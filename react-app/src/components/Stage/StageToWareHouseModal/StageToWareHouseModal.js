@@ -21,7 +21,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
 
 
   useEffect(() => {
-    dispatch(getAllWarehousesThunk());
+    // dispatch(getAllWarehousesThunk());
     dispatch(setSelectedFieldAction(null));
     // setLoadingVaults(true);
   }, [selectedWarehouse]);
