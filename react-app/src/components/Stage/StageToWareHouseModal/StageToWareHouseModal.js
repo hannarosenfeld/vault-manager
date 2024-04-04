@@ -19,9 +19,9 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   const selectedField = useSelector(state => state.field.selectedField);
   const [loadingVaults, setLoadingVaults] = useState(false);
 
-  useEffect(() => {
-    
-  }, [selectedWarehouse])
+  // useEffect(() => {
+
+  // }, [selectedWarehouse])
 
   useEffect(() => {
     dispatch(getAllWarehousesThunk());
