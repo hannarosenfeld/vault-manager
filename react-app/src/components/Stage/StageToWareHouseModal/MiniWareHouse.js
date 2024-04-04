@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllFieldsThunk } from "../../../store/field";
+import { getAllFieldsThunk,setSelectedFieldAction } from "../../../store/field";
 import "./MiniWarehouse.css";
 
-export default function MiniWareHouse({ warehouseId, setSelectedField, selectedField}) {
-    console.log("🦋", warehouseId)
+export default function MiniWareHouse({ warehouseId}) {
     const dispatch = useDispatch();
     const warehouse = useSelector((state) => state.warehouse[warehouseId]);
     const allFields = useSelector((state) => state.field[warehouseId])
+    const selectedField = useSelector(state => state.field.selectedField)
     const [loadedWarehouseFields, setLoadedWarehouseFields] = useState(false);
     const [fields, setFields] = useState(null);
 
@@ -20,7 +20,7 @@ export default function MiniWareHouse({ warehouseId, setSelectedField, selectedF
     }, [dispatch, warehouseId])
 
     useEffect(() => {
-        if (loadedWarehouseFields) setFields(Object.values(allFields).filter(field => field.warehouse_id === parseInt(warehouseId)).sort((a,b) => a.name - b.name))        
+        if (loadedWarehouseFields && allFields) setFields(Object.values(allFields).filter(field => field.warehouse_id === parseInt(warehouseId)).sort((a,b) => a.name - b.name))        
     }, [loadedWarehouseFields, warehouseId])
 
     function fieldGenerator(fields) {
@@ -32,7 +32,7 @@ export default function MiniWareHouse({ warehouseId, setSelectedField, selectedF
                     field && res.push(
                     <div className="miniwarehouse-field"
                                 key={field.id}
-                                onClick={() => setSelectedField(field)}
+                                onClick={async () => await dispatch(setSelectedFieldAction(field))}
                                 style={{
                                     backgroundColor: `${
                                         selectedField && (selectedField?.id === field.id) ? "var(--blue)":
