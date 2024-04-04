@@ -20,9 +20,14 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   const [loadingVaults, setLoadingVaults] = useState(false);
 
   useEffect(() => {
+    
+  }, [selectedWarehouse])
+
+  useEffect(() => {
     dispatch(getAllWarehousesThunk());
     dispatch(setSelectedFieldAction(null));
-  }, [selectedWarehouse]);
+    setLoadingVaults(true);
+  }, []);
 
 
   const moveVault = async (vault, position) => {
@@ -36,9 +41,10 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
     }
   };
   
-  const toggleWarehouse = async(warehouseId) => {  
-    setSelectedWarehouse(warehouseId);
-  }
+
+useEffect(() => {
+    console.log("🐎",selectedWarehouse)
+})
 
   return (
     <div className="stage-to-warehouse-modal-wrapper">
@@ -62,7 +68,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
               </div>
               <div className="warehouses-button-container">
                 {warehouses.map(warehouse => (
-                    <button onClick={() => toggleWarehouse(warehouse.id)} type="button" className={`${warehouse.id === selectedWarehouse ? 'btn btn-primary' : 'btn btn-secondary'}`}>{warehouse.name}</button>
+                    <button onClick={() => setSelectedWarehouse(warehouse.id)} type="button" className={`${warehouse.id === selectedWarehouse ? 'btn btn-primary' : 'btn btn-secondary'}`}>{warehouse.name}</button>
                 ))}
               </div>
               </div>
