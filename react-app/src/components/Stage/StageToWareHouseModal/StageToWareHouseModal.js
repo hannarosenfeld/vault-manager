@@ -17,23 +17,20 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   const warehouses = Object.values(warehousesObj);
   const warehouse = useSelector(state => state.warehouse[selectedWarehouse]);
   const selectedField = useSelector(state => state.field.selectedField);
-  const [loadingVaults, setLoadingVaults] = useState(false);
+  // const [loadingVaults, setLoadingVaults] = useState(false);
 
-  // useEffect(() => {
-
-  // }, [selectedWarehouse])
 
   useEffect(() => {
     dispatch(getAllWarehousesThunk());
     dispatch(setSelectedFieldAction(null));
-    setLoadingVaults(true);
-  }, []);
+    // setLoadingVaults(true);
+  }, [selectedWarehouse]);
 
 
   const moveVault = async (vault, position) => {
-    if (loadingVaults) {
-      return;
-    }
+    // if (loadingVaults) {
+    //   return;
+    // }
     if (selectedField) {
       await dispatch(moveVaultFromStageToWarehouseThunk(vault.id, selectedField.id, position))
       await dispatch(getVaultsThunk())
