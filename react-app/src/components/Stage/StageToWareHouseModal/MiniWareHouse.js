@@ -69,15 +69,10 @@ export default function MiniWareHouse({ warehouseId}) {
         }
 
     if (!warehouse) return null
-
-    // if (warehouse) fields = warehouse.fields.map(id => allFields[id])
-
     
     return(
         <div className="warehouse-wrapper">
-
-                {fields && fieldGenerator(fields)}
-
-         </div>   
+            {fields && fieldGenerator(fields)}
+        </div>   
     )
 }

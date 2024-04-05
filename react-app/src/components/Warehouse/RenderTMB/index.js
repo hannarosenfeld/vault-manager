@@ -31,9 +31,10 @@ const RenderTMB = ({
 
 
   useEffect(() => {
+    setIsLoading(true);
     setSortedVaults({});
     dispatch(getAllFieldVaultsThunk(selectedFieldId))
-  }, [dispatch, selectedFieldId])
+  }, [selectedFieldId])
 
   useEffect(() => {
     const sortVaults = {};
@@ -44,8 +45,9 @@ const RenderTMB = ({
 
       setSortedVaults(sortVaults)
     }
-    setIsLoading(false)
-  }, [dispatch, vaults, selectedFieldId]);
+
+    setIsLoading(false)    
+  }, [vaults]);
 
   const { T, M, M2, B } = sortedVaults
 
@@ -56,11 +58,10 @@ const RenderTMB = ({
         topVault = vault;
       }
     }
-
     setTopmostVault(topVault);
   };
 
-  useEffect(() => {
+  useEffect(() => { 
     if (vaultsArr && vaultsArr.length > 0) {
       updateTopmostVault();
     }
@@ -71,9 +72,9 @@ const RenderTMB = ({
     <div className="rendertmb-container">
     {isLoading ? (
       <div className="rendertmb-loading-container">
-        <div class="spinner-border text-primary" role="status">
+        {/* <div class="spinner-border text-primary" role="status">
           <span class="sr-only">Loading...</span>
-        </div>
+        </div> */}
     </div>
     ) : (
         <div className="selected-field-vaults-tmb" style={{ gridTemplateRows: type === "couchbox" ? "repeat(4,1fr)" : ""}}>

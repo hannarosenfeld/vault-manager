@@ -20,6 +20,8 @@
     border-right: 1px solid #ccc; 
     display: grid;
     grid-template-rows: repeat(3, 1fr);
+    min-height: 100%;
+    width: 65%;
 }
 
 .selected-field-id {
