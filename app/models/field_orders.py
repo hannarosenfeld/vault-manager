@@ -1,4 +1,4 @@
-from .db import db, add_prefix_for_prod
+from .db import db, add_prefix_for_prod, environment, SCHEMA
 
 field_orders = db.Table(
     'field_orders',
@@ -6,3 +6,6 @@ field_orders = db.Table(
     db.Column('order_id', db.Integer, db.ForeignKey(add_prefix_for_prod('orders.id')), primary_key=True),
     db.Column('field_id', db.Integer, db.ForeignKey(add_prefix_for_prod('fields.id')), primary_key=True)
 )
+
+if environment == "production":
+    field_orders.schema = SCHEMA

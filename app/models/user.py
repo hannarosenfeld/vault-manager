@@ -16,8 +16,10 @@ class User(db.Model, UserMixin):
     hashed_password = db.Column(db.String(255), nullable=False)
     warehouses = db.relationship('Warehouse', secondary=warehouse_users, back_populates='users', cascade='all, delete')
 
+    company_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('companies.id')))
+    company = db.relationship('Company', back_populates='company_users')
 
-    
+
     @property
     def password(self):
         return self.hashed_password
@@ -33,5 +35,7 @@ class User(db.Model, UserMixin):
         return {
             'id': self.id,
             'username': self.username,
-            'email': self.email
+            'email': self.email,
+            'companyId': self.company_id,
+            'company' : self.company.to_dict()
         }

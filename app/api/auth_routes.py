@@ -55,6 +55,7 @@ def logout():
 
 
 @auth_routes.route('/signup', methods=['POST'])
+@login_required
 def sign_up():
     """
     Creates a new user and logs them in
@@ -65,7 +66,9 @@ def sign_up():
         user = User(
             username=form.data['username'],
             email=form.data['email'],
-            password=form.data['password']
+            password=form.data['password'],
+            company_id=current_user.company_id,
+            # company=current_user.company
         )
         db.session.add(user)
         db.session.commit()

@@ -3,11 +3,10 @@ from .users import seed_users, undo_users
 from .vaults import seed_vaults, undo_vaults
 from .customers import seed_customers, undo_customers
 from .fields import seed_fields, undo_fields
-# from .rows import seed_rows, undo_rows
+from .companies import seed_companies, undo_companies
 from .warehouse import seed_warehouse, undo_warehouse
-# from .stage import seed_stage, undo_stage 
 from .orders import seed_orders, undo_orders
-from app.models import Field, Warehouse, Customer, User, Order, Vault
+from app.models import Field, Warehouse, Customer, Company, User, Order, Vault
 
 from app.models.db import db, environment, SCHEMA
 
@@ -25,6 +24,7 @@ def seed():
         customers = None
         orders = None
         warehouses = None
+        companies = None
 
         if not User.query.all(): 
             users = seed_users()  
@@ -35,16 +35,17 @@ def seed():
         if not Field.query.all(): 
             fields = seed_fields(orders)
         if not Warehouse.query.all(): 
-            seed_warehouse(users, fields, orders)             
+            warehouses = seed_warehouse(users, fields, orders)             
         if not Vault.query.all(): 
             seed_vaults(customers)
+        if not Company.query.all(): 
+            companies = seed_companies(users, warehouses, orders, customers)              
 
 @seed_commands.command('undo')
 def undo():
-    # undo_stage()
+    undo_companies()
     undo_vaults()
     undo_fields()
-    # undo_rows()
     undo_customers()
     undo_users()
     undo_warehouse()

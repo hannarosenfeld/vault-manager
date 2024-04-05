@@ -7,7 +7,7 @@ import SearchBar from './SearchBar';
 import './Navigation.css';
 import naglee from './naglee.png';
 
-function Navigation({ isLoaded }) {
+function Navigation({ isLoaded, company }) {
   const sessionUser = useSelector((state) => state.session.user);
 
   return (
@@ -25,7 +25,7 @@ function Navigation({ isLoaded }) {
         )}
         {isLoaded && (
           <li>
-            <ProfileButton user={sessionUser} />
+            <ProfileButton user={sessionUser} company={company} />
           </li>
         )}
       </ul>

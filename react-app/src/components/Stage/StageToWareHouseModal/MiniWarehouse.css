@@ -6,8 +6,12 @@
     grid-gap: 1%;
 }
 
-@media (min-width: 800px) {
+.miniwarehouse-field {
+    max-height: 5rem;
+}
+
+/* @media (min-width: 800px) {
     .miniwarehouse-field {
         max-height: 4rem;
     }
-}
+} */

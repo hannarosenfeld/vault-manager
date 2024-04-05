@@ -17,6 +17,7 @@ from .api.warehouse_routes import warehouse_routes
 from .api.order_router import order_routes
 from .api.search_routes import search_routes
 from .api.attachment_routes import attachment_routes
+from .api.company_routes import company_routes
 from .seeds import seed_commands
 from .config import Config
 
@@ -46,6 +47,7 @@ app.register_blueprint(warehouse_routes, url_prefix='/api/warehouse')
 app.register_blueprint(order_routes, url_prefix='/api/orders')
 app.register_blueprint(search_routes, url_prefix='/api/search')
 app.register_blueprint(attachment_routes, url_prefix='/api/attachments')
+app.register_blueprint(company_routes, url_prefix='/api/companies')
 
 
 db.init_app(app)

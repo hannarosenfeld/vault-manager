@@ -11,13 +11,16 @@ class Warehouse(db.Model):
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
+    name = db.Column(db.String, unique=True)
     rows = db.Column(db.Integer)
     cols = db.Column(db.Integer)
+    address = db.Column(db.String)
+    company_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('companies.id')))
+    company = db.relationship('Company', back_populates='company_warehouses')
     warehouse_fields = db.relationship('Field', back_populates='warehouse', foreign_keys='Field.warehouse_id')
     users = db.relationship('User', secondary=warehouse_users, back_populates='warehouses', cascade='all, delete')
     orders = db.relationship('Order', secondary=warehouse_orders, back_populates='warehouses', cascade='all, delete')
-    
+
     # warehouse_vaults = db.relationship('Vault', back_populates="warehouse")
 
     def to_dict(self):
@@ -27,6 +30,8 @@ class Warehouse(db.Model):
             'rows': self.rows,
             'columns': self.cols,
             'fields': [field.id for field in self.warehouse_fields],
-            'orders': [order.id for order in self.orders]
+            'orders': [order.id for order in self.orders],
+            'companyId': self.company_id,
+            'companyName': self.company.name
             # 'vaults': [vault.to_dict() for vault in self.warehouse_vaults],
         }

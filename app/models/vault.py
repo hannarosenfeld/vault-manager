@@ -16,7 +16,7 @@ class Vault(db.Model, UserMixin):
     type = db.Column(db.String)
     customer_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('customers.id'), ondelete='CASCADE'))
     
-    field = db.relationship('Field', back_populates='vaults', foreign_keys='Vault.field_id')
+    field = db.relationship('Field', back_populates='vaults')
     order = db.relationship('Order', back_populates='order_vaults')
     customer = db.relationship('Customer', back_populates='vaults')
     attachments = db.relationship('Attachment', back_populates='vault', cascade='all, delete-orphan')

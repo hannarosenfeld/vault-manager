@@ -12,7 +12,7 @@ class Field(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True, unique=True)
     name = db.Column(db.String(20))
     type = db.Column(db.String, default="vault")
-    vaults = db.relationship('Vault', back_populates='field', foreign_keys='Vault.field_id', lazy='dynamic')
+    vaults = db.relationship('Vault', back_populates='field', lazy='dynamic')
     full = db.Column(db.Boolean, default=False)
 
     warehouse_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('warehouses.id')))

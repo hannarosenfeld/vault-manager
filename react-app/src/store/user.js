@@ -1,10 +1,28 @@
-const GET_USER = "user/GET_USER"
+export const GET_USER = "user/GET_USER"
+const GET_USERS = "user/GET_USERS"
 
 const getUserAction = (user) => ({
     type: GET_USER,
     user
 })
 
+const getUsersAction = (users) => ({
+    type: GET_USERS,
+    users
+})
+
+
+export const getUsersThunk = () => async (dispatch) => {
+    const res = await fetch(`/api/users/`)
+    if (res.ok) {
+        const data = await res.json()
+        await dispatch(getUsersAction(data))
+        return data
+    } else {
+        const err = await res.json()
+        return err
+    }
+}
 export const getUserThunk = (userId) => async (dispatch) => {
     const res = await fetch(`/api/users/${userId}`)
     if (res.ok) {
@@ -17,22 +35,12 @@ export const getUserThunk = (userId) => async (dispatch) => {
     }
 }
 
-const initialState = {
-    users: {},
-    currentUser: {}
-  };
+const initialState = {};
 
 const userReducer = (state = initialState, action) => {
     switch (action.type) {
+        case GET_USERS:
         case GET_USER:
-            return {
-                ...state,
-                users: {
-                ...state.users,
-                [action.user.userId]: action.user,
-                currentUser: action.user
-            },
-        };
         default:
             return state;
     }

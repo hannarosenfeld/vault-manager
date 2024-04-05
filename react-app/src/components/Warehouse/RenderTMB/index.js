@@ -7,20 +7,23 @@ import { getAllFieldVaultsThunk } from "../../../store/vault";
 import "./RenderTMB.css";
 
 const RenderTMB = ({ 
-  selectedFieldId, 
   handleStageClick, 
   handleOpenAddVaultModal, 
   toggleFieldType, 
   toggleFieldFull,
   toggleSelected,
   selectedVault,
-  moveVault
+  moveVault,
+  warehouse,
  }) => {
   const dispatch = useDispatch();
-  const field = useSelector((state) => state.field[selectedFieldId]);
+  const fields = useSelector((state) => state.field[warehouse.id]);
   const vaults = useSelector((state) => state.vault);
+  const field = useSelector( state => state.field.selectedField)
+  const selectedFieldId = field.id
   const vaultsArr = []
-  field.vaults.forEach(id => (vaults[id]) ?  vaultsArr.push(vaults[id]) : null);
+
+  field?.vaults?.forEach(id => (vaults[id]) ?  vaultsArr.push(vaults[id]) : null);
   const [sortedVaults, setSortedVaults] = useState({});
   const [topmostVault, setTopmostVault] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -28,9 +31,10 @@ const RenderTMB = ({
 
 
   useEffect(() => {
+    setIsLoading(true);
     setSortedVaults({});
     dispatch(getAllFieldVaultsThunk(selectedFieldId))
-  }, [dispatch, selectedFieldId])
+  }, [selectedFieldId])
 
   useEffect(() => {
     const sortVaults = {};
@@ -41,9 +45,9 @@ const RenderTMB = ({
 
       setSortedVaults(sortVaults)
     }
-    setIsLoading(false)
-  }, [dispatch, vaults, selectedFieldId]);
 
+    setIsLoading(false)    
+  }, [vaults]);
 
   const { T, M, M2, B } = sortedVaults
 
@@ -54,11 +58,10 @@ const RenderTMB = ({
         topVault = vault;
       }
     }
-
     setTopmostVault(topVault);
   };
 
-  useEffect(() => {
+  useEffect(() => { 
     if (vaultsArr && vaultsArr.length > 0) {
       updateTopmostVault();
     }
@@ -69,9 +72,9 @@ const RenderTMB = ({
     <div className="rendertmb-container">
     {isLoading ? (
       <div className="rendertmb-loading-container">
-        <div class="spinner-border text-primary" role="status">
+        {/* <div class="spinner-border text-primary" role="status">
           <span class="sr-only">Loading...</span>
-        </div>
+        </div> */}
     </div>
     ) : (
         <div className="selected-field-vaults-tmb" style={{ gridTemplateRows: type === "couchbox" ? "repeat(4,1fr)" : ""}}>
@@ -82,32 +85,35 @@ const RenderTMB = ({
                 <span className="material-symbols-outlined">warning</span>Field is full
               </div>
             )} */}
-            { !T && M && B ? (
-              <AddVaultButton position="T" vault={selectedVault} handleOpenAddVaultModal={handleOpenAddVaultModal} moveVault={moveVault} fieldType={type}/>
-            ) 
-            : sortedVaults["T"] ? (
+            { field.type === "couchbox-T" && !T && M2 && M && B ? (
+              <AddVaultButton position="T" vault={selectedVault} handleOpenAddVaultModal={handleOpenAddVaultModal} moveVault={moveVault} fieldType={type} isFull={field.full}/>
+              ) : field.type === "vault" && !sortedVaults.M2 && !T && M && B ? (
+                <AddVaultButton position="T" vault={selectedVault} handleOpenAddVaultModal={handleOpenAddVaultModal} moveVault={moveVault} fieldType={type} isFull={field.full}/>
+              ) : sortedVaults["T"] ? (
               <VaultInstance
                 position="T"
                 vault={sortedVaults["T"]}
                 handleStageClick={handleStageClick}
                 topmostVault={topmostVault?.id === sortedVaults["T"].id ? true : false}
+                fieldType={type}
               />
             ) 
             : (
               ""
             )}
           </div>
-          { type === "couchbox" && 
+          { type === "couchbox-T" && 
             <div className="middle-top middle field-row">
               <span className='position'>M2</span>
-              { !M2 && M && B ? (
-                <AddVaultButton position="M2" vault={selectedVault} handleOpenAddVaultModal={handleOpenAddVaultModal} moveVault={moveVault} fieldType={type}/>
+              { !T && !M2 && M && B ? (
+                <AddVaultButton position="M2" vault={selectedVault} handleOpenAddVaultModal={handleOpenAddVaultModal} moveVault={moveVault} fieldType={type} isFull={field.full}/>
               ) : sortedVaults["M2"]? (
                 <VaultInstance
                   position="M2"
                   vault={sortedVaults["M2"]}
                   handleStageClick={handleStageClick}
                   topmostVault={topmostVault?.id === sortedVaults["M2"].id ? true : false}
+                  fieldType={type}
                 />
               ) : (
                 ""
@@ -115,15 +121,16 @@ const RenderTMB = ({
             </div>
           }
           <div className="middle-bottom middle field-row">
-            { type === "vault" ? <span className='position'>M</span> : type === "couchbox" ? <span className='position'>M1</span> : "" }
+            { type === "vault" ? <span className='position'>M</span> : type === "couchbox-T" ? <span className='position'>M1</span> : "" }
             {B && !M ? (
-              <AddVaultButton position="M" vault={selectedVault} handleOpenAddVaultModal={handleOpenAddVaultModal} moveVault={moveVault} fieldType={type}/>
+              <AddVaultButton position="M" vault={selectedVault} handleOpenAddVaultModal={handleOpenAddVaultModal} moveVault={moveVault} fieldType={type} isFull={field.full}/>
             ) : sortedVaults["M"] ? (
               <VaultInstance
                 position="M"
                 vault={sortedVaults["M"]}
                 handleStageClick={handleStageClick}
                 topmostVault={topmostVault?.id === sortedVaults["M"].id ? true : false}
+                fieldType={type}
               />
             ) : (
               ""
@@ -132,13 +139,14 @@ const RenderTMB = ({
           <div className="bottom field-row">
             <span className="position">B</span>
             {!B ? (
-              <AddVaultButton position="B" vault={selectedVault} handleOpenAddVaultModal={handleOpenAddVaultModal} moveVault={moveVault} fieldType={type}/>
+              <AddVaultButton position="B" vault={selectedVault} handleOpenAddVaultModal={handleOpenAddVaultModal} moveVault={moveVault} fieldType={type} isFull={field.full}/>
             ) : sortedVaults["B"] ? (
               <VaultInstance
                 position="B"
                 vault={sortedVaults["B"]}
                 handleStageClick={handleStageClick}
                 topmostVault={topmostVault?.id === sortedVaults["B"].id ? true : false}
+                fieldType={type}
               />
             ) : (
               ""
@@ -156,11 +164,11 @@ const RenderTMB = ({
                 type="checkbox"
                 role="switch"
                 id="flexSwitchCheckDefault"
-                checked={toggleSelected || type === "couchbox" }
-                onChange={toggleFieldType}
+                checked={type === "couchbox-T"}
+                onChange={() => toggleFieldType(type, field, fields[field.id+1])}
               />
               <label className={`field-type-label ${type === 'vault' ? 'vault-label' : 'couchbox-label'}`}>
-                {toggleSelected || type === "couchbox" ? 'couchbox' : 'vault' }
+                {type === 'couchbox-T' ? 'couchbox' : 'vault'}
               </label>
             </div>
             <div className="form-check form-switch toggle-container" >
@@ -169,8 +177,8 @@ const RenderTMB = ({
                 type="checkbox"
                 role="switch"
                 id="flexSwitchCheckDefault"
-                checked="true"
-                onChange={toggleFieldFull}
+                checked={field.full}
+                onChange={() => toggleFieldFull(field.id)}
               />
               <label>
                 full

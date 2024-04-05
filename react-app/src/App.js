@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector} from "react-redux";
 import { Route, Switch, useHistory } from "react-router-dom";
 import { authenticate } from "./store/session";
+import { getAllWarehousesThunk } from "./store/warehouse";
+
+import AddWarehouseForm from "./components/AddWarehouseForm";
 import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import Navigation from "./components/Navigation";
@@ -10,21 +13,14 @@ import Warehouse from "./components/Warehouse";
 import Stage from "./components/Stage";
 import EditVaultPage from "./components/Warehouse/RenderTMB/EditVaultPage";
 import VaultDetailPage from "./components/Warehouse/RenderTMB/VaultDetailPage";
-import AddWarehouseForm from "./components/AddWareHouse";
-import { getAllWarehousesThunk } from "./store/warehouse";
-import { getVaultsThunk } from "./store/vault";
+
 
 
 function App() {
   const dispatch = useDispatch();
   const history = useHistory();
-  const vaults = useSelector(state => state.vaults);
   const [isLoaded, setIsLoaded] = useState(false);
 	const sessionUser = useSelector(state => state.session.user);
-
-  useEffect(() => {
-    dispatch(getVaultsThunk())
-  }, [vaults])
 
   const onAddWarehouseSubmit = async () => {
     await dispatch(getAllWarehousesThunk());    
@@ -49,10 +45,10 @@ function App() {
       )}
       {isLoaded && sessionUser && (
         <>
-        <Navigation isLoaded={isLoaded} />
+        <Navigation isLoaded={isLoaded} company={sessionUser.company} />
           <Switch>
-            <Route exact path="/">
-              <Index />
+            <Route exact path="/" >
+              <Index company={sessionUser.company} />
             </Route>
             
             <Route exact path="/signup">
@@ -63,22 +59,26 @@ function App() {
               <AddWarehouseForm onAddWarehouseSubmit={onAddWarehouseSubmit}/>
             </Route>                  
 
-            <Route exact path="/warehouse/:warehouseId"> 
+            <Route exact path="/:companyName/warehouse/:warehouseId"> 
               <Warehouse />
             </Route>          
 
-            <Route path="/warehouse/:warehouseId/field/:fieldId/vaults/:vaultId/edit">
+            <Route path="/:companyName/warehouse/:warehouseId/field/:fieldId/vaults/:vaultId/edit">
               <EditVaultPage />
             </Route>
-            <Route path="/warehouse/:warehouseId/field/:fieldId/vaults/:vaultId/detail">
+
+            <Route path="/:companyName/warehouse/:warehouseId/field/:fieldId/vaults/:vaultId/detail">
               <VaultDetailPage/>
             </Route>
+
             <Route path="/stage">
               <Stage />
             </Route>
+
             <Route path="/add-user">
               <SignupFormPage />
             </Route>
+
             <Route path="/login" >
               <LoginFormPage />
             </Route>

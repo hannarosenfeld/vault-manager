@@ -111,11 +111,11 @@ const initialState = {};
 const stageReducer = (state = initialState, action) => {
   let newState;
   switch (action.type) {
-    case GET_STAGE_INFO:
-      return {
-        ...state,
-        stageInfo: action.payload,
-      };
+    // case GET_STAGE_INFO:
+    //   return {
+    //     ...state,
+    //     stageInfo: action.payload,
+    //   };
     case ADD_VAULT_TO_STAGE:
       newState = { ...state }
       newState[action.vault.id] = action.vault;

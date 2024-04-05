@@ -22,6 +22,10 @@
     /* align-items: center; */
 }
 
+.field-row {
+    min-height: 2rem;
+}
+
 .selected-field-name {
     font-size: 2.5rem;
     margin: 0 auto;
@@ -55,11 +59,11 @@
 /* .toggled {
     border: 2px solid orange;
 } */
-
+/* 
 .selected-field-vaults-tmb {
     min-height: 100%;
     width: 65%;
-  }
+  } */
 
 
   .top, .middle, .middle-bottom, .middle-top {
@@ -78,11 +82,15 @@
     margin-right: 10px !important;
 }
 
-.top span, .middle span, .bottom span {
+.top span, .middle span, .bottom span, .middle-top span {
     margin-right: 5px;
 }
 
 .add-vault-button {
     color: var(--blue);
 
-}  
+} 
+
+.bottom {
+    min-height: 2.4rem;
+}
