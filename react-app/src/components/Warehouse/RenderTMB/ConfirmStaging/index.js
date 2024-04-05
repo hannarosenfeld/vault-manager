@@ -8,9 +8,10 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 export default function ConfirmStaging({ 
     vault, 
-    onClose, 
+    onClose,
   }) {
     const dispatch = useDispatch();
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         let vaultData = new FormData()

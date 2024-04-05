@@ -17,7 +17,8 @@ export default function Warehouse() {
     const dispatch = useDispatch();
     const { warehouseId } = useParams(); 
     const warehouse = useSelector(state => state.warehouse[warehouseId]);
-    let allFields = useSelector(state => state.field[warehouseId]);
+    const allFields = useSelector(state => state.field[warehouseId]);
+    console.log(allFields)
     const [loadedWarehouseFields, setLoadedWarehouseFields] = useState(false);
     const [fields, setFields] = useState(null);
     const searchResult = useSelector(state => state.search.fields);
@@ -82,7 +83,8 @@ export default function Warehouse() {
     const closeConfirmStagingModal = async () => {
         setSelectedVaultToStage(null);
         setIsConfirmStagingModalOpen(false);
-        window.location.reload(); // TODO: we need to find a better way to update the frontend without reloading the page
+        setFields(Object.values(allFields).filter(field => field.warehouse_id === parseInt(warehouseId)).sort((a,b) => a.name - b.name))
+        // window.location.reload(); // TODO: we need to find a better way to update the frontend without reloading the page
     }
 
     const toggleFieldType = (type, topField, bottomField) => {

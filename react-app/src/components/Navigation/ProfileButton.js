@@ -72,7 +72,7 @@ function ProfileButton({ user }) {
               button 
               onClick={visitWarehouse}
               component={NavLink} 
-              to={`/${company.name.toLowerCase()}/warehouse/${warehouse.id}`}
+              to={`/${warehouse.companyName.toLowerCase()}/warehouse/${warehouse.id}`}
               style={{display: "flex", gap: "5px"}}>
               <ListItemText primary={warehouse.name} />
             </ListItem>  
