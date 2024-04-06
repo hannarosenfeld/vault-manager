@@ -47,6 +47,7 @@ export const editFieldThunk = (fieldData) => async (dispatch) => {
     return error;
   }
 };
+
 export const editSingleFieldThunk = (fieldId, data) => async (dispatch) => {
   try {
     const res = await fetch(`/api/fields/single/${fieldId}`, {
@@ -103,6 +104,10 @@ const fieldReducer = (state = initialState, action) => {
       const [topField, bottomField] = action.fields
       newState[topField.warehouse_id][topField.id] = topField
       newState[bottomField.warehouse_id][bottomField.id] = bottomField
+      return {
+        ...state,
+        selectedField: topField
+      }
       return newState
     case TOGGLE_FIELD_FULL:
       return {
@@ -110,7 +115,8 @@ const fieldReducer = (state = initialState, action) => {
         [action.field.warehouse_id]: {
         ...state[action.field.warehouse_id],
         [action.field.id]: action.field
-      }
+      },
+      selectedField: action.field
     }
     case GET_ALL_FIELDS:
       newState[action.warehouseId] = { ...action.fields }
@@ -122,7 +128,8 @@ const fieldReducer = (state = initialState, action) => {
           [field.warehouse_id] : {
             ...state[field.warehouse_id],
             [field.id] : field
-          }
+          },
+          selectedField: action.field
         }
     default:
       return state;

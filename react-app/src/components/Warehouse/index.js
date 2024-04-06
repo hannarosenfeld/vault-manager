@@ -82,7 +82,7 @@ export default function Warehouse() {
     const closeConfirmStagingModal = async () => {
         setSelectedVaultToStage(null);
         setIsConfirmStagingModalOpen(false);
-        window.location.reload(); // TODO: we need to find a better way to update the frontend without reloading the page
+        // window.location.reload(); // TODO: we need to find a better way to update the frontend without reloading the page
     }
 
     const toggleFieldType = (type, topField, bottomField) => {
@@ -101,14 +101,14 @@ export default function Warehouse() {
                 dispatch(editFieldThunk(formData))
             } else return alert("Can't switch to a couchbox on the last row")
         }
-        window.location.reload(); // TODO: we need to find a better way to update the frontend without reloading the page
+        // window.location.reload(); // TODO: we need to find a better way to update the frontend without reloading the page
 
     }
 
     const toggleFieldFull = (fieldId) => {
         dispatch(editSingleFieldThunk(fieldId, {}))
 
-        window.location.reload(); // TODO: we need to find a better way to update the frontend without reloading the page
+        // window.location.reload(); // TODO: we need to find a better way to update the frontend without reloading the page
     }
 
     function fieldGenerator(fields) {
