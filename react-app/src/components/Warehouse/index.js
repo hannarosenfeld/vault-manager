@@ -79,8 +79,16 @@ export default function Warehouse() {
     };
 
     const closeConfirmStagingModal = async () => {
+        console.log("❤️", selectedVaultToStage)
+        setFields(prevFields => 
+            prevFields.map(field =>
+                field.id === selectedVaultToStage.field_id ? { ...field, vaults: field.vaults.filter(vault => vault !== selectedVaultToStage.id)} : field
+            )
+        )
         setSelectedVaultToStage(null);
         setIsConfirmStagingModalOpen(false);
+
+        console.log("😇", fields)
     }
 
     const toggleFieldType = (type, topField, bottomField) => {
