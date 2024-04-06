@@ -129,7 +129,7 @@ const fieldReducer = (state = initialState, action) => {
             ...state[field.warehouse_id],
             [field.id] : field
           },
-          selectedField: action.field
+          selectedField: field
         }
     default:
       return state;
