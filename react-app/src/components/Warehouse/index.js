@@ -29,6 +29,7 @@ export default function Warehouse() {
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
     const [toggleSelected, setToggleSelected] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [fieldGrid, setFieldGrid] = useState(null);
 
     useEffect(() => {
         dispatch(setSelectedFieldAction(null));
@@ -51,9 +52,6 @@ export default function Warehouse() {
             .catch(() => console.log("🚨 fields could not be loaded!"))
     }, [dispatch, warehouseId])
 
-    useEffect(() => {
-        if (loadedWarehouseFields) setFields(Object.values(allFields).filter(field => field.warehouse_id === parseInt(warehouseId)).sort((a,b) => a.name - b.name))        
-    }, [loadedWarehouseFields])
 
     const handleFieldClick = async (field) => {
         await setLoading(true);
@@ -103,9 +101,22 @@ export default function Warehouse() {
         }
     }
 
-    const toggleFieldFull = (fieldId) => {
-        dispatch(editSingleFieldThunk(fieldId, {}))
+    const toggleFieldFull = async (fieldId) => {
+        const toggleFull = await dispatch(editSingleFieldThunk(fieldId, {}))
+        
+        setFields(prevFields => 
+            prevFields.map(field =>
+                field.id === fieldId ? { ...field, full : !field.full } : field
+            )
+        )
+
     }
+
+    useEffect(() => {
+        if (loadedWarehouseFields) setFields(Object.values(allFields).filter(field => field.warehouse_id === parseInt(warehouseId)).sort((a,b) => a.name - b.name))
+        setFieldGrid(fieldGenerator(fields))
+        console.log(fieldGrid)
+    }, [loadedWarehouseFields])
 
     function fieldGenerator(fields) {
         if (fields) {
@@ -181,7 +192,7 @@ export default function Warehouse() {
                         )}
                     </div>
                     <div className="warehouse">
-                        {fields ? fieldGenerator(fields) : null}
+                        {fields ? fieldGenerator(fields): null}
                     </div>
                     <Modal open={isModalOpen}>
                         <AddVaultModal
