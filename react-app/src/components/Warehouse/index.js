@@ -91,12 +91,34 @@ export default function Warehouse() {
         if (type === "couchbox-T") {
             formData["type"] = "vault"
             dispatch(editFieldThunk(formData))
+            setFields(prevFields => 
+                prevFields.map(field =>
+                    field.id === topField.id ? { ...topField, type: "vault" } : field
+                )
+            )
+            setFields(prevFields => 
+                prevFields.map(field =>
+                    field.id === bottomField.id ? { ...bottomField, type: "vault" } : field
+                )
+            )
         } else if (type === "vault") {
             formData["type"] = "couchbox"
             const topName = topField.name.match(/^([a-zA-Z]+)\d/);
             const bottomName = bottomField.name.match(/^([a-zA-Z]+)\d/);
             if (bottomName || topName[1] === bottomName[1]) {
                 dispatch(editFieldThunk(formData))
+                
+                setFields(prevFields => 
+                    prevFields.map(field =>
+                        field.id === topField.id ? { ...topField, type: "couchbox-T" } : field
+                    )
+                )
+                setFields(prevFields => 
+                    prevFields.map(field =>
+                        field.id === bottomField.id ? { ...bottomField, type: "couchbox-B" } : field
+                    )
+                )   
+
             } else return alert("Can't switch to a couchbox on the last row")
         }
     }
