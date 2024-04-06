@@ -95,7 +95,6 @@ const fieldReducer = (state = initialState, action) => {
   let newState = { ...state };
   switch (action.type) {
     case SET_SELECTED_FIELD:
-      console.log("💖", action)
       return {
         ...state,
         selectedField: action.field
