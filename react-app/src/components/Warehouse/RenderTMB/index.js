@@ -20,6 +20,7 @@ const RenderTMB = ({
   const fields = useSelector((state) => state.field[warehouse.id]);
   const vaults = useSelector((state) => state.vault);
   const field = useSelector( state => state.field.selectedField)
+  
   const selectedFieldId = field.id
   const vaultsArr = []
 
