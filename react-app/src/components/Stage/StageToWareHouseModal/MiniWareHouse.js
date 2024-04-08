@@ -25,7 +25,7 @@ export default function MiniWareHouse({ warehouseId}) {
     }, [loadedWarehouseFields, warehouseId])
 
     function fieldGenerator(fields) {
-        console.log("fields")
+
         if (loadedWarehouseFields && fields) {
             return (
                 <div

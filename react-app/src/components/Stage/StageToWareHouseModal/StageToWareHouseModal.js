@@ -38,11 +38,6 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
     }
   };
   
-
-useEffect(() => {
-    console.log("🐎",selectedWarehouse)
-})
-
   return (
     <div className="stage-to-warehouse-modal-wrapper">
       <div className="stage-to-warehouse-modal-content">

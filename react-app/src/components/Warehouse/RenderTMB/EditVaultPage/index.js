@@ -77,7 +77,6 @@ const EditVaultPage = () => {
   };
 
   const confirmDelete = async () => {
-    console.log("💖", vault)
     await dispatch(deleteVaultThunk(vault.id));
     await setIsDeleteModalOpen(false);
     history.push(`/${companyName}/warehouse/${warehouseId}`);
