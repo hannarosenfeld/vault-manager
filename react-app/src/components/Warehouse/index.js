@@ -18,7 +18,6 @@ export default function Warehouse() {
     const { warehouseId } = useParams(); 
     const warehouse = useSelector(state => state.warehouse[warehouseId]);
     const allFields = useSelector(state => state.field[warehouseId]);
-    console.log(allFields)
     const [loadedWarehouseFields, setLoadedWarehouseFields] = useState(false);
     const [fields, setFields] = useState(null);
     const searchResult = useSelector(state => state.search.fields);
@@ -81,6 +80,7 @@ export default function Warehouse() {
     const closeConfirmStagingModal = async () => {
         setFields(prevFields => 
             prevFields.map(field =>
+                !selectedField.vaults.length ? field.vaults = [] : 
                 field.id === selectedVaultToStage.field_id ? { ...field, vaults: field.vaults.filter(vault => vault !== selectedVaultToStage.id)} : field
             )
         )
@@ -136,13 +136,11 @@ export default function Warehouse() {
                 field.id === fieldId ? { ...field, full : !field.full } : field
             )
         )
-
     }
 
     useEffect(() => {
         if (loadedWarehouseFields) setFields(Object.values(allFields).filter(field => field.warehouse_id === parseInt(warehouseId)).sort((a,b) => a.name - b.name))
         setFieldGrid(fieldGenerator(fields))
-        console.log(fieldGrid)
     }, [loadedWarehouseFields])
 
     function fieldGenerator(fields) {
