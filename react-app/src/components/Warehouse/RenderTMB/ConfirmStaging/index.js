@@ -18,11 +18,11 @@ export default function ConfirmStaging({
         vaultData.append("staging", true)
         dispatch(stageVaultThunk(vault.id, vaultData))
         dispatch(getAllFieldVaultsThunk(vault.field_id)) // !!! ATTENTION: this is a hacky way to update our field vaults after stagin (so the forklift icon of the then "topmost" vault is clickable/yellow). ideally we want the topmostvault function (see RenderTMB) to run again with the remaining vaults.
-        onClose();
+        onClose(true);
     }
 
     const handleGoBackClick = () => {
-        onClose();
+        onClose(false);
     };
 
     return (

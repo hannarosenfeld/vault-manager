@@ -77,18 +77,20 @@ export default function Warehouse() {
         setIsConfirmStagingModalOpen(true);
     };
 
-    const closeConfirmStagingModal = async () => {
-        let fieldToChange;
-        setFields(prevFields => 
-            prevFields.map(field => {
-                fieldToChange = field;
-                return(
-                    selectedField.vaults.length === 0 ? field.vaults = [] :
-                    field.id === selectedVaultToStage.field_id ? { ...field, vaults: field.vaults.filter(vault => vault !== selectedVaultToStage.id)} : field
-                )
-            })
-        )
-        console.log("👩‍❤️‍👩", fieldToChange);
+    const closeConfirmStagingModal = async (isDeleted) => {
+        if (isDeleted) {
+            let fieldToChange;
+            setFields(prevFields => 
+                prevFields.map(field => {
+                    fieldToChange = field;
+                    return(
+                        selectedField.vaults.length === 0 ? field.vaults = [] :
+                        field.id === selectedVaultToStage.field_id ? { ...field, vaults: field.vaults.filter(vault => vault !== selectedVaultToStage.id)} : field
+                    )
+                })
+            )
+            console.log("👩‍❤️‍👩", fieldToChange);
+        }
         setSelectedVaultToStage(null);
         setIsConfirmStagingModalOpen(false);
     }

@@ -213,7 +213,9 @@ const vaultReducer = (state = initialState, action) => {
   let newState = {}
   switch (action.type) {
     case GET_ALL_VAULTS:
+      console.log('state before change', state)
       newState = { ...state, ...action.vaults }
+      console.log('state after change', newState)
       // const vaultKeys = Object.keys(action.vaults)
       // vaultKeys.forEach(key => newState[key] = action.vaults[key]);
       return newState
