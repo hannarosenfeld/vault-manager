@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 export default function MiniWareHouse({ selectedFieldId, warehouseId }) {
     const warehouse = useSelector((state) => state.warehouse[warehouseId]);
-    const allFields = useSelector(state => state.field[warehouseId]);
+    const allFields = useSelector((state) => state.field[warehouseId]);
     const [fields, setFields] = useState(null);
 
     useEffect(() => {

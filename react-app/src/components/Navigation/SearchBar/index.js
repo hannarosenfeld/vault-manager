@@ -10,14 +10,14 @@ import './SearchBar.css';
 function SearchBar() {
   const dispatch = useDispatch();
   const suggestionBoxRef = useRef(null);
-  const customersState = useSelector(state => state.customer);
-  const ordersState = useSelector(state => state.order);
+  const customersState = useSelector((state) => state.customer);
+  const ordersState = useSelector((state) => state.order);
   const [customers, setCustomers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [orders, setOrders] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
-  const searchItem = useSelector(state => state.search.fields);
+  const searchItem = useSelector((state) => state.search.fields);
 
   useEffect(() => {
     const customerArr = Object.values(customersState);

@@ -1,5 +1,4 @@
 // const GET_VAULT = "vault/GET_VAULT";
-import { addVaultToStageAction, removeVaultFromStageAction } from "./stage";
 const GET_ALL_VAULTS = "vault/GET_ALL_VAULTS";
 const ADD_VAULT = "vault/ADD_VAULT";
 const EDIT_VAULT = "vault/EDIT_VAULT";
@@ -75,8 +74,8 @@ export const stageVaultThunk = (vaultId, vaultData) => async (dispatch) => {
 
     if (res.ok) {
       const data = await res.json();
+      console.log('data in stage vault thunk => ', data)
       dispatch(stageVaultAction(data));
-      dispatch(addVaultToStageAction(data));
       return data;
     } else {
       const err = await res.json();
@@ -97,7 +96,6 @@ export const moveVaultFromStageToWarehouseThunk = (vaultId, selectedFieldId, pos
     if (res.ok) {
       const data = await res.json();
       dispatch(moveVaultFromStageToWarehouseAction(data));
-      dispatch(removeVaultFromStageAction(vaultId))
       return data;
     } else {
       const err = await res.json();
@@ -167,10 +165,12 @@ export const getVaultsThunk = () => async (dispatch) => {
 };
 
 export const getAllFieldVaultsThunk = (fieldId) => async (dispatch) => {
+  console.log('hitting get all field vaults thunk')
   try {
     const res = await fetch(`/api/vaults/${fieldId}`);
     if (res.ok) {
       const data = await res.json();
+      console.log('res data if ok => ', data)
       dispatch(getAllVaultsAction(data));
       return data;
     } else {
@@ -231,6 +231,7 @@ const vaultReducer = (state = initialState, action) => {
       return newState
     case STAGE_VAULT:
       newState = { ...state }
+      console.log('in stage vault case => ', action.stagingInfo)
       delete newState[action.stagingInfo.vault.id];
       return newState
     case MOVE_VAULT_FROM_STAGE_TO_WAREHOUSE:

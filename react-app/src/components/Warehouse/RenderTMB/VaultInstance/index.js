@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 
 const VaultInstance = ({ topmostVault, vault, handleStageClick, fieldType }) => {
-  const customer = useSelector(state => state.customer[vault.customer_id]);
+  const customer = useSelector((state) => state.customer[vault.customer_id]);
   const { warehouseId } = useParams()
 
   return (
@@ -23,8 +23,9 @@ const VaultInstance = ({ topmostVault, vault, handleStageClick, fieldType }) => 
         )}
       </div>
       <div className="edit-symbols">
+
         <span
-          onClick={topmostVault ? () => handleStageClick(vault) : ''}
+          onClick={topmostVault ? () => handleStageClick(vault) : () => ''}
           style={{ color: topmostVault ? '#FFA500' : '#CCCCCC', cursor: topmostVault ? 'pointer' : 'not-allowed' }}
           className="material-symbols-outlined"
         >

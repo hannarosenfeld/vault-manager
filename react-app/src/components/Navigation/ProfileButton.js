@@ -14,7 +14,7 @@ function ProfileButton({ user }) {
   const history = useHistory();
   const dispatch = useDispatch();
   const [showDrawer, setShowDrawer] = useState(false);
-  const warehousesObj = useSelector(state => state.warehouse)
+  const warehousesObj = useSelector((state) => state.warehouse)
   const warehouses = Object.values(warehousesObj)
 
   useEffect(() => {

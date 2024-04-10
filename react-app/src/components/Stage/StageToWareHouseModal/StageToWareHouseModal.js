@@ -13,10 +13,10 @@ import { setSelectedFieldAction } from "../../../store/field";
 export default function StageToWareHouseModal({ closeModal, selectedVault }) {
   const dispatch = useDispatch();
   const [selectedWarehouse, setSelectedWarehouse] = useState(1);
-  const warehousesObj = useSelector(state => state.warehouse);
+  const warehousesObj = useSelector((state) => state.warehouse);
   const warehouses = Object.values(warehousesObj);
-  const warehouse = useSelector(state => state.warehouse[selectedWarehouse]);
-  const selectedField = useSelector(state => state.field.selectedField);
+  const warehouse = useSelector((state) => state.warehouse[selectedWarehouse]);
+  const selectedField = useSelector((state )=> state.field.selectedField);
   // const [loadingVaults, setLoadingVaults] = useState(false);
 
 

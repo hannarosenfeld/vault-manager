@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 export default function Index({ company }) {
     const dispatch = useDispatch();
-    const warehousesObj = useSelector(state => state.warehouse);
+    const warehousesObj = useSelector((state) => state.warehouse);
     const warehouses = Object.values(warehousesObj);
 
     useEffect(() => {

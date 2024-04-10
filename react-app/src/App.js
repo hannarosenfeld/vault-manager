@@ -20,7 +20,7 @@ function App() {
   const dispatch = useDispatch();
   const history = useHistory();
   const [isLoaded, setIsLoaded] = useState(false);
-	const sessionUser = useSelector(state => state.session.user);
+	const sessionUser = useSelector((state) => state.session.user);
 
   const onAddWarehouseSubmit = async () => {
     await dispatch(getAllWarehousesThunk());    

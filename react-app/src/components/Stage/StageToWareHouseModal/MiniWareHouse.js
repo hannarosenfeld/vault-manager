@@ -7,7 +7,7 @@ export default function MiniWareHouse({ warehouseId}) {
     const dispatch = useDispatch();
     const warehouse = useSelector((state) => state.warehouse[warehouseId]);
     const allFields = useSelector((state) => state.field[warehouseId])
-    const selectedField = useSelector(state => state.field.selectedField)
+    const selectedField = useSelector((state) => state.field.selectedField)
     const [loadedWarehouseFields, setLoadedWarehouseFields] = useState(false);
     const [fields, setFields] = useState(null);
 

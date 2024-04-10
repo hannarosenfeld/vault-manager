@@ -8,7 +8,7 @@ import "./Stage.css";
 export default function Stage() {
   const dispatch = useDispatch();
   // const staged = useSelector((state) => state.stage);
-  const vaults = useSelector(state => state.vault);
+  const vaults = useSelector((state) => state.vault);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedVault, setSelectedVault] = useState(null);
   const [loading, setLoading] = useState(true);

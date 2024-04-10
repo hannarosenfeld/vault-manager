@@ -16,13 +16,13 @@ import "./Warehouse.css"
 export default function Warehouse() {
     const dispatch = useDispatch();
     const { warehouseId } = useParams(); 
-    const warehouse = useSelector(state => state.warehouse[warehouseId]);
-    const allFields = useSelector(state => state.field[warehouseId]);
+    const warehouse = useSelector((state) => state.warehouse[warehouseId]);
+    const allFields = useSelector((state) => state.field[warehouseId]);
     const [loadedWarehouseFields, setLoadedWarehouseFields] = useState(false);
     const [fields, setFields] = useState(null);
-    const searchResult = useSelector(state => state.search.fields);
+    const searchResult = useSelector((state) => state.search.fields);
     const [position, setPosition] = useState(null);
-    const selectedField = useSelector(state => state.field.selectedField);
+    const selectedField = useSelector((state) => state.field.selectedField);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] = useState(false);
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);

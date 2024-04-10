@@ -27,13 +27,16 @@ const getAllFieldsAction = (fields, warehouseId) => ({
 
 export const editFieldThunk = (fieldData) => async (dispatch) => {
   try {
-    const res = await fetch(`/api/fields/${fieldData.field_id_1}/`, {
+    const res = await fetch(`/api/fields/${fieldData.field_id_1}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(fieldData)
     });
+    
+    console.log('😇😇😇 ', res)
+
     if (res.ok) {
       const data = await res.json();
       dispatch(editFieldAction(data));

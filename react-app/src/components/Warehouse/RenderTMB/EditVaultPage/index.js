@@ -15,7 +15,7 @@ const EditVaultPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { warehouseId, fieldId, vaultId } = useParams();
-  const warehouse = useSelector(state => state.warehouse[warehouseId]);
+  const warehouse = useSelector((state) => state.warehouse[warehouseId]);
   const vault = useSelector((state) => state.vault[vaultId]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
