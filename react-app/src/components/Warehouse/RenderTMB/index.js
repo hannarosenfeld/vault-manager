@@ -15,24 +15,24 @@ const RenderTMB = ({
   selectedVault,
   moveVault,
   warehouse,
-  selectedFieldId,
-  field,
-  vaultsArr,
-  topmostVault
+  // selectedFieldId,
+  // field,
+  // vaultsArr,
+  // topmostVault
  }) => {
   const dispatch = useDispatch();
   const fields = useSelector((state) => state.field[warehouse.id]);
   const vaults = useSelector((state) => state.vault);
-  // const field = useSelector( state => state.field.selectedField)
+  const field = useSelector( state => state.field.selectedField)
   
-  // const selectedFieldId = field.id
-  // const vaultsArr = []
+  const selectedFieldId = field.id
+  const vaultsArr = []
 
-  // field?.vaults?.forEach(id => (vaults[id]) ?  vaultsArr.push(vaults[id]) : null);
+  field?.vaults?.forEach(id => (vaults[id]) ?  vaultsArr.push(vaults[id]) : null);
   const [sortedVaults, setSortedVaults] = useState({});
-  // const [topmostVault, setTopmostVault] = useState(null);
+  const [topmostVault, setTopmostVault] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const { type } = field
+  const type = field?.type ? field.type : null
 
 
   useEffect(() => {
@@ -56,21 +56,21 @@ const RenderTMB = ({
 
   const { T, M, M2, B } = sortedVaults
 
-  // const updateTopmostVault = () => {
-  //   let topVault = null;
-  //   for (let vault of vaultsArr) {
-  //     if (!topVault || vault.position > topVault.position) {
-  //       topVault = vault;
-  //     }
-  //   }
-  //   setTopmostVault(topVault);
-  // };
+  const updateTopmostVault = () => {
+    let topVault = null;
+    for (let vault of vaultsArr) {
+      if (!topVault || vault.position > topVault.position) {
+        topVault = vault;
+      }
+    }
+    setTopmostVault(topVault);
+  };
 
-  // useEffect(() => { 
-  //   if (vaultsArr && vaultsArr.length > 0) {
-  //     updateTopmostVault();
-  //   }
-  // }, [dispatch, vaultsArr]);
+  useEffect(() => { 
+    if (vaultsArr && vaultsArr.length > 0) {
+      updateTopmostVault();
+    }
+  }, [dispatch, vaultsArr]);
 
  
   return (
@@ -161,7 +161,7 @@ const RenderTMB = ({
     )}
     <div className={`selected-field-box ${toggleSelected ? 'toggled' : ''}`}>
       <div className="field-info-box">
-        <div className="selected-field-name">{field.name}</div>
+        <div className="selected-field-name">{field?.name}</div>
           <div className="field-switches">
             <div className="form-check form-switch toggle-container" >
               <input
@@ -182,7 +182,7 @@ const RenderTMB = ({
                 type="checkbox"
                 role="switch"
                 id="flexSwitchCheckDefault"
-                checked={field.full}
+                checked={field?.full}
                 onChange={() => toggleFieldFull(field.id)}
               />
               <label>
