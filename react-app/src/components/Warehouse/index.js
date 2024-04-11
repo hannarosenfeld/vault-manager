@@ -20,6 +20,10 @@ export default function Warehouse() {
     const allFields = useSelector((state) => state.field[warehouseId]);
     const [loadedWarehouseFields, setLoadedWarehouseFields] = useState(false);
     const [fields, setFields] = useState(null);
+    const field = useSelector( state => state.field.selectedField);
+    const vaults = useSelector((state) => state.vault);
+    const vaultsArr = []
+    field?.vaults?.forEach(id => (vaults[id]) ?  vaultsArr.push(vaults[id]) : null);    
     const searchResult = useSelector((state) => state.search.fields);
     const [position, setPosition] = useState(null);
     const selectedField = useSelector((state) => state.field.selectedField);
@@ -28,6 +32,8 @@ export default function Warehouse() {
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
     const [toggleSelected, setToggleSelected] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [topmostVault, setTopmostVault] = useState(null);
+
 
     useEffect(() => {
         dispatch(setSelectedFieldAction(null));
@@ -50,6 +56,21 @@ export default function Warehouse() {
             .catch(() => console.log("🚨 fields could not be loaded!"))
     }, [dispatch, warehouseId])
 
+    const updateTopmostVault = () => {
+        let topVault = null;
+        for (let vault of vaultsArr) {
+          if (!topVault || vault.position > topVault.position) {
+            topVault = vault;
+          }
+        }
+        setTopmostVault(topVault);
+      };
+    
+      useEffect(() => { 
+        if (vaultsArr && vaultsArr.length > 0) {
+          updateTopmostVault();
+        }
+      }, [dispatch, vaultsArr]);
 
     const handleFieldClick = async (field) => {
         await setLoading(true);
@@ -90,6 +111,10 @@ export default function Warehouse() {
             )
             console.log("👩‍❤️‍👩", fieldToChange);
         }
+        await updateTopmostVault();
+
+        console.log("🍒", topmostVault)
+
         setSelectedVaultToStage(null);
         setIsConfirmStagingModalOpen(false);
     }
@@ -214,6 +239,10 @@ export default function Warehouse() {
                                 toggleFieldFull={toggleFieldFull}
                                 toggleSelected={toggleSelected}
                                 warehouse={warehouse}
+                                selectedFieldId={selectedField.id}
+                                field={selectedField}
+                                vaultsArr={vaultsArr}
+                                topmostVault={topmostVault}
                             />
                         ) : (
                             <div>

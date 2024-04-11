@@ -232,7 +232,7 @@ const vaultReducer = (state = initialState, action) => {
     case STAGE_VAULT:
       newState = { ...state }
       console.log('in stage vault case => ', action.stagingInfo)
-      delete newState[action.stagingInfo.vault.id];
+      // delete newState[action.stagingInfo.vault.id];
       return newState
     case MOVE_VAULT_FROM_STAGE_TO_WAREHOUSE:
       newState = { ...state }
