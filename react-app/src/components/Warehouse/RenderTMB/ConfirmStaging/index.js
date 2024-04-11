@@ -3,7 +3,6 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { getAllFieldVaultsThunk, stageVaultThunk } from '../../../../store/vault';
 import "./ConfirmStaging.css"
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 
 export default function ConfirmStaging({ 

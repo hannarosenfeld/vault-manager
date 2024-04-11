@@ -28,7 +28,6 @@ export default function Warehouse() {
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
     const [toggleSelected, setToggleSelected] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [fieldGrid, setFieldGrid] = useState(null);
 
     useEffect(() => {
         dispatch(setSelectedFieldAction(null));
@@ -147,7 +146,6 @@ export default function Warehouse() {
 
     useEffect(() => {
         if (loadedWarehouseFields) setFields(Object.values(allFields).filter(field => field.warehouse_id === parseInt(warehouseId)).sort((a,b) => a.name - b.name))
-        setFieldGrid(fieldGenerator(fields))
     }, [loadedWarehouseFields])
 
     function fieldGenerator(fields) {
