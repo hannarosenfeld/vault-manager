@@ -35,8 +35,6 @@ export const editFieldThunk = (fieldData) => async (dispatch) => {
       body: JSON.stringify(fieldData)
     });
     
-    console.log('😇😇😇 ', res)
-
     if (res.ok) {
       const data = await res.json();
       dispatch(editFieldAction(data));

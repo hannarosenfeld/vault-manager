@@ -32,7 +32,6 @@ export default function Warehouse() {
     const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
     const [toggleSelected, setToggleSelected] = useState(false);
     const [loading, setLoading] = useState(true);
-    // const [topmostVault, setTopmostVault] = useState(null);
 
 
     useEffect(() => {
@@ -56,21 +55,6 @@ export default function Warehouse() {
             .catch(() => console.log("🚨 fields could not be loaded!"))
     }, [dispatch, warehouseId])
 
-    // const updateTopmostVault = () => {
-    //     let topVault = null;
-    //     for (let vault of vaultsArr) {
-    //       if (!topVault || vault.position > topVault.position) {
-    //         topVault = vault;
-    //       }
-    //     }
-    //     setTopmostVault(topVault);
-    //   };
-    
-    //   useEffect(() => { 
-    //     if (vaultsArr && vaultsArr.length > 0) {
-    //       updateTopmostVault();
-    //     }
-    //   }, [dispatch, vaultsArr]);
 
     const handleFieldClick = async (field) => {
         await setLoading(true);
@@ -99,7 +83,6 @@ export default function Warehouse() {
 
     const closeConfirmStagingModal = async (isDeleted) => {
         if (isDeleted) {
-            let fieldToChange;
             setFields(prevFields => 
                 prevFields.map(field => {
                     fieldToChange = field;
@@ -109,12 +92,7 @@ export default function Warehouse() {
                     )
                 })
             )
-            console.log("👩‍❤️‍👩", fieldToChange);
         }
-        // await updateTopmostVault();
-
-        // console.log("🍒", topmostVault)
-
         setSelectedVaultToStage(null);
         setIsConfirmStagingModalOpen(false);
     }
@@ -239,10 +217,6 @@ export default function Warehouse() {
                                 toggleFieldFull={toggleFieldFull}
                                 toggleSelected={toggleSelected}
                                 warehouse={warehouse}
-                                // selectedFieldId={selectedField.id}
-                                // field={selectedField}
-                                // vaultsArr={vaultsArr}
-                                // topmostVault={topmostVault}
                             />
                         ) : (
                             <div>

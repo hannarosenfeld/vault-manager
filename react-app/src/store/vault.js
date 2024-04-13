@@ -51,7 +51,7 @@ export const editVaultThunk = (vaultId, vaultData) => async (dispatch) => {
 
     if (res.ok) {
       const data = await res.json();
-      dispatch(editVaultAction(data)); // Update the state with the edited vault
+      dispatch(editVaultAction(data));
       return data;
     } else {
       const err = await res.json();
@@ -74,7 +74,6 @@ export const stageVaultThunk = (vaultId, vaultData) => async (dispatch) => {
 
     if (res.ok) {
       const data = await res.json();
-      console.log('data in stage vault thunk => ', data)
       dispatch(stageVaultAction(data));
       return data;
     } else {
@@ -116,7 +115,7 @@ export const deleteVaultThunk = (vaultId) => async (dispatch) => {
     });
 
     if (res.ok) {
-      dispatch(deleteVaultAction(vaultId)); // Update the state by removing the deleted vault
+      dispatch(deleteVaultAction(vaultId));
       return vaultId;
     } else {
       const err = await res.json();
@@ -155,7 +154,7 @@ export const getVaultsThunk = () => async (dispatch) => {
       return data;
     } else {
       const err = await res.json();
-      console.error("Error fetching vaults:", err); // Log the error
+      console.error("Error fetching vaults:", err);
       return err;
     }
   } catch (error) {
@@ -165,17 +164,15 @@ export const getVaultsThunk = () => async (dispatch) => {
 };
 
 export const getAllFieldVaultsThunk = (fieldId) => async (dispatch) => {
-  console.log('hitting get all field vaults thunk')
   try {
     const res = await fetch(`/api/vaults/${fieldId}`);
     if (res.ok) {
       const data = await res.json();
-      console.log('res data if ok => ', data)
       dispatch(getAllVaultsAction(data));
       return data;
     } else {
       const err = await res.json();
-      console.error("Error fetching vaults:", err); // Log the error
+      console.error("Error fetching vaults:", err);
       return err;
     }
   } catch (error) {
@@ -196,11 +193,11 @@ export const addVaultThunk = (vaultData) => async (dispatch) => {
       return data;
     } else {
       const err = await res.json();
-      console.error("Error adding vault:", err); // Log the error
+      console.error("Error adding vault:", err);
       return err;
     }
   } catch (error) {
-    console.error("Error adding vault:", error); // Log any exceptions
+    console.error("Error adding vault:", error);
     return error;
   }
 };
@@ -213,11 +210,7 @@ const vaultReducer = (state = initialState, action) => {
   let newState = {}
   switch (action.type) {
     case GET_ALL_VAULTS:
-      console.log('state before change', state)
       newState = { ...state, ...action.vaults }
-      console.log('state after change', newState)
-      // const vaultKeys = Object.keys(action.vaults)
-      // vaultKeys.forEach(key => newState[key] = action.vaults[key]);
       return newState
     case ADD_VAULT:
       newState[action.vault.id] = action.vault
@@ -225,14 +218,12 @@ const vaultReducer = (state = initialState, action) => {
     case EDIT_VAULT:
       newState[action.vault.id] = action.vault
       return newState
-    // TODO: Revise DELETE thunk
     case DELETE_VAULT:
       delete newState[action.vaultId];
       return newState
     case STAGE_VAULT:
       newState = { ...state }
       console.log('in stage vault case => ', action.stagingInfo)
-      // delete newState[action.stagingInfo.vault.id];
       return newState
     case MOVE_VAULT_FROM_STAGE_TO_WAREHOUSE:
       newState = { ...state }
