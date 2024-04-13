@@ -85,7 +85,6 @@ export default function Warehouse() {
         if (isDeleted) {
             setFields(prevFields => 
                 prevFields.map(field => {
-                    fieldToChange = field;
                     return(
                         selectedField.vaults.length === 0 ? field.vaults = [] :
                         field.id === selectedVaultToStage.field_id ? { ...field, vaults: field.vaults.filter(vault => vault !== selectedVaultToStage.id)} : field
