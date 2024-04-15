@@ -41,7 +41,7 @@ export default function EditWarehousePage() {
                         gridTemplateRows: `repeat(${warehouse.rows}, 1fr)`,
                         gridAutoFlow: 'column',
                         gridGap: "1%",
-                        width: "100%",
+                        width: "95%",
                         height: "75vh",
                     }}
                 >   
@@ -74,26 +74,26 @@ export default function EditWarehousePage() {
         <div className="wrapper" style={{width: "100%",height: "100%", display: "flex", alignItems:"center"}}>
             <div className="leftButtons" style={{display: "flex", alignItems: "center", flexDirection:"column"}}>
                 <OpenModalButton 
-                    buttonText="+"
+                    buttonText={<span class="material-symbols-outlined">add</span>}
                     onItemClick={() => setIsModalOpen(false)}
                     modalComponent={<EditWarehouseModal dir="left" opperation="add"/>}
                 />
                 <OpenModalButton 
-                    buttonText="-"
+                    buttonText={<span class="material-symbols-outlined">remove</span>}
                     onItemClick={() => setIsModalOpen(false)}
                     modalComponent={<EditWarehouseModal dir="left" opperation="subtract"/>}
                 />
             </div>
             <div style={{display: "flex", flexDirection: "column", width: "100%", alignItems: "center"}}>
             {fields ? fieldGenerator(fields): null}
-            <div className="rightButtons">
+            <div className="rightButtons" style={{display: "flex", gap: "1em"}}>
                 <OpenModalButton 
-                    buttonText="+"
+                    buttonText={<span class="material-symbols-outlined">add</span>}
                     onItemClick={() => setIsModalOpen(false)}
                     modalComponent={<EditWarehouseModal dir="bottom" opperation="add"/>}
                 />
                 <OpenModalButton 
-                    buttonText="-"
+                    buttonText={<span class="material-symbols-outlined">remove</span>}
                     onItemClick={() => setIsModalOpen(false)}
                     modalComponent={<EditWarehouseModal dir="bottom" opperation="subtract"/>}
                 />
@@ -101,12 +101,12 @@ export default function EditWarehousePage() {
             </div>
             <div className="bottomButtons" >
                 <OpenModalButton 
-                    buttonText="+"
+                    buttonText={<span class="material-symbols-outlined">add</span>}
                     onItemClick={() => setIsModalOpen(false)}
                     modalComponent={<EditWarehouseModal dir="right" opperation="add"/>}
                 />
                 <OpenModalButton 
-                    buttonText="-"
+                    buttonText={<span class="material-symbols-outlined">remove</span>}
                     onItemClick={() => setIsModalOpen(false)}
                     modalComponent={<EditWarehouseModal dir="right" opperation="subtract"/>}
                 />
