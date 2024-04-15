@@ -2,6 +2,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { getAllFieldsThunk } from "../../store/field";
+import { EditWarehouseModal } from "./editWarehouseModal";
+
 
 export default function EditWarehousePage() {
     const dispatch = useDispatch();
@@ -10,6 +12,22 @@ export default function EditWarehousePage() {
     const allFields = useSelector((state) => state.field[warehouseId]);
     const [loadedWarehouseFields, setLoadedWarehouseFields] = useState(false);
     const [fields, setFields] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+//   return (
+//     <>
+//       <Button variant="primary" onClick={handleShow}>
+//         Launch demo modal
+//       </Button>
+
+
+//     </>
+//   );
 
     useEffect(() => {
         setFields(null);
@@ -67,40 +85,54 @@ export default function EditWarehousePage() {
         }
     }
 
+    const addRow = (dir) => {
+        
+    }
+
+    const deleteRow = (dir) => {
+        console.log(fields)
+    }
+
+    const openModal = (dir, opperation) => {
+        console.log('hitting open modal')
+        return (<editWarehouseModal dir={dir} opperation={opperation}/>)
+    }
+
+
     return (
         <div className="wrapper" style={{width: "100%",height: "100%", display: "flex", alignItems:"center"}}>
             <div className="topButtons" style={{display: "flex", alignItems: "center"}}>
-                <span class="material-symbols-outlined">
+                <span class="material-symbols-outlined" onClick={() => openModal('left', 'add')}>
                     add
                 </span>
-                <span class="material-symbols-outlined">
+                <span class="material-symbols-outlined" onClick={() => deleteRow('left')}>
                     remove
                 </span>
             </div>
             <div style={{display: "flex", flexDirection: "column", width: "100%"}}>
             <div className="leftButtons" >
-                <span class="material-symbols-outlined">
+                <span class="material-symbols-outlined" onClick={() => addRow('top')}>
                     add
                 </span>
-                <span class="material-symbols-outlined">
+                <span class="material-symbols-outlined" onClick={() => deleteRow('top')}>
                     remove
                 </span>
             </div>
             {fields ? fieldGenerator(fields): null}
             <div className="rightButtons" >
-                <span class="material-symbols-outlined">
+                <span class="material-symbols-outlined" onClick={() => addRow('bottom')}>
                     add
                 </span>
-                <span class="material-symbols-outlined">
+                <span class="material-symbols-outlined" onClick={() => deleteRow('bottom')}>
                     remove
                 </span>
             </div>
             </div>
             <div className="bottomButtons" >
-                <span class="material-symbols-outlined">
+                <span class="material-symbols-outlined" onClick={() => addRow('right')}>
                     add
                 </span>
-                <span class="material-symbols-outlined">
+                <span class="material-symbols-outlined" onClick={() => deleteRow('right')}>
                     remove
                 </span>
             </div>
