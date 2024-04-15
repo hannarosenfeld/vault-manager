@@ -69,7 +69,7 @@ export default function EditWarehousePage() {
 
     return (
         <div className="wrapper" style={{width: "100%",height: "100%", display: "flex", alignItems:"center"}}>
-            <div className="topButtons" >
+            <div className="topButtons" style={{display: "flex", alignItems: "center"}}>
                 <span class="material-symbols-outlined">
                     add
                 </span>
