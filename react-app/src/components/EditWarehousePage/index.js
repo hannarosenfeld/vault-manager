@@ -86,18 +86,6 @@ export default function EditWarehousePage() {
                 />
             </div>
             <div style={{display: "flex", flexDirection: "column", width: "100%"}}>
-            <div className="topButtons" >
-                <OpenModalButton 
-                    buttonText="+"
-                    onItemClick={() => setIsModalOpen(false)}
-                    modalComponent={<EditWarehouseModal dir="top" opperation="add"/>}
-                />
-                <OpenModalButton 
-                    buttonText="-"
-                    onItemClick={() => setIsModalOpen(false)}
-                    modalComponent={<EditWarehouseModal dir="top" opperation="subtract"/>}
-                />
-            </div>
             {fields ? fieldGenerator(fields): null}
             <div className="rightButtons" >
                 <OpenModalButton 
