@@ -96,45 +96,56 @@ export default function EditWarehousePage() {
 
     return (
         <div className="wrapper" style={{width: "100%",height: "100%", display: "flex", alignItems:"center"}}>
-            <div className="topButtons" style={{display: "flex", alignItems: "center"}}>
-                {/* <span class="material-symbols-outlined" onClick={() => openModal('left', 'add')}>
-                    add
-                </span> */}
+            <div className="leftButtons" style={{display: "flex", alignItems: "center"}}>
                 <OpenModalButton 
                     buttonText="+"
                     onItemClick={closeModal}
-                    modalComponent={<EditWarehouseModal />}
+                    modalComponent={<EditWarehouseModal dir="left" opperation="add"/>}
                 />
-                <span class="material-symbols-outlined" onClick={() => deleteRow('left')}>
-                    remove
-                </span>
+                <OpenModalButton 
+                    buttonText="-"
+                    onItemClick={closeModal}
+                    modalComponent={<EditWarehouseModal dir="left" opperation="subtract"/>}
+                />
             </div>
             <div style={{display: "flex", flexDirection: "column", width: "100%"}}>
-            <div className="leftButtons" >
-                <span class="material-symbols-outlined" onClick={() => addRow('top')}>
-                    add
-                </span>
-                <span class="material-symbols-outlined" onClick={() => deleteRow('top')}>
-                    remove
-                </span>
+            <div className="topButtons" >
+                <OpenModalButton 
+                    buttonText="+"
+                    onItemClick={closeModal}
+                    modalComponent={<EditWarehouseModal dir="top" opperation="add"/>}
+                />
+                <OpenModalButton 
+                    buttonText="-"
+                    onItemClick={closeModal}
+                    modalComponent={<EditWarehouseModal dir="top" opperation="subtract"/>}
+                />
             </div>
             {fields ? fieldGenerator(fields): null}
             <div className="rightButtons" >
-                <span class="material-symbols-outlined" onClick={() => addRow('bottom')}>
-                    add
-                </span>
-                <span class="material-symbols-outlined" onClick={() => deleteRow('bottom')}>
-                    remove
-                </span>
+                <OpenModalButton 
+                    buttonText="+"
+                    onItemClick={closeModal}
+                    modalComponent={<EditWarehouseModal dir="bottom" opperation="add"/>}
+                />
+                <OpenModalButton 
+                    buttonText="-"
+                    onItemClick={closeModal}
+                    modalComponent={<EditWarehouseModal dir="bottom" opperation="subtract"/>}
+                />
             </div>
             </div>
             <div className="bottomButtons" >
-                <span class="material-symbols-outlined" onClick={() => addRow('right')}>
-                    add
-                </span>
-                <span class="material-symbols-outlined" onClick={() => deleteRow('right')}>
-                    remove
-                </span>
+                <OpenModalButton 
+                    buttonText="+"
+                    onItemClick={closeModal}
+                    modalComponent={<EditWarehouseModal dir="right" opperation="add"/>}
+                />
+                <OpenModalButton 
+                    buttonText="-"
+                    onItemClick={closeModal}
+                    modalComponent={<EditWarehouseModal dir="right" opperation="subtract"/>}
+                />
             </div>
         </div>
     )
