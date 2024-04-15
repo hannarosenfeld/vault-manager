@@ -75,7 +75,7 @@ function ProfileButton({ user }) {
               to={`/${warehouse.companyName.toLowerCase()}/warehouse/${warehouse.id}`}
               style={{display: "flex", gap: "5px"}}>
               <ListItemText primary={warehouse.name} />
-              <NavLink to={`/warehouse/${warehouse.id}/edit`}>
+              <NavLink to={`/${warehouse.companyName}/warehouse/${warehouse.id}/edit`}>
                 <span
                   style={{ color: '#0074D9'}}
                   className="material-symbols-outlined"
