@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { getAllFieldsThunk } from "../../store/field";
 import { EditWarehouseModal } from "./editWarehouseModal";
+import OpenModalButton from "../OpenModalButton";
 
 
 export default function EditWarehousePage() {
@@ -19,15 +20,6 @@ export default function EditWarehousePage() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-//   return (
-//     <>
-//       <Button variant="primary" onClick={handleShow}>
-//         Launch demo modal
-//       </Button>
-
-
-//     </>
-//   );
 
     useEffect(() => {
         setFields(null);
@@ -94,17 +86,25 @@ export default function EditWarehousePage() {
     }
 
     const openModal = (dir, opperation) => {
-        console.log('hitting open modal')
-        return (<editWarehouseModal dir={dir} opperation={opperation}/>)
+        setIsModalOpen(true)
     }
+    const closeModal = () => {
+        setIsModalOpen(false);
+    }
+
 
 
     return (
         <div className="wrapper" style={{width: "100%",height: "100%", display: "flex", alignItems:"center"}}>
             <div className="topButtons" style={{display: "flex", alignItems: "center"}}>
-                <span class="material-symbols-outlined" onClick={() => openModal('left', 'add')}>
+                {/* <span class="material-symbols-outlined" onClick={() => openModal('left', 'add')}>
                     add
-                </span>
+                </span> */}
+                <OpenModalButton 
+                    buttonText="+"
+                    onItemClick={closeModal}
+                    modalComponent={<EditWarehouseModal />}
+                />
                 <span class="material-symbols-outlined" onClick={() => deleteRow('left')}>
                     remove
                 </span>
