@@ -14,12 +14,7 @@ export default function EditWarehousePage() {
     const [loadedWarehouseFields, setLoadedWarehouseFields] = useState(false);
     const [fields, setFields] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
+    const [show, setShow] = useState(false);
 
     useEffect(() => {
         setFields(null);
@@ -35,7 +30,6 @@ export default function EditWarehousePage() {
         if (loadedWarehouseFields) setFields(Object.values(allFields).filter(field => field.warehouse_id === parseInt(warehouseId)).sort((a,b) => a.name - b.name))
     }, [loadedWarehouseFields])
 
-    console.log("💖", warehouse)
 
     function fieldGenerator(fields) {
         if (fields) {
@@ -77,34 +71,17 @@ export default function EditWarehousePage() {
         }
     }
 
-    const addRow = (dir) => {
-        
-    }
-
-    const deleteRow = (dir) => {
-        console.log(fields)
-    }
-
-    const openModal = (dir, opperation) => {
-        setIsModalOpen(true)
-    }
-    const closeModal = () => {
-        setIsModalOpen(false);
-    }
-
-
-
     return (
         <div className="wrapper" style={{width: "100%",height: "100%", display: "flex", alignItems:"center"}}>
             <div className="leftButtons" style={{display: "flex", alignItems: "center"}}>
                 <OpenModalButton 
                     buttonText="+"
-                    onItemClick={closeModal}
+                    onItemClick={() => setIsModalOpen(false)}
                     modalComponent={<EditWarehouseModal dir="left" opperation="add"/>}
                 />
                 <OpenModalButton 
                     buttonText="-"
-                    onItemClick={closeModal}
+                    onItemClick={() => setIsModalOpen(false)}
                     modalComponent={<EditWarehouseModal dir="left" opperation="subtract"/>}
                 />
             </div>
@@ -112,12 +89,12 @@ export default function EditWarehousePage() {
             <div className="topButtons" >
                 <OpenModalButton 
                     buttonText="+"
-                    onItemClick={closeModal}
+                    onItemClick={() => setIsModalOpen(false)}
                     modalComponent={<EditWarehouseModal dir="top" opperation="add"/>}
                 />
                 <OpenModalButton 
                     buttonText="-"
-                    onItemClick={closeModal}
+                    onItemClick={() => setIsModalOpen(false)}
                     modalComponent={<EditWarehouseModal dir="top" opperation="subtract"/>}
                 />
             </div>
@@ -125,12 +102,12 @@ export default function EditWarehousePage() {
             <div className="rightButtons" >
                 <OpenModalButton 
                     buttonText="+"
-                    onItemClick={closeModal}
+                    onItemClick={() => setIsModalOpen(false)}
                     modalComponent={<EditWarehouseModal dir="bottom" opperation="add"/>}
                 />
                 <OpenModalButton 
                     buttonText="-"
-                    onItemClick={closeModal}
+                    onItemClick={() => setIsModalOpen(false)}
                     modalComponent={<EditWarehouseModal dir="bottom" opperation="subtract"/>}
                 />
             </div>
@@ -138,12 +115,12 @@ export default function EditWarehousePage() {
             <div className="bottomButtons" >
                 <OpenModalButton 
                     buttonText="+"
-                    onItemClick={closeModal}
+                    onItemClick={() => setIsModalOpen(false)}
                     modalComponent={<EditWarehouseModal dir="right" opperation="add"/>}
                 />
                 <OpenModalButton 
                     buttonText="-"
-                    onItemClick={closeModal}
+                    onItemClick={() => setIsModalOpen(false)}
                     modalComponent={<EditWarehouseModal dir="right" opperation="subtract"/>}
                 />
             </div>
