@@ -43,7 +43,6 @@ export default function EditWarehousePage() {
                         gridGap: "1%",
                         width: "100%",
                         height: "75vh",
-                        marginBottom: "1rem"
                     }}
                 >   
                     {fields.map(field => (
@@ -73,7 +72,7 @@ export default function EditWarehousePage() {
 
     return (
         <div className="wrapper" style={{width: "100%",height: "100%", display: "flex", alignItems:"center"}}>
-            <div className="leftButtons" style={{display: "flex", alignItems: "center"}}>
+            <div className="leftButtons" style={{display: "flex", alignItems: "center", flexDirection:"column"}}>
                 <OpenModalButton 
                     buttonText="+"
                     onItemClick={() => setIsModalOpen(false)}
@@ -85,9 +84,9 @@ export default function EditWarehousePage() {
                     modalComponent={<EditWarehouseModal dir="left" opperation="subtract"/>}
                 />
             </div>
-            <div style={{display: "flex", flexDirection: "column", width: "100%"}}>
+            <div style={{display: "flex", flexDirection: "column", width: "100%", alignItems: "center"}}>
             {fields ? fieldGenerator(fields): null}
-            <div className="rightButtons" >
+            <div className="rightButtons">
                 <OpenModalButton 
                     buttonText="+"
                     onItemClick={() => setIsModalOpen(false)}
