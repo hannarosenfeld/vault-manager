@@ -68,8 +68,42 @@ export default function EditWarehousePage() {
     }
 
     return (
-        <div className="wrapper">
+        <div className="wrapper" style={{width: "100%",height: "100%", display: "flex", alignItems:"center"}}>
+            <div className="topButtons" >
+                <span class="material-symbols-outlined">
+                    add
+                </span>
+                <span class="material-symbols-outlined">
+                    remove
+                </span>
+            </div>
+            <div style={{display: "flex", flexDirection: "column", width: "100%"}}>
+            <div className="leftButtons" >
+                <span class="material-symbols-outlined">
+                    add
+                </span>
+                <span class="material-symbols-outlined">
+                    remove
+                </span>
+            </div>
             {fields ? fieldGenerator(fields): null}
+            <div className="rightButtons" >
+                <span class="material-symbols-outlined">
+                    add
+                </span>
+                <span class="material-symbols-outlined">
+                    remove
+                </span>
+            </div>
+            </div>
+            <div className="bottomButtons" >
+                <span class="material-symbols-outlined">
+                    add
+                </span>
+                <span class="material-symbols-outlined">
+                    remove
+                </span>
+            </div>
         </div>
     )
 }
