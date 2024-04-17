@@ -1,11 +1,12 @@
 import { useState } from "react";
+import { editWarehouseThunk } from "../../store/warehouse";
+
 
 export function EditWarehouseModal({ dir, opperation }) {
-
   const [count, setCount] = useState(1);
 
   return (
-    <div style={{width: "22em", padding: "3em"}}>
+    <div style={{width: "20em", padding: "2em"}}>
       {opperation === "add" ? <div>Add <b>{count}</b> row{count === 1 ? '' : 's' } to warehouse</div> : <div>Subtract <b>{count}</b> row{count === 1 ? '' : 's' } from warehouse</div>}
       <div className="input-group">
         <button
@@ -23,6 +24,7 @@ export function EditWarehouseModal({ dir, opperation }) {
           +
         </button>
       </div>
+      <button class="btn btn-primary" style={{float: "right", margin: "1em", marginRight: "-0.2em"}}>submit</button>
     </div>
   );
 }
