@@ -16,10 +16,10 @@ export function EditWarehouseModal({ dir, opperation, warehouseId }) {
     const warehouseData = {
       warehouseId,
       direction: dir,
+      opperation: opperation,
       warehouseColumns: warehouse.columns,
       warehouseRows: warehouse.rows,
       count
-      // amountRowsAdded: count
     }
     dispatch(editWarehouseThunk(warehouseData));
   }
