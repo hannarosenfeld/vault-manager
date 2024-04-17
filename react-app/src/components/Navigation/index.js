@@ -7,8 +7,10 @@ import SearchBar from './SearchBar';
 import './Navigation.css';
 import naglee from './naglee.png';
 
-function Navigation({ isLoaded, company }) {
+function Navigation({ isLoaded, company, isWarehousePage }) {
   const sessionUser = useSelector((state) => state.session.user);
+
+  console.log("😎", isWarehousePage)
 
   return (
     <div className="wrapper nav-container">
@@ -18,7 +20,7 @@ function Navigation({ isLoaded, company }) {
             <img src={naglee} alt="Logo" />
           </NavLink>
         </li>
-        {isLoaded && (
+        {isLoaded && isWarehousePage && (
           <li className="search-bar-container">
             <SearchBar />
           </li>

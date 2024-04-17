@@ -21,11 +21,16 @@ function App() {
   const history = useHistory();
   const [isLoaded, setIsLoaded] = useState(false);
 	const sessionUser = useSelector((state) => state.session.user);
+  const [isWarehousePage, setIsWarehousePage] = useState(false);
 
   const onAddWarehouseSubmit = async () => {
     await dispatch(getAllWarehousesThunk());    
     history.push("/");
   }
+
+  useEffect(() => {
+    console.log("!!!!", isWarehousePage)
+  }, [isWarehousePage])
 
   useEffect(() => {
     dispatch(authenticate())
@@ -45,7 +50,7 @@ function App() {
       )}
       {isLoaded && sessionUser && (
         <>
-        <Navigation isLoaded={isLoaded} company={sessionUser.company} />
+        <Navigation isLoaded={isLoaded} company={sessionUser.company} isWarehousePage={isWarehousePage} />
           <Switch>
             <Route exact path="/" >
               <Index company={sessionUser.company} />
@@ -60,7 +65,7 @@ function App() {
             </Route>                  
 
             <Route exact path="/:companyName/warehouse/:warehouseId"> 
-              <Warehouse />
+              <Warehouse setIsWarehousePage={setIsWarehousePage} />
             </Route>     
 
             <Route exact path="/:companyName/warehouse/:warehouseId/edit"> 

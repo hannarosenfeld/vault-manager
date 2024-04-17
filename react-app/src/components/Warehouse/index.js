@@ -13,7 +13,7 @@ import "./Warehouse.css"
 
 
 
-export default function Warehouse() {
+export default function Warehouse({ setIsWarehousePage }) {
     const dispatch = useDispatch();
     const { warehouseId } = useParams(); 
     const warehouse = useSelector((state) => state.warehouse[warehouseId]);
@@ -33,6 +33,12 @@ export default function Warehouse() {
     const [toggleSelected, setToggleSelected] = useState(false);
     const [loading, setLoading] = useState(true);
 
+    useEffect(() => {
+        setIsWarehousePage(true);
+        return () => {
+            setIsWarehousePage(false);
+        }
+    }, [])
 
     useEffect(() => {
         dispatch(setSelectedFieldAction(null));
@@ -206,7 +212,7 @@ export default function Warehouse() {
             </div>
             )}
             {!loading && ( 
-                <>
+                <div style={{display: "flex", flexDirection: "column"}}>
                     <div className="field-info">
                         {selectedField?.id ? (
                             <RenderTMB
@@ -240,7 +246,7 @@ export default function Warehouse() {
                             warehouseId={warehouseId}
                         />
                     </Modal>
-                </>
+                </div>
             )}
         </div>
     )
