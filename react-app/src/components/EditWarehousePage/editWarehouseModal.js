@@ -1,13 +1,27 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { editWarehouseThunk } from "../../store/warehouse";
+import { useDispatch } from "react-redux";
 
 
-export function EditWarehouseModal({ dir, opperation }) {
+export function EditWarehouseModal({ dir, opperation, warehouseId }) {
+  const dispatch = useDispatch();
+  const warehouse = useSelector(state => state.warehouse[warehouseId]);
   const [count, setCount] = useState(1);
+
 
   const editWarehouse = (e) => {
     e.preventDefault();
     console.log("💁‍♀️")
+    const warehouseData = {
+      warehouseId,
+      direction: dir,
+      warehouseColumns: warehouse.columns,
+      warehouseRows: warehouse.rows,
+      count
+      // amountRowsAdded: count
+    }
+    dispatch(editWarehouseThunk(warehouseData));
   }
 
   return (
@@ -31,9 +45,7 @@ export function EditWarehouseModal({ dir, opperation }) {
         </button>
       </div>
       <br/>
-      <button class="btn btn-primary">
-        submit
-      </button>
+      <button class="btn btn-primary">submit</button>
       </form>
     </div>
   );

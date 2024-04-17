@@ -76,12 +76,12 @@ export default function EditWarehousePage() {
                 <OpenModalButton 
                     buttonText={<span class="material-symbols-outlined">add</span>}
                     onItemClick={() => setIsModalOpen(false)}
-                    modalComponent={<EditWarehouseModal dir="left" opperation="add"/>}
+                    modalComponent={<EditWarehouseModal dir="left" opperation="add" warehouseId={warehouseId} />}
                 />
                 <OpenModalButton 
                     buttonText={<span class="material-symbols-outlined">remove</span>}
                     onItemClick={() => setIsModalOpen(false)}
-                    modalComponent={<EditWarehouseModal dir="left" opperation="subtract"/>}
+                    modalComponent={<EditWarehouseModal dir="left" opperation="subtract" warehouseId={warehouseId} />}
                 />
             </div>
             <div style={{display: "flex", flexDirection: "column", width: "100%", alignItems: "center"}}>
@@ -90,12 +90,12 @@ export default function EditWarehousePage() {
                 <OpenModalButton 
                     buttonText={<span class="material-symbols-outlined">add</span>}
                     onItemClick={() => setIsModalOpen(false)}
-                    modalComponent={<EditWarehouseModal dir="bottom" opperation="add"/>}
+                    modalComponent={<EditWarehouseModal dir="bottom" opperation="add" warehouseId={warehouseId} />}
                 />
                 <OpenModalButton 
                     buttonText={<span class="material-symbols-outlined">remove</span>}
                     onItemClick={() => setIsModalOpen(false)}
-                    modalComponent={<EditWarehouseModal dir="bottom" opperation="subtract"/>}
+                    modalComponent={<EditWarehouseModal dir="bottom" opperation="subtract" warehouseId={warehouseId} />}
                 />
             </div>
             </div>
@@ -103,12 +103,12 @@ export default function EditWarehousePage() {
                 <OpenModalButton 
                     buttonText={<span class="material-symbols-outlined">add</span>}
                     onItemClick={() => setIsModalOpen(false)}
-                    modalComponent={<EditWarehouseModal dir="right" opperation="add"/>}
+                    modalComponent={<EditWarehouseModal dir="right" opperation="add" warehouseId={warehouseId}/>}
                 />
                 <OpenModalButton 
                     buttonText={<span class="material-symbols-outlined">remove</span>}
                     onItemClick={() => setIsModalOpen(false)}
-                    modalComponent={<EditWarehouseModal dir="right" opperation="subtract"/>}
+                    modalComponent={<EditWarehouseModal dir="right" opperation="subtract" warehouseId={warehouseId}/>}
                 />
             </div>
         </div>

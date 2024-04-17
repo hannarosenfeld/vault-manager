@@ -62,7 +62,10 @@ export const getAllWarehousesThunk = () => async (dispatch) => {
   }
 };
 
-export const editWarehouseThunk = (warehouseId) => async (dispatch) => {
+export const editWarehouseThunk = (warehouseData) => async (dispatch) => {
+  console.log("💖 in warehouse thunk!!! ")
+  console.log("💖 in warehouse thunk!!! ", warehouseData)
+  const { warehouseId } = warehouseData;
   try {
     const response = await fetch(`/api/warehouse/${warehouseId}`);
     if (response.ok) {
