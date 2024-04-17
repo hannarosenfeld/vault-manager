@@ -27,7 +27,7 @@ export function EditWarehouseModal({ dir, opperation, warehouseId }) {
   return (
     <div style={{width: "20em", padding: "2em"}}>
       <form onSubmit={editWarehouse}>
-      {opperation === "add" ? <div>Add <b>{count}</b> row{count === 1 ? '' : 's' } to warehouse</div> : <div>Subtract <b>{count}</b> row{count === 1 ? '' : 's' } from warehouse</div>}
+      <div>{opperation === "add" ? 'Add' : 'Subtract'} <b>{count}</b> row{count === 1 ? '' : 's' } to warehouse <b>{dir}</b></div>
       <div className="input-group">
         <button
           className="btn btn-outline-secondary"
