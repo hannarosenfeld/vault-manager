@@ -18,27 +18,30 @@ def add_field():
 
     try:
         if form.validate_on_submit():
-        warehouse_id = form.data['warehouse_id']
-        direction = form.data['direction']
-        opperation = form.data['opperation']
-        warehouse_columns = form.data['warehouse_columns']
-        warehouse_rows = form.data['warehouse_rows']
-        count = form.data['count']
+            warehouse_id = form.data['warehouse_id']
+            direction = form.data['direction']
+            opperation = form.data['opperation']
+            warehouse_columns = form.data['warehouse_columns']
+            warehouse_rows = form.data['warehouse_rows']
+            count = form.data['count']
 
-        if (opperation == 'add'):
-            if (direction == 'left'):
+            if (opperation == 'add'):
+                if (direction == 'left'):
+                    print('test')
+                elif (direction == 'right'):
+                    print('test')
+                
+                elif (direction == 'bottom'):
+                    print('test')
 
-            elif (direction == 'right'):
-            
-            elif (direction == 'bottom'):
-
-            else return jsonify(message="opperation not specified")
-        else:
-            return jsonify(message="you are not creating new fields")
-        #all possible actions
-        #1. add left
-        #3. add right
-        #5. add bottom
+                else:
+                    return jsonify(message="opperation not specified")
+            else:
+                return jsonify(message="you are not creating new fields")
+            #all possible actions
+            #1. add left
+            #3. add right
+            #5. add bottom
 
 
     except Exception as e:
