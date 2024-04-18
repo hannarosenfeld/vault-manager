@@ -11,7 +11,7 @@ def get_all_fields(warehouseId):
     Field.query.filter_by(warehouse_id=warehouseId)
     return jsonify({ field.id : field.to_dict() for field in fields })
 
-@field_routes.route('/<int:dir>/<int:count>', methods=['POST'])
+@field_routes.route('/<int:dir>/<int:count>', methods=['POST', 'DELETE'])
 def add_field():
     form = PostFieldForm()
     form['csrf_token'].data = request.cookies['csrf_token']
@@ -28,6 +28,7 @@ def add_field():
             if (opperation == 'add'):
                 if (direction == 'left'):
                     print('test')
+
                 elif (direction == 'right'):
                     print('test')
                 
@@ -35,13 +36,21 @@ def add_field():
                     print('test')
 
                 else:
-                    return jsonify(message="opperation not specified")
+                    return jsonify(message="direction not specified")
+
+            elif (opperation == 'subtract'):
+                if (direction == 'left'):
+                    print('test')
+                elif (direction == 'right'):
+                    print('test')
+                
+                elif (direction == 'bottom'):
+                    print('test')
+
+                else:
+                    return jsonify(message="direction not specified")
             else:
-                return jsonify(message="you are not creating new fields")
-            #all possible actions
-            #1. add left
-            #3. add right
-            #5. add bottom
+                return jsonify(message="opperation not specified")
 
 
     except Exception as e:
