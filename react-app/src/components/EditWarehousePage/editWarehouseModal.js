@@ -14,11 +14,11 @@ export function EditWarehouseModal({ dir, opperation, warehouseId }) {
     e.preventDefault();
     console.log("💁‍♀️")
     const warehouseData = {
-      warehouseId,
+      warehouse_id: warehouseId,
       direction: dir,
       opperation: opperation,
-      warehouseColumns: warehouse.columns,
-      warehouseRows: warehouse.rows,
+      warehouse_columns: warehouse.columns,
+      warehouse_rows: warehouse.rows,
       count
     }
     dispatch(editWarehouseThunk(warehouseData));

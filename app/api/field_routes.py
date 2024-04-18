@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from app.models import db, Field, Vault
-from app.forms import EditFieldForm
+from app.forms import EditFieldForm, PostFieldForm
 
 field_routes = Blueprint('fields', __name__)
 
@@ -10,6 +10,43 @@ def get_all_fields(warehouseId):
     fields = Field.query.all()
     Field.query.filter_by(warehouse_id=warehouseId)
     return jsonify({ field.id : field.to_dict() for field in fields })
+
+@field_routes.route('/<int:dir>/<int:count>', methods=['POST'])
+def add_field():
+    form = PostFieldForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    try:
+        if form.validate_on_submit():
+        warehouse_id = form.data['warehouse_id']
+        direction = form.data['direction']
+        opperation = form.data['opperation']
+        warehouse_columns = form.data['warehouse_columns']
+        warehouse_rows = form.data['warehouse_rows']
+        count = form.data['count']
+
+        if (opperation == 'add'):
+            if (direction == 'left'):
+
+            elif (direction == 'right'):
+            
+            elif (direction == 'bottom'):
+
+            else return jsonify(message="opperation not specified")
+        else:
+            return jsonify(message="you are not creating new fields")
+        #all possible actions
+        #1. add left
+        #3. add right
+        #5. add bottom
+
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+    return jsonify({'errors': validation_errors_to_error_messages(form.errors)}), 400
+        
+
 
 
 @field_routes.route('/single/<int:id>', methods=['PUT'])
