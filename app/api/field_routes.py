@@ -25,32 +25,32 @@ def add_field():
             warehouse_rows = form.data['warehouse_rows']
             count = form.data['count']
 
-            if (opperation == 'add'):
-                if (direction == 'left'):
+            if request.method == 'POST' and opperation == 'add':
+                if direction == 'left':
                     print('test')
 
-                elif (direction == 'right'):
+                elif direction == 'right':
                     print('test')
                 
-                elif (direction == 'bottom'):
+                elif direction == 'bottom':
                     print('test')
 
                 else:
                     return jsonify(message="direction not specified")
 
-            elif (opperation == 'subtract'):
-                if (direction == 'left'):
+            elif request.method == 'DELETE' and opperation == 'subtract':
+                if direction == 'left':
                     print('test')
-                elif (direction == 'right'):
+                elif direction == 'right':
                     print('test')
                 
-                elif (direction == 'bottom'):
+                elif direction == 'bottom':
                     print('test')
 
                 else:
                     return jsonify(message="direction not specified")
             else:
-                return jsonify(message="opperation not specified")
+                return jsonify(message="method or opperation are not correct")
 
 
     except Exception as e:
