@@ -33,9 +33,10 @@ def add_field():
             count = form.data['count']
             res = []
             if request.method == 'POST' and opperation == 'add':
+                fields = Field.query.filter_by(warehouse_id=warehouse_id)
+                warehouse = Warehouse.query.get(warehouse_id)
+
                 if direction == 'left':
-                    fields = Field.query.filter_by(warehouse_id=warehouse_id)
-                    warehouse = Warehouse.query.get(warehouse_id)
                     warehouse.cols = warehouse.cols + count # increase columns by count
 
                     for field in fields:
@@ -43,7 +44,6 @@ def add_field():
                         field.name = new_name
                         res.append(field.to_dict())
                     for i in range(1, count+1):
-                        print('hitting second range')
                         col_char = chr(64+i)
                         for j in range(1, warehouse_rows+1):
                             name = f"{col_char}{j}"
@@ -58,8 +58,24 @@ def add_field():
                     # return { 'fields': [field.to_dict() for field in fields], 'warehouseId': warehouse_id }
                     return { 'fields': res, 'warehouseId': warehouse_id }
 
-                elif direction == 'right':
-                    print('test add right')
+                if direction == 'right':
+                    warehouse.cols = warehouse.cols + count # increase columns by count
+
+                    for i in range(1, count+1):
+                        # 🔔 IDEA :
+                        # We need to get the beggining letter of the last field, and increment it.
+                        # That will be the letter that the new row starts with.
+                        # For several new columns: do this process over and over for each new column?
+                        col_char = chr(64+i)
+                        for j in range(1, warehouse_rows+1):
+                            name = f"{col_char}{j}"
+                            print(name)
+                            new_field = Field(name=name, warehouse=warehouse)
+                            db.session.add(new_field)
+                            db.session.commit()
+                            res.append(new_field.to_dict())
+
+                    return { 'fields': res, 'warehouseId': warehouse_id }
                 
                 elif direction == 'bottom':
                     print('test add bottom')
@@ -86,7 +102,8 @@ def add_field():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     
-    return jsonify({'errors': validation_errors_to_error_messages(form.errors)}), 400
+    # return jsonify({'errors': form.errors}), 400
+    return jsonify({'errors': '🪐 there is some other error'}), 400
         
 
 

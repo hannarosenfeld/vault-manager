@@ -22,6 +22,7 @@ export function EditWarehouseModal({ dir, opperation, warehouseId }) {
     formData.append("count", count)
 
     if (opperation === 'add') dispatch(addFieldsThunk(formData));
+
     // if (opperation === 'subtract') 
   }
 
