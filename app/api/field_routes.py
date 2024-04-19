@@ -34,10 +34,10 @@ def add_field():
             res = []
             if request.method == 'POST' and opperation == 'add':
                 if direction == 'left':
-                    print('test add left')
                     fields = Field.query.filter_by(warehouse_id=warehouse_id)
                     warehouse = Warehouse.query.get(warehouse_id)
-                    #increment would be the count
+                    warehouse.cols = warehouse.cols + count # increase columns by count
+
                     for field in fields:
                         new_name = update_char(field.name, count)
                         field.name = new_name
