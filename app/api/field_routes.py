@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from app.models import db, Field, Vault
+from app.models import db, Field, Vault, Warehouse
 from app.forms import EditFieldForm, PostFieldForm
 
 field_routes = Blueprint('fields', __name__)
@@ -13,13 +13,14 @@ def get_all_fields(warehouseId):
 
 @field_routes.route('/', methods=['POST', 'DELETE'])
 def add_field():
+
     form = PostFieldForm()
     form['csrf_token'].data = request.cookies['csrf_token']
 
     def update_char(name, increment):
         if 'A' <= name[0] <= 'Z':
             char_num = ord(name[0])
-            name[0] = chr(char_num+increment)
+            name = chr(char_num+increment)+name[1:]
             return name
 
     try:
@@ -30,25 +31,30 @@ def add_field():
             warehouse_columns = form.data['warehouse_columns']
             warehouse_rows = form.data['warehouse_rows']
             count = form.data['count']
-
+            res = []
             if request.method == 'POST' and opperation == 'add':
                 if direction == 'left':
                     print('test add left')
                     fields = Field.query.filter_by(warehouse_id=warehouse_id)
+                    warehouse = Warehouse.query.get(warehouse_id)
                     #increment would be the count
                     for field in fields:
                         new_name = update_char(field.name, count)
                         field.name = new_name
-                    for i in range(count):
+                        res.append(field.to_dict())
+                    for i in range(1,count):
                         col_char = chr(64+i)
-                        for i in range(1, warehouse_rows):
-                            name = f"{col_char}{i}"
-                            new_field = Field(name=name)
+                        for j in range(1, warehouse_rows):
+                            name = f"{col_char}{j}"
+                            print(name)
+                            new_field = Field(name=name, warehouse=warehouse)
+                            res.append(new_field.to_dict())
                             db.session.add(new_field)
 
                     db.session.commit()
-                    fields = Field.query.filter_by(warehouse_id=warehouse_id)
-                    return { 'fields': [field.to_dict() for field in fields], 'warehouseId': warehouse_id }
+                    # fields = Field.query.filter_by(warehouse_id=warehouse_id)
+                    # return { 'fields': [field.to_dict() for field in fields], 'warehouseId': warehouse_id }
+                    return { 'fields': res, 'warehouseId': warehouse_id }
 
                 elif direction == 'right':
                     print('test add right')

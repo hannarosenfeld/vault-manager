@@ -13,15 +13,24 @@ export function EditWarehouseModal({ dir, opperation, warehouseId }) {
   const onSubmit = (e) => {
     e.preventDefault();
     console.log("💁‍♀️")
-    const warehouseData = {
-      warehouse_id: warehouseId,
-      direction: dir,
-      opperation: opperation,
-      warehouse_columns: warehouse.columns,
-      warehouse_rows: warehouse.rows,
-      count
-    }
-    if (opperation === 'add') dispatch(addFieldsThunk(warehouseData));
+
+    const formData = new FormData()
+    formData.append("warehouse_id", warehouseId)
+    formData.append("direction", dir)
+    formData.append("opperation", opperation)
+    formData.append("warehouse_columns", warehouse.columns)
+    formData.append("warehouse_rows", warehouse.rows)
+    formData.append("count", count)
+
+    // const warehouseData = {
+    //   "warehouse_id": warehouseId,
+    //   "direction": dir,
+    //   opperation,
+    //   "warehouse_columns": warehouse.columns,
+    //   "warehouse_rows": warehouse.rows,
+    //   count
+    // }
+    if (opperation === 'add') dispatch(addFieldsThunk(formData));
     // if (opperation === 'subtract') 
   }
 

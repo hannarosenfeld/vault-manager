@@ -101,6 +101,7 @@ export const addFieldsThunk = (formData) => async (dispatch) => {
       method: 'POST',
       body: formData
     });
+    console.log(res)
     if (res.ok) {
       const data = await res.json()
       dispatch(addFieldsAction(data.fields, data.warehouseId))
