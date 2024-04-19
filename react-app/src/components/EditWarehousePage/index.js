@@ -77,7 +77,7 @@ export default function EditWarehousePage() {
                             }`,
                             height: `${field.type === "couchbox-T" ? "213%" : '100%'}`,
                             marginBottom: `${field.type === "couchbox-T" ? "-2.6em" : '0'}`,
-                            width: `${field.type === "couchbox-B" ? "0px" : '4rem'}`,
+                            width: `${field.type === "couchbox-B" ? "0px" : ''}`,
                             zIndex: `${field.type === "couchbox-B" ? "100" : 'none'}`,
                         }}
                     >{field.type === "couchbox-B" ? "" : <div className="field-number">{field.name}</div>}</div>
@@ -88,8 +88,10 @@ export default function EditWarehousePage() {
     }
 
     return (
-        <div className="wrapper" style={{width: "100%",height: "100%", display: "flex", alignItems:"center"}}>
-            <div className="leftButtons" style={{display: "flex", alignItems: "center", flexDirection:"column"}}>
+        <div style={{display: 'flex', alignItems: "column", height: "100%"}}>
+        <div className="wrapper" style={{width: "100%",height: "100%", display: "flex", alignItems:"center", alignContent: "center",  flexDirection:"column", margin: "0 auto"}}>
+            <div style={{display: "flex", width: "100%", margin: "0 auto", alignSelf: "center", marginTop: "1em", }}>
+            <div className="leftButtons" style={{display: "flex", alignItems: "center", flexDirection:"column", margin: "auto"}}>
                 <OpenModalButton 
                     buttonText={<span class="material-symbols-outlined">add</span>}
                     onItemClick={() => setIsModalOpen(false)}
@@ -101,9 +103,12 @@ export default function EditWarehousePage() {
                     modalComponent={<EditWarehouseModal dir="left" opperation="subtract" warehouseId={warehouseId} />}
                 />
             </div>
-            <div style={{display: "flex", flexDirection: "column", width: "100%", alignItems: "center"}}>
-            {fields ? fieldGenerator(fields): null}
-            <div className="rightButtons" style={{display: "flex", gap: "1em"}}>
+            <div style={{width: "80%", alignSelf: "center", margin: "0 auto"}}>
+                <div style={{maxWidth: "100%"}}>
+                    {fields ? fieldGenerator(fields): null}
+                </div>
+            </div>
+            <div className="rightButtons" style={{display: "flex", alignItems: "center", flexDirection:"column", margin: "auto"}}>
                 <OpenModalButton 
                     buttonText={<span class="material-symbols-outlined">add</span>}
                     onItemClick={() => setIsModalOpen(false)}
@@ -115,8 +120,12 @@ export default function EditWarehousePage() {
                     modalComponent={<EditWarehouseModal dir="bottom" opperation="subtract" warehouseId={warehouseId} />}
                 />
             </div>
+            {/* <div style={{display: "flex", flexDirection: "column", width: "100%", alignItems: "center"}}> */}
+            {/* {fields ? fieldGenerator(fields): null} */}
+            
+            {/* </div> */}
             </div>
-            <div className="bottomButtons" >
+            <div className="bottomButtons" style={{display: "flex", alignItems: "center", marginTop: "0", gap: '1em'}}>
                 <OpenModalButton 
                     buttonText={<span class="material-symbols-outlined">add</span>}
                     onItemClick={() => setIsModalOpen(false)}
@@ -127,6 +136,7 @@ export default function EditWarehousePage() {
                     onItemClick={() => setIsModalOpen(false)}
                     modalComponent={<EditWarehouseModal dir="right" opperation="subtract" warehouseId={warehouseId}/>}
                 />
+            </div>
             </div>
         </div>
     )
