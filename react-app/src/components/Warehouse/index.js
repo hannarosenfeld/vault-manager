@@ -159,14 +159,19 @@ export default function Warehouse({ setIsWarehousePage }) {
             let fieldsArr = (Object.values(allFields))
 
             sortedFields = fieldsArr.sort(function (a, b) {
-                if (a.name < b.name) {
-                  return -1;
+                // Split the field names into alphabetical and numeric parts
+                const [, aAlpha, aNum] = a.name.match(/^([A-Za-z]+)(\d+)$/);
+                const [, bAlpha, bNum] = b.name.match(/^([A-Za-z]+)(\d+)$/);
+            
+                // Compare alphabetical parts first
+                if (aAlpha !== bAlpha) {
+                    return aAlpha.localeCompare(bAlpha);
                 }
-                if (a.name > b.name) {
-                  return 1;
-                }
-                return 0;
-              });
+                
+                // If alphabetical parts are equal, compare numeric parts as numbers
+                return parseInt(aNum) - parseInt(bNum);
+            });
+            
         }
 
         setFields(sortedFields)
