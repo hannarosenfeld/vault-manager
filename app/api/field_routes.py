@@ -7,14 +7,20 @@ field_routes = Blueprint('fields', __name__)
 
 @field_routes.route('/<int:warehouseId>')
 def get_all_fields(warehouseId):
-    fields = Field.query.all()
-    Field.query.filter_by(warehouse_id=warehouseId)
+    # fields = Field.query.all()
+    fields = Field.query.filter_by(warehouse_id=warehouseId)
     return jsonify({ field.id : field.to_dict() for field in fields })
 
-@field_routes.route('/<int:dir>/<int:count>', methods=['POST', 'DELETE'])
+@field_routes.route('/', methods=['POST', 'DELETE'])
 def add_field():
     form = PostFieldForm()
     form['csrf_token'].data = request.cookies['csrf_token']
+
+    def update_char(name, increment):
+        if 'A' <= name[0] <= 'Z':
+            char_num = ord(name[0])
+            name[0] = chr(char_num+increment)
+            return name
 
     try:
         if form.validate_on_submit():
@@ -27,25 +33,41 @@ def add_field():
 
             if request.method == 'POST' and opperation == 'add':
                 if direction == 'left':
-                    print('test')
+                    print('test add left')
+                    fields = Field.query.filter_by(warehouse_id=warehouse_id)
+                    #increment would be the count
+                    for field in fields:
+                        new_name = update_char(field.name, count)
+                        field.name = new_name
+                    for i in range(count):
+                        col_char = chr(64+i)
+                        for i in range(1, warehouse_rows):
+                            name = f"{col_char}{i}"
+                            new_field = Field(name=name)
+                            db.session.add(new_field)
+
+                    db.session.commit()
+                    fields = Field.query.filter_by(warehouse_id=warehouse_id)
+                    return { 'fields': [field.to_dict() for field in fields], 'warehouseId': warehouse_id }
 
                 elif direction == 'right':
-                    print('test')
+                    print('test add right')
                 
                 elif direction == 'bottom':
-                    print('test')
+                    print('test add bottom')
 
                 else:
                     return jsonify(message="direction not specified")
 
             elif request.method == 'DELETE' and opperation == 'subtract':
+            #check if there are existing vaults on any of the fields to be deleted
                 if direction == 'left':
-                    print('test')
+                    print('test delete left')
                 elif direction == 'right':
-                    print('test')
+                    print('test delete right')
                 
                 elif direction == 'bottom':
-                    print('test')
+                    print('test delete bottom')
 
                 else:
                     return jsonify(message="direction not specified")

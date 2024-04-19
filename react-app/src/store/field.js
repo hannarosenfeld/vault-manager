@@ -3,6 +3,7 @@ const GET_ALL_FIELDS = "field/GET_ALL_FIELDS";
 const EDIT_FIELD_TYPE = "field/EDIT_FIELD_TYPE";
 const TOGGLE_FIELD_FULL = "field/TOGGLE_FIELD_FULL";
 const SET_SELECTED_FIELD = "field/SET_SELECTED_FIELD";
+const ADD_FIELDS = "field/ADD_FIELDS";
 
 export const setSelectedFieldAction = (field) => ({
   type: SET_SELECTED_FIELD,
@@ -24,6 +25,10 @@ const getAllFieldsAction = (fields, warehouseId) => ({
   fields, warehouseId
 });
 
+const addFieldsAction = (fields, warehouseId) => ({
+  type: ADD_FIELDS,
+  fields, warehouseId
+})
 
 export const editFieldThunk = (fieldData) => async (dispatch) => {
   try {
@@ -90,6 +95,26 @@ export const getAllFieldsThunk = (warehouseId) => async (dispatch) => {
   }
 };
 
+export const addFieldsThunk = (formData) => async (dispatch) => {
+  try {
+    const res = await fetch(`/api/fields/`, {
+      method: 'POST',
+      body: formData
+    });
+    if (res.ok) {
+      const data = await res.json()
+      dispatch(addFieldsAction(data.fields, data.warehouseId))
+      return data;
+    } else {
+      const err = await res.json()
+      console.log("Error adding new fields: ", err);
+      return err;
+    }
+  } catch (error) {
+    console.error("Error adding new fields: ", error)
+  }
+}
+
 const initialState = {};
 
 const fieldReducer = (state = initialState, action) => {
@@ -108,7 +133,6 @@ const fieldReducer = (state = initialState, action) => {
         ...state,
         selectedField: topField
       }
-      return newState
     case TOGGLE_FIELD_FULL:
       return {
         ...state,
@@ -131,6 +155,10 @@ const fieldReducer = (state = initialState, action) => {
           },
           selectedField: field
         }
+    case ADD_FIELDS:
+      console.log(action)
+      newState[action.warehouseId] = { ...action.fields }
+      return newState
     default:
       return state;
   }

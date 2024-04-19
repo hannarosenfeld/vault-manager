@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { editWarehouseThunk } from "../../store/warehouse";
 import { useDispatch } from "react-redux";
+import { addFieldsThunk } from "../../store/field";
 
 
 export function EditWarehouseModal({ dir, opperation, warehouseId }) {
@@ -10,7 +10,7 @@ export function EditWarehouseModal({ dir, opperation, warehouseId }) {
   const [count, setCount] = useState(1);
 
 
-  const editWarehouse = (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
     console.log("💁‍♀️")
     const warehouseData = {
@@ -21,12 +21,13 @@ export function EditWarehouseModal({ dir, opperation, warehouseId }) {
       warehouse_rows: warehouse.rows,
       count
     }
-    dispatch(editWarehouseThunk(warehouseData));
+    if (opperation === 'add') dispatch(addFieldsThunk(warehouseData));
+    // if (opperation === 'subtract') 
   }
 
   return (
     <div style={{width: "20em", padding: "2em"}}>
-      <form onSubmit={editWarehouse}>
+      <form onSubmit={onSubmit}>
       <div>{opperation === "add" ? 'Add' : 'Subtract'} <b>{count}</b> row{count === 1 ? '' : 's' } to warehouse <b>{dir}</b></div>
       <div className="input-group">
         <button
