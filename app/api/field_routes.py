@@ -42,14 +42,16 @@ def add_field():
                         new_name = update_char(field.name, count)
                         field.name = new_name
                         res.append(field.to_dict())
-                    for i in range(1,count):
+                    for i in range(1, count+1):
+                        print('hitting second range')
                         col_char = chr(64+i)
-                        for j in range(1, warehouse_rows):
+                        for j in range(1, warehouse_rows+1):
                             name = f"{col_char}{j}"
                             print(name)
                             new_field = Field(name=name, warehouse=warehouse)
-                            res.append(new_field.to_dict())
                             db.session.add(new_field)
+                            db.session.commit()
+                            res.append(new_field.to_dict())
 
                     db.session.commit()
                     # fields = Field.query.filter_by(warehouse_id=warehouse_id)

@@ -27,11 +27,19 @@ export default function EditWarehousePage() {
     }, [dispatch, warehouseId])
 
     useEffect(() => {
-        if (loadedWarehouseFields) setFields(Object.values(allFields).filter(field => field.warehouse_id === parseInt(warehouseId)).sort((a,b) => a.name - b.name))
+        if (loadedWarehouseFields) setFields(Object.values(allFields).sort((a,b) => a.name - b.name))
     }, [loadedWarehouseFields])
 
 
     function fieldGenerator(fields) {
+        // const fieldObj = {}
+        // let counter = 1;
+        // fields.map(field => {
+        //     fieldObj[counter] = 
+        // })
+        console.log('fields in generator',fields)
+        let newFields = fields.sort((a,b) => a.name - b.name)
+        console.log('fields after in generator',newFields)
         if (fields) {
             return (
                 <div 
@@ -45,7 +53,7 @@ export default function EditWarehousePage() {
                         height: "75vh",
                     }}
                 >   
-                    {fields.map(field => (
+                    {newFields.map(field => (
                     <div
                         className="field"
                         key={field.id}
