@@ -12,7 +12,6 @@ export function EditWarehouseModal({ dir, opperation, warehouseId }) {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log("💁‍♀️")
 
     const formData = new FormData()
     formData.append("warehouse_id", warehouseId)
@@ -22,14 +21,6 @@ export function EditWarehouseModal({ dir, opperation, warehouseId }) {
     formData.append("warehouse_rows", warehouse.rows)
     formData.append("count", count)
 
-    // const warehouseData = {
-    //   "warehouse_id": warehouseId,
-    //   "direction": dir,
-    //   opperation,
-    //   "warehouse_columns": warehouse.columns,
-    //   "warehouse_rows": warehouse.rows,
-    //   count
-    // }
     if (opperation === 'add') dispatch(addFieldsThunk(formData));
     // if (opperation === 'subtract') 
   }
