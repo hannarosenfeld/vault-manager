@@ -27,12 +27,12 @@ export default function EditWarehousePage() {
     }, [dispatch, warehouseId])
 
     useEffect(() => {
-        let y;
+        let sortedFields;
         if (loadedWarehouseFields) {
             // setFields(Object.values(allFields).sort((a,b) => a.name - b.name))
-            let x = (Object.values(allFields))
+            let fieldsArr = (Object.values(allFields))
 
-            y = x.sort(function (a, b) {
+            sortedFields = fieldsArr.sort(function (a, b) {
                 if (a.name < b.name) {
                   return -1;
                 }
@@ -43,7 +43,7 @@ export default function EditWarehousePage() {
               });
         }
 
-        setFields(y)
+        setFields(sortedFields)
 
     }, [loadedWarehouseFields])
 

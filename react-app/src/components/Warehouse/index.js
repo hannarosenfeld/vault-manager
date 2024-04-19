@@ -153,7 +153,23 @@ export default function Warehouse({ setIsWarehousePage }) {
     }
 
     useEffect(() => {
-        if (loadedWarehouseFields) setFields(Object.values(allFields).filter(field => field.warehouse_id === parseInt(warehouseId)).sort((a,b) => a.name - b.name))
+        let sortedFields;
+        if (loadedWarehouseFields) {
+            // setFields(Object.values(allFields).sort((a,b) => a.name - b.name))
+            let fieldsArr = (Object.values(allFields))
+
+            sortedFields = fieldsArr.sort(function (a, b) {
+                if (a.name < b.name) {
+                  return -1;
+                }
+                if (a.name > b.name) {
+                  return 1;
+                }
+                return 0;
+              });
+        }
+
+        setFields(sortedFields)
     }, [loadedWarehouseFields])
 
     function fieldGenerator(fields) {
