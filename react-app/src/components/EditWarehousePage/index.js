@@ -27,19 +27,28 @@ export default function EditWarehousePage() {
     }, [dispatch, warehouseId])
 
     useEffect(() => {
-        if (loadedWarehouseFields) setFields(Object.values(allFields).sort((a,b) => a.name - b.name))
+        let y;
+        if (loadedWarehouseFields) {
+            // setFields(Object.values(allFields).sort((a,b) => a.name - b.name))
+            let x = (Object.values(allFields))
+
+            y = x.sort(function (a, b) {
+                if (a.name < b.name) {
+                  return -1;
+                }
+                if (a.name > b.name) {
+                  return 1;
+                }
+                return 0;
+              });
+        }
+
+        setFields(y)
+
     }, [loadedWarehouseFields])
 
 
     function fieldGenerator(fields) {
-        // const fieldObj = {}
-        // let counter = 1;
-        // fields.map(field => {
-        //     fieldObj[counter] = 
-        // })
-        console.log('fields in generator',fields)
-        let newFields = fields.sort((a,b) => a.name - b.name)
-        console.log('fields after in generator',newFields)
         if (fields) {
             return (
                 <div 
@@ -53,7 +62,7 @@ export default function EditWarehousePage() {
                         height: "75vh",
                     }}
                 >   
-                    {newFields.map(field => (
+                    {fields.map(field => (
                     <div
                         className="field"
                         key={field.id}
@@ -68,7 +77,7 @@ export default function EditWarehousePage() {
                             }`,
                             height: `${field.type === "couchbox-T" ? "213%" : '100%'}`,
                             marginBottom: `${field.type === "couchbox-T" ? "-2.6em" : '0'}`,
-                            width: `${field.type === "couchbox-B" ? "0px" : ''}`,
+                            width: `${field.type === "couchbox-B" ? "0px" : '4rem'}`,
                             zIndex: `${field.type === "couchbox-B" ? "100" : 'none'}`,
                         }}
                     >{field.type === "couchbox-B" ? "" : <div className="field-number">{field.name}</div>}</div>
