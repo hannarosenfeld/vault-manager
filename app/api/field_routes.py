@@ -62,11 +62,6 @@ def add_field():
                     warehouse.cols = warehouse.cols + count # increase columns by count
 
                     for i in range(1, count+1):
-                        # 🔔 IDEA :
-                        # We need to get the beggining letter of the last field, and increment it.
-                        # That will be the letter that the new row starts with.
-                        # For several new columns: do this process over and over for each new column?    
-
                         largest_field_name_letter = max([field.name for field in fields])
                         largest_field_name_letter_as_number = ord(largest_field_name_letter[0])
 
@@ -83,19 +78,18 @@ def add_field():
                 
                 elif direction == 'bottom':
                     letters = sorted(set([field.name[0] for field in fields]))
+                    print("🌼", letters)
 
                     for letter in letters:
-                        i = count
-                        while i > 0:
+                        for i in range(1, count+1):                        
                             new_field = Field(name=f"{letter}{warehouse.rows + i}", warehouse=warehouse)
                             db.session.add(new_field)
                             db.session.commit()
                             res.append(new_field.to_dict())
-                            i -= 1
 
                     warehouse.rows = warehouse.rows + count
                     db.session.commit()
-                    
+
                     return { 'fields': res, 'warehouseId': warehouse_id }
                 
                 else:
