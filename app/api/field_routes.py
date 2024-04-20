@@ -65,8 +65,12 @@ def add_field():
                         # 🔔 IDEA :
                         # We need to get the beggining letter of the last field, and increment it.
                         # That will be the letter that the new row starts with.
-                        # For several new columns: do this process over and over for each new column?
-                        col_char = chr(64+i)
+                        # For several new columns: do this process over and over for each new column?    
+
+                        largest_field_name_letter = max([field.name for field in fields])
+                        largest_field_name_letter_as_number = ord(largest_field_name_letter[0])
+                        
+                        col_char = chr(largest_field_name_letter_as_number+i)
                         for j in range(1, warehouse_rows+1):
                             name = f"{col_char}{j}"
                             print(name)
