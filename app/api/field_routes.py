@@ -69,7 +69,7 @@ def add_field():
 
                         largest_field_name_letter = max([field.name for field in fields])
                         largest_field_name_letter_as_number = ord(largest_field_name_letter[0])
-                        
+
                         col_char = chr(largest_field_name_letter_as_number+i)
                         for j in range(1, warehouse_rows+1):
                             name = f"{col_char}{j}"
@@ -82,8 +82,17 @@ def add_field():
                     return { 'fields': res, 'warehouseId': warehouse_id }
                 
                 elif direction == 'bottom':
-                    print('test add bottom')
+                    warehouse.rows = warehouse_rows + count
+                    letters = sorted(set([field.name[0] for field in fields]))
+                    print("🪭", letters, count)
+                    for letter in letters:
+                        new_field = Field(name=f"{letter}{warehouse.rows}", warehouse=warehouse)
+                        db.session.add(new_field)
+                        db.session.commit()
+                        res.append(new_field.to_dict())
 
+                    return { 'fields': res, 'warehouseId': warehouse_id }
+                
                 else:
                     return jsonify(message="direction not specified")
 
