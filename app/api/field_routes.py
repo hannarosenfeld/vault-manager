@@ -82,18 +82,20 @@ def add_field():
                     return { 'fields': res, 'warehouseId': warehouse_id }
                 
                 elif direction == 'bottom':
-                    warehouse.rows = warehouse_rows + count
                     letters = sorted(set([field.name[0] for field in fields]))
-                    
+
                     for letter in letters:
                         i = count
                         while i > 0:
-                            print("😄",i)
-                            new_field = Field(name=f"{letter}{warehouse.rows}", warehouse=warehouse)
+                            new_field = Field(name=f"{letter}{warehouse.rows + i}", warehouse=warehouse)
                             db.session.add(new_field)
                             db.session.commit()
                             res.append(new_field.to_dict())
                             i -= 1
+
+                    warehouse.rows = warehouse.rows + count
+                    db.session.commit()
+                    
                     return { 'fields': res, 'warehouseId': warehouse_id }
                 
                 else:
