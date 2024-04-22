@@ -63,8 +63,9 @@ export default function EditWarehousePage() {
                         gridTemplateRows: `repeat(${warehouse.rows}, 1fr)`,
                         gridAutoFlow: 'column',
                         gridGap: "1%",
-                        width: "95%",
+                        width: "100%",
                         height: "75vh",
+                        marginBottom: "1em"
                     }}
                 >   
                     {fields.map(field => (
@@ -110,8 +111,8 @@ export default function EditWarehousePage() {
             </div>
 
             {/* 🚨 I cannot figure out how to center the warehouse. there is always some space on the right 🚨 */}
-            <div style={{width: "75%", display: "flex", alignItems: "center", alignContent: "center", border: "2px solid red"}}>
-                <div style={{width: "100%", border: "2px solid blue", margin: "0 auto", alignSelf: "center"}}>
+            <div style={{width: "75%", display: "flex", alignItems: "center", alignContent: "center"}}>
+                <div style={{width: "100%", margin: "0 auto", alignSelf: "center"}}>
                     {fields ? fieldGenerator(fields): null}
                 </div>
             </div>
