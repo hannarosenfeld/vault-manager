@@ -4,6 +4,12 @@ const EDIT_FIELD_TYPE = "field/EDIT_FIELD_TYPE";
 const TOGGLE_FIELD_FULL = "field/TOGGLE_FIELD_FULL";
 const SET_SELECTED_FIELD = "field/SET_SELECTED_FIELD";
 const ADD_FIELDS = "field/ADD_FIELDS";
+const REMOVE_FIELDS = "field/REMOVE_FIELDS";
+
+export const deleteFieldsAction = (fields, warehouseId) => ({
+  type: REMOVE_FIELDS,
+  fields, warehouseId
+})
 
 export const setSelectedFieldAction = (field) => ({
   type: SET_SELECTED_FIELD,
@@ -101,7 +107,6 @@ export const addFieldsThunk = (formData) => async (dispatch) => {
       method: 'POST',
       body: formData
     });
-    console.log(res)
     if (res.ok) {
       const data = await res.json()
       dispatch(addFieldsAction(data.fields, data.warehouseId))
@@ -113,6 +118,27 @@ export const addFieldsThunk = (formData) => async (dispatch) => {
     }
   } catch (error) {
     console.error("Error adding new fields: ", error)
+  }
+}
+
+export const deleteFieldsThunk = (formData) => async (dispatch) => {
+  try {
+    const res = await fetch(`/api/fields/`, {
+      method: 'POST',
+      body: formData
+    });
+    console.log("😶‍🌫️ res in delete fields thunk: ",res)
+    if (res.ok) {
+      const data = await res.json()
+      dispatch(deleteFieldsAction(data.fields, data.warehouseId))
+      return data;
+    } else {
+      const err = await res.json()
+      console.log("Error removing fields: ", err);
+      return err;
+    }
+  } catch (error) {
+    console.error("Error removing fields: ", error)
   }
 }
 
@@ -157,9 +183,12 @@ const fieldReducer = (state = initialState, action) => {
           selectedField: field
         }
     case ADD_FIELDS:
-      console.log(action)
       newState[action.warehouseId] = { ...action.fields }
       return newState
+    case REMOVE_FIELDS:
+      console.log("🥎",action)
+      // newState[action.warehouseId] = { ...action.fields }
+      // return newState      
     default:
       return state;
   }

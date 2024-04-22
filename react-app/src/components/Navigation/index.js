@@ -10,8 +10,6 @@ import naglee from './naglee.png';
 function Navigation({ isLoaded, company, isWarehousePage }) {
   const sessionUser = useSelector((state) => state.session.user);
 
-  console.log("😎", isWarehousePage)
-
   return (
     <div className="wrapper nav-container">
       <ul className="navigation">

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { addFieldsThunk } from "../../store/field";
+import { addFieldsThunk, deleteFieldsThunk } from "../../store/field";
 import { useModal } from "../../context/Modal";
 
 
@@ -24,10 +24,9 @@ export function EditWarehouseModal({ dir, opperation, warehouseId, onModalClose 
     formData.append("count", count)
 
     if (opperation === 'add') dispatch(addFieldsThunk(formData));
+    if (opperation === 'subtract') dispatch(deleteFieldsThunk(formData));
 
-    closeModal();
-    
-    // if (opperation === 'subtract') 
+    closeModal();    
   }
 
   return (

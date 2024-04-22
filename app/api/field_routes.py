@@ -96,10 +96,9 @@ def add_field():
             elif request.method == 'DELETE' and opperation == 'subtract':
             #check if there are existing vaults on any of the fields to be deleted
                 if direction == 'left':
-                    print('test delete left')
+                    print('🌼 test delete left')
                 elif direction == 'right':
-                    print('test delete right')
-                
+                    print('test delete right')                
                 elif direction == 'bottom':
                     print('test delete bottom')
 

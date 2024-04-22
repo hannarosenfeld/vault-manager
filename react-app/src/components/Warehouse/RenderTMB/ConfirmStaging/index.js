@@ -11,8 +11,6 @@ export default function ConfirmStaging({
   }) {
     const dispatch = useDispatch();
 
-    console.log("💧vault: ", vault)
-    
     const handleSubmit = async (e) => {
         e.preventDefault();
         let vaultData = new FormData()

@@ -29,10 +29,6 @@ function App() {
   }
 
   useEffect(() => {
-    console.log("!!!!", isWarehousePage)
-  }, [isWarehousePage])
-
-  useEffect(() => {
     dispatch(authenticate())
       .then(() => {
         setIsLoaded(true);
