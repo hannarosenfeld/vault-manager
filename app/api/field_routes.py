@@ -32,6 +32,7 @@ def add_field():
             warehouse_rows = form.data['warehouse_rows']
             count = form.data['count']
             res = []
+
             if request.method == 'POST' and opperation == 'add':
                 fields = Field.query.filter_by(warehouse_id=warehouse_id)
                 warehouse = Warehouse.query.get(warehouse_id)
@@ -125,11 +126,8 @@ def toggle_field_full(id):
 
     try:
         if form.validate_on_submit():
-
             field1 = Field.query.get(id)
-
             field1.full = not(field1.full)
-
             db.session.commit()
             return jsonify(field1.to_dict())
 
@@ -149,16 +147,12 @@ def edit_field(id):
 
     try:
         if form.validate_on_submit():
-
-            print("EDIT FIELD FORM DATA ======> ", form.data)
-
             name = form.data['name']
             type = form.data['type']
             field_id_1 = form.data['field_id_1']
             field_id_2 = form.data['field_id_2']
             field1 = Field.query.get(field_id_1)
             field2 = Field.query.get(field_id_2)
-
 
             if not field1:
                 return jsonify(message="Field 1 not found"), 404
@@ -174,10 +168,6 @@ def edit_field(id):
                 return count
 
             if type == 'couchbox':
-
-                print("🙃 =======> ", field1)
-                print("🙃 =======> ", field2.vaults)
-
                 if checkVaultCount(field1.vaults) > 0 or checkVaultCount(field2.vaults) > 0:
                     return jsonify(message="Please stage all vaults in fields to continue")
 
@@ -185,7 +175,6 @@ def edit_field(id):
                     return jsonify(message="Field 2 not found"), 404
 
                 if field1.type == 'vault' and field2.type == 'vault':
-                    print('🥹 hittingggg')
                     field1.type = 'couchbox-T'
                     field2.type = 'couchbox-B'
                 else:
