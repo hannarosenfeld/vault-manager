@@ -82,7 +82,7 @@ export default function EditWarehousePage() {
                             }`,
                             height: `${field.type === "couchbox-T" ? "213%" : '100%'}`,
                             marginBottom: `${field.type === "couchbox-T" ? "-2.6em" : '0'}`,
-                            width: `${field.type === "couchbox-B" ? "0px" : ''}`,
+                            width: `${field.type === "couchbox-B" ? "0px" : '100%'}`,
                             zIndex: `${field.type === "couchbox-B" ? "100" : 'none'}`,
                         }}
                     >{field.type === "couchbox-B" ? "" : <div className="field-number">{field.name}</div>}</div>
@@ -108,11 +108,14 @@ export default function EditWarehousePage() {
                     modalComponent={<EditWarehouseModal dir="left" opperation="subtract" warehouseId={warehouseId} />}
                 />
             </div>
-            <div style={{width: "80%", alignSelf: "center", margin: "0 auto"}}>
-                <div style={{maxWidth: "100%"}}>
+
+            {/* 🚨 I cannot figure out how to center the warehouse. there is always some space on the right 🚨 */}
+            <div style={{width: "75%", display: "flex", alignItems: "center", alignContent: "center", border: "2px solid red"}}>
+                <div style={{width: "100%", border: "2px solid blue", margin: "0 auto", alignSelf: "center"}}>
                     {fields ? fieldGenerator(fields): null}
                 </div>
             </div>
+
             <div className="rightButtons" style={{display: "flex", alignItems: "center", flexDirection:"column", margin: "auto"}}>
                 <OpenModalButton 
                     buttonText={<span class="material-symbols-outlined">add</span>}
@@ -130,7 +133,7 @@ export default function EditWarehousePage() {
             
             {/* </div> */}
             </div>
-            <div className="bottomButtons" style={{display: "flex", alignItems: "center", marginTop: "0", gap: '1em'}}>
+            <div className="bottomButtons" style={{display: "flex", alignItems: "center", marginTop: "1em", gap: '1em'}}>
                 <OpenModalButton 
                     buttonText={<span class="material-symbols-outlined">add</span>}
                     onItemClick={() => setIsModalOpen(false)}
