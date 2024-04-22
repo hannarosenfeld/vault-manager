@@ -61,9 +61,9 @@ def add_field():
                 if direction == 'right':
                     warehouse.cols = warehouse.cols + count # increase columns by count
 
+                    largest_field_name_letter = max([field.name for field in fields])
+                    largest_field_name_letter_as_number = ord(largest_field_name_letter[0])
                     for i in range(1, count+1):
-                        largest_field_name_letter = max([field.name for field in fields])
-                        largest_field_name_letter_as_number = ord(largest_field_name_letter[0])
 
                         col_char = chr(largest_field_name_letter_as_number+i)
                         for j in range(1, warehouse_rows+1):

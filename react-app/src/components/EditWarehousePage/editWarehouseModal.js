@@ -2,12 +2,14 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { addFieldsThunk } from "../../store/field";
+import { useModal } from "../../context/Modal";
 
 
-export function EditWarehouseModal({ dir, opperation, warehouseId }) {
+export function EditWarehouseModal({ dir, opperation, warehouseId, onModalClose }) {
   const dispatch = useDispatch();
   const warehouse = useSelector(state => state.warehouse[warehouseId]);
   const [count, setCount] = useState(1);
+  const { closeModal } = useModal(); 
 
 
   const onSubmit = (e) => {
@@ -23,6 +25,8 @@ export function EditWarehouseModal({ dir, opperation, warehouseId }) {
 
     if (opperation === 'add') dispatch(addFieldsThunk(formData));
 
+    closeModal();
+    
     // if (opperation === 'subtract') 
   }
 
@@ -34,20 +38,26 @@ export function EditWarehouseModal({ dir, opperation, warehouseId }) {
         <button
           className="btn btn-outline-secondary"
           disabled={count === 1}
-          onClick={() => setCount(count - 1)}
+          onClick={(e) => {
+            e.preventDefault()
+            setCount(count - 1)
+            }}
         >
           -
         </button>
         {/* <input type="text" className="form-control text-center" value={count} readOnly /> */}
         <button
           className="btn btn-outline-secondary"
-          onClick={() => setCount(count + 1)}
+          onClick={(e) => {
+            e.preventDefault()
+            setCount(count + 1)
+            }}
         >
           +
         </button>
       </div>
       <br/>
-      <button class="btn btn-primary">submit</button>
+      <button type="submit" class="btn btn-primary">submit</button>
       </form>
     </div>
   );
