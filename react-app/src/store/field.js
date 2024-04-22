@@ -124,7 +124,7 @@ export const addFieldsThunk = (formData) => async (dispatch) => {
 export const deleteFieldsThunk = (formData) => async (dispatch) => {
   try {
     const res = await fetch(`/api/fields/`, {
-      method: 'POST',
+      method: 'DELETE',
       body: formData
     });
     console.log("😶‍🌫️ res in delete fields thunk: ",res)
