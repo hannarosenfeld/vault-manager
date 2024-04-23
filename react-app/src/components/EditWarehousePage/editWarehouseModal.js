@@ -5,7 +5,7 @@ import { addFieldsThunk, deleteFieldsThunk } from "../../store/field";
 import { useModal } from "../../context/Modal";
 
 
-export function EditWarehouseModal({ dir, opperation, warehouseId, onModalClose }) {
+export function EditWarehouseModal({ dir, opperation, warehouseId }) {
   const dispatch = useDispatch();
   const warehouse = useSelector(state => state.warehouse[warehouseId]);
   const [count, setCount] = useState(1);

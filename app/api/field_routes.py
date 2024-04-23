@@ -125,11 +125,12 @@ def add_field():
                 # 🚨 THIS DOESN'T WORK:
                 elif direction == 'bottom':
                     letters = sorted(set([field.name[0] for field in fields]))
-                    print("🌼 letters: ", letters)
+                    # print("🌼 letters: ", letters, warehouse.cols, warehouse.rows)
+
                     for letter in letters:
-                        for i in range(1, count+1):                        
-                            field_to_delete = Field(name=f"{letter}{warehouse.rows}", warehouse=warehouse)
-                            print("😎", field_to_delete.to_dict())
+                        for i in range(warehouse.rows-count+1, warehouse.rows+1):                        
+                            field_to_delete = Field.query.filter_by(name=f"{letter}{i}", warehouse=warehouse).first()
+                            # print("😎", field_to_delete)
                             db.session.delete(field_to_delete)
                             db.session.commit()
 
