@@ -102,15 +102,15 @@ def add_field():
                             db.session.delete(field)
                             db.session.commit()
 
-                    new_fields = Field.query.filter_by(warehouse_id=warehouse_id)
-                    print("🦁", [field.name for field in new_fields])
-
-                    for field in new_fields:
-                        print("🌠 in loop", ord(field.name[0]))
-                        new_field_name = f"{chr(ord(field.name[0]) - 1)}{field.name[1:]}"
-                        print("🦋 new name: ", new_field_name)
-                        field.name = new_field_name
-                        db.session.commit()
+                    for i in range(1, count+1):
+                        new_fields = Field.query.filter_by(warehouse_id=warehouse_id)
+                        print("🦁", [field.name for field in new_fields])
+                        for field in new_fields:
+                            print("🌠 in loop", ord(field.name[0]))
+                            new_field_name = f"{chr(ord(field.name[0]) - 1)}{field.name[1:]}"
+                            print("🦋 new name: ", new_field_name)
+                            field.name = new_field_name
+                            db.session.commit()
 
                 elif direction == 'right':
                     warehouse.cols = warehouse.cols - count # decreasing warehouse cols by count
