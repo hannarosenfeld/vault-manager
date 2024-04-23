@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { addFieldsThunk, deleteFieldsThunk } from "../../store/field";
+import { addFieldsThunk, deleteFieldsThunk, getAllFieldsThunk } from "../../store/field";
 import { useModal } from "../../context/Modal";
 
 
@@ -12,7 +12,7 @@ export function EditWarehouseModal({ dir, opperation, warehouseId }) {
   const { closeModal } = useModal(); 
 
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
     const formData = new FormData()
@@ -23,9 +23,11 @@ export function EditWarehouseModal({ dir, opperation, warehouseId }) {
     formData.append("warehouse_rows", warehouse.rows)
     formData.append("count", count)
 
-    if (opperation === 'add') dispatch(addFieldsThunk(formData));
-    if (opperation === 'subtract') dispatch(deleteFieldsThunk(formData));
+    if (opperation === 'add') await dispatch(addFieldsThunk(formData));
+    if (opperation === 'subtract') await dispatch(deleteFieldsThunk(formData));
 
+    await dispatch(getAllFieldsThunk(warehouseId))
+    
     closeModal();    
   }
 

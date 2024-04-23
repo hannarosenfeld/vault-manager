@@ -129,10 +129,11 @@ def add_field():
                             db.session.delete(field_to_delete)
                             db.session.commit()
                             
-                    warehouse.rows = warehouse.rows - count
+                    new_warehouse_row_count = warehouse.rows - count
+                    warehouse.rows = new_warehouse_row_count
                     db.session.commit()                
 
-                    return { 'fields': res, 'warehouseId': warehouse.id }
+                    return { 'fields': res, 'warehouseId': warehouse.id, 'newWarehouseRowsCount': new_warehouse_row_count }
 
                 else:
                     return jsonify(message="direction not specified")

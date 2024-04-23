@@ -4,11 +4,11 @@ const EDIT_FIELD_TYPE = "field/EDIT_FIELD_TYPE";
 const TOGGLE_FIELD_FULL = "field/TOGGLE_FIELD_FULL";
 const SET_SELECTED_FIELD = "field/SET_SELECTED_FIELD";
 const ADD_FIELDS = "field/ADD_FIELDS";
-const REMOVE_FIELDS = "field/REMOVE_FIELDS";
+export const REMOVE_FIELDS = "field/REMOVE_FIELDS";
 
-export const deleteFieldsAction = (fields, warehouseId) => ({
+export const deleteFieldsAction = (fields, warehouseId, newWarehouseRowsCount) => ({
   type: REMOVE_FIELDS,
-  fields, warehouseId
+  fields, warehouseId, newWarehouseRowsCount
 })
 
 export const setSelectedFieldAction = (field) => ({
@@ -127,10 +127,9 @@ export const deleteFieldsThunk = (formData) => async (dispatch) => {
       method: 'DELETE',
       body: formData
     });
-    console.log("😶‍🌫️ res in delete fields thunk: ",res)
     if (res.ok) {
       const data = await res.json()
-      dispatch(deleteFieldsAction(data.fields, data.warehouseId))
+      dispatch(deleteFieldsAction(data.fields, data.warehouseId, data.newWarehouseRowsCount))
       return data;
     } else {
       const err = await res.json()
@@ -186,10 +185,7 @@ const fieldReducer = (state = initialState, action) => {
       newState[action.warehouseId] = { ...action.fields }
       return newState
     case REMOVE_FIELDS:
-      console.log("💽", action)
-      // for (let field of action.fields) console.log(newState[warehouseId][field])
       action.fields.map(field => delete newState[action.warehouseId][field])
-
       return newState
     default:
       return state;

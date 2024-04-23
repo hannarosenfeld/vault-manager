@@ -17,6 +17,10 @@ export default function EditWarehousePage() {
     const [show, setShow] = useState(false);
 
     useEffect(() => {
+        console.log("🎆", allFields)
+    }, [allFields])
+
+    useEffect(() => {
         setFields(null);
         setLoadedWarehouseFields(false)
         const fields = dispatch(getAllFieldsThunk(warehouseId))
@@ -49,8 +53,7 @@ export default function EditWarehousePage() {
         }
 
         setFields(sortedFields)
-
-    }, [loadedWarehouseFields])
+    }, [loadedWarehouseFields, allFields])
 
 
     function fieldGenerator(fields) {

@@ -1,6 +1,8 @@
+import { REMOVE_FIELDS } from './field';
 const ADD_WAREHOUSE = 'warehouse/ADD_WAREHOUSE';
 const GET_ALL_WAREHOUSES = 'warehouse/GET_ALL_WAREHOUSES'
 // const EDIT_WAREHOUSE = 'warehouse/EDIT_WAREHOUSE';
+
 
 export const getAllWarehouses = (warehouses) => ({
   type: GET_ALL_WAREHOUSES,
@@ -100,6 +102,9 @@ const warehouseReducer = (state = initialState, action) => {
       };
     // case EDIT_WAREHOUSE:
     //   console.log("🍒 in reducer")
+    case REMOVE_FIELDS:
+      console.log("🏛️", action)
+      newState[action.warehouseId].rows = action.newWarehouseRowsCount
     default:
       return state;
   }
