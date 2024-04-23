@@ -115,7 +115,17 @@ def add_field():
                             db.session.commit()        
 
                 elif direction == 'bottom':
-                    print('test delete bottom')
+                    letters = sorted(set([field.name[0] for field in fields]))
+                    print("🌼 letters: ", letters)
+                    for letter in letters:
+                        for i in range(1, count+1):                        
+                            field_to_delete = Field(name=f"{letter}{warehouse.rows}", warehouse=warehouse)
+                            print("😎", field_to_delete.to_dict())
+                            db.session.delete(field_to_delete)
+                            db.session.commit()
+
+                    warehouse.rows = warehouse.rows - count
+                    db.session.commit()                    
 
                 else:
                     return jsonify(message="direction not specified")
