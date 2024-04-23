@@ -31,7 +31,7 @@ export default function MiniWareHouse({ selectedFieldId, warehouseId }) {
                         style={{
                             backgroundColor: `${
                                 selectedFieldId === field.id ? "var(--blue)" : 
-                                field.vaults?.length === 3 || field.full ? "var(--red)" :
+                                field.vaults?.length === 3 || field.vaults?.length === 4 || field.full ? "var(--red)" :
                                 field.vaults?.length === 2 ? "var(--yellow)" :
                                 field.vaults?.length === 1 ? "var(--green)" :
                                 "lightgrey"

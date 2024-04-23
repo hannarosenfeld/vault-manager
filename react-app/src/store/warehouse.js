@@ -1,5 +1,9 @@
+import { REMOVE_FIELDS } from './field';
+import { ADD_FIELDS } from './field';
 const ADD_WAREHOUSE = 'warehouse/ADD_WAREHOUSE';
 const GET_ALL_WAREHOUSES = 'warehouse/GET_ALL_WAREHOUSES'
+// const EDIT_WAREHOUSE = 'warehouse/EDIT_WAREHOUSE';
+
 
 export const getAllWarehouses = (warehouses) => ({
   type: GET_ALL_WAREHOUSES,
@@ -10,6 +14,11 @@ export const addWarehouseAction = (warehouseData) => ({
   type: ADD_WAREHOUSE,
   payload: warehouseData,
 });
+
+// export const editWarehouse = (warehouseData) => ({
+//   type: EDIT_WAREHOUSE,
+//   warehouseData
+// });
   
 
 export const addWarehouseThunk = (warehouseData) => async (dispatch) => {
@@ -56,6 +65,25 @@ export const getAllWarehousesThunk = () => async (dispatch) => {
   }
 };
 
+// export const editWarehouseThunk = (warehouseData) => async (dispatch) => {
+//   const { warehouseId } = warehouseData;
+//   try {
+//     const response = await fetch(`/api/warehouse/${warehouseId}`);
+//     if (response.ok) {
+//       const data = await response.json();
+//       dispatch(editWarehouse(data));
+//       return data;
+//     } else {
+//       const errorData = await response.json();
+//       console.error('Error edit warehouse:', errorData.errors);
+//       return errorData;
+//     }
+//   } catch (error) {
+//     console.error('Error editing warehouse:', error);
+//     return error;
+//   }
+// }
+
 
 const initialState = {};
 
@@ -73,6 +101,18 @@ const warehouseReducer = (state = initialState, action) => {
         ...state,
         warehouses: [...state.warehouses, action.payload],
       };
+    // case EDIT_WAREHOUSE:
+    //   console.log("🍒 in reducer")
+    case REMOVE_FIELDS:
+      console.log("🏛️ remove", action)
+      newState[action.warehouseId].rows = action.newWarehouseRowsCount
+      newState[action.warehouseId].cols = action.newWarehouseColsCount
+      return newState
+    case ADD_FIELDS:
+        console.log("🏛️ add", action)
+        newState[action.warehouseId].rows = action.newWarehouseRowsCount
+        newState[action.warehouseId].cols = action.newWarehouseColsCount      
+        return newState
     default:
       return state;
   }

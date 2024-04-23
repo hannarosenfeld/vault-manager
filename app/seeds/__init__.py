@@ -26,20 +26,20 @@ def seed():
         warehouses = None
         companies = None
 
-        if not User.query.all(): 
-            users = seed_users()  
-        if not Customer.query.all(): 
-            customers = seed_customers()
-        if not Order.query.all(): 
-            orders = seed_orders()
-        if not Field.query.all(): 
-            fields = seed_fields(orders)
-        if not Warehouse.query.all(): 
-            warehouses = seed_warehouse(users, fields, orders)             
-        if not Vault.query.all(): 
-            seed_vaults(customers)
-        if not Company.query.all(): 
-            companies = seed_companies(users, warehouses, orders, customers)              
+    # if not User.query.all(): 
+        users = seed_users()  
+    # if not Customer.query.all(): 
+        customers = seed_customers()
+    # if not Order.query.all(): 
+        orders = seed_orders()
+    # if not Field.query.all(): 
+        fields = seed_fields(orders)
+    # if not Warehouse.query.all(): 
+        warehouses = seed_warehouse(users, fields, orders)             
+    # if not Vault.query.all(): 
+        seed_vaults(customers)
+    # if not Company.query.all(): 
+        companies = seed_companies(users, warehouses, orders, customers)              
 
 @seed_commands.command('undo')
 def undo():

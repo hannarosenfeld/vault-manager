@@ -16,7 +16,7 @@ function OpenModalButton({
   };
 
   return (
-    <button onClick={onClick}>{buttonText}</button>
+    <button onClick={onClick} className="btn btn-outline-secondary">{buttonText}</button>
   );
 }
 

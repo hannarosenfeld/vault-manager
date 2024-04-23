@@ -3,6 +3,9 @@ const GET_ALL_FIELDS = "field/GET_ALL_FIELDS";
 const EDIT_FIELD_TYPE = "field/EDIT_FIELD_TYPE";
 const TOGGLE_FIELD_FULL = "field/TOGGLE_FIELD_FULL";
 const SET_SELECTED_FIELD = "field/SET_SELECTED_FIELD";
+export const ADD_FIELDS = "field/ADD_FIELDS";
+export const REMOVE_FIELDS = "field/REMOVE_FIELDS";
+
 
 export const setSelectedFieldAction = (field) => ({
   type: SET_SELECTED_FIELD,
@@ -24,6 +27,15 @@ const getAllFieldsAction = (fields, warehouseId) => ({
   fields, warehouseId
 });
 
+export const addFieldsAction = (fields, warehouseId, newWarehouseRowsCount, newWarehouseColsCount) => ({
+  type: ADD_FIELDS,
+  fields, warehouseId, newWarehouseRowsCount, newWarehouseColsCount
+})
+
+export const deleteFieldsAction = (fields, warehouseId, newWarehouseRowsCount, newWarehouseColsCount) => ({
+  type: REMOVE_FIELDS,
+  fields, warehouseId, newWarehouseRowsCount, newWarehouseColsCount
+})
 
 export const editFieldThunk = (fieldData) => async (dispatch) => {
   try {
@@ -90,6 +102,46 @@ export const getAllFieldsThunk = (warehouseId) => async (dispatch) => {
   }
 };
 
+export const addFieldsThunk = (formData) => async (dispatch) => {
+  try {
+    const res = await fetch(`/api/fields/`, {
+      method: 'POST',
+      body: formData
+    });
+    if (res.ok) {
+      const data = await res.json()
+      dispatch(addFieldsAction(data.fields, data.warehouseId, data.newWarehouseRowsCount, data.newWarehouseColsCount))
+      return data;
+    } else {
+      const err = await res.json()
+      console.log("Error adding new fields: ", err);
+      return err;
+    }
+  } catch (error) {
+    console.error("Error adding new fields: ", error)
+  }
+}
+
+export const deleteFieldsThunk = (formData) => async (dispatch) => {
+  try {
+    const res = await fetch(`/api/fields/`, {
+      method: 'DELETE',
+      body: formData
+    });
+    if (res.ok) {
+      const data = await res.json()
+      dispatch(deleteFieldsAction(data.fields, data.warehouseId, data.newWarehouseRowsCount, data.newWarehouseColsCount))
+      return data;
+    } else {
+      const err = await res.json()
+      console.log("Error removing fields: ", err);
+      return err;
+    }
+  } catch (error) {
+    console.error("Error removing fields: ", error)
+  }
+}
+
 const initialState = {};
 
 const fieldReducer = (state = initialState, action) => {
@@ -108,7 +160,6 @@ const fieldReducer = (state = initialState, action) => {
         ...state,
         selectedField: topField
       }
-      return newState
     case TOGGLE_FIELD_FULL:
       return {
         ...state,
@@ -131,6 +182,12 @@ const fieldReducer = (state = initialState, action) => {
           },
           selectedField: field
         }
+    case ADD_FIELDS:
+      newState[action.warehouseId] = { ...action.fields }
+      return newState
+    case REMOVE_FIELDS:
+      action.fields.map(field => delete newState[action.warehouseId][field])
+      return newState
     default:
       return state;
   }

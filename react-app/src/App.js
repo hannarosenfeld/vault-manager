@@ -14,13 +14,14 @@ import Stage from "./components/Stage";
 import EditVaultPage from "./components/Warehouse/RenderTMB/EditVaultPage";
 import VaultDetailPage from "./components/Warehouse/RenderTMB/VaultDetailPage";
 
-
+import EditWarehousePage from "./components/EditWarehousePage";
 
 function App() {
   const dispatch = useDispatch();
   const history = useHistory();
   const [isLoaded, setIsLoaded] = useState(false);
 	const sessionUser = useSelector((state) => state.session.user);
+  const [isWarehousePage, setIsWarehousePage] = useState(false);
 
   const onAddWarehouseSubmit = async () => {
     await dispatch(getAllWarehousesThunk());    
@@ -45,7 +46,7 @@ function App() {
       )}
       {isLoaded && sessionUser && (
         <>
-        <Navigation isLoaded={isLoaded} company={sessionUser.company} />
+        <Navigation isLoaded={isLoaded} company={sessionUser.company} isWarehousePage={isWarehousePage} />
           <Switch>
             <Route exact path="/" >
               <Index company={sessionUser.company} />
@@ -60,8 +61,12 @@ function App() {
             </Route>                  
 
             <Route exact path="/:companyName/warehouse/:warehouseId"> 
-              <Warehouse />
-            </Route>          
+              <Warehouse setIsWarehousePage={setIsWarehousePage} />
+            </Route>     
+
+            <Route exact path="/:companyName/warehouse/:warehouseId/edit"> 
+              <EditWarehousePage />
+            </Route>                   
 
             <Route path="/:companyName/warehouse/:warehouseId/field/:fieldId/vaults/:vaultId/edit">
               <EditVaultPage />

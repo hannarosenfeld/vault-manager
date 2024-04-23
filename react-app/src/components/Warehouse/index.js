@@ -13,7 +13,7 @@ import "./Warehouse.css"
 
 
 
-export default function Warehouse() {
+export default function Warehouse({ setIsWarehousePage }) {
     const dispatch = useDispatch();
     const { warehouseId } = useParams(); 
     const warehouse = useSelector((state) => state.warehouse[warehouseId]);
@@ -33,6 +33,12 @@ export default function Warehouse() {
     const [toggleSelected, setToggleSelected] = useState(false);
     const [loading, setLoading] = useState(true);
 
+    useEffect(() => {
+        setIsWarehousePage(true);
+        return () => {
+            setIsWarehousePage(false);
+        }
+    }, [])
 
     useEffect(() => {
         dispatch(setSelectedFieldAction(null));
@@ -147,7 +153,28 @@ export default function Warehouse() {
     }
 
     useEffect(() => {
-        if (loadedWarehouseFields) setFields(Object.values(allFields).filter(field => field.warehouse_id === parseInt(warehouseId)).sort((a,b) => a.name - b.name))
+        let sortedFields;
+        if (loadedWarehouseFields) {
+            // setFields(Object.values(allFields).sort((a,b) => a.name - b.name))
+            let fieldsArr = (Object.values(allFields))
+
+            sortedFields = fieldsArr.sort(function (a, b) {
+                // Split the field names into alphabetical and numeric parts
+                const [, aAlpha, aNum] = a.name.match(/^([A-Za-z]+)(\d+)$/);
+                const [, bAlpha, bNum] = b.name.match(/^([A-Za-z]+)(\d+)$/);
+            
+                // Compare alphabetical parts first
+                if (aAlpha !== bAlpha) {
+                    return aAlpha.localeCompare(bAlpha);
+                }
+                
+                // If alphabetical parts are equal, compare numeric parts as numbers
+                return parseInt(aNum) - parseInt(bNum);
+            });
+            
+        }
+
+        setFields(sortedFields)
     }, [loadedWarehouseFields])
 
     function fieldGenerator(fields) {
@@ -206,7 +233,7 @@ export default function Warehouse() {
             </div>
             )}
             {!loading && ( 
-                <>
+                <div style={{display: "flex", flexDirection: "column"}}>
                     <div className="field-info">
                         {selectedField?.id ? (
                             <RenderTMB
@@ -240,7 +267,7 @@ export default function Warehouse() {
                             warehouseId={warehouseId}
                         />
                     </Modal>
-                </>
+                </div>
             )}
         </div>
     )
