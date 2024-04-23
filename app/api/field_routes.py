@@ -105,7 +105,15 @@ def add_field():
                             db.session.commit()
 
                 elif direction == 'right':
-                    print('test delete right')                
+                    warehouse.cols = warehouse.cols - count # decreasing warehouse cols by count
+
+                    for i in range(1, count+1):
+                        smallest_field_name_letter = max([field.name for field in fields])[0]
+                        all_fields_with_that_letter = Field.query.filter(Field.name.like(f'{smallest_field_name_letter}%')).all()
+                        for field in all_fields_with_that_letter:
+                            db.session.delete(field)
+                            db.session.commit()        
+
                 elif direction == 'bottom':
                     print('test delete bottom')
 
