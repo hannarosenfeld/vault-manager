@@ -134,7 +134,7 @@ export default function EditWarehousePage() {
             
             {/* </div> */}
             </div>
-            <div className="bottomButtons" style={{display: "flex", alignItems: "center", marginTop: "1em", gap: '1em'}}>
+            <div className="bottomButtons" style={{display: "flex", alignItems: "center", gap: '1em'}}>
                 <OpenModalButton 
                     buttonText={<span class="material-symbols-outlined">add</span>}
                     onItemClick={() => setIsModalOpen(false)}
