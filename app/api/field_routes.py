@@ -99,9 +99,7 @@ def add_field():
                     # for count, for each iteration, find smallest letter, then delete all fields with that letter
                     for i in range(1, count+1):
                         smallest_field_name_letter = min([field.name for field in fields])[0]
-                        print('🌼 test delete left', smallest_field_name_letter)
                         all_fields_with_that_letter = Field.query.filter(Field.name.like(f'{smallest_field_name_letter}%')).all()
-                        print('⭐️⭐️⭐️⭐️', [field.name for field in all_fields_with_that_letter])                        
                         for field in all_fields_with_that_letter:
                             db.session.delete(field)
                             db.session.commit()
