@@ -3,13 +3,9 @@ const GET_ALL_FIELDS = "field/GET_ALL_FIELDS";
 const EDIT_FIELD_TYPE = "field/EDIT_FIELD_TYPE";
 const TOGGLE_FIELD_FULL = "field/TOGGLE_FIELD_FULL";
 const SET_SELECTED_FIELD = "field/SET_SELECTED_FIELD";
-const ADD_FIELDS = "field/ADD_FIELDS";
+export const ADD_FIELDS = "field/ADD_FIELDS";
 export const REMOVE_FIELDS = "field/REMOVE_FIELDS";
 
-export const deleteFieldsAction = (fields, warehouseId, newWarehouseRowsCount) => ({
-  type: REMOVE_FIELDS,
-  fields, warehouseId, newWarehouseRowsCount
-})
 
 export const setSelectedFieldAction = (field) => ({
   type: SET_SELECTED_FIELD,
@@ -31,9 +27,14 @@ const getAllFieldsAction = (fields, warehouseId) => ({
   fields, warehouseId
 });
 
-const addFieldsAction = (fields, warehouseId) => ({
+export const addFieldsAction = (fields, warehouseId, newWarehouseRowsCount, newWarehouseColsCount) => ({
   type: ADD_FIELDS,
-  fields, warehouseId
+  fields, warehouseId, newWarehouseRowsCount, newWarehouseColsCount
+})
+
+export const deleteFieldsAction = (fields, warehouseId, newWarehouseRowsCount, newWarehouseColsCount) => ({
+  type: REMOVE_FIELDS,
+  fields, warehouseId, newWarehouseRowsCount, newWarehouseColsCount
 })
 
 export const editFieldThunk = (fieldData) => async (dispatch) => {
@@ -109,7 +110,7 @@ export const addFieldsThunk = (formData) => async (dispatch) => {
     });
     if (res.ok) {
       const data = await res.json()
-      dispatch(addFieldsAction(data.fields, data.warehouseId))
+      dispatch(addFieldsAction(data.fields, data.warehouseId, data.newWarehouseRowsCount, data.newWarehouseColsCount))
       return data;
     } else {
       const err = await res.json()
@@ -129,7 +130,7 @@ export const deleteFieldsThunk = (formData) => async (dispatch) => {
     });
     if (res.ok) {
       const data = await res.json()
-      dispatch(deleteFieldsAction(data.fields, data.warehouseId, data.newWarehouseRowsCount))
+      dispatch(deleteFieldsAction(data.fields, data.warehouseId, data.newWarehouseRowsCount, data.newWarehouseColsCount))
       return data;
     } else {
       const err = await res.json()

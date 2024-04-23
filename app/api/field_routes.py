@@ -38,7 +38,8 @@ def add_field():
             if request.method == 'POST' and opperation == 'add':
 
                 if direction == 'left':
-                    warehouse.cols = warehouse.cols + count # increase columns by count
+                    new_warehouse_columns_count = warehouse.cols + count
+                    warehouse.cols = new_warehouse_columns_count # increase columns by count
 
                     for field in fields:
                         new_name = update_char(field.name, count)
@@ -55,10 +56,12 @@ def add_field():
                             res.append(new_field.to_dict())
 
                     db.session.commit()
-                    return { 'fields': res, 'warehouseId': warehouse_id }
+
+                    return { 'fields': res, 'warehouseId': warehouse_id, 'newWarehouseRowsCount': warehouse.rows, 'newWarehouseColumnsCount': new_warehouse_columns_count }
 
                 if direction == 'right':
-                    warehouse.cols = warehouse.cols + count # increase columns by count
+                    new_warehouse_columns_count = warehouse.cols + count 
+                    warehouse.cols = new_warehouse_columns_count # increase columns by count
 
                     largest_field_name_letter = max([field.name for field in fields])
                     largest_field_name_letter_as_number = ord(largest_field_name_letter[0])
@@ -72,7 +75,8 @@ def add_field():
                             db.session.add(new_field)
                             db.session.commit()
                             res.append(new_field.to_dict())
-                    return { 'fields': res, 'warehouseId': warehouse_id }
+
+                    return { 'fields': res, 'warehouseId': warehouse_id, 'newWarehouseRowsCount': warehouse.rows, 'newWarehouseColumnsCount': new_warehouse_columns_count }
                 
                 elif direction == 'bottom':
                     letters = sorted(set([field.name[0] for field in fields]))
@@ -84,16 +88,19 @@ def add_field():
                             db.session.commit()
                             res.append(new_field.to_dict())
 
-                    warehouse.rows = warehouse.rows + count
+                    new_warehouse_row_count = warehouse.rows + count
+                    warehouse.rows = new_warehouse_row_count
                     db.session.commit()
-                    return { 'fields': res, 'warehouseId': warehouse_id }
+
+                    return { 'fields': res, 'warehouseId': warehouse_id, 'newWarehouseRowsCount': new_warehouse_row_count, 'newWarehouseColumnsCount': warehouse.cols }
                 
                 else:
                     return jsonify(message="direction not specified")
 
             elif request.method == 'DELETE' and opperation == 'subtract':
                 if direction == 'left':
-                    warehouse.cols = warehouse.cols - count # decreasing warehouse cols by count
+                    new_warehouse_columns_count = warehouse.cols - count
+                    warehouse.cols = new_warehouse_columns_count # decreasing warehouse cols by count
                     # for count, for each iteration, find smallest letter, then delete all fields with that letter
                     for i in range(1, count+1):
                         smallest_field_name_letter = min([field.name for field in fields])[0]
@@ -109,7 +116,11 @@ def add_field():
                             field.name = new_field_name
                             db.session.commit()
 
+                    return { 'fields': res, 'warehouseId': warehouse.id, 'newWarehouseRowsCount': warehouse.rows, 'newWarehouseColumnsCount': new_warehouse_columns_count }
+
+
                 elif direction == 'right':
+                    new_warehouse_columns_count = warehouse.cols - count
                     warehouse.cols = warehouse.cols - count # decreasing warehouse cols by count
 
                     for i in range(1, count+1):
@@ -117,7 +128,10 @@ def add_field():
                         all_fields_with_that_letter = Field.query.filter(Field.name.like(f'{smallest_field_name_letter}%')).all()
                         for field in all_fields_with_that_letter:
                             db.session.delete(field)
-                            db.session.commit()        
+                            db.session.commit()
+
+                    return { 'fields': res, 'warehouseId': warehouse.id, 'newWarehouseRowsCount': warehouse.rows, 'newWarehouseColumnsCount': new_warehouse_columns_count }
+
 
                 elif direction == 'bottom':
                     letters = sorted(set([field.name[0] for field in fields]))
@@ -133,7 +147,7 @@ def add_field():
                     warehouse.rows = new_warehouse_row_count
                     db.session.commit()                
 
-                    return { 'fields': res, 'warehouseId': warehouse.id, 'newWarehouseRowsCount': new_warehouse_row_count }
+                    return { 'fields': res, 'warehouseId': warehouse.id, 'newWarehouseRowsCount': new_warehouse_row_count, 'newWarehouseColumnsCount': warehouse.cols}
 
                 else:
                     return jsonify(message="direction not specified")
