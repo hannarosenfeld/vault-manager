@@ -32,10 +32,10 @@ def add_field():
             warehouse_rows = form.data['warehouse_rows']
             count = form.data['count']
             res = []
+            fields = Field.query.filter_by(warehouse_id=warehouse_id)
+            warehouse = Warehouse.query.get(warehouse_id)
 
             if request.method == 'POST' and opperation == 'add':
-                fields = Field.query.filter_by(warehouse_id=warehouse_id)
-                warehouse = Warehouse.query.get(warehouse_id)
 
                 if direction == 'left':
                     warehouse.cols = warehouse.cols + count # increase columns by count
@@ -94,9 +94,18 @@ def add_field():
                     return jsonify(message="direction not specified")
 
             elif request.method == 'DELETE' and opperation == 'subtract':
-            #check if there are existing vaults on any of the fields to be deleted
                 if direction == 'left':
-                    print('🌼 test delete left')
+                    warehouse.cols = warehouse.cols - count # decreasing warehouse cols by count
+                    # for count, for each iteration, find smallest letter, then delete all fields with that letter
+                    for i in range(1, count+1):
+                        smallest_field_name_letter = min([field.name for field in fields])[0]
+                        print('🌼 test delete left', smallest_field_name_letter)
+                        all_fields_with_that_letter = Field.query.filter(Field.name.like(f'{smallest_field_name_letter}%')).all()
+                        print('⭐️⭐️⭐️⭐️', [field.name for field in all_fields_with_that_letter])                        
+                        for field in all_fields_with_that_letter:
+                            db.session.delete(field)
+                            db.session.commit()
+
                 elif direction == 'right':
                     print('test delete right')                
                 elif direction == 'bottom':
