@@ -186,9 +186,11 @@ const fieldReducer = (state = initialState, action) => {
       newState[action.warehouseId] = { ...action.fields }
       return newState
     case REMOVE_FIELDS:
-      console.log("🥎",action)
-      // newState[action.warehouseId] = { ...action.fields }
-      // return newState      
+      console.log("💽", action)
+      // for (let field of action.fields) console.log(newState[warehouseId][field])
+      action.fields.map(field => delete newState[action.warehouseId][field])
+
+      return newState
     default:
       return state;
   }

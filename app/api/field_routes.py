@@ -104,11 +104,8 @@ def add_field():
 
                     for i in range(1, count+1):
                         new_fields = Field.query.filter_by(warehouse_id=warehouse_id)
-                        print("🦁", [field.name for field in new_fields])
                         for field in new_fields:
-                            print("🌠 in loop", ord(field.name[0]))
                             new_field_name = f"{chr(ord(field.name[0]) - 1)}{field.name[1:]}"
-                            print("🦋 new name: ", new_field_name)
                             field.name = new_field_name
                             db.session.commit()
 
@@ -122,20 +119,20 @@ def add_field():
                             db.session.delete(field)
                             db.session.commit()        
 
-                # 🚨 THIS DOESN'T WORK:
                 elif direction == 'bottom':
                     letters = sorted(set([field.name[0] for field in fields]))
-                    # print("🌼 letters: ", letters, warehouse.cols, warehouse.rows)
-
                     for letter in letters:
                         for i in range(warehouse.rows-count+1, warehouse.rows+1):                        
                             field_to_delete = Field.query.filter_by(name=f"{letter}{i}", warehouse=warehouse).first()
-                            # print("😎", field_to_delete)
+                            field_id = field_to_delete.id
+                            res.append(field_id)
                             db.session.delete(field_to_delete)
                             db.session.commit()
-
+                            
                     warehouse.rows = warehouse.rows - count
-                    db.session.commit()                    
+                    db.session.commit()                
+
+                    return { 'fields': res, 'warehouseId': warehouse.id }
 
                 else:
                     return jsonify(message="direction not specified")
@@ -147,7 +144,7 @@ def add_field():
         return jsonify({'error': str(e)}), 500
     
     # return jsonify({'errors': form.errors}), 400
-    return jsonify({'errors': '🪐 there is some other error'}), 400
+    # return jsonify({'errors': '🪐 there is some other error'}), 400
         
 
 
