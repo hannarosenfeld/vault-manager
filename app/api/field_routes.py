@@ -55,8 +55,6 @@ def add_field():
                             res.append(new_field.to_dict())
 
                     db.session.commit()
-                    # fields = Field.query.filter_by(warehouse_id=warehouse_id)
-                    # return { 'fields': [field.to_dict() for field in fields], 'warehouseId': warehouse_id }
                     return { 'fields': res, 'warehouseId': warehouse_id }
 
                 if direction == 'right':
@@ -104,6 +102,16 @@ def add_field():
                             db.session.delete(field)
                             db.session.commit()
 
+                    new_fields = Field.query.filter_by(warehouse_id=warehouse_id)
+                    print("🦁", [field.name for field in new_fields])
+
+                    for field in new_fields:
+                        print("🌠 in loop", ord(field.name[0]))
+                        new_field_name = f"{chr(ord(field.name[0]) - 1)}{field.name[1:]}"
+                        print("🦋 new name: ", new_field_name)
+                        field.name = new_field_name
+                        db.session.commit()
+
                 elif direction == 'right':
                     warehouse.cols = warehouse.cols - count # decreasing warehouse cols by count
 
@@ -114,6 +122,7 @@ def add_field():
                             db.session.delete(field)
                             db.session.commit()        
 
+                # 🚨 THIS DOESN'T WORK:
                 elif direction == 'bottom':
                     letters = sorted(set([field.name[0] for field in fields]))
                     print("🌼 letters: ", letters)
