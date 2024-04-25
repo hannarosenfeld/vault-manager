@@ -64,7 +64,7 @@ function App() {
               <Warehouse setIsWarehousePage={setIsWarehousePage} />
             </Route>     
 
-            <Route exact path="/:companyName/warehouse/:warehouseId/edit"> 
+            <Route exact path="/:companyName/warehouse/:warehouseId/edit">              
               <EditWarehousePage />
             </Route>                   
 
@@ -87,6 +87,11 @@ function App() {
             <Route path="/login" >
               <LoginFormPage />
             </Route>
+
+            <Route path='*'>
+              There is nothing here
+            </Route>
+
           </Switch>
         </>
       )}

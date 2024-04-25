@@ -57,7 +57,7 @@ export default function EditWarehousePage() {
 
 
     function fieldGenerator(fields) {
-        if (fields) {
+        if (fields && warehouse) {
             return (
                 <div 
                     style={{
