@@ -15,7 +15,7 @@ export default function Index({ company }) {
 
     return(
         <div className="wrapper" style={{marginTop: "1em"}}>
-            <div style={{display: "flex", gap: "1em"}}>
+            <div style={{display: "flex", gap: "1em", flexWrap: "wrap"}}>
             {warehouses.map(warehouse => (
                 <div className="card">
                     <div class="card-body">
