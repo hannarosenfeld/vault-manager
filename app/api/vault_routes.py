@@ -176,8 +176,11 @@ def manage_vault(id):
             # customer = Customer.query.get(vault.customer_id)
             # customer.name = 
             # vault.customer_name = form.data['customer_name']
+
             vault.name = form.data['name']
-            vault.order_number = form.data['order_number']
+            order = Order.query.get(vault.order.id)
+            order.name = form.data['order_number']
+            db.session.commit()
 
             # Handle file uploads
             for key, value in request.files.items():
