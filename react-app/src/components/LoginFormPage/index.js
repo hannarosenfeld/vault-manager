@@ -40,6 +40,7 @@ function LoginFormPage() {
               type="text"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
               required
             />
           </fieldset>
@@ -49,6 +50,7 @@ function LoginFormPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
               required
             />
           </fieldset>
