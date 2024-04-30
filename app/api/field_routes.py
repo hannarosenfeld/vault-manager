@@ -187,9 +187,9 @@ def toggle_field_full(id):
 
 @field_routes.route('/<int:id>/', methods=['PUT'])
 def edit_field(id):
-
     form = EditFieldForm()
     form['csrf_token'].data = request.cookies['csrf_token']
+    print("🚨 in route")
 
     try:
         if form.validate_on_submit():
@@ -231,7 +231,7 @@ def edit_field(id):
                 return jsonify([field1.to_dict(), field2.to_dict()])
 
             if type == 'vault':
-
+                print("💖 in route", field1, field2)
                 if checkVaultCount(field1.vaults) > 0:
                     return jsonify(message="Please stage all vaults in field to continue")
 
@@ -249,4 +249,4 @@ def edit_field(id):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     
-    return jsonify({'errors': validation_errors_to_error_messages(form.errors)}), 400
+    return jsonify({'errors': form.errors}), 400

@@ -103,10 +103,10 @@ export default function Warehouse({ setIsWarehousePage }) {
     }
 
     const toggleFieldType = (type, topField, bottomField) => {
+        console.log("✅", topField, bottomField)
         if (!bottomField || bottomField.name[0] !== topField.name[0]) return alert("Can't switch to a couchbox on the last row")
         if (topField.vaults.length || bottomField.vaults.length) return alert("Please empty field before switching field type!")
         
-        console.log("🌼bottomfield:", bottomField)
         const formData = {"name": topField.name, "field_id_1": topField.id, "field_id_2": bottomField.id}
         if (type === "couchbox-T") {
             formData["type"] = "vault"
@@ -126,7 +126,8 @@ export default function Warehouse({ setIsWarehousePage }) {
             const topName = topField.name.match(/^([a-zA-Z]+)\d/);
             const bottomName = bottomField.name.match(/^([a-zA-Z]+)\d/);
             if (bottomName || topName[1] === bottomName[1]) {
-                dispatch(editFieldThunk(formData))
+                const editDispatch = dispatch(editFieldThunk(formData))
+                console.log("😶‍🌫️", editDispatch)
                 
                 setFields(prevFields => 
                     prevFields.map(field =>

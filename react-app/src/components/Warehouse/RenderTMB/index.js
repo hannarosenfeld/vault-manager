@@ -24,15 +24,23 @@ const RenderTMB = ({
   const fields = useSelector((state) => state.field[warehouse.id]);
   const vaults = useSelector((state) => state.vault);
   const field = useSelector( state => state.field.selectedField)
-  
+  const fieldsArr = Object.values(fields)
   const selectedFieldId = field.id
   const vaultsArr = []
-
   field?.vaults?.forEach(id => (vaults[id]) ?  vaultsArr.push(vaults[id]) : null);
   const [sortedVaults, setSortedVaults] = useState({});
   const [topmostVault, setTopmostVault] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const type = field?.type ? field.type : null
+
+  function toggleFieldTypeFunction(type, field) {
+    console.log("🌸 type: ", type)
+    console.log("🌼 top field: ", field)
+    const bottomFieldNum = parseInt((field.name.slice(1,))) + 1
+    const bottomFieldName = field.name[0] + bottomFieldNum.toString()
+    const bottomField = fieldsArr.find(f => f.name == bottomFieldName)
+    toggleFieldType(type, field, bottomField)
+  }
 
 
   useEffect(() => {
@@ -170,7 +178,8 @@ const RenderTMB = ({
                 role="switch"
                 id="flexSwitchCheckDefault"
                 checked={type === "couchbox-T"}
-                onChange={() => toggleFieldType(type, field, fields[field.id+1])}
+                // 🚨 TODO: we need to change how we access the second field
+                onChange={() => toggleFieldTypeFunction(type, field)}
               />
               <label className={`field-type-label ${type === 'vault' ? 'vault-label' : 'couchbox-label'}`}>
                 {type === 'couchbox-T' ? 'couchbox' : 'vault'}
