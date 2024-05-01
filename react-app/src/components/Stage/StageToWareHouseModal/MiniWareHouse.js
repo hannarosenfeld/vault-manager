@@ -10,6 +10,8 @@ export default function MiniWareHouse({ warehouseId}) {
     const selectedField = useSelector((state) => state.field.selectedField)
     const [loadedWarehouseFields, setLoadedWarehouseFields] = useState(false);
     const [fields, setFields] = useState(null);
+    const [loading, setLoading] = useState(true);
+
 
     useEffect(() => {
         setLoadedWarehouseFields(false)
@@ -39,14 +41,12 @@ export default function MiniWareHouse({ warehouseId}) {
                 // If alphabetical parts are equal, compare numeric parts as numbers
                 return parseInt(aNum) - parseInt(bNum);
             });
-            
         }
 
         setFields(sortedFields)
     }, [loadedWarehouseFields, warehouseId])
 
     function fieldGenerator(fields) {
-
         if (loadedWarehouseFields && fields) {
             return (
                 <div
@@ -88,12 +88,12 @@ export default function MiniWareHouse({ warehouseId}) {
                 </div>
             )}
         }
-
     if (!warehouse) return null
     
-    return(
+    if (loadedWarehouseFields && fields) {
+        return(
         <div className="warehouse-wrapper">
             {fields && fieldGenerator(fields)}
-        </div>   
-    )
+        </div>
+    )} else return (<div>loading...</div>)
 }
