@@ -103,7 +103,6 @@ export default function Warehouse({ setIsWarehousePage }) {
     }
 
     const toggleFieldType = (type, topField, bottomField) => {
-        console.log("✅", topField, bottomField)
         if (!bottomField || bottomField.name[0] !== topField.name[0]) return alert("Can't switch to a couchbox on the last row")
         if (topField.vaults.length || bottomField.vaults.length) return alert("Please empty field before switching field type!")
         
