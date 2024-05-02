@@ -72,6 +72,7 @@ export default function StageToWareHouseModal({ closeModal, selectedVault }) {
                       selectedVault={selectedVault}
                       moveVault={moveVault}
                       warehouse={warehouse}
+                      component={'stage'}
                     />
                   ) : (
                     <div style={{height: "9em"}}>

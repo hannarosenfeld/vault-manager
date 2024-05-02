@@ -15,6 +15,7 @@ const RenderTMB = ({
   selectedVault,
   moveVault,
   warehouse,
+  component
   // selectedFieldId,
   // field,
   // vaultsArr,
@@ -34,8 +35,6 @@ const RenderTMB = ({
   const type = field?.type ? field.type : null
 
   function toggleFieldTypeFunction(type, field) {
-    console.log("🌸 type: ", type)
-    console.log("🌼 top field: ", field)
     const bottomFieldNum = parseInt((field.name.slice(1,))) + 1
     const bottomFieldName = field.name[0] + bottomFieldNum.toString()
     const bottomField = fieldsArr.find(f => f.name == bottomFieldName)
@@ -167,9 +166,11 @@ const RenderTMB = ({
           </div>
         </div>
     )}
+
     <div className={`selected-field-box ${toggleSelected ? 'toggled' : ''}`}>
       <div className="field-info-box">
         <div className="selected-field-name">{field?.name}</div>
+        {component !== 'stage' && (
           <div className="field-switches">
             <div className="form-check form-switch toggle-container" >
               <input
@@ -200,6 +201,7 @@ const RenderTMB = ({
               </label>
             </div>            
           </div>
+      )}
         </div> 
       </div>
     </div>
