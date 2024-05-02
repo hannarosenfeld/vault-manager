@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllFieldsThunk,setSelectedFieldAction } from "../../../store/field";
 import "./MiniWarehouse.css";
 
-export default function MiniWareHouse({ warehouseId}) {
+export default function MiniWareHouse({ warehouseId }) {
     const dispatch = useDispatch();
     const warehouse = useSelector((state) => state.warehouse[warehouseId]);
     const allFields = useSelector((state) => state.field[warehouseId])
@@ -45,6 +45,10 @@ export default function MiniWareHouse({ warehouseId}) {
 
         setFields(sortedFields)
     }, [loadedWarehouseFields, warehouseId])
+
+
+    
+
 
     function fieldGenerator(fields) {
         if (loadedWarehouseFields && fields) {
