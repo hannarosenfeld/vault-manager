@@ -24,7 +24,7 @@ export default function MiniWareHouse({ warehouseId}) {
 
     useEffect(() => {
         let sortedFields;
-        if (loadedWarehouseFields) {
+        if (loadedWarehouseFields && allFields) {
             // setFields(Object.values(allFields).sort((a,b) => a.name - b.name))
             let fieldsArr = (Object.values(allFields))
 
