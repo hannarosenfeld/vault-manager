@@ -7,8 +7,30 @@ export default function MiniWareHouse({ selectedFieldId, warehouseId }) {
     const [fields, setFields] = useState(null);
 
     useEffect(() => {
-        if (allFields) setFields(Object.values(allFields).filter(field => field.warehouse_id === parseInt(warehouseId)).sort((a,b) => a.name - b.name))        
+        let sortedFields;
+        if (allFields) {
+            // setFields(Object.values(allFields).sort((a,b) => a.name - b.name))
+            let fieldsArr = (Object.values(allFields))
+
+            sortedFields = fieldsArr.sort(function (a, b) {
+                // Split the field names into alphabetical and numeric parts
+                const [, aAlpha, aNum] = a.name.match(/^([A-Za-z]+)(\d+)$/);
+                const [, bAlpha, bNum] = b.name.match(/^([A-Za-z]+)(\d+)$/);
+            
+                // Compare alphabetical parts first
+                if (aAlpha !== bAlpha) {
+                    return aAlpha.localeCompare(bAlpha);
+                }
+                
+                // If alphabetical parts are equal, compare numeric parts as numbers
+                return parseInt(aNum) - parseInt(bNum);
+            });
+        }
+
+        setFields(sortedFields)
     }, [allFields])
+
+
 
     function fieldGenerator(fields) {
             return (
