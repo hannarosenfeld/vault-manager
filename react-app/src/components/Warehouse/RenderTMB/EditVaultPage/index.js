@@ -9,7 +9,7 @@ import { useParams } from 'react-router-dom';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import { getAllVaultAttachmentsThunk, deleteAttachmentThunk } from '../../../../store/attachment';
 import DeleteAttachmentConfirmationModal from './DeleteAttachmentConfirmationModal';
-
+import { NavLink } from 'react-router-dom/cjs/react-router-dom.min';
 
 const EditVaultPage = () => {
   const dispatch = useDispatch();
@@ -111,9 +111,15 @@ const EditVaultPage = () => {
   return (
     <div className="edit-vault-page-container">
       <div className="edit-vault-page">
-        <div className="page-header">
-          <h2>Edit Vault</h2>
+        <div style={{display: "flex", width: "100%"}}>
+          <NavLink style={{margin: "auto 0", fontSize: "1.3em", fontWeight: "bold"}} to="/">
+        <span class="material-symbols-outlined" style={{margin: "auto 0", fontSize: "1.3em", fontWeight: "bold"}}>
+          arrow_back
+        </span>
+        </NavLink>
+          <h4 style={{alignSelf: "center", margin: "0 auto"}}>Edit Vault</h4>
         </div>
+        
         <div className="edit-page-content">
           {isLoading ? (
             <p>Loading...</p>
