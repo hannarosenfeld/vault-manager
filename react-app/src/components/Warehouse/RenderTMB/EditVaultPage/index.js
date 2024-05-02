@@ -112,7 +112,7 @@ const EditVaultPage = () => {
     <div className="edit-vault-page-container">
       <div className="edit-vault-page">
         <div style={{display: "flex", width: "100%"}}>
-          <NavLink style={{margin: "auto 0", fontSize: "1.3em", fontWeight: "bold"}} to={`/${warehouse.companyName}/warehouse/${warehouseId}`}>
+          <NavLink style={{margin: "auto 0", fontSize: "1.3em", fontWeight: "bold"}} to={`/${warehouse.companyName.toLowerCase()}/warehouse/${warehouseId}`}>
         <span class="material-symbols-outlined" style={{margin: "auto 0", fontSize: "1.3em", fontWeight: "bold"}}>
           arrow_back
         </span>
