@@ -11,6 +11,8 @@ import { getAllVaultAttachmentsThunk, deleteAttachmentThunk } from '../../../../
 import DeleteAttachmentConfirmationModal from './DeleteAttachmentConfirmationModal';
 import { NavLink } from 'react-router-dom';
 
+
+
 const EditVaultPage = () => {
   const dispatch = useDispatch();
   const history = useNavigate();
@@ -63,8 +65,9 @@ const EditVaultPage = () => {
       vaultData.append(`attachment${index}`, attachment)
     })
     try {
-      await dispatch(updateCustomerNameThunk(vault.customer_id, customerName));
-      await dispatch(editVaultThunk(vault.id, vaultData));
+      console.log("🌰")
+      // await dispatch(updateCustomerNameThunk(vault.customer_id, customerName));
+      // await dispatch(editVaultThunk(vault.id, vaultData));
 
       history.push(`/${companyName}/warehouse/${warehouseId}`);
     } catch (error) {

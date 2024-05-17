@@ -6,6 +6,8 @@ import { useParams } from 'react-router-dom';
 const VaultInstance = ({ topmostVault, vault, handleStageClick, fieldType }) => {
   const customer = useSelector((state) => state.customer[vault.customer_id]);
   const { warehouseId } = useParams()
+  const sessionuser = useSelector((state) => state.session.user);
+
 
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
@@ -31,7 +33,7 @@ const VaultInstance = ({ topmostVault, vault, handleStageClick, fieldType }) => 
         >
           forklift
         </span>
-        <Link to={`${warehouseId}/field/${vault.field_id}/vaults/${vault.id}/edit`} className="edit-link">
+        <Link to={`/${sessionuser.company.name.toLowerCase()}/warehouse/${warehouseId}/vault/${vault.id}/edit`} className="edit-link">
           <span
             style={{ color: '#0074D9' }}
             className="material-symbols-outlined"
@@ -39,7 +41,7 @@ const VaultInstance = ({ topmostVault, vault, handleStageClick, fieldType }) => 
             edit
           </span>
         </Link>
-        <Link to={`${warehouseId}/field/${vault.field_id}/vaults/${vault.id}/detail`}>
+        <Link to={`/${sessionuser.company.name.toLowerCase()}/warehouse/${warehouseId}/vault/${vault.id}/detail`}>
           <span className="material-symbols-outlined">description</span>
         </Link>
       </div>

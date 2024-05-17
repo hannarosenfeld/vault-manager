@@ -50,9 +50,9 @@ function App() {
             <Route exact path="/signup" element={<SignupFormPage />} />
             <Route exact path="/warehouse/add-warehouse" element={<AddWarehouseForm onAddWarehouseSubmit={onAddWarehouseSubmit}/>} />
             <Route exact path="/:companyName/warehouse/:warehouseId" element={<Warehouse setIsWarehousePage={setIsWarehousePage} />} /> 
-            <Route exact path="/:companyName/warehouse/:warehouseId/edit" element={<EditWarehousePage />} />              
-            <Route path="/:companyName/warehouse/:warehouseId/field/:fieldId/vaults/:vaultId/edit" element={<EditVaultPage />} />
-            <Route path="/:companyName/warehouse/:warehouseId/field/:fieldId/vaults/:vaultId/detail" element={<VaultDetailPage/>} />
+            <Route exact path="/:companyName/warehouse/:warehouseId/edit" element={<EditWarehousePage />} />
+            <Route path="/:companyName/warehouse/:warehouseId/vault/:vaultId/edit" element={<EditVaultPage />} />
+            <Route path="/:companyName/warehouse/:warehouseId/vault/:vaultId/detail" element={<VaultDetailPage/>} />
             <Route path="/stage" element={<Stage />} />
             <Route path="/add-user" element={<SignupFormPage />} />
             <Route path="/login" element={<LoginFormPage />} />
