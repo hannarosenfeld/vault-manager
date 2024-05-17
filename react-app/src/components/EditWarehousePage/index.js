@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { useParams } from "react-router-dom";
 import { getAllFieldsThunk } from "../../store/field";
 import { EditWarehouseModal } from "./editWarehouseModal";
 import OpenModalButton from "../OpenModalButton";

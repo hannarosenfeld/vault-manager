@@ -4,14 +4,14 @@ import { logout } from "../../store/session";
 import OpenModalButton from "../OpenModalButton";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
-import { NavLink, useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Drawer, List, ListItem, ListItemText, Button } from "@mui/material";
 import "./Navigation.css";
 import { getAllWarehousesThunk } from "../../store/warehouse";
 
 
 function ProfileButton({ user }) {
-  const history = useHistory();
+  const history = useNavigate();
   const dispatch = useDispatch();
   const [showDrawer, setShowDrawer] = useState(false);
   const warehousesObj = useSelector((state) => state.warehouse)
