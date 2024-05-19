@@ -173,13 +173,11 @@ def manage_vault(id):
                 db.session.commit()
                 return { 'vault': vault.to_dict(), 'field': field.to_dict() }
 
-            # customer = Customer.query.get(vault.customer_id)
-            # customer.name = 
-            # vault.customer_name = form.data['customer_name']
-
+            print("🧤", form.data)
             vault.name = form.data['name']
-            order = Order.query.get(vault.order.id)
-            order.name = form.data['order_number']
+            vault.customer_name = form.data['customer_name']
+            vault.order_name = form.data['order_number']
+            print("👚", vault.to_dict())
             db.session.commit()
 
             # Handle file uploads

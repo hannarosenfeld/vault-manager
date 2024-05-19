@@ -43,6 +43,7 @@ const moveVaultFromStageToWarehouseAction = (vault) => ({
 
 
 export const editVaultThunk = (vaultId, vaultData) => async (dispatch) => {
+  console.log("🧛🏿‍♀️", vaultData.get('customer_name'))
   try {
     const res = await fetch(`/api/vaults/${vaultId}`, {
       method: 'PUT',

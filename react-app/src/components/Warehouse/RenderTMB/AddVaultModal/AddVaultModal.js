@@ -6,7 +6,7 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import { FormGroup, FormLabel } from '@mui/material';
+import { Button, FormGroup, FormLabel } from '@mui/material';
 import "./AddVaultModal.css"
 import MiniWareHouse from './MiniWareHouse';
 
@@ -165,7 +165,7 @@ export default function AddVaultModal({ onClose, warehouseId, position }) {
                         <CloseIcon />
                     </IconButton>
                 </div>
-                <div style={{ marginBottom: "5px" }}>
+                <div >
                     <h5 id="modal-modal-title">{field.type === "vault" ? "Add Vault" : "Add Couchbox"}</h5>
                     <div className="vault-info">
                         <div>Field: <span>{selectedFieldId}</span></div>
@@ -174,9 +174,9 @@ export default function AddVaultModal({ onClose, warehouseId, position }) {
                 </div>
                 <form className="add-vault-form" onSubmit={handleSubmit} enctype="multipart/form-data">
                     <div className='add-vault-form-input'>
-                    <div style={{ display: "flex", gap: "0.2em", justifyContent: "space-between", alignItems: "baseline", alignContent: "baseline"}}>
-                        <FormGroup style={{ width: "75%" }}>
-                            <div className="customer-input-container" style={{marginBottom: "1em", width: "93.5%"}}>
+                    <div style={{ display: "flex", gap: "1em",alignItems: "baseline", alignContent: "baseline", justifyContent: "space-between", marginBottom: "1em"}}>
+                        <FormGroup style={{width: "50%"}} >
+                            <div className="customer-input-container" >
                                 <FormLabel>Customer Name</FormLabel>
                                 <input
                                     type="text"
@@ -218,7 +218,20 @@ export default function AddVaultModal({ onClose, warehouseId, position }) {
                                 )}
                             </div>
                         </FormGroup>
-                        <FormGroup className="vault-order-number-item" style={{width: "45%"}}>
+                        <FormGroup style={{alignSelf: "center"}}>
+                        <FormLabel style={{marginBottom: "0.6em"}}>Type</FormLabel>
+                        <select
+                            className="form-select form-select-lg"
+                            style={{ fontSize: "1em"}}
+                            // aria-aria-label=".form-select-lg example"
+                            value={vaultType}
+                            onChange={(e) => setVaultType(e.target.value)}
+                        >
+                            <option value="S">Standard</option>
+                            <option value="T">Tall</option>
+                        </select>
+                        </FormGroup>
+                        <FormGroup className="vault-order-number-item">
                             <FormLabel>Attachment</FormLabel>
                             <input
                                 type="file"
@@ -227,7 +240,7 @@ export default function AddVaultModal({ onClose, warehouseId, position }) {
                         </FormGroup>
                     </div>
 
-                    <div className="vault-order-number" style={{ gap: "1em" }}>
+                    <div style={{display: "flex", justifyContent: "space-between", gap: "1em", alignContent: "center", alignItems: "center"}}>
                     <FormGroup className="vault-order-number-item" style={{width: "45%"}}>
                             <FormLabel>Order#</FormLabel>
                             <input
@@ -238,7 +251,7 @@ export default function AddVaultModal({ onClose, warehouseId, position }) {
                             />
                         </FormGroup>
                     {field.type === "vault" && (
-                        <div style={{width: "100%", display: "flex", gap: "0.5em", justifyContent: "space-between"}}>
+                        <>
                         <FormGroup className="vault-order-number-item" style={{width: "45%"}}>
                             <FormLabel>Vault#</FormLabel>
                             <input
@@ -253,24 +266,20 @@ export default function AddVaultModal({ onClose, warehouseId, position }) {
                             </div>
                             )}
                         </FormGroup>
-                        <div style={{width: "45%"}}>
-                        <FormLabel>Vault Type</FormLabel>
-                        <select
-                            className="form-select form-select-lg"
-                            style={{ fontSize: "1em", marginLeft: "-0.5em", marginTop: "0.4em"}}
-                            // aria-aria-label=".form-select-lg example"
-                            value={vaultType}
-                            onChange={(e) => setVaultType(e.target.value)}
-                        >
-                            <option value="S">Standard</option>
-                            <option value="T">Tall</option>
-                        </select>
-                        </div>
-                        </div>
+                        </>
                     )}
+                    <FormGroup style={{alignSelf: "flex-end"}}>
+                        <Button variant="outlined" style={{display: "flex", flexDirection: "column"}}>
+                            <span class="material-symbols-outlined" style={{fontSize: "1.5em"}}>
+                            edit_note
+                            </span>
+                            <span style={{fontSize: "0.5em"}}>Add Note</span>
+                        </Button>
+                    </FormGroup>
                     </div>
+
                     </div>
-                        <MiniWareHouse selectedFieldId={selectedFieldId} warehouseId={warehouseId} />
+                    <MiniWareHouse selectedFieldId={selectedFieldId} warehouseId={warehouseId} />
                     <button type="submit" disabled={isSubmitting} >
                         {isSubmitting ? 'Submitting...' : 'Submit'}
                     </button>

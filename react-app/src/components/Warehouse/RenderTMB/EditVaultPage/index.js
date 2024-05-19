@@ -56,6 +56,7 @@ const EditVaultPage = () => {
 
   const handleSave = async (e) => {
     e.preventDefault();
+
     const vaultData = new FormData
     vaultData.append("customer_name", customerName)
     vaultData.append("name", vaultName)
@@ -65,11 +66,9 @@ const EditVaultPage = () => {
       vaultData.append(`attachment${index}`, attachment)
     })
     try {
-      console.log("🌰")
-      // await dispatch(updateCustomerNameThunk(vault.customer_id, customerName));
-      // await dispatch(editVaultThunk(vault.id, vaultData));
+      await dispatch(editVaultThunk(vault.id, vaultData));
 
-      history.push(`/${companyName}/warehouse/${warehouseId}`);
+      // history.push(`/${companyName}/warehouse/${warehouseId}`);
     } catch (error) {
       console.error('Error saving vault:', error);
     }

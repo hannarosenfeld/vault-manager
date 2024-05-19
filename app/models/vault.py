@@ -15,21 +15,12 @@ class Vault(db.Model, UserMixin):
     position = db.Column(db.String(100))
     type = db.Column(db.String)
     customer_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('customers.id'), ondelete='CASCADE'))
+    notes = db.Column(db.Text)  # New column for notes
     
     field = db.relationship('Field', back_populates='vaults')
     order = db.relationship('Order', back_populates='order_vaults')
     customer = db.relationship('Customer', back_populates='vaults')
     attachments = db.relationship('Attachment', back_populates='vault', cascade='all, delete-orphan')
-
-    # field_name = db.Column(db.String, db.ForeignKey(add_prefix_for_prod('fields.field_id'), ondelete='CASCADE'))
-    # staged = db.Column(db.Boolean, default=False)
-    # customer_name = db.Column(db.String(255))
-    # warehouse_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('warehouse.id'), ondelete='CASCADE'))
-    # warehouse = db.relationship('Warehouse', back_populates='warehouse_vaults')
-    # stage_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('stage.id'), ondelete='CASCADE'), nullable=True)
-    # stage = db.relationship('Stage', back_populates='staged_vaults')
-    # customer_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('customers.id'), ondelete='SET NULL'), nullable=True, index=True)
-    # order_name = db.Column(db.String, nullable=False)
 
     def to_dict(self):
         return {
@@ -42,16 +33,6 @@ class Vault(db.Model, UserMixin):
             'order_id': self.order_id,
             'order_name': self.order.name,
             'type': self.type,
+            'notes': self.notes,  # Include notes in the to_dict method
             'attachments': [attachment.to_dict() for attachment in self.attachments],
-            # 'warehouse_id': self.warehouse_id
-            # 'staged': self.staged,
-            # 'vault_id': self.vault_id,
-
         }
-
-    # def to_summary_dict(self):
-    #     return {
-    #         'id': self.id,
-    #         'position': self.position,
-    #         'vault_id': self.vault_id
-    #     }
