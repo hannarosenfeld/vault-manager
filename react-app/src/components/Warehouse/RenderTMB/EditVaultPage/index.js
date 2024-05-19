@@ -10,6 +10,7 @@ import DeleteConfirmationModal from './DeleteConfirmationModal';
 import { getAllVaultAttachmentsThunk, deleteAttachmentThunk } from '../../../../store/attachment';
 import DeleteAttachmentConfirmationModal from './DeleteAttachmentConfirmationModal';
 import { NavLink } from 'react-router-dom';
+import { TextField } from '@mui/material';
 
 
 
@@ -165,13 +166,20 @@ const EditVaultPage = () => {
               </div>
 
               <div className="form-group">
-                <label>Attachment</label>
+                <label>Upload Attachment</label>
                 <input
                     type="file"
                     onChange={(e) => setNewAttachments([...newAttachments, e.target.files[0]])}
                 />
               </div>
 
+              <div style={{width: "100%",display: "flex", justifyContent: "space-between"}}>
+              <div style={{display: "flex", flexDirection: "column", width: "45%"}}>
+              <strong>Notes</strong>
+              <TextField multiline={true} rows={3}>
+
+              </TextField>
+              </div>
               <div className="form-group">
                 <strong>Attachments</strong>
                 <div className="attachments" >
@@ -187,6 +195,7 @@ const EditVaultPage = () => {
                   </div>
                 ))}
                 </div>
+
                 <div className='new-attachments'>
                 {newAttachments.map((attachment) => (
                   <div className='attachment' key={attachment.id} style={{display: "flex", alignItems: "center", gap: "3px"}}>
@@ -197,6 +206,7 @@ const EditVaultPage = () => {
                   </div>
                 ))}
                 </div>
+              </div>
               </div>
 
               <div className="form-buttons">
