@@ -56,7 +56,7 @@ export default function AddVaultModal({ warehouseId, position } ) {
     const vaultObj = useSelector((state) => state.vault.vaults);
     const field = useSelector((state) => state.field.selectedField);
     const selectedFieldId = (field ? field.id : null);
-
+    const warehouse = useSelector(state => state.warehouse[warehouseId])
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [customer_name, setCustomerName] = useState('');
     const [vault_id, setVaultId] = useState('');
@@ -172,9 +172,9 @@ export default function AddVaultModal({ warehouseId, position } ) {
 
             const newVault = await dispatch(addVaultThunk(vaultData));
 
-            // history(`/warehouse/${warehouseId}`);
+            history(`/${warehouse.companyName.toLowerCase()}/warehouse/${warehouseId}`);
             setIsSubmitting(false);
-            // window.location.reload();
+            window.location.reload();
         } catch (error) {
             console.error('Error in handleSubmit:', error);
             setIsSubmitting(false);
@@ -199,7 +199,7 @@ export default function AddVaultModal({ warehouseId, position } ) {
                         edge="end"
                         color="inherit"
                         aria-label="close"
-                        onClick={() => history(`/warehouse/${warehouseId}`)}
+                        onClick={() => history(`/${warehouse?.companyName.toLowerCase()}/warehouse/${warehouseId}`)}
                     >
                         <CloseIcon />
                     </IconButton>
