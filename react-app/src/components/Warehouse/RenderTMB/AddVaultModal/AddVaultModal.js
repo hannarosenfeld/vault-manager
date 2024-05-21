@@ -47,7 +47,7 @@ function AddNoteModal({ open, onClose, onAddNote, note }) {
 
 }
 
-export default function AddVaultModal({ warehouseId, position } ) {
+export default function AddVaultModal({ onClose, warehouseId, position } ) {
     const dispatch = useDispatch();
     const history = useNavigate();
  
@@ -199,7 +199,7 @@ export default function AddVaultModal({ warehouseId, position } ) {
                         edge="end"
                         color="inherit"
                         aria-label="close"
-                        onClick={() => history(`/${warehouse?.companyName.toLowerCase()}/warehouse/${warehouseId}`)}
+                        onClick={() => onClose()}
                     >
                         <CloseIcon />
                     </IconButton>
