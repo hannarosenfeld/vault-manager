@@ -15,7 +15,7 @@ class Vault(db.Model, UserMixin):
     position = db.Column(db.String(100))
     type = db.Column(db.String)
     customer_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('customers.id'), ondelete='CASCADE'))
-    notes = db.Column(db.Text)  # New column for notes
+    note = db.Column(db.Text)
     
     field = db.relationship('Field', back_populates='vaults')
     order = db.relationship('Order', back_populates='order_vaults')
@@ -33,6 +33,6 @@ class Vault(db.Model, UserMixin):
             'order_id': self.order_id,
             'order_name': self.order.name,
             'type': self.type,
-            'notes': self.notes,  # Include notes in the to_dict method
+            'note': self.note,  # Include notes in the to_dict method
             'attachments': [attachment.to_dict() for attachment in self.attachments],
         }

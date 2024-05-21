@@ -7,17 +7,56 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { Button, FormGroup, FormLabel } from '@mui/material';
+import { useNavigate, useParams } from 'react-router-dom';
 import "./AddVaultModal.css"
 import MiniWareHouse from './MiniWareHouse';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
+function AddNoteModal({ open, onClose, onAddNote, note }) {
+    const [noteText, setNoteText] = useState(note); // Initialize noteText with the note prop
 
-export default function AddVaultModal({ onClose, warehouseId, position }) {
+    const handleAddNote = () => {
+        onAddNote(noteText);
+        onClose();
+    };
+
+    return (
+        <Dialog open={open} onClose={onClose}>
+            <DialogTitle>Add Note</DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                    Please enter your note here.
+                </DialogContentText>
+                <textarea
+                    rows="4"
+                    cols="50"
+                    value={noteText} // Set the default value to the note prop
+                    onChange={(e) => setNoteText(e.target.value)}
+                ></textarea>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={onClose}>Cancel</Button>
+                <Button onClick={handleAddNote}>Add Note</Button>
+            </DialogActions>
+        </Dialog>
+    );
+
+}
+
+export default function AddVaultModal({ warehouseId, position } ) {
     const dispatch = useDispatch();
-    const customersObj = useSelector((state) => state.customer)
-    const customers = Object.values(customersObj)
+    const history = useNavigate();
+ 
+    const customersObj = useSelector((state) => state.customer);
+    const customers = Object.values(customersObj);
     const vaultObj = useSelector((state) => state.vault.vaults);
-    const field = useSelector((state) => state.field.selectedField)
-    const selectedFieldId = field.id
+    const field = useSelector((state) => state.field.selectedField);
+    const selectedFieldId = (field ? field.id : null);
+
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [customer_name, setCustomerName] = useState('');
     const [vault_id, setVaultId] = useState('');
@@ -27,6 +66,8 @@ export default function AddVaultModal({ onClose, warehouseId, position }) {
     const [vaultType, setVaultType] = useState('S');
     const [errors, setErrors] = useState([]);
     const [maxHeight, setMaxHeight] = useState(0);
+    const [isAddNoteModalOpen, setIsAddNoteModalOpen] = useState(false);
+    const [note, setNote] = useState('');
 
     const handleDocumentClick = (e) => {
         const isClickInsideCustomerBox = e.target.closest('.customer-input-container');
@@ -112,34 +153,30 @@ export default function AddVaultModal({ onClose, warehouseId, position }) {
                 console.log(`Vault number ${vault_id} already exists.`);
                 setErrors({ vault_id: `Vault number ${vault_id} already exists.` });
                 setIsSubmitting(false);
-                return
+                return;
             } else {
                 console.log(`Vault number ${vault_id} is unique.`);
             }
 
-            const vaultData = new FormData()
-            vaultData.append("customer_name", customer_name)
-            vaultData.append("customer", newCustomer)
-            vaultData.append("field_id", selectedFieldId)
-            vaultData.append("position", position)
-            vaultData.append("type", field.type === "vault" ? vaultType : "couchbox")
-            vaultData.append("vault_id", field.type === "vault" ? vault_id : null)
-            vaultData.append("order_number", field.type === "vault" ? order_number : null)
-            vaultData.append("attachment", attachment)
-            vaultData.append("warehouse_id", warehouseId)
+            console.log("💔",position)
+
+            const vaultData = new FormData();
+            vaultData.append("customer_name", customer_name);
+            vaultData.append("customer", newCustomer);
+            vaultData.append("field_id", selectedFieldId);
+            vaultData.append("position", position);
+            vaultData.append("type", field.type === "vault" ? vaultType : "couchbox");
+            vaultData.append("vault_id", field.type === "vault" ? vault_id : null);
+            vaultData.append("order_number", field.type === "vault" ? order_number : null);
+            vaultData.append("attachment", attachment);
+            vaultData.append("warehouse_id", warehouseId);
+            vaultData.append("note", note);
 
             const newVault = await dispatch(addVaultThunk(vaultData));
 
-            // if (newVault) {
-            //     const updateSelectedFieldVaultsThing = await updateSelectedFieldVaults(newVault);
-            // } else {
-            //     console.error('updatedVault is null or undefined');
-            // }
-
-            onClose(newVault);
+            // history(`/warehouse/${warehouseId}`);
             setIsSubmitting(false);
-            window.location.reload(true);
-            window.location.reload(false);
+            // window.location.reload();
         } catch (error) {
             console.error('Error in handleSubmit:', error);
             setIsSubmitting(false);
@@ -152,6 +189,10 @@ export default function AddVaultModal({ onClose, warehouseId, position }) {
         setErrors({});
     };
 
+    const handleAddNote = (noteText) => {
+        setNote(noteText);
+    };
+
     return (
         <div className='add-vault-wrapper'>
             <Box className="add-vault-container" style={{ maxHeight: `${maxHeight}px` }}>
@@ -160,133 +201,123 @@ export default function AddVaultModal({ onClose, warehouseId, position }) {
                         edge="end"
                         color="inherit"
                         aria-label="close"
-                        onClick={onClose}
+                        onClick={() => history.push(`/warehouse/${warehouseId}`)}
                     >
                         <CloseIcon />
                     </IconButton>
                 </div>
-                <div >
+                <div>
                     <h5 id="modal-modal-title">{field.type === "vault" ? "Add Vault" : "Add Couchbox"}</h5>
                     <div className="vault-info">
                         <div>Field: <span>{selectedFieldId}</span></div>
                         <div>Position: <span>{position}</span></div>
                     </div>
                 </div>
-                <form className="add-vault-form" onSubmit={handleSubmit} enctype="multipart/form-data">
+                <form className="add-vault-form" onSubmit={handleSubmit} encType="multipart/form-data">
                     <div className='add-vault-form-input'>
-                    <div style={{ display: "flex", gap: "1em",alignItems: "baseline", alignContent: "baseline", justifyContent: "space-between", marginBottom: "1em"}}>
-                        <FormGroup style={{width: "50%"}} >
-                            <div className="customer-input-container" >
-                                <FormLabel>Customer Name</FormLabel>
+                        <div style={{ display: "flex", gap: "1em", alignItems: "baseline", alignContent: "baseline", justifyContent: "space-between", marginBottom: "1em" }}>
+                            <FormGroup style={{ width: "50%" }}>
+                                <div className="customer-input-container">
+                                    <FormLabel>Customer Name</FormLabel>
+                                    <input
+                                        type="text"
+                                        value={customer_name.toUpperCase()}
+                                        onChange={handleCustomerNameChange}
+                                        required
+                                    />
+                                    {customer_name && (
+                                        <div className="suggested-customers-container">
+                                            <Paper elevation={3}>
+                                                <ul className="suggested-customers-list">
+                                                    {suggestedCustomers.map((customer) => (
+                                                        <li
+                                                            key={customer.id}
+                                                            onClick={() => handleSuggestedCustomerClick(customer)}
+                                                        >
+                                                            {customer.name}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </Paper>
+                                        </div>
+                                    )}
+                                </div>
+                            </FormGroup>
+                            <FormGroup style={{ alignSelf: "center" }}>
+                                <FormLabel style={{ marginBottom: "0.6em" }}>Type</FormLabel>
+                                <select
+                                    className="form-select form-select-lg"
+                                    style={{ fontSize: "1em" }}
+                                    value={vaultType}
+                                    onChange={(e) => setVaultType(e.target.value)}
+                                >
+                                    <option value="S">Standard</option>
+                                    <option value="T">Tall</option>
+                                </select>
+                            </FormGroup>
+                            <FormGroup className="vault-order-number-item">
+                                <FormLabel>Attachment</FormLabel>
+                                <input
+                                    type="file"
+                                    onChange={(e) => setAttachment(e.target.files[0])}
+                                />
+                            </FormGroup>
+                        </div>
+
+                        <div style={{ display: "flex", justifyContent: "space-between", gap: "1em", alignContent: "center", alignItems: "center" }}>
+                            <FormGroup className="vault-order-number-item" style={{ width: "45%" }}>
+                                <FormLabel>Order#</FormLabel>
                                 <input
                                     type="text"
-                                    value={customer_name.toUpperCase()}
-                                    onChange={handleCustomerNameChange}
+                                    value={order_number}
+                                    onChange={(e) => setOrderNumber(e.target.value)}
                                     required
                                 />
-                                {/* {suggestedCustomers?.length > 0 && customer_name && (
-                                    <div className="suggested-customers-container">
-                                        <Paper elevation={3}>
-                                            <ul className="suggested-customers-list">
-                                                {suggestedCustomers.map((customer) => (
-                                                    <li
-                                                        key={customer.id}
-                                                        onClick={() => handleSuggestedCustomerClick(customer)}
-                                                    >
-                                                        {customer.name}
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </Paper>
-                                    </div>
-                                )} */}
-                                {customer_name && (
-                                    <div className="suggested-customers-container">
-                                        <Paper elevation={3}>
-                                            <ul className="suggested-customers-list">
-                                                {suggestedCustomers.map((customer) => (
-                                                    <li
-                                                        key={customer.id}
-                                                        onClick={() => handleSuggestedCustomerClick(customer)}
-                                                    >
-                                                        {customer.name}
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </Paper>
-                                    </div>
-                                )}
-                            </div>
-                        </FormGroup>
-                        <FormGroup style={{alignSelf: "center"}}>
-                        <FormLabel style={{marginBottom: "0.6em"}}>Type</FormLabel>
-                        <select
-                            className="form-select form-select-lg"
-                            style={{ fontSize: "1em"}}
-                            // aria-aria-label=".form-select-lg example"
-                            value={vaultType}
-                            onChange={(e) => setVaultType(e.target.value)}
-                        >
-                            <option value="S">Standard</option>
-                            <option value="T">Tall</option>
-                        </select>
-                        </FormGroup>
-                        <FormGroup className="vault-order-number-item">
-                            <FormLabel>Attachment</FormLabel>
-                            <input
-                                type="file"
-                                onChange={(e) => setAttachment(e.target.files[0])}
-                            />
-                        </FormGroup>
-                    </div>
-
-                    <div style={{display: "flex", justifyContent: "space-between", gap: "1em", alignContent: "center", alignItems: "center"}}>
-                    <FormGroup className="vault-order-number-item" style={{width: "45%"}}>
-                            <FormLabel>Order#</FormLabel>
-                            <input
-                            type="text"
-                            value={order_number}
-                            onChange={(e) => setOrderNumber(e.target.value)}
-                            required
-                            />
-                        </FormGroup>
-                    {field.type === "vault" && (
-                        <>
-                        <FormGroup className="vault-order-number-item" style={{width: "45%"}}>
-                            <FormLabel>Vault#</FormLabel>
-                            <input
-                            type="text"
-                            value={vault_id}
-                            onChange={(e) => handleVaultIdChange(e)}
-                            required
-                            />
-                            {errors.vault_id && (
-                            <div style={{ color: "red", marginTop: "-0.5em" }}>
-                                {errors.vault_id}
-                            </div>
+                            </FormGroup>
+                            {field.type === "vault" && (
+                                <FormGroup className="vault-order-number-item" style={{ width: "45%" }}>
+                                    <FormLabel>Vault#</FormLabel>
+                                    <input
+                                        type="text"
+                                        value={vault_id}
+                                        onChange={(e) => handleVaultIdChange(e)}
+                                        required
+                                    />
+                                    {errors.vault_id && (
+                                        <div style={{ color: "red", marginTop: "-0.5em" }}>
+                                            {errors.vault_id}
+                                        </div>
+                                    )}
+                                </FormGroup>
                             )}
-                        </FormGroup>
-                        </>
-                    )}
-                    <FormGroup style={{alignSelf: "flex-end"}}>
-                        <Button variant="outlined" style={{display: "flex", flexDirection: "column"}}>
-                            <span class="material-symbols-outlined" style={{fontSize: "1.5em"}}>
-                            edit_note
-                            </span>
-                            <span style={{fontSize: "0.5em"}}>Add Note</span>
-                        </Button>
-                    </FormGroup>
-                    </div>
-
+                            <FormGroup style={{ alignSelf: "flex-end" }}>
+                                <Button 
+                                    variant="outlined" 
+                                    style={{ display: "flex", flexDirection: "column" }}
+                                    onClick={() => setIsAddNoteModalOpen(true)}
+                                >
+                                    <span className="material-symbols-outlined" style={{ fontSize: "1.5em" }}>
+                                        edit_note
+                                    </span>
+                                    <span style={{ fontSize: "0.5em" }}>Add Note</span>
+                                </Button>
+                            </FormGroup>
+                        </div>
                     </div>
                     <MiniWareHouse selectedFieldId={selectedFieldId} warehouseId={warehouseId} />
-                    <button type="submit" disabled={isSubmitting} >
+                    <button type="submit" disabled={isSubmitting}>
                         {isSubmitting ? 'Submitting...' : 'Submit'}
                     </button>
                 </form>
             </Box>
+            {isAddNoteModalOpen && (
+                <AddNoteModal 
+                    open={isAddNoteModalOpen} 
+                    onClose={() => setIsAddNoteModalOpen(false)}
+                    onAddNote={handleAddNote}
+                    note={note} // Pass the note state variable as a prop
+                />
+            )}
         </div>
-    )
+    );
 }
-
-

@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField
+from wtforms import StringField, IntegerField, TextAreaField
 from flask_wtf.file import FileField
 from wtforms.validators import DataRequired
 
@@ -11,3 +11,4 @@ class VaultForm(FlaskForm):
     order_number = StringField('order_number', validators=[DataRequired()])
     type = StringField('type', validators=[DataRequired()])
     attachment = FileField('attachment')
+    note = TextAreaField('note')  # Added note field

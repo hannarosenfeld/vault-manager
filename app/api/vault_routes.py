@@ -84,6 +84,7 @@ def add_vault():
                 order_id=existent_order.id if existent_order else None,
                 position=form.data['position'],
                 type=form.data['type'],
+                note=form.data['note']
             )
 
             db.session.add(new_vault)
