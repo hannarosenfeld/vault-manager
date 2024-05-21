@@ -11,4 +11,4 @@ class VaultForm(FlaskForm):
     order_number = StringField('order_number', validators=[DataRequired()])
     type = StringField('type', validators=[DataRequired()])
     attachment = FileField('attachment')
-    note = TextAreaField('note')  # Added note field
+    note = TextAreaField('note')
