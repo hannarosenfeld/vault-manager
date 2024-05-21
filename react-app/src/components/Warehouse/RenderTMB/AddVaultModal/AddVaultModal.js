@@ -158,8 +158,6 @@ export default function AddVaultModal({ warehouseId, position } ) {
                 console.log(`Vault number ${vault_id} is unique.`);
             }
 
-            console.log("💔",position)
-
             const vaultData = new FormData();
             vaultData.append("customer_name", customer_name);
             vaultData.append("customer", newCustomer);
@@ -201,7 +199,7 @@ export default function AddVaultModal({ warehouseId, position } ) {
                         edge="end"
                         color="inherit"
                         aria-label="close"
-                        onClick={() => history.push(`/warehouse/${warehouseId}`)}
+                        onClick={() => history(`/warehouse/${warehouseId}`)}
                     >
                         <CloseIcon />
                     </IconButton>
