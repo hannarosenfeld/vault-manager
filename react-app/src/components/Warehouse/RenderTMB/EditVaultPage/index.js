@@ -175,9 +175,8 @@ const EditVaultPage = () => {
 
               <div style={{width: "100%",display: "flex", justifyContent: "space-between"}}>
               <div style={{display: "flex", flexDirection: "column", width: "45%"}}>
-              <strong>Notes</strong>
-              <TextField multiline={true} rows={3}>
-
+              <strong>Note</strong>
+              <TextField multiline={true} rows={3} value={vault?.note}>              
               </TextField>
               </div>
               <div className="form-group">

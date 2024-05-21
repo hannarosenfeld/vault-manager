@@ -54,7 +54,11 @@ const VaultDetailPage = () => {
                     </div>
                     <div className='card' style={{marginBottom: "1em"}}>
                         <div className='card-body'>
-                            <strong className="mb-3">Notes</strong>
+                            {console.log("😄", vaultObj.note)}
+                            <strong className="mb-3">Note</strong>
+                            <div>
+                                {vaultObj.note}
+                            </div>
                         </div>
                     </div>
                     <div className="card">
