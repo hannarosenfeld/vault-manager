@@ -5,14 +5,6 @@ const EDIT_VAULT = "vault/EDIT_VAULT";
 const DELETE_VAULT = "vault/DELETE_VAULT";
 export const STAGE_VAULT = "vault/STAGE_VAULT";
 const MOVE_VAULT_FROM_STAGE_TO_WAREHOUSE = "vault/MOVE_VAULT_FROM_STAGE_TO_WAREHOUSE"
-// Add a new action type
-export const EDIT_VAULT_NOTE = "vault/EDIT_VAULT_NOTE";
-// Action creator for editing a vault's note
-const editVaultNoteAction = (vaultId, note) => ({
-  type: EDIT_VAULT_NOTE,
-  vaultId,
-  note
-});
 
 const editVaultAction = (vault) => ({
   type: EDIT_VAULT,
@@ -48,30 +40,6 @@ const moveVaultFromStageToWarehouseAction = (vault) => ({
   type: MOVE_VAULT_FROM_STAGE_TO_WAREHOUSE,
   vault
 })
-export const editVaultNoteThunk = (vaultId, note) => async (dispatch) => {
-  try {
-    const res = await fetch(`/api/vaults/${vaultId}/editNote`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ note })
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      dispatch(editVaultNoteAction(vaultId, data.note)); // Dispatch action to update state
-      return data;
-    } else {
-      const err = await res.json();
-      console.error("Error editing vault's note:", err);
-      return err;
-    }
-  } catch (error) {
-    console.error("Error editing vault's note:", error);
-    return error;
-  }
-};
 
 
 export const editVaultThunk = (vaultId, vaultData) => async (dispatch) => {
@@ -242,15 +210,6 @@ const initialState = {};
 const vaultReducer = (state = initialState, action) => {
   let newState = {}
   switch (action.type) {
-    case EDIT_VAULT_NOTE:
-      newState = {
-        ...state,
-        [action.vaultId]: {
-          ...state[action.vaultId],
-          note: action.note
-        }
-      };
-      return newState;    
     case GET_ALL_VAULTS:
       newState = { ...state, ...action.vaults }
       return newState
