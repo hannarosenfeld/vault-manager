@@ -217,7 +217,7 @@ export default function AddVaultModal({ onClose, warehouseId, position } ) {
 
                 <div style={{marginBottom: "1em"}}>
                     <h5 id="modal-modal-title">{field.type === "vault" ? "Add Vault" : "Add Couchbox"}</h5>
-                    <div style={{display: "flex", width: "30%", alignItems: "center"}}>
+                    <div className='add-vault-info' style={{display: "flex", width: "30%", alignItems: "center"}}>
                     <div className="vault-info">
                         <div>Field: <span>{selectedFieldId}</span></div>
                         <div>Position: <span>{position}</span></div>
