@@ -172,8 +172,8 @@ const EditVaultPage = () => {
                 />
               </div>
 
-              <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', width: '45%' }}>
+              <div className="notes-and-attachments" style={{ width: '100%', display: 'flex', justifyContent: 'space-between'}}>
+                <div className="edit-note" style={{ display: 'flex', flexDirection: 'column', width: '45%' }}>
                   <strong>Note</strong>
                   <TextField
                     multiline={true}
