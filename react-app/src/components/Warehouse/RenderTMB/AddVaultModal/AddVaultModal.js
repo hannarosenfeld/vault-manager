@@ -15,8 +15,9 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { TextField, FormControlLabel, Switch } from '@mui/material';
 import { Form } from 'react-bootstrap';
+
+
 
 function AddNoteModal({ open, onClose, onAddNote, note }) {
     const [noteText, setNoteText] = useState(note); // Initialize noteText with the note prop
@@ -60,9 +61,9 @@ export default function AddVaultModal({ onClose, warehouseId, position } ) {
     const selectedFieldId = (field ? field.id : null);
     const warehouse = useSelector(state => state.warehouse[warehouseId])
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [customer_name, setCustomerName] = useState('');
+    const [customer_name, setCustomerName] = useState(null);
     const [vault_id, setVaultId] = useState('');
-    const [order_number, setOrderNumber] = useState('');
+    const [order_number, setOrderNumber] = useState(null);
     const [attachment, setAttachment] = useState(null);
     const [suggestedCustomers, setSuggestedCustomers] = useState([]);
     const [vaultType, setVaultType] = useState('S');
@@ -78,6 +79,10 @@ export default function AddVaultModal({ onClose, warehouseId, position } ) {
             setSuggestedCustomers([]);
         }
     };
+
+    useEffect(() => {
+        console.log("🧖🏻‍♂️", isEmpty)
+    }, [isEmpty])
 
     useEffect(() => {
         document.addEventListener('click', handleDocumentClick);
@@ -113,7 +118,7 @@ export default function AddVaultModal({ onClose, warehouseId, position } ) {
         if (enteredName) {
             const filteredCustomers = customers?.filter(
                 (customer) =>
-                    customer?.name?.toLowerCase().includes(enteredName.toLowerCase())
+                    customer?.name?.toLowerCase().includes(enteredName?.toLowerCase())
             );
             setSuggestedCustomers(filteredCustomers);
         } else {
@@ -131,12 +136,12 @@ export default function AddVaultModal({ onClose, warehouseId, position } ) {
         setIsSubmitting(true);
 
         try {
-            const lowercaseCustomerName = customer_name.toLowerCase();
+            const lowercaseCustomerName = customer_name?.toLowerCase();
             let newCustomer;
             const search = customers.find(
-                (customer) => customer.name.toLowerCase() === lowercaseCustomerName
+                (customer) => customer?.name?.toLowerCase() === lowercaseCustomerName
             );
-            if (!search) {
+            if (!search && customer_name) {
                 const customerData = {
                     name: customer_name,
                 };
@@ -172,7 +177,7 @@ export default function AddVaultModal({ onClose, warehouseId, position } ) {
             vaultData.append("attachment", attachment);
             vaultData.append("warehouse_id", warehouseId);
             vaultData.append("note", note);
-            vaultData.append('isEmpty', isEmpty); // Include toggle state in the form data
+            vaultData.append('isEmpty', isEmpty);
 
             const newVault = await dispatch(addVaultThunk(vaultData));
 
@@ -219,13 +224,13 @@ export default function AddVaultModal({ onClose, warehouseId, position } ) {
                     </div>
                     <FormGroup>
                     <FormLabel>Empty</FormLabel>
-                                <Form.Check
-                                    type="checkbox"
-                                    id="full-empty-switch"
-                                    // label={isFull ? "Full" : "Empty"}
-                                    checked={isEmpty}
-                                    onChange={() => setIsEmpty(!isEmpty)}
-                                />
+                        <Form.Check
+                            type="checkbox"
+                            id="full-empty-switch"
+                            // label={isFull ? "Full" : "Empty"}
+                            checked={isEmpty}
+                            onChange={() => setIsEmpty(!isEmpty)}
+                        />
                     </FormGroup> 
                     </div>
                 </div>
@@ -237,9 +242,8 @@ export default function AddVaultModal({ onClose, warehouseId, position } ) {
                                     <FormLabel>Customer Name</FormLabel>
                                     <input
                                         type="text"
-                                        value={customer_name.toUpperCase()}
+                                        value={customer_name?.toUpperCase()}
                                         onChange={handleCustomerNameChange}
-                                        required
                                     />
                                     {customer_name && (
                                         <div className="suggested-customers-container">
@@ -286,7 +290,6 @@ export default function AddVaultModal({ onClose, warehouseId, position } ) {
                                     type="text"
                                     value={order_number}
                                     onChange={(e) => setOrderNumber(e.target.value)}
-                                    required
                                 />
                             </FormGroup>
                             {field.type === "vault" && (

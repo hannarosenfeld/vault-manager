@@ -16,6 +16,7 @@ class Vault(db.Model, UserMixin):
     type = db.Column(db.String)
     customer_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('customers.id'), ondelete='CASCADE'))
     note = db.Column(db.Text)
+    empty = db.Column(db.Boolean, default=False)
     
     field = db.relationship('Field', back_populates='vaults')
     order = db.relationship('Order', back_populates='order_vaults')
@@ -23,16 +24,19 @@ class Vault(db.Model, UserMixin):
     attachments = db.relationship('Attachment', back_populates='vault', cascade='all, delete-orphan')
 
     def to_dict(self):
+        customer_name = self.customer.name if self.customer else None
+
         return {
             'id': self.id,
             'name': self.name,
             'field_id': self.field_id,
             'customer_id': self.customer_id,
-            'customer_name': self.customer.name,
+            'customer_name': customer_name,
             'position': self.position,
             'order_id': self.order_id,
-            'order_name': self.order.name,
+            'order_name': self.order.name if self.order else None,
             'type': self.type,
-            'note': self.note,  # Include notes in the to_dict method
+            'note': self.note,
             'attachments': [attachment.to_dict() for attachment in self.attachments],
+            'empty': self.empty
         }

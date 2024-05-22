@@ -39,7 +39,7 @@ def seed():
         if not Vault.query.all(): 
             seed_vaults(customers)
         if not Company.query.all(): 
-            companies = seed_companies(users, warehouses, orders, customers)              
+            companies = seed_companies()              
 
 @seed_commands.command('undo')
 def undo():

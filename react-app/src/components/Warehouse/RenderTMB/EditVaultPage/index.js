@@ -47,9 +47,9 @@ const EditVaultPage = () => {
 
   useEffect(() => {
     if (vault) {
-      setCustomerName(vault.customer_name);
+      setCustomerName(vault.customer_name === 'null' ? '' : vault.customer_name);
       setVaultName(vault.name);
-      setOrderNumber(vault.order_name);
+      setOrderNumber(vault.order_name === 'null' ? '' : vault.order_name);
       setNote(vault.note);
       setIsLoading(false);
     } else setIsLoading(true);

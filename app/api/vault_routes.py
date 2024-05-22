@@ -62,7 +62,6 @@ def all_vaults_staged():
 #     vault = Vault.query.get(id)
 #     return vault.to_dict()
 
-
 @vault_routes.route('/', methods=['POST'])
 @login_required
 def add_vault():
@@ -74,33 +73,35 @@ def add_vault():
             customer_name = form.data['customer_name']
             order_name = form.data['order_number']
 
-            existent_customer = Customer.query.filter_by(name=customer_name).first()
-            existent_order = Order.query.filter_by(name=order_name).first()
+            existent_customer = Customer.query.filter_by(name=customer_name).first() if customer_name else None
+            existent_order = Order.query.filter_by(name=order_name).first() if order_name else None
 
             new_vault = Vault(
                 name=form.data['vault_id'],
-                customer_id = existent_customer.id if existent_customer else None,
+                customer_id=existent_customer.id if existent_customer else None,
                 field_id=form.data['field_id'],
                 order_id=existent_order.id if existent_order else None,
                 position=form.data['position'],
                 type=form.data['type'],
-                note=form.data['note']
+                note=form.data['note'],
+                empty=form.data['empty']
             )
 
             db.session.add(new_vault)
             db.session.commit()
 
             if not existent_customer:
-                new_customer = Customer(name=customer_name)
-                db.session.add(new_customer)
-                new_customer.vaults.append()
-                db.session.commit()
+                if customer_name:
+                    new_customer = Customer(name=customer_name)
+                    db.session.add(new_customer)
+                    db.session.commit()
 
             if not existent_order:
-                new_order = Order(name=order_name)
-                new_order.order_vaults.append(new_vault)
-                db.session.add(new_order)
-                db.session.commit()
+                if order_name:
+                    new_order = Order(name=order_name)
+                    db.session.add(new_order)
+                    db.session.commit()
+                    new_order.order_vaults.append(new_vault)
 
             field = Field.query.get(new_vault.field_id)
 
@@ -117,22 +118,20 @@ def add_vault():
                 aws_secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY')
                 s3_bucket_name = os.getenv('AWS_BUCKET_NAME')
                 unique_name = f'{secure_filename(attachment.filename)}-{uuid.uuid4()}'
-                s3_key = f'attachments/{unique_name}' 
+                s3_key = f'attachments/{unique_name}'
 
                 # Store file information in the database (adjust the model and fields accordingly)
                 new_attachment = Attachment(
                     vault_id=new_vault.id,
                     file_name=attachment.filename,
                     unique_name=unique_name,
-                    file_url = f'https://{s3_bucket_name}.s3.amazonaws.com/{s3_key}',
+                    file_url=f'https://{s3_bucket_name}.s3.amazonaws.com/{s3_key}',
                 )
                 db.session.add(new_attachment)
-                db.session.commit()
 
                 # Save file to AWS S3
                 s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
-                s3.upload_fileobj(attachment, s3_bucket_name, s3_key, ExtraArgs={'ContentType':'application/pdf'})
-
+                s3.upload_fileobj(attachment, s3_bucket_name, s3_key, ExtraArgs={'ContentType': 'application/pdf'})
 
             db.session.commit()
 
@@ -144,7 +143,6 @@ def add_vault():
         return jsonify({'error': str(e)}), 500
 
     return jsonify({'errors': validation_errors_to_error_messages(form.errors)}), 400
-
 
 @vault_routes.route('/<int:id>', methods=['GET', 'PUT', 'DELETE'])
 @login_required
@@ -165,19 +163,40 @@ def manage_vault(id):
         form['csrf_token'].data = request.cookies['csrf_token']
 
         if form.validate_on_submit():
-            if form.data['staging'] : 
+            if form.data['staging']:
                 field_id = vault.field_id
                 vault.field_id = None
                 vault.position = None
                 field = Field.query.get(field_id)
 
                 db.session.commit()
-                return { 'vault': vault.to_dict(), 'field': field.to_dict() }
+                return {'vault': vault.to_dict(), 'field': field.to_dict()}
 
             vault.name = form.data['name']
-            vault.customer_name = form.data['customer_name']
-            vault.order_name = form.data['order_number']
             vault.note = form.data['note']
+
+            # Check if customer exists, if not, create a new customer
+            customer_name = form.data['customer_name']
+            existent_customer = Customer.query.filter_by(name=customer_name).first()
+            if not existent_customer:
+                new_customer = Customer(name=customer_name)
+                db.session.add(new_customer)
+                db.session.commit()
+                vault.customer_id = new_customer.id
+            else:
+                vault.customer_id = existent_customer.id
+
+            # Update order
+            order_name = form.data['order_number']
+            existent_order = Order.query.filter_by(name=order_name).first()
+            if not existent_order:
+                new_order = Order(name=order_name)
+                db.session.add(new_order)
+                db.session.commit()
+                vault.order_id = new_order.id
+            else:
+                vault.order_id = existent_order.id
+
             db.session.commit()
 
             # Handle file uploads

@@ -1,9 +1,13 @@
-from app.models import db, Company, environment, SCHEMA
+from app.models import db, Company, environment, SCHEMA, User, Warehouse, Order, Customer
 from sqlalchemy.sql import text
 
 
-def seed_companies(users, warehouses, orders, customers):
-    print("👰🏼‍♀️", users, warehouses, orders, customers)
+def seed_companies():
+    users = User.query.all()
+    warehouses = Warehouse.query.all()
+    orders = Order.query.all()
+    customers = Customer.query.all()
+    print("👚", users, warehouses, orders, customers)
     c1 = Company(
         company_users=users,
         name="Naglee",
