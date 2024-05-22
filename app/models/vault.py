@@ -16,7 +16,7 @@ class Vault(db.Model, UserMixin):
     type = db.Column(db.String)
     customer_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('customers.id'), ondelete='CASCADE'))
     note = db.Column(db.Text)
-    empty = db.Column(db.Boolean, default=False)
+    empty = db.Column(db.Boolean)
     
     field = db.relationship('Field', back_populates='vaults')
     order = db.relationship('Order', back_populates='order_vaults')
