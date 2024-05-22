@@ -15,6 +15,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { TextField, FormControlLabel, Switch } from '@mui/material';
+import { Form } from 'react-bootstrap';
 
 function AddNoteModal({ open, onClose, onAddNote, note }) {
     const [noteText, setNoteText] = useState(note); // Initialize noteText with the note prop
@@ -68,6 +70,7 @@ export default function AddVaultModal({ onClose, warehouseId, position } ) {
     const [maxHeight, setMaxHeight] = useState(0);
     const [isAddNoteModalOpen, setIsAddNoteModalOpen] = useState(false);
     const [note, setNote] = useState('');
+    const [isEmpty, setIsEmpty] = useState(false);
 
     const handleDocumentClick = (e) => {
         const isClickInsideCustomerBox = e.target.closest('.customer-input-container');
@@ -169,6 +172,7 @@ export default function AddVaultModal({ onClose, warehouseId, position } ) {
             vaultData.append("attachment", attachment);
             vaultData.append("warehouse_id", warehouseId);
             vaultData.append("note", note);
+            vaultData.append('isEmpty', isEmpty); // Include toggle state in the form data
 
             const newVault = await dispatch(addVaultThunk(vaultData));
 
@@ -204,14 +208,28 @@ export default function AddVaultModal({ onClose, warehouseId, position } ) {
                         <CloseIcon />
                     </IconButton>
                 </div>
-                <div>
+                <form className="add-vault-form" onSubmit={handleSubmit} encType="multipart/form-data">
+
+                <div style={{marginBottom: "1em"}}>
                     <h5 id="modal-modal-title">{field.type === "vault" ? "Add Vault" : "Add Couchbox"}</h5>
+                    <div style={{display: "flex", width: "30%", alignItems: "center"}}>
                     <div className="vault-info">
                         <div>Field: <span>{selectedFieldId}</span></div>
                         <div>Position: <span>{position}</span></div>
                     </div>
+                    <FormGroup>
+                    <FormLabel>Empty</FormLabel>
+                                <Form.Check
+                                    type="checkbox"
+                                    id="full-empty-switch"
+                                    // label={isFull ? "Full" : "Empty"}
+                                    checked={isEmpty}
+                                    onChange={() => setIsEmpty(!isEmpty)}
+                                />
+                    </FormGroup> 
+                    </div>
                 </div>
-                <form className="add-vault-form" onSubmit={handleSubmit} encType="multipart/form-data">
+
                     <div className='add-vault-form-input'>
                         <div style={{ display: "flex", gap: "1em", alignItems: "baseline", alignContent: "baseline", justifyContent: "space-between", marginBottom: "1em" }}>
                             <FormGroup style={{ width: "50%" }}>
@@ -252,7 +270,7 @@ export default function AddVaultModal({ onClose, warehouseId, position } ) {
                                     <option value="S">Standard</option>
                                     <option value="T">Tall</option>
                                 </select>
-                            </FormGroup>
+                            </FormGroup>                           
                             <FormGroup className="vault-order-number-item">
                                 <FormLabel>Attachment</FormLabel>
                                 <input
@@ -261,7 +279,6 @@ export default function AddVaultModal({ onClose, warehouseId, position } ) {
                                 />
                             </FormGroup>
                         </div>
-
                         <div style={{ display: "flex", justifyContent: "space-between", gap: "1em", alignContent: "center", alignItems: "center" }}>
                             <FormGroup className="vault-order-number-item" style={{ width: "45%" }}>
                                 <FormLabel>Order#</FormLabel>
