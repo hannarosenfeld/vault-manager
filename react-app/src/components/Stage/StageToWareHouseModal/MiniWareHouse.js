@@ -96,7 +96,7 @@ export default function MiniWareHouse({ warehouseId }) {
     
     if (loadedWarehouseFields && fields) {
         return(
-        <div className="warehouse-wrapper">
+        <div className="mini-warehouse-wrapper">
             {fields && fieldGenerator(fields)}
         </div>
     )} else return (<div>loading...</div>)

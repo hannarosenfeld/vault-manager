@@ -227,7 +227,7 @@ export default function Warehouse({ setIsWarehousePage }) {
     if (!warehouse) return null
 
     return (
-        <div className="warehouse-wrapper">
+        <div className="warehouse-wrapper" style={{padding: "1em"}}>
             {loading  && ( 
                 <div className="loading-animation-container"> 
                 <CircularProgress  size={75} />

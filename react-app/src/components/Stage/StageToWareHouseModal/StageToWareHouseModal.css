@@ -30,10 +30,11 @@
   margin-bottom: 0;
 }
 
-.warehouse-wrapper {
+.mini-warehouse-wrapper {
     max-height: 100%;
     padding: 0 !important;
 }
+
 
 .fields {
     max-height: 95%;

@@ -1,6 +1,7 @@
 .warehouse-wrapper {
-    padding: 0 15px;
+    padding: 0 1em;
     min-height: 75vh;
+    max-height: 100%;
     max-width: 800px;
     margin: 0 auto;
 }

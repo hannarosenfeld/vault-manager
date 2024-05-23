@@ -31,8 +31,8 @@ export default function Stage() {
 
   // Function to truncate a string to a specified length
   const truncateString = (str, maxLength) => {
-    if (str.length > maxLength) {
-      return str.slice(0, maxLength) + "..";
+    if (str?.length > maxLength) {
+      return str?.slice(0, maxLength) + "..";
     }
     return str;
   };
