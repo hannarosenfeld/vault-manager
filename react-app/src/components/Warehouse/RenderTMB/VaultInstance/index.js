@@ -12,7 +12,13 @@ const VaultInstance = ({ topmostVault, vault, handleStageClick, fieldType }) => 
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
       <div style={{ display: 'flex', width: '60%', gap: '5px' }}>
-        <div>{vault.customer_name === "null" || vault.customer_name === null ? "EMPTY" : vault.customer_name}</div>
+      <div>
+  {vault.customer_name === "null" || vault.customer_name === null 
+    ? "EMPTY" 
+    : (vault.customer_name.length > 10 
+        ? `${vault.customer_name.slice(0, 10)}...` 
+        : vault.customer_name)}
+</div>
         { fieldType !== "couchbox-T" ? (
           <div style={{display: 'flex', gap: '0.5em'}}>
             <div>{vault.name}</div>
