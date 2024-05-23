@@ -26,7 +26,9 @@ const AddWarehouseForm = ({ onAddWarehouseSubmit }) => {
 
   return (
     <div className='wrapper' style={{marginTop: "2em", padding: "1em 2em"}}>
-      <form onSubmit={handleSubmit}>
+      <h3>Add Warehouse</h3>
+      <br></br>
+      <form onSubmit={handleSubmit} style={{display: "flex", flexDirection: "column", gap: "1.5em"}}>
         <div>
           <label>Name:</label>
           <input
@@ -54,7 +56,7 @@ const AddWarehouseForm = ({ onAddWarehouseSubmit }) => {
             required
           />
         </div>
-        <button type="submit" style={{marginTop: "3em"}}>Add Warehouse</button>
+        <button type="submit" style={{marginTop: "2em"}}>Add Warehouse</button>
       </form>
     </div>
   );
