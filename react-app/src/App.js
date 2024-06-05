@@ -25,7 +25,7 @@ function App() {
 
   const onAddWarehouseSubmit = async () => {
     await dispatch(getAllWarehousesThunk());    
-    history.push("/");
+    history("/");
   }
 
   useEffect(() => {
