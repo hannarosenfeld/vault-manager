@@ -33,7 +33,7 @@ export default function Warehouse({ setIsWarehousePage }) {
     const [toggleSelected, setToggleSelected] = useState(false);
     const [loading, setLoading] = useState(true);
 
-    console.log("Test 🔥")
+    console.log("Test 🔥", warehouse)
 
     useEffect(() => {
         setIsWarehousePage(true);
@@ -128,8 +128,7 @@ export default function Warehouse({ setIsWarehousePage }) {
             const bottomName = bottomField.name.match(/^([a-zA-Z]+)\d/);
             if (bottomName || topName[1] === bottomName[1]) {
                 const editDispatch = dispatch(editFieldThunk(formData))
-                console.log("😶‍🌫️", editDispatch)
-                
+
                 setFields(prevFields => 
                     prevFields.map(field =>
                         field.id === topField.id ? { ...topField, type: "couchbox-T" } : field
@@ -237,7 +236,18 @@ export default function Warehouse({ setIsWarehousePage }) {
             )}
             {!loading && ( 
                 <div style={{display: "flex", flexDirection: "column"}}>
-                    <div className="field-info">
+            <div 
+                style={{
+                    fontSize: "1.5em", 
+                    fontWeight: "500", 
+                    marginBottom: "1em",
+                    textAlign: "center",
+                    textDecoration: "underline"
+                }}
+            >
+                {warehouse.name}
+            </div>                    
+            <div className="field-info">
                         {selectedField?.id ? (
                             <RenderTMB
                                 handleStageClick={handleStageClick}
