@@ -1,8 +1,10 @@
-import { setWarehouseSearchModeAction } from './warehouse'; // Import the action creator for changing searchmode in your warehouse actions
+import { setWarehouseSearchModeAction } from './warehouse';
+import { DELETE_VAULT } from './vault';
 const GET_CUSTOMER = "customer/GET_CUSTOMER";
 const GET_ALL_CUSTOMERS = "customer/GET_ALL_CUSTOMERS";
 const ADD_CUSTOMER = "customer/ADD_CUSTOMER";
 const UPDATE_CUSTOMER_NAME = "customer/UPDATE_CUSTOMER_NAME";
+
 
 const updateCustomerNameAction = (customerId, newName) => ({
   type: UPDATE_CUSTOMER_NAME,
@@ -142,7 +144,19 @@ const customerReducer = (state = initialState, action) => {
           ...state.customers,
           [action.customerId]: updatedCustomer
         }
-      };      
+      };
+    case DELETE_VAULT:
+      console.log("🥰 in reducer", action.payload)
+      console.log("💧cusomers before delete: ", state)
+      // Check if customer_to_delete is present in the action payload
+      if (action.payload && action.payload.customer_to_delete) {
+        const { customer_to_delete } = action.payload;
+        // Remove the customer from the state
+        const { [customer_to_delete]: removedCustomer, ...remainingCustomers } = state;
+        console.log("👙 remaining customers: ", remainingCustomers)
+        return remainingCustomers;
+      }
+      return state;
     default:
       return state;
   }

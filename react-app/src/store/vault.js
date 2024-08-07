@@ -2,7 +2,7 @@
 const GET_ALL_VAULTS = "vault/GET_ALL_VAULTS";
 const ADD_VAULT = "vault/ADD_VAULT";
 const EDIT_VAULT = "vault/EDIT_VAULT";
-const DELETE_VAULT = "vault/DELETE_VAULT";
+export const DELETE_VAULT = "vault/DELETE_VAULT";
 export const STAGE_VAULT = "vault/STAGE_VAULT";
 const MOVE_VAULT_FROM_STAGE_TO_WAREHOUSE = "vault/MOVE_VAULT_FROM_STAGE_TO_WAREHOUSE"
 
@@ -11,9 +11,9 @@ const editVaultAction = (vault) => ({
   vault
 });
 
-const deleteVaultAction = (vaultId) => ({
+const deleteVaultAction = (payload) => ({
   type: DELETE_VAULT,
-  vaultId
+  payload
 });
 
 // export const getVaultAction = (vault) => ({
@@ -116,8 +116,9 @@ export const deleteVaultThunk = (vaultId) => async (dispatch) => {
     });
 
     if (res.ok) {
-      dispatch(deleteVaultAction(vaultId));
-      return vaultId;
+      const data = await res.json()
+      dispatch(deleteVaultAction(data));
+      return data;
     } else {
       const err = await res.json();
       console.error("Error deleting vault:", err);
@@ -220,7 +221,8 @@ const vaultReducer = (state = initialState, action) => {
       newState[action.vault.id] = action.vault
       return newState
     case DELETE_VAULT:
-      delete newState[action.vaultId];
+      console.log("🌞", action.payload.vaultId)
+      delete newState[action.payload.vaultId];
       return newState
     case STAGE_VAULT:
       newState = { ...state }

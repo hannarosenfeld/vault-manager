@@ -230,11 +230,21 @@ def manage_vault(id):
             return jsonify({'errors': validation_errors_to_error_messages(form.errors)}), 400
 
     if request.method == 'DELETE':
+        customer = Customer.query.get(vault.customer_id)
+        customer_to_delete = None
+        vault_id = vault.id
         db.session.delete(vault)
         field = Field.query.get(vault.field_id)
         field.full = False
         db.session.commit()
-        return {'message': 'Vault deleted successfully'}
+
+        if (len(customer.vaults) == 0):
+            print("🌧️ customer has no vaults", customer.to_dict(), len(customer.vaults))
+            customer_to_delete = customer.id
+            db.session.delete(customer)
+            db.session.commit()
+
+        return jsonify({'vaultId': vault_id, "customer_to_delete": customer_to_delete})
 
 
 @vault_routes.route('/moveVault/<int:selected_field_id>/<int:vault_id>/<string:position>', methods=['PUT'])
