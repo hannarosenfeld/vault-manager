@@ -146,14 +146,11 @@ const customerReducer = (state = initialState, action) => {
         }
       };
     case DELETE_VAULT:
-      console.log("🥰 in reducer", action.payload)
-      console.log("💧cusomers before delete: ", state)
       // Check if customer_to_delete is present in the action payload
       if (action.payload && action.payload.customer_to_delete) {
         const { customer_to_delete } = action.payload;
         // Remove the customer from the state
         const { [customer_to_delete]: removedCustomer, ...remainingCustomers } = state;
-        console.log("👙 remaining customers: ", remainingCustomers)
         return remainingCustomers;
       }
       return state;

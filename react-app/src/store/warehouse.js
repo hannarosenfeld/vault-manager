@@ -104,12 +104,10 @@ const warehouseReducer = (state = initialState, action) => {
     // case EDIT_WAREHOUSE:
     //   console.log("🍒 in reducer")
     case REMOVE_FIELDS:
-      console.log("🏛️ remove", action)
       newState[action.warehouseId].rows = action.newWarehouseRowsCount
       newState[action.warehouseId].cols = action.newWarehouseColsCount
       return newState
     case ADD_FIELDS:
-        console.log("🏛️ add", action)
         newState[action.warehouseId].rows = action.newWarehouseRowsCount
         newState[action.warehouseId].cols = action.newWarehouseColsCount      
         return newState

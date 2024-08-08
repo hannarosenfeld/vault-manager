@@ -33,8 +33,6 @@ export default function Warehouse({ setIsWarehousePage }) {
     const [toggleSelected, setToggleSelected] = useState(false);
     const [loading, setLoading] = useState(true);
 
-    console.log("Test 🔥", warehouse)
-
     useEffect(() => {
         setIsWarehousePage(true);
         return () => {

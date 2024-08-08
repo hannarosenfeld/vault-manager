@@ -38,7 +38,6 @@ export const deleteFieldsAction = (fields, warehouseId, newWarehouseRowsCount, n
 })
 
 export const editFieldThunk = (fieldData) => async (dispatch) => {
-  console.log("✅", fieldData)
   try {
     const res = await fetch(`/api/fields/${fieldData.field_id_1}`, {
       method: 'PUT',

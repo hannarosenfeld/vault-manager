@@ -54,7 +54,6 @@ const VaultDetailPage = () => {
                     </div>
                     <div className='card' style={{marginBottom: "1em"}}>
                         <div className='card-body'>
-                            {console.log("😄", vaultObj.note)}
                             <strong className="mb-3">Note</strong>
                             <div>
                                 {vaultObj.note}

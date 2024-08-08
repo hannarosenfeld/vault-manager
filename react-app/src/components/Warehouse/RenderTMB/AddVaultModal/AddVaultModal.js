@@ -81,10 +81,6 @@ export default function AddVaultModal({ onClose, warehouseId, position } ) {
     };
 
     useEffect(() => {
-        console.log("🧖🏻‍♂️", isEmpty)
-    }, [isEmpty])
-
-    useEffect(() => {
         document.addEventListener('click', handleDocumentClick);
 
         return () => {
