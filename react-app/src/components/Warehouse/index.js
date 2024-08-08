@@ -33,12 +33,18 @@ export default function Warehouse({ setIsWarehousePage }) {
     const [toggleSelected, setToggleSelected] = useState(false);
     const [loading, setLoading] = useState(true);
 
+
     useEffect(() => {
         setIsWarehousePage(true);
         return () => {
             setIsWarehousePage(false);
         }
     }, [])
+
+
+    useEffect(() => {
+        dispatch(setSelectedFieldAction(null));
+    }, [searchResult])
 
     useEffect(() => {
         dispatch(setSelectedFieldAction(null));
@@ -207,8 +213,7 @@ export default function Warehouse({ setIsWarehousePage }) {
                             }`,
                             border: `${
                                 selectedField?.id === field.id ? "3px solid var(--blue)" : 
-                                searchResult && searchResult?.includes(field.id) ? "3px solid var(--blue)" :
-                                "none"
+                                searchResult && searchResult?.includes(field.id) ? "3px solid var(--blue)" : "none"
                             }`,
                             height: `${field.type === "couchbox-T" ? "213%" : '100%'}`,
                             marginBottom: `${field.type === "couchbox-T" ? "-2.6em" : '0'}`,

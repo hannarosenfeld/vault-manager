@@ -6,6 +6,8 @@ import { setSearchOffAction } from '../../../store/search';
 import { getAllCustomersThunk } from '../../../store/customer';
 
 import './SearchBar.css';
+
+
 function SearchBar() {
   const dispatch = useDispatch();
   const suggestionBoxRef = useRef(null);
@@ -75,14 +77,11 @@ function SearchBar() {
     setSuggestions(combinedSuggestions);
   };
 
-  const handleSelectItem = async (item) => {
+  const handleSelectItem = async (item, type) => {
     setSelectedItem(item);
     setSearchTerm('');
 
-    const order = item.order_number ? true : false;
-    const customer = item.name ? true : false;
-
-    await dispatch(searchThunk(item, order ? "order" : customer ? "customer" : "no type specified"));
+    await dispatch(searchThunk(item, type));
   };
 
   const handleClearSelectedItem = async () => {
@@ -136,7 +135,7 @@ function SearchBar() {
             <div ref={suggestionBoxRef} className="suggestion-box">
               <ul>
                 {suggestions.customers.map((item) => (
-                  <li key={item.id} onClick={() => handleSelectItem(item)} style={{display: "flex", alignItems: "center"}}>
+                  <li key={item.id} onClick={() => handleSelectItem(item, "customer")} style={{display: "flex", alignItems: "center"}}>
                     <span class="material-symbols-outlined">
                     person
                     </span>
@@ -146,7 +145,7 @@ function SearchBar() {
               </ul>
               <ul>
                 {suggestions.orders.map((item) => (
-                  <li key={item.id} onClick={() => handleSelectItem(item)} style={{display: "flex", alignItems: "center"}}>
+                  <li key={item.id} onClick={() => handleSelectItem(item, "order")} style={{display: "flex", alignItems: "center"}}>
                     <span class="material-symbols-outlined">
                     list_alt
                     </span>
