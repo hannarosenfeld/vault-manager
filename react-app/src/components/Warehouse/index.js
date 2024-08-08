@@ -42,9 +42,9 @@ export default function Warehouse({ setIsWarehousePage }) {
     }, [])
 
 
-    useEffect(() => {
-        dispatch(setSelectedFieldAction(null));
-    }, [searchResult])
+    // useEffect(() => {
+    //     dispatch(setSelectedFieldAction(null));
+    // }, [searchResult])
 
     useEffect(() => {
         dispatch(setSelectedFieldAction(null));
