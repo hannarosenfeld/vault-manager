@@ -105,7 +105,9 @@ def add_field():
                     for field in fieldsList:
                         vaults = field.vaults.all()  # Retrieve the actual list of vaults
                         if vaults:  # Check if vaults is not empty
-                            print("💖", field.vaults.all())
+                            field_dict = field.to_dict()
+                            print("💖 Field:", field_dict) 
+                            print("💖", [vault.to_dict() for vault in vaults])
                             return True  # Return True if a vault is found
                     return False  # Return False if no vaults are found
                     
