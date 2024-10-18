@@ -36,8 +36,7 @@ def add_field():
             fields = Field.query.filter_by(warehouse_id=warehouse_id)
             warehouse = Warehouse.query.get(warehouse_id)
 
-            print("💄 warehouse_id: ", warehouse_id)
-            print("🐸 fields: ", fields)
+            print("😎 warehouse: ", warehouse.to_dict())
 
             if request.method == 'POST' and opperation == 'add':
                 if direction == 'left':
@@ -102,15 +101,11 @@ def add_field():
 
 
             elif request.method == 'DELETE' and opperation == 'subtract':   
-                print("😎 warehouse: ", warehouse.to_dict())
-
                 def check_for_vaults(fieldsList):
                     for field in fieldsList:
                         vaults = field.vaults.all()  # Retrieve the actual list of vaults
                         if vaults:  # Check if vaults is not empty
                             field_dict = field.to_dict()
-                            print("💖 Field:", field_dict) 
-                            print("💖", [vault.to_dict() for vault in vaults])
                             return True  # Return True if a vault is found
                     return False  # Return False if no vaults are found
                     
