@@ -36,8 +36,10 @@ def add_field():
             fields = Field.query.filter_by(warehouse_id=warehouse_id)
             warehouse = Warehouse.query.get(warehouse_id)
 
-            if request.method == 'POST' and opperation == 'add':
+            print("💄 warehouse_id: ", warehouse_id)
+            print("🐸 fields: ", fields)
 
+            if request.method == 'POST' and opperation == 'add':
                 if direction == 'left':
                     new_warehouse_columns_count = warehouse.cols + count
                     warehouse.cols = new_warehouse_columns_count # increase columns by count
@@ -166,7 +168,6 @@ def add_field():
                     return jsonify({'message': 'Success'}), 200
 
                 elif direction == 'bottom':
-                    print("👛", warehouse.to_dict())
                     letters = sorted(set([field.name[0] for field in fields]))
                     fieldsList = []
                     for letter in letters:
