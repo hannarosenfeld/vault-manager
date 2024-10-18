@@ -101,6 +101,8 @@ def add_field():
 
             elif request.method == 'DELETE' and opperation == 'subtract':   
 
+                print("😎 warehouse: ", warehouse.to_dict())
+
                 def check_for_vaults(fieldsList):
                     for field in fieldsList:
                         vaults = field.vaults.all()  # Retrieve the actual list of vaults
