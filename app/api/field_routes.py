@@ -102,7 +102,6 @@ def add_field():
 
 
             elif request.method == 'DELETE' and opperation == 'subtract':   
-
                 print("😎 warehouse: ", warehouse.to_dict())
 
                 def check_for_vaults(fieldsList):
@@ -146,9 +145,11 @@ def add_field():
                         # Find the field with the smallest first letter of its name
                         smallest_field_name_letter = max([field.name for field in fields])[0]
                         
-                        # Query all fields that start with that letter
-                        all_fields_with_that_letter = Field.query.filter(Field.name.like(f'{smallest_field_name_letter}%')).all()
-                        
+                        all_fields_with_that_letter = Field.query.filter(
+                            Field.name.like(f'{smallest_field_name_letter}%'),
+                            Field.warehouse_id == warehouse_id  # Ensure warehouse matches
+                        ).all()
+
                         # Convert generator expression to a list to print values
                         vaults_exist = check_for_vaults(all_fields_with_that_letter)
                         if vaults_exist:
