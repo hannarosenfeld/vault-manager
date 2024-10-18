@@ -105,6 +105,7 @@ def add_field():
                     for field in fieldsList:
                         vaults = field.vaults.all()  # Retrieve the actual list of vaults
                         if vaults:  # Check if vaults is not empty
+                            print("💖", field.vaults.all())
                             return True  # Return True if a vault is found
                     return False  # Return False if no vaults are found
                     
@@ -135,9 +136,6 @@ def add_field():
 
 
                 elif direction == 'right':
-                    new_warehouse_columns_count = warehouse.cols - count
-                    warehouse.cols = warehouse.cols - count  # decreasing warehouse cols by count
-
                     for i in range(1, count + 1):
                         # Find the field with the smallest first letter of its name
                         smallest_field_name_letter = max([field.name for field in fields])[0]
@@ -155,7 +153,10 @@ def add_field():
                             # Perform actions with each field, if needed
                              db.session.delete(field)
 
-                        db.session.commit()
+                    new_warehouse_columns_count = warehouse.cols - count
+                    warehouse.cols = warehouse.cols - count  # decreasing warehouse cols by count
+
+                    db.session.commit()
 
                     # Return success response after the loop completes
                     return jsonify({'message': 'Success'}), 200
