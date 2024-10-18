@@ -37,9 +37,7 @@ def search_warehouse(id, type):
                     field_id = vault.field_id
                     print("💖 field id: ", field_id)
                     if field_id != None:
-                        field = Field.query.get(field_id)
-                        print("💅🏻 field: ", field)
-                        fields_containing_searched_order.append(field.id)
+                        fields_containing_searched_order.append(field_id)
                     
             return fields_containing_searched_order
 

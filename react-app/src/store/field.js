@@ -134,7 +134,8 @@ export const deleteFieldsThunk = (formData) => async (dispatch) => {
       return data;
     } else {
       const err = await res.json()
-      console.log("Error removing fields: ", err);
+      console.log("Error removing fields: ", err.error);
+      if (err) alert("⛔️ Please remove all vaults from the row that you want to delete.")
       return err;
     }
   } catch (error) {
@@ -186,6 +187,7 @@ const fieldReducer = (state = initialState, action) => {
       newState[action.warehouseId] = { ...action.fields }
       return newState
     case REMOVE_FIELDS:
+      console.log("💒 in reducer", action)
       action.fields.map(field => delete newState[action.warehouseId][field])
       return newState
     default:

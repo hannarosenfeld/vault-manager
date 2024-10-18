@@ -11,9 +11,10 @@ def get_all_fields(warehouseId):
     fields = Field.query.filter_by(warehouse_id=warehouseId)
     return jsonify({ field.id : field.to_dict() for field in fields })
 
+
+
 @field_routes.route('/', methods=['POST', 'DELETE'])
 def add_field():
-
     form = PostFieldForm()
     form['csrf_token'].data = request.cookies['csrf_token']
 
@@ -65,8 +66,8 @@ def add_field():
 
                     largest_field_name_letter = max([field.name for field in fields])
                     largest_field_name_letter_as_number = ord(largest_field_name_letter[0])
-                    for i in range(1, count+1):
 
+                    for i in range(1, count+1):
                         col_char = chr(largest_field_name_letter_as_number+i)
                         for j in range(1, warehouse_rows+1):
                             name = f"{col_char}{j}"
@@ -97,7 +98,16 @@ def add_field():
                 else:
                     return jsonify(message="direction not specified")
 
-            elif request.method == 'DELETE' and opperation == 'subtract':
+
+            elif request.method == 'DELETE' and opperation == 'subtract':   
+
+                def check_for_vaults(fieldsList):
+                    for field in fieldsList:
+                        vaults = field.vaults.all()  # Retrieve the actual list of vaults
+                        if vaults:  # Check if vaults is not empty
+                            return True  # Return True if a vault is found
+                    return False  # Return False if no vaults are found
+                    
                 if direction == 'left':
                     new_warehouse_columns_count = warehouse.cols - count
                     warehouse.cols = new_warehouse_columns_count # decreasing warehouse cols by count
@@ -105,6 +115,11 @@ def add_field():
                     for i in range(1, count+1):
                         smallest_field_name_letter = min([field.name for field in fields])[0]
                         all_fields_with_that_letter = Field.query.filter(Field.name.like(f'{smallest_field_name_letter}%')).all()
+
+                        vaults_exist = check_for_vaults(all_fields_with_that_letter)
+                        if vaults_exist:
+                            return jsonify({'error': 'Cannot delete fields while vaults are present in fields.'}), 400  # Return error response
+                         
                         for field in all_fields_with_that_letter:
                             db.session.delete(field)
                             db.session.commit()
@@ -121,28 +136,51 @@ def add_field():
 
                 elif direction == 'right':
                     new_warehouse_columns_count = warehouse.cols - count
-                    warehouse.cols = warehouse.cols - count # decreasing warehouse cols by count
+                    warehouse.cols = warehouse.cols - count  # decreasing warehouse cols by count
 
-                    for i in range(1, count+1):
+                    for i in range(1, count + 1):
+                        # Find the field with the smallest first letter of its name
                         smallest_field_name_letter = max([field.name for field in fields])[0]
+                        
+                        # Query all fields that start with that letter
                         all_fields_with_that_letter = Field.query.filter(Field.name.like(f'{smallest_field_name_letter}%')).all()
+                        
+                        # Convert generator expression to a list to print values
+                        vaults_exist = check_for_vaults(all_fields_with_that_letter)
+                        if vaults_exist:
+                            return jsonify({'error': 'Cannot delete fields while vaults are present in fields.'}), 400  # Return error response
+                         
+                        # Further logic can go here
                         for field in all_fields_with_that_letter:
-                            db.session.delete(field)
-                            db.session.commit()
+                            # Perform actions with each field, if needed
+                             db.session.delete(field)
 
-                    return { 'fields': res, 'warehouseId': warehouse.id, 'newWarehouseRowsCount': warehouse.rows, 'newWarehouseColumnsCount': new_warehouse_columns_count }
+                        db.session.commit()
 
+                    # Return success response after the loop completes
+                    return jsonify({'message': 'Success'}), 200
 
                 elif direction == 'bottom':
+                    print("👛", warehouse.to_dict())
                     letters = sorted(set([field.name[0] for field in fields]))
+                    fieldsList = []
                     for letter in letters:
                         for i in range(warehouse.rows-count+1, warehouse.rows+1):                        
                             field_to_delete = Field.query.filter_by(name=f"{letter}{i}", warehouse=warehouse).first()
-                            field_id = field_to_delete.id
-                            res.append(field_id)
-                            db.session.delete(field_to_delete)
-                            db.session.commit()
                             
+                            # field_id = field_to_delete.id
+                            fieldsList.append(field_to_delete)
+                            # db.session.delete(field_to_delete)
+                            # db.session.commit()
+
+                    vaults_exist = check_for_vaults(fieldsList)
+                    if vaults_exist:
+                        return jsonify({'error': 'Cannot delete fields while vaults are present in fields.'}), 400  # Return error response
+
+                    for field in fieldsList:
+                            db.session.delete(field)
+                            db.session.commit()                            
+
                     new_warehouse_row_count = warehouse.rows - count
                     warehouse.rows = new_warehouse_row_count
                     db.session.commit()                
