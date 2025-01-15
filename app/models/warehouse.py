@@ -18,7 +18,12 @@ class Warehouse(db.Model):
     company_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('companies.id')))
     company = db.relationship('Company', back_populates='company_warehouses')
     warehouse_fields = db.relationship('Field', back_populates='warehouse', foreign_keys='Field.warehouse_id')
-    users = db.relationship('User', secondary=warehouse_users, back_populates='warehouses', cascade='all, delete')
+    users = db.relationship(
+        'User',
+        secondary=warehouse_users,
+        back_populates='warehouses',
+        cascade='save-update, merge'
+    )
     orders = db.relationship('Order', secondary=warehouse_orders, back_populates='warehouses', cascade='all, delete')
 
     # warehouse_vaults = db.relationship('Vault', back_populates="warehouse")

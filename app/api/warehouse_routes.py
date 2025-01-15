@@ -5,6 +5,16 @@ from app.models import Warehouse, Field, Vault, db
 warehouse_routes = Blueprint('warehouse', __name__)
 
 
+@warehouse_routes.route('/<int:warehouse_id>', methods=['DELETE'])
+def delete_warehouse(warehouse_id):
+    warehouse = Warehouse.query.get(warehouse_id)
+    if not warehouse:
+        return jsonify({'error': 'Warehouse not found'}), 404
+    
+    db.session.delete(warehouse)
+    db.session.commit()
+    return jsonify({'message': 'Warehouse deleted successfully'}), 200
+
 @warehouse_routes.route('/', methods=['GET'])
 @login_required
 def get_warehouses():

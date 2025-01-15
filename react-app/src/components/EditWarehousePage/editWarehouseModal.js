@@ -27,8 +27,8 @@ export function EditWarehouseModal({ dir, opperation, warehouseId }) {
     if (opperation === 'subtract') await dispatch(deleteFieldsThunk(formData));
 
     await dispatch(getAllFieldsThunk(warehouseId))
-    window.location.reload(true);
-    window.location.reload(false);
+    // window.location.reload(true);
+    // window.location.reload(false);
     closeModal();    
   }
 
@@ -60,7 +60,7 @@ export function EditWarehouseModal({ dir, opperation, warehouseId }) {
       </div>
       <br/>
       <button type="submit" class="btn btn-primary">submit</button>
-      </form>
+      </form>  
     </div>
   );
 }

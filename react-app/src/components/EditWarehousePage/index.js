@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getAllFieldsThunk } from "../../store/field";
+import { deleteWarehouseThunk } from "../../store/warehouse";
 import { EditWarehouseModal } from "./editWarehouseModal";
 import OpenModalButton from "../OpenModalButton";
 
@@ -9,12 +10,26 @@ import OpenModalButton from "../OpenModalButton";
 export default function EditWarehousePage() {
     const dispatch = useDispatch();
     const { warehouseId } = useParams(); 
+    const navigate = useNavigate();
     const warehouse = useSelector(state => state.warehouse[warehouseId])
     const allFields = useSelector((state) => state.field[warehouseId]);
     const [loadedWarehouseFields, setLoadedWarehouseFields] = useState(false);
     const [fields, setFields] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [show, setShow] = useState(false);
+
+    // Delete Warehouse Modal
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const openDeleteModal = () => setIsDeleteModalOpen(true);
+    const closeDeleteModal = () => setIsDeleteModalOpen(false);
+    const confirmDelete = async () => {
+      setIsDeleteModalOpen(false);
+      // Perform delete action here
+      await dispatch(deleteWarehouseThunk(warehouseId));
+      navigate("/");
+      console.log("Warehouse deleted!");
+    };
+  
 
     useEffect(() => {
         setFields(null);
@@ -93,6 +108,7 @@ export default function EditWarehousePage() {
     }
 
     return (
+        <div>
         <div style={{display: 'flex', alignItems: "column", height: "100%"}}>
         <div className="wrapper" style={{width: "100%",height: "100%", display: "flex", alignItems:"center", alignContent: "center",  flexDirection:"column", margin: "0 auto"}}>
             <div style={{display: "flex", width: "100%", margin: "0 auto", alignSelf: "center", marginTop: "1em", }}>
@@ -145,7 +161,87 @@ export default function EditWarehousePage() {
                     modalComponent={<EditWarehouseModal dir="bottom" opperation="subtract" warehouseId={warehouseId}/>}
                 />
             </div>
+            </div>          
+        </div>
+        <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100px",
+      }}
+    >
+      <button
+        onClick={openDeleteModal}
+        style={{
+          padding: "10px 20px",
+          backgroundColor: "#f44336",
+          color: "#fff",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
+        }}
+      >
+        DELETE
+      </button>
+
+      {isDeleteModalOpen && (
+        <div
+          style={{
+            position: "fixed",
+            top: "0",
+            left: "0",
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: "1000",
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: "#fff",
+              padding: "20px",
+              borderRadius: "10px",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+              textAlign: "center",
+            }}
+          >
+            <p>Are you sure you want to delete the warehouse?</p>
+            <div style={{ marginTop: "20px" }}>
+              <button
+                onClick={confirmDelete}
+                style={{
+                  padding: "10px 20px",
+                  backgroundColor: "#f44336",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "5px",
+                  marginRight: "10px",
+                  cursor: "pointer",
+                }}
+              >
+                Yes
+              </button>
+              <button
+                onClick={closeDeleteModal}
+                style={{
+                  padding: "10px 20px",
+                  backgroundColor: "#ddd",
+                  border: "none",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                }}
+              >
+                No
+              </button>
             </div>
+          </div>
+        </div>
+      )}
+    </div>
         </div>
     )
 }
