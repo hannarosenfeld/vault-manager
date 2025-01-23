@@ -12,6 +12,7 @@ export default function Stage() {
   const [loading, setLoading] = useState(true);
   const [stagedArr, setStagedArr] = useState(null);
   const [isDeleteModeOn, setIsDeleteModeOn] = useState(false);
+  const [vaultsToDelete, setVaultsToDelete] = useState([]);
 
   const handleToggle = (event) => {
     setIsDeleteModeOn(event.target.checked);
@@ -49,8 +50,23 @@ export default function Stage() {
 
   const handleVaultClick = (vault) => {
     setSelectedVault(vault);
-    setIsModalOpen(true);
+    if (!isDeleteModeOn) {
+      setIsModalOpen(true);
+    } else {
+      setVaultsToDelete((prevVaults) => {
+        // Check if the vault is already in the list
+        const isVaultInList = prevVaults.some((v) => v.id === vault.id);
+        if (isVaultInList) {
+          // Remove the vault if it's already in the list
+          return prevVaults.filter((v) => v.id !== vault.id);
+        } else {
+          // Add the vault to the list
+          return [...prevVaults, vault];
+        }
+      });
+    }
   };
+  
 
   return (
     <>
@@ -73,7 +89,7 @@ export default function Stage() {
             style={{
               maxWidth: "800px",
               margin: "0 auto",
-              border: `10px solid ${isDeleteModeOn ? "red" : "pink"}`,
+              border: `10px solid ${isDeleteModeOn ? "red" : "#ffb101"}`,
               height: "85vh",
               borderImage: isDeleteModeOn
                 ? "repeating-linear-gradient(-55deg, #000, #000 20px, red 20px, red 40px) 10"
@@ -120,7 +136,11 @@ export default function Stage() {
                       padding: "4px",
                       borderRadius: "3px",
                       border: "1px solid black",
-                      backgroundColor: "#ffb101",
+                      backgroundColor: !isDeleteModeOn
+                      ? "#ffb101"
+                      : vaultsToDelete.some((vaultToDelete) => vaultToDelete.id === vault.id)
+                      ? "red"
+                      : "#ffb101",
                       cursor: "pointer",
                     }}
                     onClick={() => handleVaultClick(vault)}
