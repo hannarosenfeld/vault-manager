@@ -11,7 +11,6 @@ export const setSearchOffAction = () => ({
 });
 
 export const searchThunk = (item, type) => async (dispatch) => {
-  console.log("🎄 in thunk", item, type)
   try {
     let res = await fetch(`/api/search/${type}/${item.id}`)
     if (res.ok) {
@@ -35,7 +34,6 @@ const initialState = {
 const searchReducer = (state = initialState, action) => {
   switch (action.type) {
     case SEARCH_ON:
-      console.log("🌈 search in reducer: ", action.payload)
         return {
             ...state,
             fields: action.payload

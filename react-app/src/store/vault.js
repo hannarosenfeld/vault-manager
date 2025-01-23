@@ -108,8 +108,6 @@ export const moveVaultFromStageToWarehouseThunk = (vaultId, selectedFieldId, pos
 }
 
 export const deleteVaultThunk = (vaultId) => async (dispatch) => {
-  console.log("🌹", vaultId)
-
   try {
     const res = await fetch(`/api/vaults/${vaultId}`, {
       method: 'DELETE'

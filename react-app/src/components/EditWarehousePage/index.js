@@ -27,7 +27,6 @@ export default function EditWarehousePage() {
       // Perform delete action here
       await dispatch(deleteWarehouseThunk(warehouseId));
       navigate("/");
-      console.log("Warehouse deleted!");
     };
   
 
