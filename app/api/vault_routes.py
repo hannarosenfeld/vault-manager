@@ -229,17 +229,19 @@ def manage_vault(id):
         else:
             return jsonify({'errors': validation_errors_to_error_messages(form.errors)}), 400
 
+    print("💅🏻")
+
     if request.method == 'DELETE':
         customer = Customer.query.get(vault.customer_id)
         customer_to_delete = None
         vault_id = vault.id
         db.session.delete(vault)
         field = Field.query.get(vault.field_id)
-        field.full = False
+        if field:
+            field.full = False
         db.session.commit()
 
         if (len(customer.vaults) == 0):
-            print("🌧️ customer has no vaults", customer.to_dict(), len(customer.vaults))
             customer_to_delete = customer.id
             db.session.delete(customer)
             db.session.commit()

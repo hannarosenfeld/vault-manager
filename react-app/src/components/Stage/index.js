@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getVaultsThunk } from "../../store/vault";
 import StageToWareHouseModal from "./StageToWareHouseModal/StageToWareHouseModal";
 import { Box, Typography, Button, Switch, Modal } from "@mui/material";
+import { deleteVaultThunk } from "../../store/vault";
 
 
 export default function Stage() {
@@ -16,21 +17,6 @@ export default function Stage() {
   const [vaultsToDelete, setVaultsToDelete] = useState([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  const handleDeleteClick = () => {
-    setIsDeleteModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsDeleteModalOpen(false);
-  };
-
-  const handleConfirmDelete = () => {
-    setIsDeleteModalOpen(false);
-    console.log("Vaults deleted!"); // Add your delete logic here
-  };
-  const handleToggle = (event) => {
-    setIsDeleteModeOn(event.target.checked);
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,6 +40,42 @@ export default function Stage() {
       setLoading(false);
     }
   }, [vaults]);
+  
+  const handleDeleteClick = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsDeleteModalOpen(false);
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      // Wait for all delete actions to complete
+      await Promise.all(vaultsToDelete.map((vault) => dispatch(deleteVaultThunk(vault.id))));
+      
+      // Fetch updated vaults or update stagedArr directly
+      setStagedArr((prevStagedArr) =>
+        prevStagedArr.filter(
+          (vault) => !vaultsToDelete.some((deletedVault) => deletedVault.id === vault.id)
+        )
+      );
+      
+      // Clear the vaultsToDelete array
+      setVaultsToDelete([]);
+      
+      // Close the modal
+      setIsDeleteModalOpen(false);
+      
+      console.log("Vaults deleted!");
+    } catch (error) {
+      console.error("Error deleting vaults:", error);
+    }
+  };
+
+  const handleToggle = (event) => {
+    setIsDeleteModeOn(event.target.checked);
+  };
 
   const truncateString = (str, maxLength) => {
     if (str?.length > maxLength) {
@@ -110,14 +132,14 @@ export default function Stage() {
                 : "repeating-linear-gradient(-55deg, #000, #000 20px, #ffb101 20px, #ffb101 40px) 10",
             }}
           >
- <Box
+       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between", // Align toggle/text and trash button
           alignItems: "center",
           border: "2px solid black",
           borderRadius: "8px", // Rounded corners
-          margin: "10px 0",
+          margin: "5px",
           padding: "10px 20px",
         }}
       >

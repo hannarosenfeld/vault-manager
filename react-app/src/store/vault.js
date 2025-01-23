@@ -43,7 +43,6 @@ const moveVaultFromStageToWarehouseAction = (vault) => ({
 
 
 export const editVaultThunk = (vaultId, vaultData) => async (dispatch) => {
-  console.log("🧛🏿‍♀️", vaultData.get('customer_name'))
   try {
     const res = await fetch(`/api/vaults/${vaultId}`, {
       method: 'PUT',
@@ -109,6 +108,7 @@ export const moveVaultFromStageToWarehouseThunk = (vaultId, selectedFieldId, pos
 }
 
 export const deleteVaultThunk = (vaultId) => async (dispatch) => {
+  console.log("🌹", vaultId)
 
   try {
     const res = await fetch(`/api/vaults/${vaultId}`, {
@@ -221,12 +221,10 @@ const vaultReducer = (state = initialState, action) => {
       newState[action.vault.id] = action.vault
       return newState
     case DELETE_VAULT:
-      console.log("🌞", action.payload.vaultId)
       delete newState[action.payload.vaultId];
       return newState
     case STAGE_VAULT:
       newState = { ...state }
-      console.log('in stage vault case => ', action.stagingInfo)
       return newState
     case MOVE_VAULT_FROM_STAGE_TO_WAREHOUSE:
       newState = { ...state }
