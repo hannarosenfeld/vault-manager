@@ -185,8 +185,6 @@ export default function Warehouse({ setIsWarehousePage }) {
 
     function fieldGenerator(fields) {
         if (fields) {
-            console.log("👅 warehouse.rows", warehouse.rows)
-            console.log("👅 warehouse.columns", warehouse.columns)
             return (
                 <div 
                     style={{

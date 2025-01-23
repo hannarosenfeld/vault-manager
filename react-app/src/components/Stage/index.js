@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getVaultsThunk } from "../../store/vault";
 import StageToWareHouseModal from "./StageToWareHouseModal/StageToWareHouseModal";
-import { Switch, Typography, Box } from "@mui/material";
+import { Box, Typography, Button, Switch, Modal } from "@mui/material";
+
 
 export default function Stage() {
   const dispatch = useDispatch();
@@ -13,7 +14,20 @@ export default function Stage() {
   const [stagedArr, setStagedArr] = useState(null);
   const [isDeleteModeOn, setIsDeleteModeOn] = useState(false);
   const [vaultsToDelete, setVaultsToDelete] = useState([]);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
+  const handleDeleteClick = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsDeleteModalOpen(false);
+  };
+
+  const handleConfirmDelete = () => {
+    setIsDeleteModalOpen(false);
+    console.log("Vaults deleted!"); // Add your delete logic here
+  };
   const handleToggle = (event) => {
     setIsDeleteModeOn(event.target.checked);
   };
@@ -96,24 +110,92 @@ export default function Stage() {
                 : "repeating-linear-gradient(-55deg, #000, #000 20px, #ffb101 20px, #ffb101 40px) 10",
             }}
           >
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-                alignItems: "center",
-                border: "2px solid black",
-                margin: "5px",
-                padding: "5px 10px",
-              }}
+ <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between", // Align toggle/text and trash button
+          alignItems: "center",
+          border: "2px solid black",
+          borderRadius: "8px", // Rounded corners
+          margin: "10px 0",
+          padding: "10px 20px",
+        }}
+      >
+        {/* Left Side: Toggle and Text */}
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Switch
+            checked={isDeleteModeOn}
+            onChange={handleToggle}
+            sx={{ transform: "scale(1.5)" }} // Make the toggle bigger
+          />
+          <Typography sx={{ marginLeft: "15px", fontSize: "1rem" }}>
+            Delete vaults mode{" "}
+            <span style={{ color: isDeleteModeOn ? "red" : "green" }}>
+              {isDeleteModeOn ? "ON" : "OFF"}
+            </span>
+          </Typography>
+        </Box>
+
+        {/* Right Side: Trash Button */}
+        <Button
+          variant="contained"
+          color="error"
+          size="large"
+          onClick={handleDeleteClick}
+          style={{
+            display: isDeleteModeOn ? "flex" : "none",
+          }}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+          }}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: "24px" }}>
+            delete
+          </span>
+        </Button>
+      </Box>
+
+      {/* Modal for Confirmation */}
+      <Modal open={isDeleteModalOpen} onClose={handleCloseModal}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            borderRadius: "8px",
+            boxShadow: 24,
+            p: 4,
+            textAlign: "center",
+          }}
+        >
+          <Typography variant="h6" sx={{ mb: 2 }}>
+            Are you sure you want to delete the vaults?
+          </Typography>
+          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
+            <Button
+              variant="outlined"
+              onClick={handleCloseModal}
+              sx={{ flexGrow: 1, marginRight: "10px" }}
             >
-              <Switch checked={isDeleteModeOn} onChange={handleToggle} />
-              <Typography sx={{ marginLeft: "10px" }}>
-                Delete vaults mode{" "}
-                <span style={{ color: isDeleteModeOn ? "red" : "green" }}>
-                  {isDeleteModeOn ? "ON" : "OFF"}
-                </span>
-              </Typography>
-            </Box>
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={handleConfirmDelete}
+              sx={{ flexGrow: 1 }}
+            >
+              Confirm
+            </Button>
+          </Box>
+        </Box>
+        </Modal>
+
             <div
               style={{
                 padding: "5px",
