@@ -132,18 +132,21 @@ def upgrade():
         op.execute(f"ALTER TABLE field_orders SET SCHEMA {SCHEMA};")
 
     op.create_table('vaults',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('name', sa.String(length=100), nullable=False),
-    sa.Column('field_id', sa.Integer(), nullable=True),
-    sa.Column('order_id', sa.Integer(), nullable=True),
-    sa.Column('position', sa.String(length=100), nullable=True),
-    sa.Column('type', sa.String(), nullable=True),
-    sa.Column('customer_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['customer_id'], ['customers.id'], ondelete='CASCADE'),
-    sa.ForeignKeyConstraint(['field_id'], ['fields.id'], ondelete='CASCADE'),
-    sa.ForeignKeyConstraint(['order_id'], ['orders.id'], ondelete='CASCADE'),
-    sa.PrimaryKeyConstraint('id')
+        sa.Column('id', sa.Integer(), nullable=False),
+        sa.Column('name', sa.String(length=100), nullable=False),
+        sa.Column('field_id', sa.Integer(), nullable=True),
+        sa.Column('order_id', sa.Integer(), nullable=True),
+        sa.Column('position', sa.String(length=100), nullable=True),
+        sa.Column('type', sa.String(), nullable=True),
+        sa.Column('customer_id', sa.Integer(), nullable=True),
+        sa.Column('note', sa.Text(), nullable=True),  # Changed to sa.Text()
+        sa.Column('empty', sa.Boolean(), nullable=True),  # Added the empty column
+        sa.ForeignKeyConstraint(['customer_id'], ['customers.id'], ondelete='CASCADE'),
+        sa.ForeignKeyConstraint(['field_id'], ['fields.id'], ondelete='CASCADE'),
+        sa.ForeignKeyConstraint(['order_id'], ['orders.id'], ondelete='CASCADE'),
+        sa.PrimaryKeyConstraint('id')
     )
+
     if environment == "production":
         op.execute(f"ALTER TABLE vaults SET SCHEMA {SCHEMA};")
 
