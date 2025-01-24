@@ -16,6 +16,9 @@ def delete_warehouse(warehouse_id):
         for field in warehouse.warehouse_fields:
             print("😎", field.id)
             field_to_delete = Field.query.get(field.id)
+            for vault in field_to_delete.vaults:
+                vault_to_delete = Vault.query.get(vault.id)
+                db.session.delete(vault_to_delete)
             db.session.delete(field_to_delete)
 
     else:
