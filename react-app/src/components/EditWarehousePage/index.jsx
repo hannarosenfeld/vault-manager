@@ -18,6 +18,15 @@ export default function EditWarehousePage() {
   const [loadedWarehouseFields, setLoadedWarehouseFields] = useState(false);
   const [fields, setFields] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const openDeleteModal = () => setIsDeleteModalOpen(true);
+  const closeDeleteModal = () => setIsDeleteModalOpen(false);
+
+  const confirmDelete = async () => {
+    setIsDeleteModalOpen(false);
+    await dispatch(deleteWarehouseThunk(warehouseId));
+    navigate("/");
+  };
 
   const ModalButton = ({ dir, operation, warehouseId }) => (
     <OpenModalButton
@@ -36,16 +45,6 @@ export default function EditWarehousePage() {
       }
     />
   );
-
-  // Delete Warehouse Modal
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const openDeleteModal = () => setIsDeleteModalOpen(true);
-  const closeDeleteModal = () => setIsDeleteModalOpen(false);
-  const confirmDelete = async () => {
-    setIsDeleteModalOpen(false);
-    await dispatch(deleteWarehouseThunk(warehouseId));
-    navigate("/");
-  };
 
   useEffect(() => {
     setFields(null);
