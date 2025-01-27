@@ -89,29 +89,29 @@ export default function EditWarehousePage() {
       </div>
 
       {/* Fields and Buttons Layout */}
-      <div className="wrapper flex flex-col lg:flex-row gap-4 w-full h-full mt-4">
+      <div className="wrapper flex flex-row gap-1 w-full h-full border-amber-600 border-2">
         {/* Left Buttons */}
-        <div className="leftButtons flex flex-col items-center justify-center gap-4 w-full lg:w-1/4">
+        <div className="leftButtons flex flex-col items-center justify-center gap-1 w-1/4 border-2">
           <ModalButton dir="left" operation="add" warehouseId={warehouseId} />
           <ModalButton dir="left" operation="subtract" warehouseId={warehouseId} />
         </div>
 
         {/* Fields Display */}
-        <div className="fields flex items-center justify-center w-full lg:w-1/2">
-          <div className="w-full text-center">
+        <div className="fields flex items-center justify-center w-1/2">
+          <div className="text-center">
             {fields && warehouse ? fieldGenerator(fields, warehouse) : null}
           </div>
         </div>
 
         {/* Right Buttons */}
-        <div className="rightButtons flex flex-col items-center justify-center gap-4 w-full lg:w-1/4">
+        <div className="rightButtons flex flex-col items-center justify-center gap-1 w-1/4">
           <ModalButton dir="right" operation="add" warehouseId={warehouseId} />
           <ModalButton dir="right" operation="subtract" warehouseId={warehouseId} />
         </div>
       </div>
 
       {/* Bottom Buttons */}
-      <div className="bottomButtons flex justify-center gap-4 mt-4 w-full">
+      <div className="bottomButtons flex justify-center gap-4 w-full">
         <ModalButton dir="bottom" operation="add" warehouseId={warehouseId} />
         <ModalButton dir="bottom" operation="subtract" warehouseId={warehouseId} />
       </div>
