@@ -19,5 +19,5 @@ function OpenModalButton({
     <button onClick={onClick} className="btn btn-outline-secondary">{buttonText}</button>
   );
 }
-
+    
 export default OpenModalButton;

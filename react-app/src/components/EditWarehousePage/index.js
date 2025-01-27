@@ -19,6 +19,14 @@ export default function EditWarehousePage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [show, setShow] = useState(false);
 
+    const ModalButton = ({ dir, operation, warehouseId }) => (
+      <OpenModalButton
+        buttonText={<span className="material-symbols-outlined">{operation === 'add' ? 'add' : 'remove'}</span>}
+        onItemClick={() => setIsModalOpen(false)}
+        modalComponent={<EditWarehouseModal dir={dir} opperation={operation} warehouseId={warehouseId} />}
+      />
+    );
+    
     // Delete Warehouse Modal
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const openDeleteModal = () => setIsDeleteModalOpen(true);
@@ -72,16 +80,8 @@ export default function EditWarehousePage() {
         <div className="wrapper" style={{width: "100%",height: "100%", display: "flex", alignItems:"center", alignContent: "center",  flexDirection:"column", margin: "0 auto"}}>
             <div style={{display: "flex", width: "100%", margin: "0 auto", alignSelf: "center", marginTop: "1em", }}>
             <div className="leftButtons" style={{display: "flex", alignItems: "center", flexDirection:"column", margin: "auto"}}>
-                <OpenModalButton 
-                    buttonText={<span class="material-symbols-outlined">add</span>}
-                    onItemClick={() => setIsModalOpen(false)}
-                    modalComponent={<EditWarehouseModal dir="left" opperation="add" warehouseId={warehouseId} />}
-                />
-                <OpenModalButton 
-                    buttonText={<span class="material-symbols-outlined">remove</span>}
-                    onItemClick={() => setIsModalOpen(false)}
-                    modalComponent={<EditWarehouseModal dir="left" opperation="subtract" warehouseId={warehouseId} />}
-                />
+            <ModalButton dir="left" operation="add" warehouseId={warehouseId} />
+            <ModalButton dir="left" operation="subtract" warehouseId={warehouseId} />
             </div>
 
             {/* 🚨 I cannot figure out how to center the warehouse. there is always some space on the right 🚨 */}
@@ -92,16 +92,8 @@ export default function EditWarehousePage() {
             </div>
 
             <div className="rightButtons" style={{display: "flex", alignItems: "center", flexDirection:"column", margin: "auto"}}>
-                <OpenModalButton 
-                    buttonText={<span class="material-symbols-outlined">add</span>}
-                    onItemClick={() => setIsModalOpen(false)}
-                    modalComponent={<EditWarehouseModal dir="right" opperation="add" warehouseId={warehouseId} />}
-                />
-                <OpenModalButton 
-                    buttonText={<span class="material-symbols-outlined">remove</span>}
-                    onItemClick={() => setIsModalOpen(false)}
-                    modalComponent={<EditWarehouseModal dir="right" opperation="subtract" warehouseId={warehouseId} />}
-                />
+            <ModalButton dir="right" operation="add" warehouseId={warehouseId} />
+            <ModalButton dir="right" operation="subtract" warehouseId={warehouseId} />
             </div>
             {/* <div style={{display: "flex", flexDirection: "column", width: "100%", alignItems: "center"}}> */}
             {/* {fields ? fieldGenerator(fields): null} */}
@@ -109,16 +101,8 @@ export default function EditWarehousePage() {
             {/* </div> */}
             </div>
             <div className="bottomButtons" style={{display: "flex", alignItems: "center", gap: '1em'}}>
-                <OpenModalButton 
-                    buttonText={<span class="material-symbols-outlined">add</span>}
-                    onItemClick={() => setIsModalOpen(false)}
-                    modalComponent={<EditWarehouseModal dir="bottom" opperation="add" warehouseId={warehouseId}/>}
-                />
-                <OpenModalButton 
-                    buttonText={<span class="material-symbols-outlined">remove</span>}
-                    onItemClick={() => setIsModalOpen(false)}
-                    modalComponent={<EditWarehouseModal dir="bottom" opperation="subtract" warehouseId={warehouseId}/>}
-                />
+            <ModalButton dir="bottom" operation="add" warehouseId={warehouseId} />
+            <ModalButton dir="bottom" operation="subtract" warehouseId={warehouseId} />
             </div>
             </div>          
         </div>
