@@ -17,8 +17,10 @@ export default function EditWarehousePage() {
   const allFields = useSelector((state) => state.field[warehouseId]);
   const [loadedWarehouseFields, setLoadedWarehouseFields] = useState(false);
   const [fields, setFields] = useState(null);
+  const [rerender, setRerender] = useState(false);  // New state to trigger re-render
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
   const openDeleteModal = () => setIsDeleteModalOpen(true);
   const closeDeleteModal = () => setIsDeleteModalOpen(false);
 
@@ -41,8 +43,10 @@ export default function EditWarehousePage() {
           dir={dir}
           opperation={operation}
           warehouseId={warehouseId}
+          onFieldChange={() => setRerender((prev) => !prev)}  // Toggle rerender state
         />
       }
+      className="w-[3em] h-[3em] border-2 border-red-500 flex items-center justify-center mt-2"
     />
   );
 
@@ -64,77 +68,52 @@ export default function EditWarehousePage() {
         setFields(sortedFields);
       }
     }
-  }, [loadedWarehouseFields, allFields]);
+  }, [loadedWarehouseFields, allFields, rerender]);  // Add rerender as a dependency
 
   return (
-    <div>
-      <div className="flex flex-col items-center h-full">
-        <div className="wrapper flex flex-col items-center w-full h-full">
-          <div className="border-2">
-            <div className="flex justify-center items-center h-24">
-              <OpenModalButton
-                buttonText="DELETE"
-                onItemClick={openDeleteModal}
-                modalComponent={
-                  <DeleteWarehouseModal
-                    closeModal={closeDeleteModal}
-                    confirmDelete={confirmDelete}
-                  />
-                }
+    <div className="flex flex-col items-center h-full">
+      {/* Top Box (Delete Button) */}
+      <div className="wrapper w-full border-2">
+        <div className="flex justify-center items-center h-24">
+          <OpenModalButton
+            buttonText="DELETE"
+            onItemClick={openDeleteModal}
+            modalComponent={
+              <DeleteWarehouseModal
+                closeModal={closeDeleteModal}
+                confirmDelete={confirmDelete}
               />
-            </div>
-          </div>
-          <div className="flex w-full mt-4 relative">
-            {/* Left Buttons */}
-            <div className="leftButtons absolute left-0 top-0 flex flex-col items-center mx-2">
-              <ModalButton
-                dir="left"
-                operation="add"
-                warehouseId={warehouseId}
-              />
-              <ModalButton
-                dir="left"
-                operation="subtract"
-                warehouseId={warehouseId}
-              />
-            </div>
+            }
+          />
+        </div>
+      </div>
 
-            {/* Fields Display */}
-            <div className="flex w-3/4 items-center justify-center">
-              <div className="w-full text-center">
-                {fields && warehouse ? fieldGenerator(fields, warehouse) : null}
-              </div>
-            </div>
+      {/* Fields and Buttons Layout */}
+      <div className="wrapper flex flex-col lg:flex-row gap-4 w-full h-full mt-4">
+        {/* Left Buttons */}
+        <div className="leftButtons flex flex-col items-center justify-center gap-4 w-full lg:w-1/4">
+          <ModalButton dir="left" operation="add" warehouseId={warehouseId} />
+          <ModalButton dir="left" operation="subtract" warehouseId={warehouseId} />
+        </div>
 
-            {/* Right Buttons */}
-            <div className="rightButtons absolute right-0 top-0 flex flex-col items-center mx-2">
-              <ModalButton
-                dir="right"
-                operation="add"
-                warehouseId={warehouseId}
-              />
-              <ModalButton
-                dir="right"
-                operation="subtract"
-                warehouseId={warehouseId}
-              />
-            </div>
-          </div>
-
-          {/* Bottom Buttons */}
-          <div className="bottomButtons absolute bottom-4 left-1/2 transform -translate-x-1/2 flex items-center gap-4 mt-4">
-            <ModalButton
-              dir="bottom"
-              operation="add"
-              warehouseId={warehouseId}
-            />
-            <ModalButton
-              dir="bottom"
-              operation="subtract"
-              warehouseId={warehouseId}
-            />
+        {/* Fields Display */}
+        <div className="fields flex items-center justify-center w-full lg:w-1/2">
+          <div className="w-full text-center">
+            {fields && warehouse ? fieldGenerator(fields, warehouse) : null}
           </div>
         </div>
+
+        {/* Right Buttons */}
+        <div className="rightButtons flex flex-col items-center justify-center gap-4 w-full lg:w-1/4">
+          <ModalButton dir="right" operation="add" warehouseId={warehouseId} />
+          <ModalButton dir="right" operation="subtract" warehouseId={warehouseId} />
+        </div>
+      </div>
+
+      {/* Bottom Buttons */}
+      <div className="bottomButtons flex justify-center gap-4 mt-4 w-full">
+        <ModalButton dir="bottom" operation="add" warehouseId={warehouseId} />
+        <ModalButton dir="bottom" operation="subtract" warehouseId={warehouseId} />
       </div>
     </div>
   );
