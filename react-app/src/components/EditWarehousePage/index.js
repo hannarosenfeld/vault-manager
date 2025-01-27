@@ -5,6 +5,7 @@ import { getAllFieldsThunk } from "../../store/field";
 import { deleteWarehouseThunk } from "../../store/warehouse";
 import { EditWarehouseModal } from "./editWarehouseModal";
 import OpenModalButton from "../OpenModalButton";
+import fieldGenerator from "./fieldGenerator"
 
 
 export default function EditWarehousePage() {
@@ -65,47 +66,6 @@ export default function EditWarehousePage() {
         setFields(sortedFields)
     }, [loadedWarehouseFields, allFields])
 
-
-    function fieldGenerator(fields) {
-        if (fields && warehouse) {
-            return (
-                <div 
-                    style={{
-                        display: "grid",
-                        gridTemplateColumns: `repeat(${warehouse.columns}, 1fr)`,
-                        gridTemplateRows: `repeat(${warehouse.rows}, 1fr)`,
-                        gridAutoFlow: 'column',
-                        gridGap: "1%",
-                        width: "100%",
-                        height: "75vh",
-                        marginBottom: "1em"
-                    }}
-                >   
-                    {fields.map(field => (
-                    <div
-                        className="field"
-                        key={field.id}
-                        style={{
-                            backgroundColor: `${
-                                field.vaults?.length === 3 && field.type === "vault" || field.full ? "var(--red)" :
-                                field.vaults?.length === 4 && field.type === "couchbox-T" || field.full ? "var(--red)" :
-                                field.vaults?.length === 3 && field.type === "couchbox-T" || field.full ? "var(--yellow)" :
-                                field.vaults?.length === 2 ? "var(--yellow)" :
-                                field.vaults?.length === 1 ? "var(--green)" :
-                                "var(--lightgrey)"
-                            }`,
-                            height: `${field.type === "couchbox-T" ? "213%" : '100%'}`,
-                            marginBottom: `${field.type === "couchbox-T" ? "-2.6em" : '0'}`,
-                            width: `${field.type === "couchbox-B" ? "0px" : '100%'}`,
-                            zIndex: `${field.type === "couchbox-B" ? "100" : 'none'}`,
-                        }}
-                    >{field.type === "couchbox-B" ? "" : <div className="field-number">{field.name}</div>}</div>
-                    ))}
-                </div>
-            )
-        }
-    }
-
     return (
         <div>
         <div style={{display: 'flex', alignItems: "column", height: "100%"}}>
@@ -127,7 +87,7 @@ export default function EditWarehousePage() {
             {/* 🚨 I cannot figure out how to center the warehouse. there is always some space on the right 🚨 */}
             <div style={{width: "75%", display: "flex", alignItems: "center", alignContent: "center"}}>
                 <div style={{width: "100%", margin: "0 auto", alignSelf: "center"}}>
-                    {fields ? fieldGenerator(fields): null}
+                    {fields && warehouse ? fieldGenerator(fields, warehouse) : null}
                 </div>
             </div>
 
