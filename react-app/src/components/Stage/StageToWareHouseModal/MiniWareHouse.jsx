@@ -12,7 +12,6 @@ export default function MiniWareHouse({ warehouseId }) {
     const [fields, setFields] = useState(null);
     const [loading, setLoading] = useState(true);
 
-
     useEffect(() => {
         setLoadedWarehouseFields(false)
         const warehouseFields = dispatch(getAllFieldsThunk(warehouseId))
@@ -28,6 +27,8 @@ export default function MiniWareHouse({ warehouseId }) {
             // setFields(Object.values(allFields).sort((a,b) => a.name - b.name))
             let fieldsArr = (Object.values(allFields))
 
+
+            //🚨 we want to use the sortFields function in utility.js for this
             sortedFields = fieldsArr.sort(function (a, b) {
                 // Split the field names into alphabetical and numeric parts
                 const [, aAlpha, aNum] = a.name.match(/^([A-Za-z]+)(\d+)$/);
