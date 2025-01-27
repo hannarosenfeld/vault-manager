@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector} from "react-redux";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { authenticate } from "./store/session";
@@ -15,6 +15,8 @@ import EditVaultPage from "./components/Warehouse/RenderTMB/EditVaultPage";
 import VaultDetailPage from "./components/Warehouse/RenderTMB/VaultDetailPage";
 
 import EditWarehousePage from "./components/EditWarehousePage";
+
+console.log("🦋")
 
 function App() {
   const dispatch = useDispatch();

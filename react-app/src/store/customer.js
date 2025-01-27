@@ -1,4 +1,4 @@
-import { setWarehouseSearchModeAction } from './warehouse';
+// import { setWarehouseSearchModeAction } from './warehouse';
 import { DELETE_VAULT } from './vault';
 const GET_CUSTOMER = "customer/GET_CUSTOMER";
 const GET_ALL_CUSTOMERS = "customer/GET_ALL_CUSTOMERS";
