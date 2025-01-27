@@ -5,8 +5,7 @@ import { getAllFieldsThunk } from "../../store/field";
 import { deleteWarehouseThunk } from "../../store/warehouse";
 import { EditWarehouseModal } from "./editWarehouseModal";
 import OpenModalButton from "../OpenModalButton";
-import fieldGenerator from "./fieldGenerator"
-
+import fieldGenerator from "./fieldGenerator";
 
 export default function EditWarehousePage() {
     const dispatch = useDispatch();
@@ -52,20 +51,16 @@ export default function EditWarehousePage() {
     useEffect(() => {
         let sortedFields;
         if (loadedWarehouseFields) {
-            // setFields(Object.values(allFields).sort((a,b) => a.name - b.name))
             let fieldsArr = (Object.values(allFields))
 
             sortedFields = fieldsArr.sort(function (a, b) {
-                // Split the field names into alphabetical and numeric parts
                 const [, aAlpha, aNum] = a.name.match(/^([A-Za-z]+)(\d+)$/);
                 const [, bAlpha, bNum] = b.name.match(/^([A-Za-z]+)(\d+)$/);
             
-                // Compare alphabetical parts first
                 if (aAlpha !== bAlpha) {
                     return aAlpha.localeCompare(bAlpha);
                 }
                 
-                // If alphabetical parts are equal, compare numeric parts as numbers
                 return parseInt(aNum) - parseInt(bNum);
             });
             
@@ -76,115 +71,69 @@ export default function EditWarehousePage() {
 
     return (
         <div>
-        <div style={{display: 'flex', alignItems: "column", height: "100%"}}>
-        <div className="wrapper" style={{width: "100%",height: "100%", display: "flex", alignItems:"center", alignContent: "center",  flexDirection:"column", margin: "0 auto"}}>
-            <div style={{display: "flex", width: "100%", margin: "0 auto", alignSelf: "center", marginTop: "1em", }}>
-            <div className="leftButtons" style={{display: "flex", alignItems: "center", flexDirection:"column", margin: "auto"}}>
-            <ModalButton dir="left" operation="add" warehouseId={warehouseId} />
-            <ModalButton dir="left" operation="subtract" warehouseId={warehouseId} />
-            </div>
+        <div className="flex flex-col items-center h-full">
+            <div className="wrapper flex flex-col items-center w-full h-full">
+                <div className="flex w-full mt-4 relative">
+                    {/* Left Buttons */}
+                    <div className="leftButtons absolute left-0 top-0 flex flex-col items-center mx-2">
+                        <ModalButton dir="left" operation="add" warehouseId={warehouseId} />
+                        <ModalButton dir="left" operation="subtract" warehouseId={warehouseId} />
+                    </div>
 
-            {/* 🚨 I cannot figure out how to center the warehouse. there is always some space on the right 🚨 */}
-            <div style={{width: "75%", display: "flex", alignItems: "center", alignContent: "center"}}>
-                <div style={{width: "100%", margin: "0 auto", alignSelf: "center"}}>
-                    {fields && warehouse ? fieldGenerator(fields, warehouse) : null}
+                    {/* Fields Display */}
+                    <div className="flex w-3/4 items-center justify-center">
+                        <div className="w-full text-center">
+                            {fields && warehouse ? fieldGenerator(fields, warehouse) : null}
+                        </div>
+                    </div>
+
+                    {/* Right Buttons */}
+                    <div className="rightButtons absolute right-0 top-0 flex flex-col items-center mx-2">
+                        <ModalButton dir="right" operation="add" warehouseId={warehouseId} />
+                        <ModalButton dir="right" operation="subtract" warehouseId={warehouseId} />
+                    </div>
+                </div>
+
+                {/* Bottom Buttons */}
+                <div className="bottomButtons absolute bottom-4 left-1/2 transform -translate-x-1/2 flex items-center gap-4 mt-4">
+                    <ModalButton dir="bottom" operation="add" warehouseId={warehouseId} />
+                    <ModalButton dir="bottom" operation="subtract" warehouseId={warehouseId} />
                 </div>
             </div>
 
-            <div className="rightButtons" style={{display: "flex", alignItems: "center", flexDirection:"column", margin: "auto"}}>
-            <ModalButton dir="right" operation="add" warehouseId={warehouseId} />
-            <ModalButton dir="right" operation="subtract" warehouseId={warehouseId} />
-            </div>
-            {/* <div style={{display: "flex", flexDirection: "column", width: "100%", alignItems: "center"}}> */}
-            {/* {fields ? fieldGenerator(fields): null} */}
-            
-            {/* </div> */}
-            </div>
-            <div className="bottomButtons" style={{display: "flex", alignItems: "center", gap: '1em'}}>
-            <ModalButton dir="bottom" operation="add" warehouseId={warehouseId} />
-            <ModalButton dir="bottom" operation="subtract" warehouseId={warehouseId} />
-            </div>
-            </div>          
-        </div>
-        <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100px",
-      }}
-    >
-      <button
-        onClick={openDeleteModal}
-        style={{
-          padding: "10px 20px",
-          backgroundColor: "#f44336",
-          color: "#fff",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-        }}
-      >
-        DELETE
-      </button>
+            {/* Delete Warehouse Button */}
+            <div className="flex justify-center items-center h-24">
+                <button
+                    onClick={openDeleteModal}
+                    className="px-5 py-2 bg-red-500 text-white rounded-md cursor-pointer"
+                >
+                    DELETE
+                </button>
 
-      {isDeleteModalOpen && (
-        <div
-          style={{
-            position: "fixed",
-            top: "0",
-            left: "0",
-            width: "100%",
-            height: "100%",
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            zIndex: "1000",
-          }}
-        >
-          <div
-            style={{
-              backgroundColor: "#fff",
-              padding: "20px",
-              borderRadius: "10px",
-              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-              textAlign: "center",
-            }}
-          >
-            <p>Are you sure you want to delete the warehouse?</p>
-            <div style={{ marginTop: "20px" }}>
-              <button
-                onClick={confirmDelete}
-                style={{
-                  padding: "10px 20px",
-                  backgroundColor: "#f44336",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "5px",
-                  marginRight: "10px",
-                  cursor: "pointer",
-                }}
-              >
-                Yes
-              </button>
-              <button
-                onClick={closeDeleteModal}
-                style={{
-                  padding: "10px 20px",
-                  backgroundColor: "#ddd",
-                  border: "none",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                }}
-              >
-                No
-              </button>
+                {/* Delete Confirmation Modal */}
+                {isDeleteModalOpen && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-10">
+                        <div className="bg-white p-5 rounded-lg shadow-lg text-center">
+                            <p>Are you sure you want to delete the warehouse?</p>
+                            <div className="mt-5">
+                                <button
+                                    onClick={confirmDelete}
+                                    className="px-5 py-2 bg-red-500 text-white rounded-md mr-2 cursor-pointer"
+                                >
+                                    Yes
+                                </button>
+                                <button
+                                    onClick={closeDeleteModal}
+                                    className="px-5 py-2 bg-gray-300 rounded-md cursor-pointer"
+                                >
+                                    No
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
-          </div>
         </div>
-      )}
-    </div>
         </div>
     )
 }

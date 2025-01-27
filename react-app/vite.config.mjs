@@ -1,17 +1,12 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-// import tailwindcss from 'tailwindcss';
-// import autoprefixer from 'autoprefixer';
+import tailwindcss from '@tailwindcss/postcss';  // Use the correct package
 
 export default defineConfig({
   plugins: [
     react(),
+    tailwindcss(),  // This is now using the correct PostCSS package
   ],
-  // css: {
-  //   postcss: {
-  //     plugins: [tailwindcss(), autoprefixer()],
-  //   },
-  // },
   esbuild: {
     jsxInject: `import React from 'react'`,
   },
