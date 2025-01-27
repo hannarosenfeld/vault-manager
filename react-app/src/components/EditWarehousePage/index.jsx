@@ -71,6 +71,20 @@ export default function EditWarehousePage() {
     <div>
       <div className="flex flex-col items-center h-full">
         <div className="wrapper flex flex-col items-center w-full h-full">
+          <div className="border-2">
+            <div className="flex justify-center items-center h-24">
+              <OpenModalButton
+                buttonText="DELETE"
+                onItemClick={openDeleteModal}
+                modalComponent={
+                  <DeleteWarehouseModal
+                    closeModal={closeDeleteModal}
+                    confirmDelete={confirmDelete}
+                  />
+                }
+              />
+            </div>
+          </div>
           <div className="flex w-full mt-4 relative">
             {/* Left Buttons */}
             <div className="leftButtons absolute left-0 top-0 flex flex-col items-center mx-2">
@@ -121,19 +135,6 @@ export default function EditWarehousePage() {
               warehouseId={warehouseId}
             />
           </div>
-        </div>
-
-        <div className="flex justify-center items-center h-24">
-          <OpenModalButton
-            buttonText="DELETE"
-            onItemClick={openDeleteModal}
-            modalComponent={
-              <DeleteWarehouseModal
-                closeModal={closeDeleteModal}
-                confirmDelete={confirmDelete}
-              />
-            }
-          />
         </div>
       </div>
     </div>
