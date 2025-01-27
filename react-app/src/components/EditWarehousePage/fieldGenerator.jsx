@@ -8,9 +8,9 @@ export default function fieldGenerator(fields, warehouse) {
                     gridTemplateRows: `repeat(${warehouse.rows}, 1fr)`,
                     gridAutoFlow: 'column',
                     gridGap: "1%",
-                    width: "100%",
-                    height: "75vh",
-                    marginBottom: "1em"
+                    width: "95%",
+                    height: "65vh",
+                    margin: "0 auto"
                 }}
             >   
                 {fields.map(field => (
