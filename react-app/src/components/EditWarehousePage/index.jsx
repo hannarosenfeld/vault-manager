@@ -8,7 +8,6 @@ import OpenModalButton from "../OpenModalButton";
 import fieldGenerator from "./fieldGenerator";
 import { sortFields } from "../utility";
 import DeleteWarehouseModal from "./DeleteWarehouseModal";
-
 export default function EditWarehousePage() {
   const dispatch = useDispatch();
   const { warehouseId } = useParams();
@@ -21,6 +20,17 @@ export default function EditWarehousePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isToggled, setIsToggled] = useState(false);
+  
+  const Rack = ({ id, isEmpty }) => {
+    return (
+      <div
+        className={`w-16 h-16 border-2 ${isEmpty ? 'bg-gray-300' : 'bg-gray-600'} 
+                    flex justify-center items-center m-2`}
+      >
+        {id}
+      </div>
+    );
+  };
 
   const openDeleteModal = () => setIsDeleteModalOpen(true);
   const closeDeleteModal = () => setIsDeleteModalOpen(false);
@@ -112,7 +122,7 @@ export default function EditWarehousePage() {
 
       <div className="wrapper flex w-[95%] h-[70vh]">
         <div className="leftButtons flex flex-col items-center justify-center gap-1 w-[12%]">
-        {!isToggled && (
+          {!isToggled && (
             <>
               <ModalButton
                 dir="left"
@@ -124,6 +134,15 @@ export default function EditWarehousePage() {
                 operation="subtract"
                 warehouseId={warehouseId}
               />
+            </>
+          )}
+
+          {/* Display racks instead of buttons when !isToggled */}
+          {isToggled && (
+            <>
+              <Rack id="Rack 1" isEmpty={false} />
+              <Rack id="Rack 2" isEmpty={true} />
+              <Rack id="Rack 3" isEmpty={false} />
             </>
           )}
         </div>
