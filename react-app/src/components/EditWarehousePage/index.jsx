@@ -121,7 +121,7 @@ export default function EditWarehousePage() {
           )}
         </div>
 
-        <div className="fields flex items-center justify-center w-full">
+        <div className="fields flex items-center justify-center w-[70%] m-auto">
           <div className="text-center w-full">
             {fields && warehouse ? fieldGenerator(fields, warehouse) : null}
           </div>
