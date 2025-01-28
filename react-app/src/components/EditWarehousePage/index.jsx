@@ -9,7 +9,6 @@ import fieldGenerator from "./fieldGenerator";
 import { sortFields } from "../utility";
 import DeleteWarehouseModal from "./DeleteWarehouseModal";
 
-
 export default function EditWarehousePage() {
   const dispatch = useDispatch();
   const { warehouseId } = useParams();
@@ -18,7 +17,7 @@ export default function EditWarehousePage() {
   const allFields = useSelector((state) => state.field[warehouseId]);
   const [loadedWarehouseFields, setLoadedWarehouseFields] = useState(false);
   const [fields, setFields] = useState(null);
-  const [rerender, setRerender] = useState(false);  // New state to trigger re-render
+  const [rerender, setRerender] = useState(false); // New state to trigger re-render
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
@@ -44,7 +43,7 @@ export default function EditWarehousePage() {
           dir={dir}
           opperation={operation}
           warehouseId={warehouseId}
-          onFieldChange={() => setRerender((prev) => !prev)}  // Toggle rerender state
+          onFieldChange={() => setRerender((prev) => !prev)} // Toggle rerender state
         />
       }
     />
@@ -68,23 +67,28 @@ export default function EditWarehousePage() {
         setFields(sortedFields);
       }
     }
-  }, [loadedWarehouseFields, allFields, rerender]);  // Add rerender as a dependency
+  }, [loadedWarehouseFields, allFields, rerender]); // Add rerender as a dependency
 
   return (
     <div className="flex flex-col items-center h-[80vh]">
       {/* Top Box (Delete Button) */}
       <div className="wrapper w-full border-2 height-[10vh]">
         <div className="flex justify-center items-center h-24">
-          <OpenModalButton
-            buttonText="DELETE"
-            onItemClick={openDeleteModal}
-            modalComponent={
-              <DeleteWarehouseModal
-                closeModal={closeDeleteModal}
-                confirmDelete={confirmDelete}
-              />
-            }
-          />
+          <button
+            onClick={openDeleteModal} // Calls the function to open the modal
+            className="btn btn-outline-secondary"
+          >
+            DELETE
+          </button>
+
+          {isDeleteModalOpen && (
+            <DeleteWarehouseModal
+              isDeleteModalOpen={isDeleteModalOpen}
+              setIsDeleteModalOpen={setIsDeleteModalOpen}
+              confirmDelete={confirmDelete}
+              closeDeleteModal={closeDeleteModal} // Ensure this is passed correctly
+            />
+          )}
         </div>
       </div>
 
@@ -93,7 +97,11 @@ export default function EditWarehousePage() {
         {/* Left Buttons */}
         <div className="leftButtons flex flex-col items-center justify-center gap-1 w-[12%]">
           <ModalButton dir="left" operation="add" warehouseId={warehouseId} />
-          <ModalButton dir="left" operation="subtract" warehouseId={warehouseId} />
+          <ModalButton
+            dir="left"
+            operation="subtract"
+            warehouseId={warehouseId}
+          />
         </div>
 
         {/* Fields Display */}
@@ -106,14 +114,22 @@ export default function EditWarehousePage() {
         {/* Right Buttons */}
         <div className="rightButtons flex flex-col items-center justify-center gap-1 w-[12%]">
           <ModalButton dir="right" operation="add" warehouseId={warehouseId} />
-          <ModalButton dir="right" operation="subtract" warehouseId={warehouseId} />
+          <ModalButton
+            dir="right"
+            operation="subtract"
+            warehouseId={warehouseId}
+          />
         </div>
       </div>
 
       {/* Bottom Buttons */}
       <div className="bottomButtons flex justify-center gap-4 w-full">
         <ModalButton dir="bottom" operation="add" warehouseId={warehouseId} />
-        <ModalButton dir="bottom" operation="subtract" warehouseId={warehouseId} />
+        <ModalButton
+          dir="bottom"
+          operation="subtract"
+          warehouseId={warehouseId}
+        />
       </div>
     </div>
   );
