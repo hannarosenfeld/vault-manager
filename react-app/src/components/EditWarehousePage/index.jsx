@@ -155,7 +155,7 @@ export default function EditWarehousePage() {
           </div>
         )}
         {isToggled && (
-          <div className="fields flex items-center justify-center w-[70%] m-auto border-amber-800 border-4">
+          <div className="fields flex items-center justify-center w-[70%] m-auto">
             <div className="text-center w-[70%]">
               {fields && warehouse ? fieldGenerator(fields, warehouse) : null}
             </div>
