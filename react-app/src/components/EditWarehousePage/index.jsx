@@ -149,14 +149,14 @@ export default function EditWarehousePage() {
 
         {!isToggled && (
           <div className="fields flex items-center justify-center w-[70%] m-auto">
-            <div className="text-center w-full">
+            <div className="text-center w-full !h-[65vh]">
               {fields && warehouse ? fieldGenerator(fields, warehouse) : null}
             </div>
           </div>
         )}
         {isToggled && (
-          <div className="fields flex items-center justify-center w-[70%] m-auto">
-            <div className="text-center w-[70%]">
+          <div className="fields flex items-center justify-center w-[70%] m-auto border-amber-300 border-4">
+            <div className="text-center w-[70%] !h-[65vh] !border-amber-700 !border-4">
               {fields && warehouse ? fieldGenerator(fields, warehouse) : null}
             </div>
           </div>

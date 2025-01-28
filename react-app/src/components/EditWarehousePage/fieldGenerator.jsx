@@ -8,8 +8,8 @@ export default function fieldGenerator(fields, warehouse) {
                     gridTemplateRows: `repeat(${warehouse.rows}, 1fr)`,
                     gridAutoFlow: 'column',
                     gridGap: "1%",
-                    width: "95%",
-                    height: "65vh",
+                    width: "100%",
+                    height: "100%",
                     margin: "0 auto"
                 }}
             >   
