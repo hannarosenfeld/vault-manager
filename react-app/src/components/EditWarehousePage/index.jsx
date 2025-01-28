@@ -9,7 +9,6 @@ import fieldGenerator from "./fieldGenerator";
 import { sortFields } from "../utility";
 import DeleteWarehouseModal from "./DeleteWarehouseModal";
 
-
 export default function EditWarehousePage() {
   const dispatch = useDispatch();
   const { warehouseId } = useParams();
@@ -87,8 +86,8 @@ export default function EditWarehousePage() {
             />
             <div className="!relative w-11 h-6 !bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:!bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:!bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:!bg-blue-600 dark:peer-checked:!bg-blue-600" />
           </label>
-          <span className="!text-sm !font-medium !text-gray-900 !dark:text-gray-300">
-            Add fields
+          <span className="!text-sm !font-light !text-gray-900 !dark:text-gray-300">
+            {isToggled ? "Add Racks" : "Add Fields"}
           </span>
         </div>
 
@@ -113,25 +112,50 @@ export default function EditWarehousePage() {
 
       <div className="wrapper flex w-[95%] h-[70vh]">
         <div className="leftButtons flex flex-col items-center justify-center gap-1 w-[12%]">
-          {!isToggled && (
+        {!isToggled && (
             <>
-              <ModalButton dir="left" operation="add" warehouseId={warehouseId} />
-              <ModalButton dir="left" operation="subtract" warehouseId={warehouseId} />
+              <ModalButton
+                dir="left"
+                operation="add"
+                warehouseId={warehouseId}
+              />
+              <ModalButton
+                dir="left"
+                operation="subtract"
+                warehouseId={warehouseId}
+              />
             </>
           )}
         </div>
 
-        <div className="fields flex items-center justify-center w-[70%] m-auto">
-          <div className="text-center w-full">
-            {fields && warehouse ? fieldGenerator(fields, warehouse) : null}
+        {!isToggled && (
+          <div className="fields flex items-center justify-center w-[70%] m-auto">
+            <div className="text-center w-full">
+              {fields && warehouse ? fieldGenerator(fields, warehouse) : null}
+            </div>
           </div>
-        </div>
+        )}
+        {isToggled && (
+          <div className="fields flex items-center justify-center w-[70%] m-auto border-amber-800 border-4">
+            <div className="text-center w-[50%]">
+              {fields && warehouse ? fieldGenerator(fields, warehouse) : null}
+            </div>
+          </div>
+        )}
 
         <div className="rightButtons flex flex-col items-center justify-center gap-1 w-[12%]">
           {!isToggled && (
             <>
-              <ModalButton dir="right" operation="add" warehouseId={warehouseId} />
-              <ModalButton dir="right" operation="subtract" warehouseId={warehouseId} />
+              <ModalButton
+                dir="right"
+                operation="add"
+                warehouseId={warehouseId}
+              />
+              <ModalButton
+                dir="right"
+                operation="subtract"
+                warehouseId={warehouseId}
+              />
             </>
           )}
         </div>
@@ -140,8 +164,16 @@ export default function EditWarehousePage() {
       <div className="bottomButtons flex justify-center gap-4 w-full">
         {!isToggled && (
           <>
-            <ModalButton dir="bottom" operation="add" warehouseId={warehouseId} />
-            <ModalButton dir="bottom" operation="subtract" warehouseId={warehouseId} />
+            <ModalButton
+              dir="bottom"
+              operation="add"
+              warehouseId={warehouseId}
+            />
+            <ModalButton
+              dir="bottom"
+              operation="subtract"
+              warehouseId={warehouseId}
+            />
           </>
         )}
       </div>
