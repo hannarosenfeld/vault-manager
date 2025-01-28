@@ -27,7 +27,7 @@ export default function EditWarehousePage() {
   const Rack = ({ id, isEmpty }) => {
     return (
       <div
-        className={`w-16 h-16 border-2 !border-black flex justify-center items-center m-2 
+        className={`w-16 h-16 border-1 !border-black flex justify-center items-center rounded-sm
                     ${isEmpty ? '!bg-transparent' : '!bg-gray-200'}`}
       >
         <span className="text-sm font-semibold !text-black">{id}</span>
@@ -88,7 +88,7 @@ export default function EditWarehousePage() {
 
   return (
     <div className="flex flex-col items-center h-[80vh]">
-      <div className="wrapper !w-full !border-2 !h-[10vh] !flex !justify-between !items-center bg-white rounded-lg shadow-md !p-[2em] !mb-[1em]">
+      <div className="wrapper !w-full !h-[10vh] !flex !justify-between !items-center bg-white rounded-lg shadow-md !p-[2em] !mb-[1em]">
         <div className="!flex !items-center !space-x-3">
           <label className="inline-flex items-center cursor-pointer">
             <input
