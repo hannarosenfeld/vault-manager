@@ -27,7 +27,7 @@ export default function DeleteWarehouseModal(fields, warehouse) {
                 </div>
                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                   <DialogTitle as="h3" className="text-base font-semibold text-gray-900">
-                    Deactivate account
+                    Delete Warehouse
                   </DialogTitle>
                   <div className="mt-2">
                     <p className="text-sm text-gray-500">
@@ -42,7 +42,7 @@ export default function DeleteWarehouseModal(fields, warehouse) {
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 sm:ml-3 sm:w-auto"
+                className="btn btn-danger inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 sm:ml-3 sm:w-auto"
               >
                 Deactivate
               </button>
@@ -50,7 +50,7 @@ export default function DeleteWarehouseModal(fields, warehouse) {
                 type="button"
                 data-autofocus
                 onClick={() => setOpen(false)}
-                className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                className="btn btn-outline-secondary mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50 sm:mt-0 sm:w-auto"
               >
                 Cancel
               </button>
