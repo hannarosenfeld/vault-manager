@@ -8,6 +8,9 @@ import OpenModalButton from "../OpenModalButton";
 import fieldGenerator from "./fieldGenerator";
 import { sortFields } from "../utility";
 import DeleteWarehouseModal from "./DeleteWarehouseModal";
+
+
+
 export default function EditWarehousePage() {
   const dispatch = useDispatch();
   const { warehouseId } = useParams();
@@ -24,13 +27,14 @@ export default function EditWarehousePage() {
   const Rack = ({ id, isEmpty }) => {
     return (
       <div
-        className={`w-16 h-16 border-2 ${isEmpty ? 'bg-gray-300' : 'bg-gray-600'} 
-                    flex justify-center items-center m-2`}
+        className={`w-16 h-16 border-2 !border-black flex justify-center items-center m-2 
+                    ${isEmpty ? '!bg-transparent' : '!bg-gray-200'}`}
       >
-        {id}
+        <span className="text-sm font-semibold !text-black">{id}</span>
       </div>
     );
   };
+  
 
   const openDeleteModal = () => setIsDeleteModalOpen(true);
   const closeDeleteModal = () => setIsDeleteModalOpen(false);
