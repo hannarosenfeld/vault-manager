@@ -34,7 +34,6 @@ export default function EditWarehousePage() {
       </div>
     );
   };
-  
 
   const openDeleteModal = () => setIsDeleteModalOpen(true);
   const closeDeleteModal = () => setIsDeleteModalOpen(false);
