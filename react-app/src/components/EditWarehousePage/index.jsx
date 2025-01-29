@@ -27,7 +27,7 @@ export default function EditWarehousePage() {
   const Rack = ({ id, isEmpty }) => {
     return (
       <div
-        className={`w-16 h-16 border-1 !border-black flex justify-center items-center rounded-sm
+        className={`w-16 h-16 border-1 !border-black flex justify-center items-center rounded-sm !mb-[0.1em]
                     ${isEmpty ? '!bg-transparent' : '!bg-gray-200'}`}
       >
         <span className="text-sm font-semibold !text-black">{id}</span>
@@ -108,9 +108,10 @@ export default function EditWarehousePage() {
         <div>
           <button
             onClick={openDeleteModal}
-            className="btn btn-outline-secondary !text-red-700 hover:!text-white !border-red-700 hover:!bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2 dark:!border-red-500 dark:!text-red-500 dark:hover:!bg-red-600 dark:focus:ring-red-900"
+            style={{fontSize: "10px"}}
+            className="btn btn-outline-secondary !text-red-700 hover:!text-white !border-red-700 hover:!bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg px-5 py-2.5 text-center mb-2 dark:!border-red-500 dark:!text-red-500 dark:hover:!bg-red-600 dark:focus:ring-red-900"
           >
-            DELETE
+            DELETE WAREHOUSE
           </button>
         </div>
 
@@ -143,11 +144,11 @@ export default function EditWarehousePage() {
 
           {/* Display racks instead of buttons when !isToggled */}
           {isToggled && (
-            <>
+            <div className="h-full">
               <Rack id="Rack 1" isEmpty={false} />
               <Rack id="Rack 2" isEmpty={true} />
               <Rack id="Rack 3" isEmpty={false} />
-            </>
+            </div>
           )}
         </div>
 
