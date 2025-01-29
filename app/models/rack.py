@@ -1,5 +1,4 @@
-from .db import db, environment, SCHEMA, add_prefix_for_prod
-from flask_login import UserMixin
+from .db import db
 
 class Rack(db.Model):
     __tablename__ = 'racks'
