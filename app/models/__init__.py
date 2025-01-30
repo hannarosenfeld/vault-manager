@@ -11,3 +11,5 @@ from .warehouse_orders import warehouse_orders
 from .field_orders import field_orders
 from .company import Company
 from .company_customers import company_customers
+from .rack import Rack
+from .rack_content import RackContent

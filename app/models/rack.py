@@ -7,7 +7,7 @@ class Rack(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     shelves = db.Column(db.Integer, nullable=False)
 
-    warehouse_id = db.Column(db.Integer, db.ForeignKey('warehouse.id'), nullable=False)
+    warehouse_id = db.Column(db.Integer, db.ForeignKey('warehouses.id'), nullable=False)
 
     # Relationship with RackContent
     contents = db.relationship('RackContent', backref='rack', lazy=True, cascade="all, delete")

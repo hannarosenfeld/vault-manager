@@ -30,7 +30,7 @@ class Warehouse(db.Model):
     orders = db.relationship('Order', secondary=warehouse_orders, back_populates='warehouses', cascade='all, delete')
 
     # New Relationship with Racks
-    racks = db.relationship('Rack', back_populates='warehouse', cascade='all, delete')
+    racks = db.relationship('Rack', backref='warehouse', lazy=True, cascade="all, delete")
 
     def to_dict(self):
         return {

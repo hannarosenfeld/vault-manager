@@ -14,17 +14,14 @@ class Customer(db.Model, UserMixin):
     vaults = db.relationship('Vault', back_populates='customer')
     customer_companies = db.relationship('Company', secondary=company_customers, back_populates='company_customers', cascade='all, delete')
 
-    # New Relationship with RackContent
-    rack_contents = db.relationship('RackContent', back_populates='customer', cascade='all, delete')
-
-    # orders = db.relationship('Order', back_populates='customer')
+    # Use string reference
+    rack_contents = db.relationship("RackContent", back_populates="customer", cascade="all, delete")
 
     def to_dict(self):
         return {
-            'id': self.id,
-            'name': self.name,
-            'vaults': [vault.id for vault in self.vaults], 
-            'companies': [company.id for company in self.customer_companies],
-            'rack_contents': [rack_content.id for rack_content in self.rack_contents]
-            # 'orders': [order.id for order in self.orders], 
+            "id": self.id,
+            "name": self.name,
+            "vaults": [vault.id for vault in self.vaults],
+            "companies": [company.id for company in self.customer_companies],
+            "rack_contents": [rack_content.id for rack_content in self.rack_contents],
         }
