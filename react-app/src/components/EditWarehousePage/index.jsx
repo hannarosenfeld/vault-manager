@@ -3,12 +3,12 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getAllFieldsThunk } from "../../store/field";
 import { deleteWarehouseThunk } from "../../store/warehouse";
-import { EditWarehouseModal } from "./editWarehouseModal";
-import OpenModalButton from "../OpenModalButton";
 import fieldGenerator from "./fieldGenerator";
 import { sortFields } from "../utility";
 import DeleteWarehouseModal from "./DeleteWarehouseModal";
 import { getAllRacksThunk } from "../../store/rack";
+import { ModalButton } from "./ModalButton";
+
 
 export default function EditWarehousePage() {
   const dispatch = useDispatch();
@@ -44,29 +44,8 @@ export default function EditWarehousePage() {
   }, [loadedWarehouseFields, allFields, rerender]);
 
   useEffect(() => {
-    if (warehouseId) dispatch(getAllRacksThunk(warehouseId))
-
-  }, [warehouseId])
-
-  const Rack = ({ id, position, isEmpty }) => {
-    const getClassNames = () => {
-      if (position === "top" || position === "bottom") {
-        return `w-16 h-10 border-1 !border-black flex justify-center items-center rounded-sm !mb-[0.1em] ${
-          isEmpty ? "!bg-transparent" : "!bg-gray-200"
-        }`;
-      } else {
-        return `w-10 h-16 border-1 !border-black flex justify-center items-center rounded-sm !mb-[0.1em] ${
-          isEmpty ? "!bg-transparent" : "!bg-gray-200"
-        }`;
-      }
-    };
-
-    return (
-      <div className={getClassNames()}>
-        <span className="text-xs font-semibold !text-black">{id}</span>
-      </div>
-    );
-  };
+    if (warehouseId) dispatch(getAllRacksThunk(warehouseId));
+  }, [warehouseId]);
 
   const openDeleteModal = () => setIsDeleteModalOpen(true);
   const closeDeleteModal = () => setIsDeleteModalOpen(false);
@@ -78,25 +57,6 @@ export default function EditWarehousePage() {
   };
 
   const handleToggle = () => setIsToggled((prev) => !prev);
-
-  const ModalButton = ({ dir, operation, warehouseId }) => (
-    <OpenModalButton
-      buttonText={
-        <span className="material-symbols-outlined">
-          {operation === "add" ? "add" : "remove"}
-        </span>
-      }
-      onItemClick={() => setIsModalOpen(false)}
-      modalComponent={
-        <EditWarehouseModal
-          dir={dir}
-          opperation={operation}
-          warehouseId={warehouseId}
-          onFieldChange={() => setRerender((prev) => !prev)} // Toggle rerender state
-        />
-      }
-    />
-  );
 
   if (!isToggled)
     return (
@@ -154,41 +114,13 @@ export default function EditWarehousePage() {
                 />
               </>
             )}
-
-            {/* Display racks instead of buttons when !isToggled */}
-            {/* {isToggled && (
-            <div  className="h-full flex flex-row mt-4">
-              <Rack id="Rack 1" position="top" isEmpty={false} />
-              <Rack id="Rack 2" position="top" isEmpty={true} />
-            </div>
-          )} */}
-
-            {/* Display racks instead of buttons when !isToggled */}
-            {/* {isToggled && (
-            <div className="h-full">
-              <Rack id="Rack 1" position="left" isEmpty={false} />
-              <Rack id="Rack 2" position="left" isEmpty={true} />
-              <Rack id="Rack 3" position="left" isEmpty={false} />
-              <Rack id="Rack 4" position="left" isEmpty={false} />
-              <Rack id="Rack 5" position="left" isEmpty={true} />
-              <Rack id="Rack 6" position="left" isEmpty={false} />
-              <Rack id="Rack 7" position="left" isEmpty={false} />
-            </div>
-          )} */}
           </div>
 
-            <div className="fields flex items-center justify-center w-[70%] m-auto">
-              <div className="text-center w-full !h-[65vh]">
-                {fields && warehouse ? fieldGenerator(fields, warehouse) : null}
-              </div>
-            </div>
-          {/* {isToggled && (
           <div className="fields flex items-center justify-center w-[70%] m-auto">
-            <div className="text-center w-[40%] !h-[65vh]">
+            <div className="text-center w-full !h-[65vh]">
               {fields && warehouse ? fieldGenerator(fields, warehouse) : null}
             </div>
           </div>
-        )} */}
 
           <div className="rightButtons flex flex-col items-center justify-center gap-1 w-[12%]">
             {!isToggled && (
@@ -205,26 +137,6 @@ export default function EditWarehousePage() {
                 />
               </>
             )}
-
-            {/* Display racks instead of buttons when !isToggled */}
-            {/* {isToggled && (
-            <div className="h-full flex flex-row mt-4">
-              <Rack id="Rack 1" position="top" isEmpty={false} />
-              <Rack id="Rack 2" position="top" isEmpty={true} />
-            </div>
-          )} */}
-            {/* Display racks instead of buttons when !isToggled */}
-            {/* {isToggled && (
-            <div className="h-full">
-              <Rack id="Rack 1" position="right" isEmpty={false} />
-              <Rack id="Rack 2" position="right" isEmpty={true} />
-              <Rack id="Rack 3" position="right" isEmpty={false} />
-              <Rack id="Rack 4" position="right" isEmpty={false} />
-              <Rack id="Rack 5" position="right" isEmpty={true} />
-              <Rack id="Rack 6" position="right" isEmpty={false} />
-              <Rack id="Rack 7" position="right" isEmpty={false} />
-            </div>
-          )} */}
           </div>
         </div>
 
@@ -243,23 +155,12 @@ export default function EditWarehousePage() {
               />
             </>
           )}
-          {/* Display racks instead of buttons when !isToggled */}
-          {/* {isToggled && (
-          <div className="wrapper w-[100%] h-full flex flex-row p-1 mt-4">
-            <Rack id="Rack 1" position="bottom" isEmpty={false} />
-            <Rack id="Rack 2" position="bottom" isEmpty={true} />
-            <Rack id="Rack 3" position="bottom" isEmpty={false} />
-            <Rack id="Rack 4" position="bottom" isEmpty={false} />
-            <Rack id="Rack 5" position="bottom" isEmpty={true} />
-            <Rack id="Rack 6" position="bottom" isEmpty={false} />
-          </div>
-        )} */}
         </div>
       </div>
     );
   if (isToggled)
     return (
-      <div className="wrapper border-2 border-b-fuchsia-600 h-[90vh]">
+      <div className="wrapper border-2 border-b-fuchsia-600 h-[80vh]">
         <div className="wrapper !w-full !h-[10vh] !flex !justify-between !items-center bg-white rounded-lg shadow-md !p-[2em] !mb-[1em]">
           <div className="!flex !items-center !space-x-3">
             <label className="inline-flex items-center cursor-pointer">
@@ -299,7 +200,7 @@ export default function EditWarehousePage() {
         <div className="grid h-full grid-cols-[25%_50%_25%] border-amber-700 border-2">
           <div className="border-2"></div>
           <div className="border-2">
-          <div className="fields flex items-center justify-center w-[70%] m-auto">
+            <div className="fields flex items-center justify-center w-[70%] m-auto">
               <div className="text-center w-full !h-[65vh]">
                 {fields && warehouse ? fieldGenerator(fields, warehouse) : null}
               </div>
