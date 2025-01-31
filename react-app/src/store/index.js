@@ -10,6 +10,7 @@ import orderReducer from './order';
 import searchReducer from './search';
 import attachmentReducer from './attachment';
 import companyReder from './company';
+import rackReducer from './rack';
 
 // Import logger statically at the top
 import logger from 'redux-logger';
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   search: searchReducer,
   attachment: attachmentReducer,
   company: companyReder,
+  rack: rackReducer
 });
 
 // Use applyMiddleware with conditional logger

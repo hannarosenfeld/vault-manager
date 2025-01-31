@@ -7,7 +7,6 @@ def seed_companies():
     warehouses = Warehouse.query.all()
     orders = Order.query.all()
     customers = Customer.query.all()
-    print("👚", users, warehouses, orders, customers)
     c1 = Company(
         company_users=users,
         name="Naglee",

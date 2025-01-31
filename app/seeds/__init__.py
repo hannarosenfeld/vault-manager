@@ -6,8 +6,8 @@ from .fields import seed_fields, undo_fields
 from .companies import seed_companies, undo_companies
 from .warehouse import seed_warehouse, undo_warehouse
 from .orders import seed_orders, undo_orders
-from app.models import Field, Warehouse, Customer, Company, User, Order, Vault
-
+from .racks import seed_racks, undo_racks  # Import the new rack seeder
+from app.models import Field, Warehouse, Customer, Company, User, Order, Vault, Rack  # Include Rack model
 from app.models.db import db, environment, SCHEMA
 
 # Creates a seed group to hold our commands
@@ -25,6 +25,7 @@ def seed():
         orders = None
         warehouses = None
         companies = None
+        racks = None
 
         if not User.query.all(): 
             users = seed_users()  
@@ -39,7 +40,9 @@ def seed():
         if not Vault.query.all(): 
             seed_vaults(customers)
         if not Company.query.all(): 
-            companies = seed_companies()              
+            companies = seed_companies()
+        if not Rack.query.all():  # Check if racks are empty before seeding
+            racks = seed_racks()  # Seed racks if none exist
 
 @seed_commands.command('undo')
 def undo():
@@ -49,3 +52,4 @@ def undo():
     undo_customers()
     undo_users()
     undo_warehouse()
+    undo_racks()  # Add the undo command for racks

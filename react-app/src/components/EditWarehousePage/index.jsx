@@ -8,6 +8,7 @@ import OpenModalButton from "../OpenModalButton";
 import fieldGenerator from "./fieldGenerator";
 import { sortFields } from "../utility";
 import DeleteWarehouseModal from "./DeleteWarehouseModal";
+import { getAllRacksThunk } from "../../store/rack";
 
 export default function EditWarehousePage() {
   const dispatch = useDispatch();
@@ -21,6 +22,32 @@ export default function EditWarehousePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isToggled, setIsToggled] = useState(false);
+
+  useEffect(() => {
+    setFields(null);
+    setLoadedWarehouseFields(false);
+    const fields = dispatch(getAllFieldsThunk(warehouseId));
+
+    Promise.all([fields])
+      .then(() => setLoadedWarehouseFields(true))
+      .catch(() => console.log("🚨 fields could not be loaded!"));
+  }, [dispatch, warehouseId]);
+
+  useEffect(() => {
+    if (loadedWarehouseFields && allFields) {
+      const fieldsArr = Object.values(allFields);
+      if (fieldsArr.length) {
+        const sortedFields = sortFields(fieldsArr);
+        setFields(sortedFields);
+      }
+    }
+  }, [loadedWarehouseFields, allFields, rerender]);
+
+  useEffect(() => {
+    console.log("🌹")
+    if (warehouseId) dispatch(getAllRacksThunk(warehouseId))
+
+  }, [warehouseId])
 
   const Rack = ({ id, position, isEmpty }) => {
     const getClassNames = () => {
@@ -71,26 +98,6 @@ export default function EditWarehousePage() {
       }
     />
   );
-
-  useEffect(() => {
-    setFields(null);
-    setLoadedWarehouseFields(false);
-    const fields = dispatch(getAllFieldsThunk(warehouseId));
-
-    Promise.all([fields])
-      .then(() => setLoadedWarehouseFields(true))
-      .catch(() => console.log("🚨 fields could not be loaded!"));
-  }, [dispatch, warehouseId]);
-
-  useEffect(() => {
-    if (loadedWarehouseFields && allFields) {
-      const fieldsArr = Object.values(allFields);
-      if (fieldsArr.length) {
-        const sortedFields = sortFields(fieldsArr);
-        setFields(sortedFields);
-      }
-    }
-  }, [loadedWarehouseFields, allFields, rerender]);
 
   if (!isToggled)
     return (
