@@ -12,6 +12,9 @@ import os
 environment = os.getenv("FLASK_ENV")
 SCHEMA = os.environ.get("SCHEMA")
 
+import sys
+sys.path.insert(0,'/app')
+
 from app import app
 
 with app.app_context():
