@@ -14,7 +14,12 @@ SCHEMA = os.environ.get("SCHEMA")
 
 from app import app
 
-app.app_context()
+with app.app_context():
+    from flask import current_app
+    config.set_main_option(
+        'sqlalchemy.url',
+        str(current_app.extensions['migrate'].db.engine.url).replace('%', '%%'))
+    target_metadata = current_app.extensions['migrate'].db.metadata
 
 
 # this is the Alembic Config object, which provides
