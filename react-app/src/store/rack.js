@@ -18,11 +18,9 @@ export const deleteRackAction = (rackId) => ({
 });
 
 export const getAllRacksThunk = (warehouseId) => async (dispatch) => {
-  console.log("💖 in thunk!", warehouseId)
   try {
     const response = await fetch(`/api/rack/${warehouseId}`);
     if (response.ok) {
-      console.log("💛 response ok")
       const data = await response.json();
       dispatch(getAllRacks(data));
       return data;

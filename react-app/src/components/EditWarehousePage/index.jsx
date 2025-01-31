@@ -44,7 +44,6 @@ export default function EditWarehousePage() {
   }, [loadedWarehouseFields, allFields, rerender]);
 
   useEffect(() => {
-    console.log("🌹")
     if (warehouseId) dispatch(getAllRacksThunk(warehouseId))
 
   }, [warehouseId])

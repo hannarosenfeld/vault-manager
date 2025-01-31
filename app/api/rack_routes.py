@@ -13,18 +13,12 @@ def get_racks(warehouse_id):
     Retrieve all racks for a specific warehouse
     """
 
-    print("❤️‍🔥 IN ROUTE")
-
     warehouse = Warehouse.query.get(warehouse_id)
-
-    print("🚨 warehouse: ", warehouse)
 
     if not warehouse:
         return jsonify({'error': 'Warehouse not found'}), 404
 
     racks = Rack.query.filter(Rack.warehouse_id == warehouse_id).all()
-
-    print("💖 racks: ", racks)
 
     if not racks:
         return jsonify({'error': 'No racks found for this warehouse'}), 404
