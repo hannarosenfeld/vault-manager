@@ -8,6 +8,7 @@ import { sortFields } from "../utility";
 import DeleteWarehouseModal from "./DeleteWarehouseModal";
 import { getAllRacksThunk } from "../../store/rack";
 import { ModalButton } from "./ModalButton";
+import { ToggleBox } from "./ToggleBox";
 
 
 export default function EditWarehousePage() {
@@ -61,8 +62,10 @@ export default function EditWarehousePage() {
   if (!isToggled)
     return (
       <div className="flex flex-col items-center h-[80vh]">
-        <div className="wrapper !w-full !h-[10vh] !flex !justify-between !items-center bg-white rounded-lg shadow-md !p-[2em] !mb-[1em]">
-          <div className="!flex !items-center !space-x-3">
+        <ToggleBox isToggled={isToggled} handleToggle={handleToggle} openDeleteModal={openDeleteModal} />
+
+        {/* <div className="wrapper !w-full !h-[10vh] !flex !justify-between !items-center bg-white rounded-lg shadow-md !p-[2em] !mb-[1em]"> */}
+          {/* <div className="!flex !items-center !space-x-3">
             <label className="inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"
@@ -86,8 +89,8 @@ export default function EditWarehousePage() {
             >
               DELETE WAREHOUSE
             </button>
-          </div>
-
+          </div> */}
+{/* 
           {isDeleteModalOpen && (
             <DeleteWarehouseModal
               isDeleteModalOpen={isDeleteModalOpen}
@@ -96,7 +99,7 @@ export default function EditWarehousePage() {
               closeDeleteModal={closeDeleteModal}
             />
           )}
-        </div>
+        </div> */}
 
         <div className="wrapper flex w-[100%] h-[70vh]">
           <div className="leftButtons flex flex-col items-center justify-center gap-1 w-[12%]">
