@@ -22,13 +22,22 @@ export default function EditWarehousePage() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isToggled, setIsToggled] = useState(false);
 
-  const Rack = ({ id, isEmpty }) => {
+  const Rack = ({ id, position, isEmpty }) => {
+    const getClassNames = () => {
+      if (position === "top" || position === "bottom") {
+        return `w-16 h-10 border-1 !border-black flex justify-center items-center rounded-sm !mb-[0.1em] ${
+          isEmpty ? "!bg-transparent" : "!bg-gray-200"
+        }`;
+      } else {
+        return `w-10 h-16 border-1 !border-black flex justify-center items-center rounded-sm !mb-[0.1em] ${
+          isEmpty ? "!bg-transparent" : "!bg-gray-200"
+        }`;
+      }
+    };
+
     return (
-      <div
-        className={`w-16 h-16 border-1 !border-black flex justify-center items-center rounded-sm !mb-[0.1em]
-                    ${isEmpty ? "!bg-transparent" : "!bg-gray-200"}`}
-      >
-        <span className="text-sm font-semibold !text-black">{id}</span>
+      <div className={getClassNames()}>
+        <span className="text-xs font-semibold !text-black">{id}</span>
       </div>
     );
   };
@@ -83,137 +92,215 @@ export default function EditWarehousePage() {
     }
   }, [loadedWarehouseFields, allFields, rerender]);
 
-  return (
-    <div className="flex flex-col items-center h-[80vh]">
-      <div className="wrapper !w-full !h-[10vh] !flex !justify-between !items-center bg-white rounded-lg shadow-md !p-[2em] !mb-[1em]">
-        <div className="!flex !items-center !space-x-3">
-          <label className="inline-flex items-center cursor-pointer">
-            <input
-              type="checkbox"
-              value=""
-              className="!sr-only peer"
-              checked={isToggled}
-              onChange={handleToggle}
+  if (!isToggled)
+    return (
+      <div className="flex flex-col items-center h-[80vh]">
+        <div className="wrapper !w-full !h-[10vh] !flex !justify-between !items-center bg-white rounded-lg shadow-md !p-[2em] !mb-[1em]">
+          <div className="!flex !items-center !space-x-3">
+            <label className="inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                value=""
+                className="!sr-only peer"
+                checked={isToggled}
+                onChange={handleToggle}
+              />
+              <div className="!relative w-11 h-6 !bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:!bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:!bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:!bg-blue-600 dark:peer-checked:!bg-blue-600" />
+            </label>
+            <span className="!text-sm !font-light !text-gray-900 !dark:text-gray-300">
+              Show {isToggled ? "Racks" : "Fields"}
+            </span>
+          </div>
+
+          <div>
+            <button
+              onClick={openDeleteModal}
+              style={{ fontSize: "10px" }}
+              className="btn btn-outline-secondary !text-red-700 hover:!text-white !border-red-700 hover:!bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg px-5 py-2.5 text-center mb-2 dark:!border-red-500 dark:!text-red-500 dark:hover:!bg-red-600 dark:focus:ring-red-900"
+            >
+              DELETE WAREHOUSE
+            </button>
+          </div>
+
+          {isDeleteModalOpen && (
+            <DeleteWarehouseModal
+              isDeleteModalOpen={isDeleteModalOpen}
+              setIsDeleteModalOpen={setIsDeleteModalOpen}
+              confirmDelete={confirmDelete}
+              closeDeleteModal={closeDeleteModal}
             />
-            <div className="!relative w-11 h-6 !bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:!bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:!bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:!bg-blue-600 dark:peer-checked:!bg-blue-600" />
-          </label>
-          <span className="!text-sm !font-light !text-gray-900 !dark:text-gray-300">
-            Show {isToggled ? "Racks" : "Fields"}
-          </span>
+          )}
         </div>
 
-        <div>
-          <button
-            onClick={openDeleteModal}
-            style={{ fontSize: "10px" }}
-            className="btn btn-outline-secondary !text-red-700 hover:!text-white !border-red-700 hover:!bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg px-5 py-2.5 text-center mb-2 dark:!border-red-500 dark:!text-red-500 dark:hover:!bg-red-600 dark:focus:ring-red-900"
-          >
-            DELETE WAREHOUSE
-          </button>
+        <div className="wrapper flex w-[100%] h-[70vh]">
+          <div className="leftButtons flex flex-col items-center justify-center gap-1 w-[12%]">
+            {!isToggled && (
+              <>
+                <ModalButton
+                  dir="left"
+                  operation="add"
+                  warehouseId={warehouseId}
+                />
+                <ModalButton
+                  dir="left"
+                  operation="subtract"
+                  warehouseId={warehouseId}
+                />
+              </>
+            )}
+
+            {/* Display racks instead of buttons when !isToggled */}
+            {/* {isToggled && (
+            <div  className="h-full flex flex-row mt-4">
+              <Rack id="Rack 1" position="top" isEmpty={false} />
+              <Rack id="Rack 2" position="top" isEmpty={true} />
+            </div>
+          )} */}
+
+            {/* Display racks instead of buttons when !isToggled */}
+            {/* {isToggled && (
+            <div className="h-full">
+              <Rack id="Rack 1" position="left" isEmpty={false} />
+              <Rack id="Rack 2" position="left" isEmpty={true} />
+              <Rack id="Rack 3" position="left" isEmpty={false} />
+              <Rack id="Rack 4" position="left" isEmpty={false} />
+              <Rack id="Rack 5" position="left" isEmpty={true} />
+              <Rack id="Rack 6" position="left" isEmpty={false} />
+              <Rack id="Rack 7" position="left" isEmpty={false} />
+            </div>
+          )} */}
+          </div>
+
+            <div className="fields flex items-center justify-center w-[70%] m-auto">
+              <div className="text-center w-full !h-[65vh]">
+                {fields && warehouse ? fieldGenerator(fields, warehouse) : null}
+              </div>
+            </div>
+          {/* {isToggled && (
+          <div className="fields flex items-center justify-center w-[70%] m-auto">
+            <div className="text-center w-[40%] !h-[65vh]">
+              {fields && warehouse ? fieldGenerator(fields, warehouse) : null}
+            </div>
+          </div>
+        )} */}
+
+          <div className="rightButtons flex flex-col items-center justify-center gap-1 w-[12%]">
+            {!isToggled && (
+              <>
+                <ModalButton
+                  dir="right"
+                  operation="add"
+                  warehouseId={warehouseId}
+                />
+                <ModalButton
+                  dir="right"
+                  operation="subtract"
+                  warehouseId={warehouseId}
+                />
+              </>
+            )}
+
+            {/* Display racks instead of buttons when !isToggled */}
+            {/* {isToggled && (
+            <div className="h-full flex flex-row mt-4">
+              <Rack id="Rack 1" position="top" isEmpty={false} />
+              <Rack id="Rack 2" position="top" isEmpty={true} />
+            </div>
+          )} */}
+            {/* Display racks instead of buttons when !isToggled */}
+            {/* {isToggled && (
+            <div className="h-full">
+              <Rack id="Rack 1" position="right" isEmpty={false} />
+              <Rack id="Rack 2" position="right" isEmpty={true} />
+              <Rack id="Rack 3" position="right" isEmpty={false} />
+              <Rack id="Rack 4" position="right" isEmpty={false} />
+              <Rack id="Rack 5" position="right" isEmpty={true} />
+              <Rack id="Rack 6" position="right" isEmpty={false} />
+              <Rack id="Rack 7" position="right" isEmpty={false} />
+            </div>
+          )} */}
+          </div>
         </div>
 
-        {isDeleteModalOpen && (
-          <DeleteWarehouseModal
-            isDeleteModalOpen={isDeleteModalOpen}
-            setIsDeleteModalOpen={setIsDeleteModalOpen}
-            confirmDelete={confirmDelete}
-            closeDeleteModal={closeDeleteModal}
-          />
-        )}
-      </div>
-
-      <div className="wrapper flex w-[95%] h-[70vh]">
-        <div className="leftButtons flex flex-col items-center justify-center gap-1 w-[12%]">
+        <div className="bottomButtons flex justify-center gap-4 w-full">
           {!isToggled && (
             <>
               <ModalButton
-                dir="left"
+                dir="bottom"
                 operation="add"
                 warehouseId={warehouseId}
               />
               <ModalButton
-                dir="left"
+                dir="bottom"
                 operation="subtract"
                 warehouseId={warehouseId}
               />
             </>
           )}
-
           {/* Display racks instead of buttons when !isToggled */}
-          {isToggled && (
-            <div className="h-full">
-              <Rack id="Rack 1" isEmpty={false} />
-              <Rack id="Rack 2" isEmpty={true} />
-              <Rack id="Rack 3" isEmpty={false} />
-            </div>
-          )}
-        </div>
-
-        {!isToggled && (
-          <div className="fields flex items-center justify-center w-[70%] m-auto">
-            <div className="text-center w-full !h-[65vh]">
-              {fields && warehouse ? fieldGenerator(fields, warehouse) : null}
-            </div>
-          </div>
-        )}
-        {isToggled && (
-          <div className="fields flex items-center justify-center w-[70%] m-auto">
-            <div className="text-center w-[70%] !h-[65vh]">
-              {fields && warehouse ? fieldGenerator(fields, warehouse) : null}
-            </div>
-          </div>
-        )}
-
-        <div className="rightButtons flex flex-col items-center justify-center gap-1 w-[12%]">
-          {!isToggled && (
-            <>
-              <ModalButton
-                dir="right"
-                operation="add"
-                warehouseId={warehouseId}
-              />
-              <ModalButton
-                dir="right"
-                operation="subtract"
-                warehouseId={warehouseId}
-              />
-            </>
-          )}
-          {/* Display racks instead of buttons when !isToggled */}
-          {isToggled && (
-            <div className="h-full">
-              <Rack id="Rack 1" isEmpty={false} />
-              <Rack id="Rack 2" isEmpty={true} />
-              <Rack id="Rack 3" isEmpty={false} />
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div className="bottomButtons flex justify-center gap-4 w-full">
-        {!isToggled && (
-          <>
-            <ModalButton
-              dir="bottom"
-              operation="add"
-              warehouseId={warehouseId}
-            />
-            <ModalButton
-              dir="bottom"
-              operation="subtract"
-              warehouseId={warehouseId}
-            />
-          </>
-        )}
-        {/* Display racks instead of buttons when !isToggled */}
-        {isToggled && (
+          {/* {isToggled && (
           <div className="wrapper w-[100%] h-full flex flex-row p-1 mt-4">
-            <Rack id="Rack 1" isEmpty={false} />
-            <Rack id="Rack 2" isEmpty={true} />
-            <Rack id="Rack 3" isEmpty={false} />
+            <Rack id="Rack 1" position="bottom" isEmpty={false} />
+            <Rack id="Rack 2" position="bottom" isEmpty={true} />
+            <Rack id="Rack 3" position="bottom" isEmpty={false} />
+            <Rack id="Rack 4" position="bottom" isEmpty={false} />
+            <Rack id="Rack 5" position="bottom" isEmpty={true} />
+            <Rack id="Rack 6" position="bottom" isEmpty={false} />
           </div>
-        )}
+        )} */}
+        </div>
       </div>
-    </div>
-  );
+    );
+  if (isToggled)
+    return (
+      <div className="wrapper border-2 border-b-fuchsia-600 h-[90vh]">
+        <div className="wrapper !w-full !h-[10vh] !flex !justify-between !items-center bg-white rounded-lg shadow-md !p-[2em] !mb-[1em]">
+          <div className="!flex !items-center !space-x-3">
+            <label className="inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                value=""
+                className="!sr-only peer"
+                checked={isToggled}
+                onChange={handleToggle}
+              />
+              <div className="!relative w-11 h-6 !bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:!bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:!bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:!bg-blue-600 dark:peer-checked:!bg-blue-600" />
+            </label>
+            <span className="!text-sm !font-light !text-gray-900 !dark:text-gray-300">
+              Show {isToggled ? "Racks" : "Fields"}
+            </span>
+          </div>
+
+          <div>
+            <button
+              onClick={openDeleteModal}
+              style={{ fontSize: "10px" }}
+              className="btn btn-outline-secondary !text-red-700 hover:!text-white !border-red-700 hover:!bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg px-5 py-2.5 text-center mb-2 dark:!border-red-500 dark:!text-red-500 dark:hover:!bg-red-600 dark:focus:ring-red-900"
+            >
+              DELETE WAREHOUSE
+            </button>
+          </div>
+
+          {isDeleteModalOpen && (
+            <DeleteWarehouseModal
+              isDeleteModalOpen={isDeleteModalOpen}
+              setIsDeleteModalOpen={setIsDeleteModalOpen}
+              confirmDelete={confirmDelete}
+              closeDeleteModal={closeDeleteModal}
+            />
+          )}
+        </div>
+        <div className="grid h-full grid-cols-[25%_50%_25%] border-amber-700 border-2">
+          <div className="border-2"></div>
+          <div className="border-2">
+          <div className="fields flex items-center justify-center w-[70%] m-auto">
+              <div className="text-center w-full !h-[65vh]">
+                {fields && warehouse ? fieldGenerator(fields, warehouse) : null}
+              </div>
+            </div>
+          </div>
+          <div className="border-2"></div>
+        </div>
+      </div>
+    );
 }
