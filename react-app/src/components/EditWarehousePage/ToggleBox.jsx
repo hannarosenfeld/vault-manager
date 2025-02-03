@@ -1,4 +1,12 @@
-export const ToggleBox = ({isToggled, handleToggle, openDeleteModal}) => {
+import { useState } from "react";
+import DeleteWarehouseModal from "./DeleteWarehouseModal";
+
+export const ToggleBox = ({ isToggled, handleToggle, warehouseId, confirmDelete }) => {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  const openDeleteModal = () => setIsDeleteModalOpen(true);
+  const closeDeleteModal = () => setIsDeleteModalOpen(false);
+
   return (
     <div className="wrapper !w-full !h-[10vh] !flex !justify-between !items-center bg-white rounded-lg shadow-md !p-[2em] !mb-[1em]">
       <div className="!flex !items-center !space-x-3">
@@ -26,6 +34,18 @@ export const ToggleBox = ({isToggled, handleToggle, openDeleteModal}) => {
           DELETE WAREHOUSE
         </button>
       </div>
+
+      {isDeleteModalOpen && (
+        <DeleteWarehouseModal
+          isDeleteModalOpen={isDeleteModalOpen}
+          setIsDeleteModalOpen={setIsDeleteModalOpen}
+          confirmDelete={() => {
+            confirmDelete();
+            closeDeleteModal();
+          }}
+          closeDeleteModal={closeDeleteModal}
+        />
+      )}
     </div>
   );
 };
