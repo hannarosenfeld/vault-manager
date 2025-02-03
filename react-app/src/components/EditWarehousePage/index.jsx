@@ -9,7 +9,6 @@ import { getAllRacksThunk } from "../../store/rack";
 import { ModalButton } from "./ModalButton";
 import { ToggleBox } from "./ToggleBox";
 
-
 export default function EditWarehousePage() {
   const dispatch = useDispatch();
   const { warehouseId } = useParams();
@@ -152,9 +151,9 @@ export default function EditWarehousePage() {
             </button>
           </div>
         </div>
-        <div className="h-full border-amber-700 !w-full">
-          <div className="border-b-blue-800 border-4">
-            {isToggled && <h3>🚧 New feature coming soon 👷‍♀️</h3>}
+        <div className="h-full w-full border-amber-700 flex items-start justify-center pt-10">
+          <div className="text-center">
+            {isToggled && <h3>🚧 New feature coming soon 🚧</h3>}
           </div>
         </div>
       </div>
