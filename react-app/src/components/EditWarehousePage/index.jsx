@@ -124,7 +124,7 @@ export default function EditWarehousePage() {
 
   if (isToggled)
     return (
-      <div className="wrapper border-2 border-b-fuchsia-600 h-[80vh]">
+      <div className="wrapper h-[80vh]">
         <div className="wrapper !w-full !h-[10vh] !flex !justify-between !items-center bg-white rounded-lg shadow-md !p-[2em] !mb-[1em]">
           <div className="!flex !items-center !space-x-3">
             <label className="inline-flex items-center cursor-pointer">
@@ -152,9 +152,9 @@ export default function EditWarehousePage() {
             </button>
           </div>
         </div>
-        <div className="grid h-full grid-cols-[25%_50%_25%] border-amber-700 !w-full !h-[80vh]">
-          <div className="flex flex-col items-center justify-center gap-1">
-            {isToggled && <h3>Rack Config</h3>}
+        <div className="h-full border-amber-700 !w-full">
+          <div className="border-b-blue-800 border-4">
+            {isToggled && <h3>🚧 New feature coming soon 👷‍♀️</h3>}
           </div>
         </div>
       </div>
