@@ -9,6 +9,7 @@ import { getAllCustomersThunk } from "../../store/customer.js";
 import RenderTMB from "./RenderTMB/index.jsx";
 import AddVaultModal from "./RenderTMB/AddVaultModal/AddVaultModal.jsx"
 import ConfirmStaging from "./RenderTMB/ConfirmStaging/index.jsx";
+import FieldGrid from "../FieldGrid.jsx";
 import "./Warehouse.css"
 
 
@@ -185,56 +186,10 @@ export default function Warehouse({ setIsWarehousePage }) {
     }, [loadedWarehouseFields])
 
 
-    // 🚨 TODO
-    function fieldGenerator(fields) {
-        if (fields) {
-            return (
-                <div 
-                    style={{
-                        display: "grid",
-                        gridTemplateColumns: `repeat(${warehouse.columns}, 1fr)`,
-                        gridTemplateRows: `repeat(${warehouse.rows}, 1fr)`,
-                        gridAutoFlow: 'column',
-                        gridGap: "1%",
-                        width: "100%",
-                        height: "75vh",
-                        marginBottom: "1rem"
-                    }}
-                >   
-                    {fields.map(field => (
-                    <div
-                        className="field"
-                        key={field.id}
-                        style={{
-                            backgroundColor: `${
-                                field.vaults?.length === 3 && field.type === "vault" || field.full ? "var(--red)" :
-                                field.vaults?.length === 4 && field.type === "couchbox-T" || field.full ? "var(--red)" :
-                                field.vaults?.length === 3 && field.type === "couchbox-T" || field.full ? "var(--yellow)" :
-                                field.vaults?.length === 2 ? "var(--yellow)" :
-                                field.vaults?.length === 1 ? "var(--green)" :
-                                "var(--lightgrey)"
-                            }`,
-                            border: `${
-                                selectedField?.id === field.id ? "3px solid var(--blue)" : 
-                                searchResult && searchResult?.includes(field.id) ? "3px solid var(--blue)" : "none"
-                            }`,
-                            height: `${field.type === "couchbox-T" ? "213%" : '100%'}`,
-                            marginBottom: `${field.type === "couchbox-T" ? "-2.6em" : '0'}`,
-                            width: `${field.type === "couchbox-B" ? "0px" : ''}`,
-                            zIndex: `${field.type === "couchbox-B" ? "100" : 'none'}`,
-                        }}
-                        onClick={() => handleFieldClick(field)}
-                    >{field.type === "couchbox-B" ? "" : <div className="field-number">{field.name}</div>}</div>
-                    ))}
-                </div>
-            )
-        }
-    }
-
     if (!warehouse) return null
 
     return (
-        <div className="warehouse-wrapper" style={{padding: "1em"}}>
+        <div className="wrapper">
             {loading  && ( 
                 <div className="loading-animation-container"> 
                 <CircularProgress  size={75} />
@@ -269,8 +224,8 @@ export default function Warehouse({ setIsWarehousePage }) {
                             </div>
                         )}
                     </div>
-                    <div className="warehouse">
-                        {fields ? fieldGenerator(fields): null}
+                    <div className="warehouse !h-[55vh]">
+                      {fields && warehouse ? FieldGrid(fields, warehouse, handleFieldClick) : null}
                     </div>
                     <Modal open={isModalOpen}>
                         <AddVaultModal

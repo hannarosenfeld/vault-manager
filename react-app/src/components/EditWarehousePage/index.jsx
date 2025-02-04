@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getAllFieldsThunk } from "../../store/field";
 import { deleteWarehouseThunk } from "../../store/warehouse";
-import fieldGenerator from "./fieldGenerator";
+import FieldGrid from "../FieldGrid";
 import { sortFields } from "../utility";
 import { getAllRacksThunk } from "../../store/rack";
 import { ModalButton } from "./ModalButton";
@@ -80,7 +80,7 @@ export default function EditWarehousePage() {
 
           <div className="fields flex items-center justify-center w-[70%] m-auto">
             <div className="text-center w-full !h-[65vh]">
-              {fields && warehouse ? fieldGenerator(fields, warehouse) : null}
+              {fields && warehouse ? FieldGrid(fields, warehouse) : null}
             </div>
           </div>
 

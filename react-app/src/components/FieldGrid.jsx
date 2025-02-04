@@ -1,4 +1,4 @@
-export default function fieldGenerator(fields, warehouse) {
+export default function FieldGrid(fields, warehouse, handleFieldClick) {
     if (fields && warehouse) {
         return (
             <div 
@@ -31,6 +31,7 @@ export default function fieldGenerator(fields, warehouse) {
                         width: `${field.type === "couchbox-B" ? "0px" : '100%'}`,
                         zIndex: `${field.type === "couchbox-B" ? "100" : 'none'}`,
                     }}
+                    {...(handleFieldClick ? { onClick: () => handleFieldClick(field) } : {})}
                 >{field.type === "couchbox-B" ? "" : <div className="field-number">{field.name}</div>}</div>
                 ))}
             </div>
