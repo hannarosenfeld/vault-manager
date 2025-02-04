@@ -6,8 +6,6 @@ def seed_warehouse(users, fields, orders):
     user_instances = User.query.all()
     order_instances = Order.query.all()
 
-    print("👰🏼‍♀️", allFields, user_instances,order_instances)
-    
     warehouse = Warehouse()
     warehouse.name = "Warehouse 3"
     warehouse.cols = 9
@@ -15,8 +13,6 @@ def seed_warehouse(users, fields, orders):
     warehouse.warehouse_fields = allFields
     warehouse.users = user_instances
     warehouse.orders = order_instances
-
-    print("🦋", warehouse)
 
     db.session.add(warehouse)
     db.session.commit()

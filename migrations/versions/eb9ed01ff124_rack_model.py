@@ -1,8 +1,8 @@
-"""Create racks table
+"""Rack model.
 
-Revision ID: faf9ab444d88
+Revision ID: eb9ed01ff124
 Revises: 0edcb8101bb3
-Create Date: 2025-01-30 10:21:39.575179
+Create Date: 2025-02-04 11:15:53.766976
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'faf9ab444d88'
+revision = 'eb9ed01ff124'
 down_revision = '0edcb8101bb3'
 branch_labels = None
 depends_on = None
@@ -21,10 +21,14 @@ def upgrade():
     op.create_table('racks',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('shelves', sa.Integer(), nullable=False),
+    sa.Column('wall_side', sa.Enum('top-left', 'top-right', 'bottom', 'left', 'right', name='wall_side_enum'), nullable=False),
+    sa.Column('orientation', sa.Enum('horizontal', 'vertical', name='position_enum'), nullable=False),
+    sa.Column('position', sa.String(length=20), nullable=False),
     sa.Column('warehouse_id', sa.Integer(), nullable=False),
     sa.CheckConstraint('shelves BETWEEN 1 AND 10', name='check_shelves_limit'),
     sa.ForeignKeyConstraint(['warehouse_id'], ['warehouses.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('position')
     )
     op.create_table('rack_contents',
     sa.Column('id', sa.Integer(), nullable=False),

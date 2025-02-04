@@ -3,7 +3,7 @@ from sqlalchemy.sql import text
 
 def seed_racks():
     # Get the customer and warehouse by their ids
-    warehouse = Warehouse.query.get(6)
+    warehouse = Warehouse.query.get(1)
     customer = Customer.query.get(1)
 
     # Create some sample racks
