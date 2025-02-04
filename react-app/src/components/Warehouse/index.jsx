@@ -221,11 +221,13 @@ export default function Warehouse({ setIsWarehousePage }) {
             ) : (
               <div>Select a field to view its info</div>
             )}
-          </div>
+          </div>            
           <div className="warehouse !h-[55vh]">
+            <div className="warehouse-fields h-[80%] w-[60vw] m-auto">
             {fields && warehouse
               ? FieldGrid(fields, warehouse, handleFieldClick)
               : null}
+            </div>
           </div>
           <Modal open={isModalOpen}>
             <AddVaultModal
