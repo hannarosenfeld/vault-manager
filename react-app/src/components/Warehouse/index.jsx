@@ -16,30 +16,33 @@ import AddVaultModal from "./RenderTMB/AddVaultModal/AddVaultModal.jsx";
 import ConfirmStaging from "./RenderTMB/ConfirmStaging/index.jsx";
 import FieldGrid from "../FieldGrid.jsx";
 import { sortFields } from "../utility.js";
+import { getAllRacks } from "../../store/rack.js";
 import "./Warehouse.css";
 
 export default function Warehouse({ setIsWarehousePage }) {
   const dispatch = useDispatch();
   const { warehouseId } = useParams();
+
   const warehouse = useSelector((state) => state.warehouse[warehouseId]);
   const allFields = useSelector((state) => state.field[warehouseId]);
+  const field = useSelector((state) => state.field.selectedField);
+  const selectedField = useSelector((state) => state.field.selectedField);
+  const vaults = useSelector((state) => state.vault);
+  const searchResult = useSelector((state) => state.search.fields);
+
   const [loadedWarehouseFields, setLoadedWarehouseFields] = useState(false);
   const [fields, setFields] = useState(null);
-  const field = useSelector((state) => state.field.selectedField);
-  const vaults = useSelector((state) => state.vault);
+  const [position, setPosition] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] = useState(false);
+  const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
+  const [toggleSelected, setToggleSelected] = useState(false);
+  const [loading, setLoading] = useState(true);
+
   const vaultsArr = [];
   field?.vaults?.forEach((id) =>
     vaults[id] ? vaultsArr.push(vaults[id]) : null
   );
-  const searchResult = useSelector((state) => state.search.fields);
-  const [position, setPosition] = useState(null);
-  const selectedField = useSelector((state) => state.field.selectedField);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] =
-    useState(false);
-  const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
-  const [toggleSelected, setToggleSelected] = useState(false);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setIsWarehousePage(true);
@@ -223,11 +226,11 @@ export default function Warehouse({ setIsWarehousePage }) {
             )}
           </div>
 
-          <div className="warehouse !h-[49vh] flex gap-1 items-start">
+          <div className="warehouse !h-[48vh] flex gap-1 items-start">
             {/* Left Side (Two Rows) */}
             <div className="flex gap-1">
-              <div className="box w-10 h-5 bg-gray-300"></div>
-              <div className="box w-10 h-5 bg-gray-300"></div>
+              <div className="box w-10 h-10 bg-gray-300"></div>
+              <div className="box w-10 h-10 bg-gray-300"></div>
             </div>
 
             {/* Warehouse Fields (Center) */}
@@ -240,7 +243,7 @@ export default function Warehouse({ setIsWarehousePage }) {
             {/* Right Side (Six Stacked Columns) */}
             <div className="flex flex-col gap-1 ml-auto justify-end">
               {[...Array(6)].map((_, index) => (
-                <div key={index} className="box w-5 h-10 bg-gray-300 "></div>
+                <div key={index} className="box w-10 h-10 bg-gray-300 "></div>
               ))}
             </div>
           </div>
@@ -248,7 +251,7 @@ export default function Warehouse({ setIsWarehousePage }) {
           {/* Bottom (Nine Rows) */}
           <div className="flex items-center gap-1 justify-end">
             {[...Array(9)].map((_, index) => (
-              <div key={index} className="box w-[9%] h-8 bg-gray-300"></div>
+              <div key={index} className="box w-10 h-10 bg-gray-300"></div>
             ))}
           </div>
 
