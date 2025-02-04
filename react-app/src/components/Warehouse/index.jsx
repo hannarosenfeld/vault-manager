@@ -251,7 +251,7 @@ export default function Warehouse({ setIsWarehousePage }) {
           {/* Bottom (Nine Rows) */}
           <div className="flex items-center gap-1 justify-end">
             {[...Array(9)].map((_, index) => (
-              <div key={index} className="box w-10 h-10 bg-gray-300"></div>
+              <div key={index} className="box w-[9%] h-10 bg-gray-300"></div>
             ))}
           </div>
 
