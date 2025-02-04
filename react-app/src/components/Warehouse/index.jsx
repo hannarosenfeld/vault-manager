@@ -223,7 +223,7 @@ export default function Warehouse({ setIsWarehousePage }) {
             )}
           </div>
 
-          <div className="warehouse !h-[49vh] flex gap-1 items-start border-2">
+          <div className="warehouse !h-[49vh] flex gap-1 items-start">
             {/* Left Side (Two Rows) */}
             <div className="flex gap-1">
               <div className="box w-10 h-5 bg-gray-300"></div>
@@ -231,14 +231,14 @@ export default function Warehouse({ setIsWarehousePage }) {
             </div>
 
             {/* Warehouse Fields (Center) */}
-            <div className="warehouse-fields md:w-[70%] h-[85%] w-[55%] self-start border-2 mx-auto ">
+            <div className="warehouse-fields md:w-[70%] h-[85%] w-[55%] self-start mx-auto ">
               {fields && warehouse
                 ? FieldGrid(fields, warehouse, handleFieldClick)
                 : null}
             </div>
 
             {/* Right Side (Six Stacked Columns) */}
-            <div className="flex flex-col gap-1 border-2 ml-auto justify-end">
+            <div className="flex flex-col gap-1 ml-auto justify-end">
               {[...Array(6)].map((_, index) => (
                 <div key={index} className="box w-5 h-10 bg-gray-300 "></div>
               ))}
