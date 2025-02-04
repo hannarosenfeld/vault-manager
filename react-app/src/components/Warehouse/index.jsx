@@ -17,6 +17,7 @@ import ConfirmStaging from "./RenderTMB/ConfirmStaging/index.jsx";
 import FieldGrid from "../FieldGrid.jsx";
 import { sortFields } from "../utility.js";
 import { getAllRacks } from "../../store/rack.js";
+import { getAllRacksThunk } from "../../store/rack.js";
 import "./Warehouse.css";
 
 export default function Warehouse({ setIsWarehousePage }) {
@@ -63,7 +64,7 @@ export default function Warehouse({ setIsWarehousePage }) {
     const warehouseInfo = dispatch(getAllWarehousesThunk());
     const customers = dispatch(getAllCustomersThunk());
     const fields = dispatch(getAllFieldsThunk(warehouseId));
-    // const racks = dispatch(getAllRacks(warehouseId));
+    const racks = dispatch(getAllRacksThunk(warehouseId));
 
     Promise.all([warehouseInfo])
       .then(() => setLoading(false))
@@ -73,9 +74,9 @@ export default function Warehouse({ setIsWarehousePage }) {
       .then(() => setLoadedWarehouseFields(true))
       .catch(() => console.log("🚨 fields could not be loaded!"));
 
-    // Promise.all([racks])
-    //   .then(() => console.log("🌹 racks: ", racks))
-    //   .catch(() => console.log("💖"));
+    Promise.all([racks])
+      .then(() => console.log("🌹 racks: ", racks))
+      .catch(() => console.log("💖"));
 
   }, [dispatch, warehouseId]);
 
@@ -200,6 +201,7 @@ export default function Warehouse({ setIsWarehousePage }) {
 
   return (
     <div className="wrapper">
+      <button onClick={() => dispatch(getAllRacksThunk(warehouseId))}></button>
       {loading && (
         <div className="loading-animation-container">
           <CircularProgress size={75} />

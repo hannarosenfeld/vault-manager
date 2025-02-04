@@ -89,9 +89,9 @@ const rackReducer = (state = initialState, action) => {
     case GET_ALL_RACKS:
       const racks = action.racks;
       console.log("❤️‍🔥 racks in reducer: ", racks)
-      racks.forEach((rack) => {
-        newState[rack.id] = rack;
-      });
+      // racks.forEach((rack) => {
+      //   newState[rack.id] = rack;
+      // });
       return newState;
     case ADD_RACK:
       return {
