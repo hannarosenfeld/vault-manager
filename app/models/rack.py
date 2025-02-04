@@ -7,7 +7,8 @@ class Rack(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     shelves = db.Column(db.Integer, nullable=False)
     wall_side = db.Column(Enum('top-left', 'top-right', 'bottom', 'left', 'right', name='wall_side_enum'), nullable=False)
-    position = db.Column(Enum('horizontal', 'vertical', name='position_enum'), nullable=False)
+    orientation = db.Column(Enum('horizontal', 'vertical', name='position_enum'), nullable=False)
+    position = db.Column(db.String(10), nullable=False, unique=True)
     
     warehouse_id = db.Column(db.Integer, db.ForeignKey('warehouses.id'), nullable=False)
 
@@ -25,6 +26,7 @@ class Rack(db.Model):
             'shelves': self.shelves,
             'wall_side': self.wall_side,
             'position': self.position,
+            'orientation': self.orientation,
             'warehouse_id': self.warehouse_id,
             'contents': self.contents
         }
