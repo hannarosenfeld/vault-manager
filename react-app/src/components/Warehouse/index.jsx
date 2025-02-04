@@ -18,7 +18,6 @@ import FieldGrid from "../FieldGrid.jsx";
 import { sortFields } from "../utility.js";
 import "./Warehouse.css";
 
-
 export default function Warehouse({ setIsWarehousePage }) {
   const dispatch = useDispatch();
   const { warehouseId } = useParams();
@@ -36,7 +35,8 @@ export default function Warehouse({ setIsWarehousePage }) {
   const [position, setPosition] = useState(null);
   const selectedField = useSelector((state) => state.field.selectedField);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] = useState(false);
+  const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] =
+    useState(false);
   const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
   const [toggleSelected, setToggleSelected] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -221,14 +221,36 @@ export default function Warehouse({ setIsWarehousePage }) {
             ) : (
               <div>Select a field to view its info</div>
             )}
-          </div>            
-          <div className="warehouse !h-[55vh]">
-            <div className="warehouse-fields h-[80%] w-[60vw] m-auto">
-            {fields && warehouse
-              ? FieldGrid(fields, warehouse, handleFieldClick)
-              : null}
+          </div>
+          <div className="warehouse !h-[50vh] flex gap-1 items-start">
+            {/* Left Side (Two Rows) */}
+            <div className="flex gap-1">
+              <div className="box w-10 h-5 bg-gray-300"></div>
+              <div className="box w-10 h-5 bg-gray-300"></div>
+            </div>
+
+            {/* Warehouse Fields (Center) */}
+            <div className="warehouse-fields h-[60%] w-[55%] self-start">
+              {fields && warehouse
+                ? FieldGrid(fields, warehouse, handleFieldClick)
+                : null}
+            </div>
+
+            {/* Right Side (Six Stacked Columns) */}
+            <div className="flex flex-col gap-1">
+              {[...Array(6)].map((_, index) => (
+                <div key={index} className="box w-5 h-10 bg-gray-300"></div>
+              ))}
             </div>
           </div>
+
+          {/* Bottom (Nine Rows) */}
+          <div className="flex items-center gap-1 mt-4 justify-end">
+            {[...Array(9)].map((_, index) => (
+              <div key={index} className="box w-8 h-9 bg-gray-300"></div>
+            ))}
+          </div>
+
           <Modal open={isModalOpen}>
             <AddVaultModal
               onClose={handleCloseModal}
