@@ -20,6 +20,8 @@ def get_racks(warehouse_id):
 
     racks = Rack.query.filter(Rack.warehouse_id == warehouse_id).all()
 
+    print("🚧 racks: ", racks)
+
     if not racks:
         return jsonify({'error': 'No racks found for this warehouse'}), 404
 

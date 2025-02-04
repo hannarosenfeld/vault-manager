@@ -34,7 +34,8 @@ export default function Warehouse({ setIsWarehousePage }) {
   const [fields, setFields] = useState(null);
   const [position, setPosition] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] = useState(false);
+  const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] =
+    useState(false);
   const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
   const [toggleSelected, setToggleSelected] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -60,8 +61,9 @@ export default function Warehouse({ setIsWarehousePage }) {
     setLoading(true);
     setLoadedWarehouseFields(false);
     const warehouseInfo = dispatch(getAllWarehousesThunk());
-    dispatch(getAllCustomersThunk());
+    const customers = dispatch(getAllCustomersThunk());
     const fields = dispatch(getAllFieldsThunk(warehouseId));
+    // const racks = dispatch(getAllRacks(warehouseId));
 
     Promise.all([warehouseInfo])
       .then(() => setLoading(false))
@@ -70,6 +72,11 @@ export default function Warehouse({ setIsWarehousePage }) {
     Promise.all([fields])
       .then(() => setLoadedWarehouseFields(true))
       .catch(() => console.log("🚨 fields could not be loaded!"));
+
+    // Promise.all([racks])
+    //   .then(() => console.log("🌹 racks: ", racks))
+    //   .catch(() => console.log("💖"));
+
   }, [dispatch, warehouseId]);
 
   const handleFieldClick = async (field) => {
