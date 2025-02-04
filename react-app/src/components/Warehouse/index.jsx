@@ -184,6 +184,8 @@ export default function Warehouse({ setIsWarehousePage }) {
         setFields(sortedFields)
     }, [loadedWarehouseFields])
 
+
+    // 🚨 TODO
     function fieldGenerator(fields) {
         if (fields) {
             return (
