@@ -41,7 +41,6 @@ const RenderTMB = ({
     toggleFieldType(type, field, bottomField)
   }
 
-
   useEffect(() => {
     setIsLoading(true);
     setSortedVaults({});

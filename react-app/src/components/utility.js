@@ -1,5 +1,4 @@
 export function sortFields(fieldsArr) {
-  console.log("🌹 in func", fieldsArr)
     return fieldsArr.sort(function (a, b) {
       const [, aAlpha, aNum] = a.name.match(/^([A-Za-z]+)(\d+)$/);
       const [, bAlpha, bNum] = b.name.match(/^([A-Za-z]+)(\d+)$/);
