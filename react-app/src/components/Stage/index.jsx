@@ -66,8 +66,6 @@ export default function Stage() {
       
       // Close the modal
       setIsDeleteModalOpen(false);
-      
-      console.log("Vaults deleted!");
     } catch (error) {
       console.error("Error deleting vaults:", error);
     }

@@ -92,7 +92,6 @@ const rackReducer = (state = initialState, action) => {
   let newState = { ...state };
   switch (action.type) {
     case SET_SELECTED_RACK:
-      console.log("💛", action);
       return {
         ...state,
         selectedRack: action.rack,
