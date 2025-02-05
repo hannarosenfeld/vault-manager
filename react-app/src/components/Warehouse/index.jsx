@@ -11,9 +11,9 @@ import {
 import { useParams } from "react-router-dom";
 import { getAllWarehousesThunk } from "../../store/warehouse.js";
 import { getAllCustomersThunk } from "../../store/customer.js";
-import RenderTMB from "./RenderTMB/index.jsx";
-import AddVaultModal from "./RenderTMB/AddVaultModal/AddVaultModal.jsx";
-import ConfirmStaging from "./RenderTMB/ConfirmStaging/index.jsx";
+import RenderTMB from "./FieldInfo/index.jsx";
+import AddVaultModal from "./FieldInfo/AddVaultModal/AddVaultModal.jsx";
+import ConfirmStaging from "./FieldInfo/ConfirmStaging/index.jsx";
 import FieldGrid from "../FieldGrid.jsx";
 import { sortFields } from "../utility.js";
 import { getAllRacksThunk } from "../../store/rack.js";
