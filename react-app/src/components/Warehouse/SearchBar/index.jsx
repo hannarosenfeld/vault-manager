@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllOrdersThunk } from '../../../store/order';
-import { searchThunk } from '../../../store/search';
-import { setSearchOffAction } from '../../../store/search';
-import { getAllCustomersThunk } from '../../../store/customer';
+import { getAllOrdersThunk } from '../../store/order';
+import { searchThunk } from '../../store/search';
+import { setSearchOffAction } from '../../store/search';
+import { getAllCustomersThunk } from '../../store/customer';
 
 import './SearchBar.css';
 
@@ -129,8 +129,7 @@ function SearchBar() {
         <>
           <input
             type="text"
-            className='!text-xs'
-            placeholder="Search Customer/Order/Rack Contents..."
+            placeholder="Search Customer/Order#..."
             value={searchTerm}
             onChange={handleInputChange}
           />

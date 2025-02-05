@@ -17,7 +17,6 @@ import ConfirmStaging from "./FieldInfo/ConfirmStaging/index.jsx";
 import FieldGrid from "../FieldGrid.jsx";
 import { sortFields } from "../utility.js";
 import { getAllRacksThunk, setSelectedRackAction } from "../../store/rack.js";
-import SearchBar from "./SearchBar/index.jsx";
 import "./Warehouse.css";
 
 export default function Warehouse({ setIsWarehousePage }) {
@@ -263,7 +262,7 @@ export default function Warehouse({ setIsWarehousePage }) {
                 }}
               >
                 {fields && warehouse
-                  ? FieldGrid(fields, warehouse, handleFieldClick, searchResult)
+                  ? FieldGrid(fields, warehouse, handleFieldClick)
                   : null}
               </div>
 
@@ -308,10 +307,6 @@ export default function Warehouse({ setIsWarehousePage }) {
           </div>
 
           <div className="border-2 mt-2 pt-4 p-3">
-            <h5>Toolbox</h5>
-            <div className="!mb-9 !mt-5">
-              <SearchBar />
-            </div>
             <div className="!flex !items-center !space-x-3">
               <label className="inline-flex items-center cursor-pointer">
                 <input
