@@ -16,7 +16,7 @@ import AddVaultModal from "./FieldInfo/AddVaultModal/AddVaultModal.jsx";
 import ConfirmStaging from "./FieldInfo/ConfirmStaging/index.jsx";
 import FieldGrid from "../FieldGrid.jsx";
 import { sortFields } from "../utility.js";
-import { getAllRacksThunk } from "../../store/rack.js";
+import { getAllRacksThunk, setSelectedRackAction } from "../../store/rack.js";
 import "./Warehouse.css";
 
 export default function Warehouse({ setIsWarehousePage }) {
@@ -243,11 +243,11 @@ export default function Warehouse({ setIsWarehousePage }) {
             )}
           </div>
 
+         
           <div className="warehouse !h-[48vh] flex gap-1 items-start">
             {/* Left Side (Two Rows) */}
             <div className="flex gap-1">
-              <div className="box w-10 h-10 bg-gray-300" >
-                {racksArr.map(rack => rack.position === "1-1" ? <div>{rack.position}</div> : '')}
+              <div className="box w-10 h-10 bg-gray-300" onClick={() => dispatch(setSelectedRackAction(racks[2]))}>
               </div>
               <div className="box w-10 h-10 bg-gray-300">
 
