@@ -6,7 +6,7 @@ import { useState } from "react";
 import { getAllFieldVaultsThunk } from "../../../store/vault";
 import "./RenderTMB.css";
 
-const RenderTMB = ({ 
+const FieldInfo = ({ 
   handleStageClick, 
   handleOpenAddVaultModal, 
   toggleFieldType, 
@@ -208,4 +208,4 @@ const RenderTMB = ({
 };
 
 
-export default RenderTMB;
+export default FieldInfo;

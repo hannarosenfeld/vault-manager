@@ -1,6 +1,7 @@
-const ADD_RACK = 'rack/ADD_RACK';
-const GET_ALL_RACKS = 'rack/GET_ALL_RACKS';
-const DELETE_RACK = 'rack/DELETE_RACK';
+const ADD_RACK = "rack/ADD_RACK";
+const GET_ALL_RACKS = "rack/GET_ALL_RACKS";
+const DELETE_RACK = "rack/DELETE_RACK";
+const SET_SELECTED_RACK = "rack/SET_SELECTED_RACK";
 
 export const getAllRacks = (racks) => ({
   type: GET_ALL_RACKS,
@@ -17,6 +18,11 @@ export const deleteRackAction = (rackId) => ({
   payload: rackId,
 });
 
+export const setSelectedRackAction = (rack) => ({
+  type: SET_SELECTED_RACK,
+  rack,
+});
+
 export const getAllRacksThunk = (warehouseId) => async (dispatch) => {
   try {
     const response = await fetch(`/api/rack/${warehouseId}`);
@@ -26,11 +32,11 @@ export const getAllRacksThunk = (warehouseId) => async (dispatch) => {
       return data;
     } else {
       const errorData = await response.json();
-      console.error('Error fetching racks:', errorData.errors);
+      console.error("Error fetching racks:", errorData.errors);
       return errorData;
     }
   } catch (error) {
-    console.error('Error fetching racks:', error);
+    console.error("Error fetching racks:", error);
     return error;
   }
 };
@@ -38,9 +44,9 @@ export const getAllRacksThunk = (warehouseId) => async (dispatch) => {
 export const addRackThunk = (warehouseId, rackData) => async (dispatch) => {
   try {
     const response = await fetch(`/api/rack/${warehouseId}`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(rackData),
     });
@@ -51,11 +57,11 @@ export const addRackThunk = (warehouseId, rackData) => async (dispatch) => {
       return newRack;
     } else {
       const errorData = await response.json();
-      console.error('Error adding rack:', errorData.errors);
+      console.error("Error adding rack:", errorData.errors);
       return errorData;
     }
   } catch (error) {
-    console.error('Error adding rack:', error);
+    console.error("Error adding rack:", error);
     return error;
   }
 };
@@ -63,7 +69,7 @@ export const addRackThunk = (warehouseId, rackData) => async (dispatch) => {
 export const deleteRackThunk = (rackId) => async (dispatch) => {
   try {
     const response = await fetch(`/api/rack/${rackId}`, {
-      method: 'DELETE',
+      method: "DELETE",
     });
 
     if (response.ok) {
@@ -71,27 +77,32 @@ export const deleteRackThunk = (rackId) => async (dispatch) => {
       return rackId;
     } else {
       const errorData = await response.json();
-      console.error('Error deleting rack:', errorData.errors);
+      console.error("Error deleting rack:", errorData.errors);
       return errorData;
     }
   } catch (error) {
-    console.error('Error deleting rack:', error);
+    console.error("Error deleting rack:", error);
     return error;
   }
 };
-
 
 const initialState = {};
 
 const rackReducer = (state = initialState, action) => {
   let newState = { ...state };
   switch (action.type) {
+    case SET_SELECTED_RACK:
+      console.log("💛", rack);
+      return {
+        ...state,
+        selectedRack: action.rack,
+      };
     case GET_ALL_RACKS:
       const racks = action.racks;
-      console.log("❤️‍🔥 racks in reducer: ", racks)
-      if (racks) racks.forEach((rack) => {
-        newState[rack.id] = rack;
-      });
+      if (racks)
+        racks.forEach((rack) => {
+          newState[rack.id] = rack;
+        });
       return newState;
     case ADD_RACK:
       return {

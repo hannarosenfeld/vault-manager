@@ -11,7 +11,7 @@ import {
 import { useParams } from "react-router-dom";
 import { getAllWarehousesThunk } from "../../store/warehouse.js";
 import { getAllCustomersThunk } from "../../store/customer.js";
-import RenderTMB from "./FieldInfo/index.jsx";
+import FieldInfo from "./FieldInfo/index.jsx";
 import AddVaultModal from "./FieldInfo/AddVaultModal/AddVaultModal.jsx";
 import ConfirmStaging from "./FieldInfo/ConfirmStaging/index.jsx";
 import FieldGrid from "../FieldGrid.jsx";
@@ -29,6 +29,7 @@ export default function Warehouse({ setIsWarehousePage }) {
   const selectedField = useSelector((state) => state.field.selectedField);
   const vaults = useSelector((state) => state.vault);
   const racks = useSelector((state => state.rack));
+  const selectedRack = useSelector((state) => state.rack.selectedRack)
   // const searchResult = useSelector((state) => state.search.fields);
 
   const [loadedWarehouseFields, setLoadedWarehouseFields] = useState(false);
@@ -229,7 +230,7 @@ export default function Warehouse({ setIsWarehousePage }) {
           </div>
           <div className="field-info">
             {selectedField?.id ? (
-              <RenderTMB
+              <FieldInfo
                 handleStageClick={handleStageClick}
                 handleOpenAddVaultModal={handleOpenAddVaultModal}
                 toggleFieldType={toggleFieldType}
@@ -245,7 +246,7 @@ export default function Warehouse({ setIsWarehousePage }) {
           <div className="warehouse !h-[48vh] flex gap-1 items-start">
             {/* Left Side (Two Rows) */}
             <div className="flex gap-1">
-              <div className="box w-10 h-10 bg-gray-300">
+              <div className="box w-10 h-10 bg-gray-300" >
                 {racksArr.map(rack => rack.position === "1-1" ? <div>{rack.position}</div> : '')}
               </div>
               <div className="box w-10 h-10 bg-gray-300">

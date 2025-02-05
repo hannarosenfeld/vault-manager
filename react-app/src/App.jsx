@@ -11,12 +11,10 @@ import Navigation from "./components/Navigation";
 import Index from "./components/Index";
 import Warehouse from "./components/Warehouse";
 import Stage from "./components/Stage";
-import EditVaultPage from "./components/Warehouse/RenderTMB/EditVaultPage";
-import VaultDetailPage from "./components/Warehouse/RenderTMB/VaultDetailPage";
+import EditVaultPage from "./components/Warehouse/FieldInfo/EditVaultPage";
+import VaultDetailPage from "./components/Warehouse/FieldInfo/VaultDetailPage";
 
 import EditWarehousePage from "./components/EditWarehousePage";
-
-console.log("🦋")
 
 function App() {
   const dispatch = useDispatch();
