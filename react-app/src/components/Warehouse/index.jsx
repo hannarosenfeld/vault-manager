@@ -17,6 +17,7 @@ import ConfirmStaging from "./FieldInfo/ConfirmStaging/index.jsx";
 import FieldGrid from "../FieldGrid.jsx";
 import { sortFields } from "../utility.js";
 import { getAllRacksThunk, setSelectedRackAction } from "../../store/rack.js";
+import { LoadingSpinner } from "../LoadingSpinner.jsx";
 import "./Warehouse.css";
 
 export default function Warehouse({ setIsWarehousePage }) {
@@ -202,7 +203,7 @@ export default function Warehouse({ setIsWarehousePage }) {
     }
   }, [loadedWarehouseFields]);
 
-  if (!warehouse) return null;
+  if (!warehouse) return <LoadingSpinner/>;
 
   return (
     <div className="wrapper">
