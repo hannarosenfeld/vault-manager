@@ -1,4 +1,6 @@
-export default function FieldGrid(fields, warehouse, handleFieldClick) {
+export default function FieldGrid(fields, warehouse, handleFieldClick, searchResult) {
+    console.log("🏡 searchResult", searchResult)
+
     if (fields && warehouse) {
         return (
             <div 

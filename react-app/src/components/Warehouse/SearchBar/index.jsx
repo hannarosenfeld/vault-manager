@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllOrdersThunk } from '../../store/order';
-import { searchThunk } from '../../store/search';
-import { setSearchOffAction } from '../../store/search';
-import { getAllCustomersThunk } from '../../store/customer';
+import { getAllOrdersThunk } from '../../../store/order';
+import { searchThunk } from '../../../store/search';
+import { setSearchOffAction } from '../../../store/search';
+import { getAllCustomersThunk } from '../../../store/customer';
 
 import './SearchBar.css';
 
@@ -59,7 +59,6 @@ function SearchBar() {
       return
     }
     else setSearchTerm(value);
-
 
     const filteredCustomers = customers.filter((customer) =>
       customer.name.toLowerCase().includes(value.toLowerCase())
@@ -130,7 +129,7 @@ function SearchBar() {
         <>
           <input
             type="text"
-            placeholder="Search Customer/Order#..."
+            placeholder="Search Customer/Order/Rack Contents..."
             value={searchTerm}
             onChange={handleInputChange}
           />
