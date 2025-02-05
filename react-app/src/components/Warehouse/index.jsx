@@ -30,7 +30,7 @@ export default function Warehouse({ setIsWarehousePage }) {
   const vaults = useSelector((state) => state.vault);
   const racks = useSelector((state) => state.rack);
   const selectedRack = useSelector((state) => state.rack.selectedRack);
-  // const searchResult = useSelector((state) => state.search.fields);
+  const searchResult = useSelector((state) => state.search.fields);
 
   const [loadedWarehouseFields, setLoadedWarehouseFields] = useState(false);
   const [fields, setFields] = useState(null);
@@ -50,13 +50,8 @@ export default function Warehouse({ setIsWarehousePage }) {
   );
 
   useEffect(() => {
-    console.log("🥰", showRacks);
-  }, [showRacks]);
-
-  useEffect(() => {
     if (racks && Object.values(racks).length) {
       setRacksArr(Object.values(racks));
-      console.log("❤️‍🔥 racksArr: ", racksArr);
     }
   }, [racks]);
 
@@ -88,9 +83,6 @@ export default function Warehouse({ setIsWarehousePage }) {
       .then(() => setLoadedWarehouseFields(true))
       .catch(() => console.log("🚨 fields could not be loaded!"));
 
-    // Promise.all([racks])
-    //   .then(() => setRacksArr(Object.values(racks)))
-    //   .catch(() => console.log("🚨 racks could not be loaded!"));
   }, [dispatch, warehouseId]);
 
   const handleFieldClick = async (field) => {
