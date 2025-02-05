@@ -28,8 +28,8 @@ export default function Warehouse({ setIsWarehousePage }) {
   const field = useSelector((state) => state.field.selectedField);
   const selectedField = useSelector((state) => state.field.selectedField);
   const vaults = useSelector((state) => state.vault);
-  const racks = useSelector((state => state.rack));
-  const selectedRack = useSelector((state) => state.rack.selectedRack)
+  const racks = useSelector((state) => state.rack);
+  const selectedRack = useSelector((state) => state.rack.selectedRack);
   // const searchResult = useSelector((state) => state.search.fields);
 
   const [loadedWarehouseFields, setLoadedWarehouseFields] = useState(false);
@@ -37,11 +37,12 @@ export default function Warehouse({ setIsWarehousePage }) {
   const [racksArr, setRacksArr] = useState(null);
   const [position, setPosition] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] = useState(false);
+  const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] =
+    useState(false);
   const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
   const [toggleSelected, setToggleSelected] = useState(false);
   const [loading, setLoading] = useState(true);
-
+  const [showRacks, setShowRacks] = useState(false);
 
   const vaultsArr = [];
   field?.vaults?.forEach((id) =>
@@ -49,11 +50,15 @@ export default function Warehouse({ setIsWarehousePage }) {
   );
 
   useEffect(() => {
+    console.log("🥰", showRacks);
+  }, [showRacks]);
+
+  useEffect(() => {
     if (racks && Object.values(racks).length) {
-      setRacksArr(Object.values(racks))
-      console.log("❤️‍🔥 racksArr: ", racksArr)
+      setRacksArr(Object.values(racks));
+      console.log("❤️‍🔥 racksArr: ", racksArr);
     }
-  }, [racks])
+  }, [racks]);
 
   useEffect(() => {
     setIsWarehousePage(true);
@@ -86,7 +91,6 @@ export default function Warehouse({ setIsWarehousePage }) {
     // Promise.all([racks])
     //   .then(() => setRacksArr(Object.values(racks)))
     //   .catch(() => console.log("🚨 racks could not be loaded!"));
-
   }, [dispatch, warehouseId]);
 
   const handleFieldClick = async (field) => {
@@ -217,82 +221,116 @@ export default function Warehouse({ setIsWarehousePage }) {
       )}
       {!loading && (
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <div
-            style={{
-              fontSize: "1.5em",
-              fontWeight: "500",
-              marginBottom: "1em",
-              textAlign: "center",
-              textDecoration: "underline",
-            }}
-          >
-            {warehouse.name}
-          </div>
-          <div className="field-info">
-            {selectedField?.id ? (
-              <FieldInfo
-                handleStageClick={handleStageClick}
-                handleOpenAddVaultModal={handleOpenAddVaultModal}
-                toggleFieldType={toggleFieldType}
-                toggleFieldFull={toggleFieldFull}
-                toggleSelected={toggleSelected}
-                warehouse={warehouse}
-              />
-            ) : (
-              <div>Select a field/rack to view its info</div>
-            )}
-          </div>
+          <div className=" flex flex-col h-[90vh]">
+            <div
+              style={{
+                fontSize: "1.5em",
+                fontWeight: "500",
+                marginBottom: "1em",
+                textAlign: "center",
+                textDecoration: "underline",
+              }}
+            >
+              {warehouse.name}
+            </div>
+            <div className="field-info">
+              {selectedField?.id ? (
+                <FieldInfo
+                  handleStageClick={handleStageClick}
+                  handleOpenAddVaultModal={handleOpenAddVaultModal}
+                  toggleFieldType={toggleFieldType}
+                  toggleFieldFull={toggleFieldFull}
+                  toggleSelected={toggleSelected}
+                  warehouse={warehouse}
+                />
+              ) : (
+                <div>Select a field/rack to view its info</div>
+              )}
+            </div>
 
-         
-          <div className="warehouse !h-[48vh] flex gap-1 items-start">
-            {/* Left Side (Two Rows) */}
-            <div className="flex gap-1">
-              <div className="box w-10 h-10 bg-gray-300" onClick={() => dispatch(setSelectedRackAction(racks[2]))}>
+            <div className="warehouse flex gap-1 items-start">
+              {/* Left Side (Two Rows) */}
+              <div
+                className="flex gap-1"
+                style={{ display: !showRacks ? "none" : "flex" }}
+              >
+                <div
+                  className="box w-10 h-10 bg-gray-300"
+                  onClick={() => dispatch(setSelectedRackAction(racks[2]))}
+                ></div>
+                <div className="box w-10 h-10 bg-gray-300"></div>
               </div>
-              <div className="box w-10 h-10 bg-gray-300">
 
+              {/* Warehouse Fields (Center) */}
+              <div
+                className="warehouse-fields self-start mx-auto "
+                style={{
+                  height: !showRacks ? "100%" : "90%",
+                  width: !showRacks ? "100%" : "13em",
+                }}
+              >
+                {fields && warehouse
+                  ? FieldGrid(fields, warehouse, handleFieldClick)
+                  : null}
+              </div>
+
+              {/* Right Side (Six Stacked Columns) */}
+              <div
+                className="flex flex-col gap-1 ml-auto justify-end"
+                style={{ display: !showRacks ? "none" : "flex" }}
+              >
+                {[...Array(6)].map((_, index) => (
+                  <div key={index} className="box w-10 h-10 bg-gray-300 "></div>
+                ))}
               </div>
             </div>
 
-            {/* Warehouse Fields (Center) */}
-            <div className="warehouse-fields md:w-[70%] h-[85%] w-[55%] self-start mx-auto ">
-              {fields && warehouse
-                ? FieldGrid(fields, warehouse, handleFieldClick)
-                : null}
-            </div>
-
-            {/* Right Side (Six Stacked Columns) */}
-            <div className="flex flex-col gap-1 ml-auto justify-end">
-              {[...Array(6)].map((_, index) => (
-                <div key={index} className="box w-10 h-10 bg-gray-300 "></div>
+            {/* Bottom (Nine Rows) */}
+            <div
+              className="flex items-center gap-1 justify-end"
+              style={{ display: !showRacks ? "none" : "flex" }}
+            >
+              {[...Array(9)].map((_, index) => (
+                <div key={index} className="box w-[9%] h-10 bg-gray-300"></div>
               ))}
             </div>
+
+            <Modal open={isModalOpen}>
+              <AddVaultModal
+                onClose={handleCloseModal}
+                position={position}
+                warehouseId={warehouseId}
+              />
+            </Modal>
+            <Modal
+              open={isConfirmStagingModalOpen}
+              onClose={setIsConfirmStagingModalOpen}
+            >
+              <ConfirmStaging
+                vault={selectedVaultToStage}
+                onClose={closeConfirmStagingModal}
+                warehouseId={warehouseId}
+              />
+            </Modal>
           </div>
 
-          {/* Bottom (Nine Rows) */}
-          <div className="flex items-center gap-1 justify-end">
-            {[...Array(9)].map((_, index) => (
-              <div key={index} className="box w-[9%] h-10 bg-gray-300"></div>
-            ))}
+          <div className="border-2 mt-2 pt-4 p-3">
+            <div className="!flex !items-center !space-x-3">
+              <label className="inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  value=""
+                  className="!sr-only peer"
+                  checked={showRacks}
+                  onChange={() => setShowRacks(!showRacks)}
+                />
+                <div className="!relative w-11 h-6 !bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:!bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:!bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:!bg-blue-600 dark:peer-checked:!bg-blue-600" />
+              </label>
+              <span className="!text-sm !font-light !text-gray-900 !dark:text-gray-300">
+                Show Racks
+              </span>
+            </div>
           </div>
-
-          <Modal open={isModalOpen}>
-            <AddVaultModal
-              onClose={handleCloseModal}
-              position={position}
-              warehouseId={warehouseId}
-            />
-          </Modal>
-          <Modal
-            open={isConfirmStagingModalOpen}
-            onClose={setIsConfirmStagingModalOpen}
-          >
-            <ConfirmStaging
-              vault={selectedVaultToStage}
-              onClose={closeConfirmStagingModal}
-              warehouseId={warehouseId}
-            />
-          </Modal>
         </div>
       )}
     </div>
