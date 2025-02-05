@@ -238,7 +238,7 @@ export default function Warehouse({ setIsWarehousePage }) {
                 warehouse={warehouse}
               />
             ) : (
-              <div>Select a field to view its info</div>
+              <div>Select a field/rack to view its info</div>
             )}
           </div>
 
@@ -246,9 +246,11 @@ export default function Warehouse({ setIsWarehousePage }) {
             {/* Left Side (Two Rows) */}
             <div className="flex gap-1">
               <div className="box w-10 h-10 bg-gray-300">
-                {racksArr[0].position}
+                {racksArr.map(rack => rack.position === "1-1" ? <div>{rack.position}</div> : '')}
               </div>
-              <div className="box w-10 h-10 bg-gray-300"></div>
+              <div className="box w-10 h-10 bg-gray-300">
+
+              </div>
             </div>
 
             {/* Warehouse Fields (Center) */}
