@@ -129,6 +129,7 @@ function SearchBar() {
         <>
           <input
             type="text"
+            className='!text-xs'
             placeholder="Search Customer/Order/Rack Contents..."
             value={searchTerm}
             onChange={handleInputChange}

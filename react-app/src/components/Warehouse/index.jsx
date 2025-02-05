@@ -308,7 +308,7 @@ export default function Warehouse({ setIsWarehousePage }) {
           </div>
 
           <div className="border-2 mt-2 pt-4 p-3">
-            <h3>Toolbox</h3>
+            <h5>Toolbox</h5>
             <div className="!mb-9 !mt-5">
               <SearchBar />
             </div>
