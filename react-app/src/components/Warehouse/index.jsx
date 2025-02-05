@@ -16,7 +16,6 @@ import AddVaultModal from "./RenderTMB/AddVaultModal/AddVaultModal.jsx";
 import ConfirmStaging from "./RenderTMB/ConfirmStaging/index.jsx";
 import FieldGrid from "../FieldGrid.jsx";
 import { sortFields } from "../utility.js";
-import { getAllRacks } from "../../store/rack.js";
 import { getAllRacksThunk } from "../../store/rack.js";
 import "./Warehouse.css";
 
@@ -29,22 +28,31 @@ export default function Warehouse({ setIsWarehousePage }) {
   const field = useSelector((state) => state.field.selectedField);
   const selectedField = useSelector((state) => state.field.selectedField);
   const vaults = useSelector((state) => state.vault);
-  const searchResult = useSelector((state) => state.search.fields);
+  const racks = useSelector((state => state.rack));
+  // const searchResult = useSelector((state) => state.search.fields);
 
   const [loadedWarehouseFields, setLoadedWarehouseFields] = useState(false);
   const [fields, setFields] = useState(null);
+  const [racksArr, setRacksArr] = useState(null);
   const [position, setPosition] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] =
-    useState(false);
+  const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] = useState(false);
   const [selectedVaultToStage, setSelectedVaultToStage] = useState(null);
   const [toggleSelected, setToggleSelected] = useState(false);
   const [loading, setLoading] = useState(true);
+
 
   const vaultsArr = [];
   field?.vaults?.forEach((id) =>
     vaults[id] ? vaultsArr.push(vaults[id]) : null
   );
+
+  useEffect(() => {
+    if (racks && Object.values(racks).length) {
+      setRacksArr(Object.values(racks))
+      console.log("❤️‍🔥 racksArr: ", racksArr)
+    }
+  }, [racks])
 
   useEffect(() => {
     setIsWarehousePage(true);
@@ -74,9 +82,9 @@ export default function Warehouse({ setIsWarehousePage }) {
       .then(() => setLoadedWarehouseFields(true))
       .catch(() => console.log("🚨 fields could not be loaded!"));
 
-    Promise.all([racks])
-      .then(() => console.log("🌹 racks: ", racks))
-      .catch(() => console.log("💖"));
+    // Promise.all([racks])
+    //   .then(() => setRacksArr(Object.values(racks)))
+    //   .catch(() => console.log("🚨 racks could not be loaded!"));
 
   }, [dispatch, warehouseId]);
 
@@ -201,7 +209,6 @@ export default function Warehouse({ setIsWarehousePage }) {
 
   return (
     <div className="wrapper">
-      <button onClick={() => dispatch(getAllRacksThunk(warehouseId))}></button>
       {loading && (
         <div className="loading-animation-container">
           <CircularProgress size={75} />
@@ -238,7 +245,9 @@ export default function Warehouse({ setIsWarehousePage }) {
           <div className="warehouse !h-[48vh] flex gap-1 items-start">
             {/* Left Side (Two Rows) */}
             <div className="flex gap-1">
-              <div className="box w-10 h-10 bg-gray-300"></div>
+              <div className="box w-10 h-10 bg-gray-300">
+                {racksArr[0].position}
+              </div>
               <div className="box w-10 h-10 bg-gray-300"></div>
             </div>
 
