@@ -2,13 +2,23 @@ from app.models import db, User, environment, SCHEMA
 from sqlalchemy.sql import text
 
 
-# Adds a demo user, you can add other users here if you want
 def seed_users():
+    naglee = Company.query.filter_by(name="Naglee").first()
+
+    if not naglee:
+        raise Exception("Naglee company must be seeded first!")
+
     admin = User(
-        username='admin', email='operations@nagleegroup.com', password='Naglee1525', company='Naglee'
+        username='admin', 
+        email='operations@nagleegroup.com', 
+        password='Naglee1525',
+        company_id=naglee.id  # Assign company ID
     )
     hanna = User(
-        username='hanna', email='hanna@rosenfeld.com', password='1234', company='Naglee'
+        username='hanna', 
+        email='hanna@rosenfeld.com', 
+        password='1234',
+        company_id=naglee.id  # Assign company ID
     )
 
     db.session.add(admin)
