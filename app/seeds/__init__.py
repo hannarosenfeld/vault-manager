@@ -27,6 +27,8 @@ def seed():
         companies = None
         racks = None
 
+        if not Company.query.all(): 
+            companies = seed_companies()
         if not User.query.all(): 
             users = seed_users()  
         if not Customer.query.all(): 
@@ -39,8 +41,6 @@ def seed():
             warehouses = seed_warehouse(users, fields, orders)             
         if not Vault.query.all(): 
             seed_vaults(customers)
-        if not Company.query.all(): 
-            companies = seed_companies()
         if not Rack.query.all():  # Check if racks are empty before seeding
             racks = seed_racks()  # Seed racks if none exist
 

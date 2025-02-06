@@ -2,6 +2,7 @@ from sqlalchemy.sql import text
 from app.models import db, Warehouse, Field, Vault,Order, environment, SCHEMA, User  # Import User model
 
 def seed_warehouse(users, fields, orders):
+    naglee = Company.query.filter_by(name="Naglee").first()
     allFields = Field.query.all()
     user_instances = User.query.all()
     order_instances = Order.query.all()
@@ -13,7 +14,8 @@ def seed_warehouse(users, fields, orders):
     warehouse.warehouse_fields = allFields
     warehouse.users = user_instances
     warehouse.orders = order_instances
-
+    company_id=naglee.id
+    
     db.session.add(warehouse)
     db.session.commit()
 
