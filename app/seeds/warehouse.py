@@ -1,5 +1,5 @@
 from sqlalchemy.sql import text
-from app.models import db, Warehouse, Field, Vault,Order, environment, SCHEMA, User  # Import User model
+from app.models import db, Warehouse, Company, Field, Vault,Order, environment, SCHEMA, User  # Import User model
 
 def seed_warehouse(users, fields, orders):
     naglee = Company.query.filter_by(name="Naglee").first()
