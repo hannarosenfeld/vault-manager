@@ -32,7 +32,7 @@ def upgrade():
         batch_op.alter_column('warehouse_id',
                existing_type=sa.INTEGER(),
                nullable=True)
-        batch_op.create_unique_constraint(None, ['name'])
+        batch_op.create_unique_constraint('uq_racks_name', ['name'])
 
     # ### end Alembic commands ###
 

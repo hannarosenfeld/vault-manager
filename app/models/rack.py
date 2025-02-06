@@ -5,6 +5,7 @@ class Rack(db.Model):
     __tablename__ = 'racks'
 
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(20))
     shelves = db.Column(db.Integer, nullable=False)
     wall_side = db.Column(Enum('top-left', 'top-right', 'bottom', 'left', 'right', name='wall_side_enum'), nullable=False)
     orientation = db.Column(Enum('horizontal', 'vertical', name='position_enum'), nullable=False)

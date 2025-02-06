@@ -45,6 +45,10 @@ export default function Warehouse({ setIsWarehousePage }) {
   const [loading, setLoading] = useState(true);
   const [showRacks, setShowRacks] = useState(false);
 
+  useEffect(() => {
+    console.log("🤨", showRacks);
+  }, [showRacks]);
+
   const vaultsArr = [];
   field?.vaults?.forEach((id) =>
     vaults[id] ? vaultsArr.push(vaults[id]) : null
@@ -83,7 +87,6 @@ export default function Warehouse({ setIsWarehousePage }) {
     Promise.all([fields])
       .then(() => setLoadedWarehouseFields(true))
       .catch(() => console.log("🚨 fields could not be loaded!"));
-
   }, [dispatch, warehouseId]);
 
   const handleFieldClick = async (field) => {
@@ -203,7 +206,7 @@ export default function Warehouse({ setIsWarehousePage }) {
     }
   }, [loadedWarehouseFields]);
 
-  if (!warehouse) return <LoadingSpinner/>;
+  if (!warehouse) return <LoadingSpinner />;
 
   return (
     <div className="wrapper">
@@ -214,7 +217,7 @@ export default function Warehouse({ setIsWarehousePage }) {
       )}
       {!loading && (
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <div className=" flex flex-col h-[90vh]">
+          <div className=" flex flex-col h-[90vh] px-2">
             <div
               style={{
                 fontSize: "1.5em",
@@ -248,20 +251,18 @@ export default function Warehouse({ setIsWarehousePage }) {
                 style={{ display: !showRacks ? "none" : "flex" }}
               >
                 <div
-                  className="box w-10 h-10 bg-gray-300"
+                  className="box w-[2em] h-[2em] bg-gray-300 flex"
                   onClick={() => dispatch(setSelectedRackAction(racks[2]))}
-                ></div>
-                <div className="box w-10 h-10 bg-gray-300"></div>
+                >
+                  <div className="m-auto text-xs">3-1</div>
+                </div>
+                <div className="box w-[2em] h-[2em] bg-gray-300 flex">
+                  <div className="m-auto text-xs">3-2</div>
+                </div>
               </div>
 
               {/* Warehouse Fields (Center) */}
-              <div
-                className="warehouse-fields self-start mx-auto "
-                style={{
-                  height: !showRacks ? "100%" : "90%",
-                  width: !showRacks ? "100%" : "13em",
-                }}
-              >
+              <div className={`warehouse-fields self-start mx-auto transition-all duration-300 ${showRacks ? "h-[80%] px-4" : "h-full"} w-full`}>
                 {fields && warehouse
                   ? FieldGrid(fields, warehouse, handleFieldClick)
                   : null}
@@ -273,19 +274,31 @@ export default function Warehouse({ setIsWarehousePage }) {
                 style={{ display: !showRacks ? "none" : "flex" }}
               >
                 {[...Array(6)].map((_, index) => (
-                  <div key={index} className="box w-10 h-10 bg-gray-300 "></div>
+                  <div
+                    key={index}
+                    className="box w-[2em] h-[2em] bg-gray-300 flex"
+                  >
+                    <div className="m-auto text-xs">3-{index + 3}</div>
+                  </div>
                 ))}
               </div>
             </div>
 
             {/* Bottom (Nine Rows) */}
             <div
-              className="flex items-center gap-1 justify-end"
+              className="flex justify-end items-center gap-1"
               style={{ display: !showRacks ? "none" : "flex" }}
             >
-              {[...Array(9)].map((_, index) => (
-                <div key={index} className="box w-[9%] h-10 bg-gray-300"></div>
-              ))}
+              <div className="flex flex-row-reverse gap-1">
+                {[...Array(9)].map((_, index) => (
+                  <div
+                    key={index}
+                    className="box w-[2em] h-[2em] bg-gray-300 flex"
+                  >
+                    <div className="m-auto text-xs">3-{index + 9}</div>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <Modal open={isModalOpen}>

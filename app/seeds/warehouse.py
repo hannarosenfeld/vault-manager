@@ -14,7 +14,7 @@ def seed_warehouse(users, fields, orders):
     warehouse.warehouse_fields = allFields
     warehouse.users = user_instances
     warehouse.orders = order_instances
-    company_id=naglee.id
+    warehouse.company_id = naglee.id
     
     db.session.add(warehouse)
     db.session.commit()
