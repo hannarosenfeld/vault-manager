@@ -17,16 +17,8 @@ def seed_racks():
 
     rack2 = Rack(
         shelves=3,
-        wall_side='bottom',
+        wall_side='top-left',
         position='1-2',
-        orientation='horizontal',
-        warehouse_id=warehouse.id
-    )
-
-    rack3 = Rack(
-        shelves=7,
-        wall_side='top-right',
-        position='1-3',
         orientation='horizontal',
         warehouse_id=warehouse.id
     )
@@ -34,7 +26,6 @@ def seed_racks():
     # Add racks to the session
     db.session.add(rack1)
     db.session.add(rack2)
-    db.session.add(rack3)
 
     # Commit to save to the database
     db.session.commit()
