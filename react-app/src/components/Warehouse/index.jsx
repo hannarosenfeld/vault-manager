@@ -19,6 +19,7 @@ import { sortFields } from "../utility.js";
 import { getAllRacksThunk, setSelectedRackAction } from "../../store/rack.js";
 import { LoadingSpinner } from "../LoadingSpinner.jsx";
 import "./Warehouse.css";
+import RackInfo from "./RackInfo/index.jsx";
 
 export default function Warehouse({ setIsWarehousePage }) {
   const dispatch = useDispatch();
@@ -239,6 +240,8 @@ export default function Warehouse({ setIsWarehousePage }) {
                   toggleSelected={toggleSelected}
                   warehouse={warehouse}
                 />
+              ) : selectedRack?.id ? (
+                <RackInfo />
               ) : (
                 <div>Select a field/rack to view its info</div>
               )}
@@ -252,7 +255,10 @@ export default function Warehouse({ setIsWarehousePage }) {
               >
                 <div
                   className="box w-[2em] h-[2em] bg-gray-300 flex"
-                  onClick={() => dispatch(setSelectedRackAction(racks[2]))}
+                  onClick={() => {
+                    dispatch(setSelectedRackAction(racks[2]))}
+
+                  }
                 >
                   <div className="m-auto text-xs">3-1</div>
                 </div>
