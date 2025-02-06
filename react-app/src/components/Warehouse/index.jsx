@@ -95,6 +95,7 @@ export default function Warehouse({ setIsWarehousePage }) {
     await setToggleSelected(false);
 
     const setField = await dispatch(setSelectedFieldAction(field));
+    const unselectRack = await (dispatch(setSelectedRackAction(null)))
 
     Promise.all([setField])
       .then(() => setLoading(false))
@@ -240,11 +241,14 @@ export default function Warehouse({ setIsWarehousePage }) {
                   toggleSelected={toggleSelected}
                   warehouse={warehouse}
                 />
-              ) : selectedRack?.id ? (
-                <RackInfo />
               ) : (
                 <div>Select a field/rack to view its info</div>
               )}
+            </div>
+            <div>
+            {selectedRack?.id ? (
+                <RackInfo selectedRack={selectedRack} />
+              ) : ""} 
             </div>
 
             <div className="warehouse flex gap-1 items-start">
@@ -256,8 +260,9 @@ export default function Warehouse({ setIsWarehousePage }) {
                 <div
                   className="box w-[2em] h-[2em] bg-gray-300 flex"
                   onClick={() => {
-                    dispatch(setSelectedRackAction(racks[2]))}
-
+                    dispatch(setSelectedRackAction(racks[2]))
+                    dispatch(setSelectedFieldAction(null))
+                  }
                   }
                 >
                   <div className="m-auto text-xs">3-1</div>

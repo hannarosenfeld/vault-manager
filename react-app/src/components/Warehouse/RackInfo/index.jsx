@@ -1,4 +1,5 @@
-export const RackInfo = () => {
+export const RackInfo = ({ selectedRack }) => {
+    console.log("🩵", selectedRack)
     return (
         <div>hi</div>
     )
