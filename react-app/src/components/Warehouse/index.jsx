@@ -250,7 +250,7 @@ export default function Warehouse({ setIsWarehousePage }) {
                 } w-full`}
               >
                 {fields && warehouse
-                  ? FieldGrid(fields, warehouse, handleFieldClick)
+                  ? FieldGrid(fields, warehouse, handleFieldClick, selectedField)
                   : null}
               </div>
 

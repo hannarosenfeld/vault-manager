@@ -1,4 +1,5 @@
-export default function FieldGrid(fields, warehouse, handleFieldClick, searchResult) {
+export default function FieldGrid(fields, warehouse, handleFieldClick, selectedField) {
+    console.log("🔥 selectedField: ", selectedField)
     if (fields && warehouse) {
         return (
             <div 
@@ -30,6 +31,7 @@ export default function FieldGrid(fields, warehouse, handleFieldClick, searchRes
                         marginBottom: `${field.type === "couchbox-T" ? "-2.6em" : '0'}`,
                         width: `${field.type === "couchbox-B" ? "0px" : '100%'}`,
                         zIndex: `${field.type === "couchbox-B" ? "100" : 'none'}`,
+                        border: `${selectedField?.id === field.id ? "2px solid blue" : 'none'}` // FIXED HERE
                     }}
                     {...(handleFieldClick ? { onClick: () => handleFieldClick(field) } : {})}
                 >{field.type === "couchbox-B" ? "" : <div className="field-number">{field.name}</div>}</div>
