@@ -1,5 +1,4 @@
 export default function FieldGrid(fields, warehouse, handleFieldClick, selectedField) {
-    console.log("🔥 selectedField: ", selectedField)
     if (fields && warehouse) {
         return (
             <div 

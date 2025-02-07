@@ -163,7 +163,7 @@ export default function Warehouse({ setIsWarehousePage }) {
   };
 
   const toggleFieldFull = async (fieldId) => {
-    const toggleFull = await dispatch(editSingleFieldThunk(fieldId, {}));
+    const toggleFull = dispatch(editSingleFieldThunk(fieldId, {}));
 
     setFields((prevFields) =>
       prevFields.map((field) =>
