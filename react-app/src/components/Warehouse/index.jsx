@@ -44,7 +44,7 @@ export default function Warehouse({ setIsWarehousePage }) {
   const [toggleSelected, setToggleSelected] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showRacks, setShowRacks] = useState(false);
-  
+
   const vaultsArr = [];
   selectedField?.vaults?.forEach((id) =>
     vaults[id] ? vaultsArr.push(vaults[id]) : null
@@ -86,11 +86,11 @@ export default function Warehouse({ setIsWarehousePage }) {
   }, [dispatch, warehouseId]);
 
   const handleFieldClick = async (field) => {
-    await setLoading(true);
-    await setToggleSelected(false);
+    setLoading(true);
+    setToggleSelected(false);
 
-    const setField = await dispatch(setSelectedFieldAction(field));
-    const unselectRack = await (dispatch(setSelectedRackAction(null)))
+    const setField = dispatch(setSelectedFieldAction(field));
+    const unselectRack = dispatch(setSelectedRackAction(null));
 
     Promise.all([setField])
       .then(() => setLoading(false))
@@ -138,49 +138,28 @@ export default function Warehouse({ setIsWarehousePage }) {
     if (topField.vaults.length || bottomField.vaults.length)
       return alert("Please empty field before switching field type!");
 
+    const newType = type === "couchbox-T" ? "vault" : "couchbox";
     const formData = {
       name: topField.name,
       field_id_1: topField.id,
       field_id_2: bottomField.id,
+      type: newType,
     };
-    if (type === "couchbox-T") {
-      formData["type"] = "vault";
-      dispatch(editFieldThunk(formData));
-      setFields((prevFields) =>
-        prevFields.map((field) =>
-          field.id === topField.id ? { ...topField, type: "vault" } : field
-        )
-      );
-      setFields((prevFields) =>
-        prevFields.map((field) =>
-          field.id === bottomField.id
-            ? { ...bottomField, type: "vault" }
-            : field
-        )
-      );
-    } else if (type === "vault") {
-      formData["type"] = "couchbox";
-      const topName = topField.name.match(/^([a-zA-Z]+)\d/);
-      const bottomName = bottomField.name.match(/^([a-zA-Z]+)\d/);
-      if (bottomName || topName[1] === bottomName[1]) {
-        const editDispatch = dispatch(editFieldThunk(formData));
 
-        setFields((prevFields) =>
-          prevFields.map((field) =>
-            field.id === topField.id
-              ? { ...topField, type: "couchbox-T" }
-              : field
-          )
-        );
-        setFields((prevFields) =>
-          prevFields.map((field) =>
-            field.id === bottomField.id
-              ? { ...bottomField, type: "couchbox-B" }
-              : field
-          )
-        );
-      } else return alert("Can't switch to a couchbox on the last row");
-    }
+    dispatch(editFieldThunk(formData));
+
+    setFields((prevFields) =>
+      prevFields.map((field) =>
+        field.id === topField.id
+          ? { ...topField, type: newType === "vault" ? "vault" : "couchbox-T" }
+          : field.id === bottomField.id
+          ? {
+              ...bottomField,
+              type: newType === "vault" ? "vault" : "couchbox-B",
+            }
+          : field
+      )
+    );
   };
 
   const toggleFieldFull = async (fieldId) => {
@@ -241,9 +220,7 @@ export default function Warehouse({ setIsWarehousePage }) {
               )}
             </div>
             <div>
-            {selectedRack?.id ? (
-                <RackInfo selectedRack={selectedRack} />
-              ) : ""} 
+              {selectedRack?.id ? <RackInfo selectedRack={selectedRack} /> : ""}
             </div>
 
             <div className="warehouse flex gap-1 items-start">
@@ -255,10 +232,9 @@ export default function Warehouse({ setIsWarehousePage }) {
                 <div
                   className="box w-[2em] h-[2em] bg-gray-300 flex"
                   onClick={() => {
-                    dispatch(setSelectedRackAction(racks[2]))
-                    dispatch(setSelectedFieldAction(null))
-                  }
-                  }
+                    dispatch(setSelectedRackAction(racks[2]));
+                    dispatch(setSelectedFieldAction(null));
+                  }}
                 >
                   <div className="m-auto text-xs">3-1</div>
                 </div>
@@ -268,7 +244,11 @@ export default function Warehouse({ setIsWarehousePage }) {
               </div>
 
               {/* Warehouse Fields (Center) */}
-              <div className={`warehouse-fields self-start mx-auto transition-all duration-300 ${showRacks ? "h-[80%] px-4" : "h-full"} w-full`}>
+              <div
+                className={`warehouse-fields self-start mx-auto transition-all duration-300 ${
+                  showRacks ? "h-[80%] px-4" : "h-full"
+                } w-full`}
+              >
                 {fields && warehouse
                   ? FieldGrid(fields, warehouse, handleFieldClick)
                   : null}
