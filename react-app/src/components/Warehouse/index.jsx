@@ -209,12 +209,11 @@ export default function Warehouse({ setIsWarehousePage }) {
                   toggleSelected={toggleSelected}
                   warehouse={warehouse}
                 />
+              ) : selectedRack?.id ? (
+                <RackInfo selectedRack={selectedRack} />
               ) : (
                 <div>Select a field/rack to view its info</div>
               )}
-            </div>
-            <div>
-              {selectedRack?.id ? <RackInfo selectedRack={selectedRack} /> : ""}
             </div>
 
             <div className="warehouse flex gap-1 items-start">
