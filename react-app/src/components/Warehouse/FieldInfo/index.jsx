@@ -5,6 +5,7 @@ import VaultInstance from "./VaultInstance";
 import { useState } from "react";
 import { getAllFieldVaultsThunk } from "../../../store/vault";
 import "./RenderTMB.css";
+import { LoadingSpinner } from "../../LoadingSpinner";
 
 const FieldInfo = ({ 
   handleStageClick, 
@@ -82,11 +83,7 @@ const FieldInfo = ({
   return (
     <div className="rendertmb-container">
     {isLoading ? (
-      <div className="rendertmb-loading-container">
-        {/* <div class="spinner-border text-primary" role="status">
-          <span class="sr-only">Loading...</span>
-        </div> */}
-    </div>
+      <LoadingSpinner/>
     ) : (
         <div className="selected-field-vaults-tmb" style={{ gridTemplateRows: type === "couchbox" ? "repeat(4,1fr)" : ""}}>
           <div className="top field-row">
