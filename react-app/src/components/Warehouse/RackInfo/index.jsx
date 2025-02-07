@@ -9,7 +9,7 @@ export const RackInfo = ({ selectedRack }) => {
               key={index}
               className="flex justify-between items-center p-1 border-b border-[var(--lightgrey)] last:border-b-0"
             >
-              <span className="font-medium">{index + 1}</span>
+              <span className="">{index + 1}</span>
             </div>
           ))}
         </div>
