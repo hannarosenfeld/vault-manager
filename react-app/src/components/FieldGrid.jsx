@@ -1,14 +1,22 @@
-export default function FieldGrid(
+import { useSelector } from "react-redux";
+
+export default function FieldGrid({
   fields,
   warehouse,
   handleFieldClick,
   selectedField,
   searchResult, 
-) {
+}) {
+  const vaults = useSelector((state) => state.vault);
+
+  console.log("😭", vaults)
+
+  const vaultsArr = [];
+  selectedField?.vaults?.forEach((id) =>
+    vaults[id] ? vaultsArr.push(vaults[id]) : null
+  );
+  
   if (fields && warehouse) {
-
-    console.log("❤️‍🔥", searchResult)
-
     return (
       <div
         style={{

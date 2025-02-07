@@ -28,7 +28,6 @@ export default function Warehouse({ setIsWarehousePage }) {
   const warehouse = useSelector((state) => state.warehouse[warehouseId]);
   const allFields = useSelector((state) => state.field[warehouseId]);
   const selectedField = useSelector((state) => state.field.selectedField);
-  const vaults = useSelector((state) => state.vault);
   const racks = useSelector((state) => state.rack);
   const selectedRack = useSelector((state) => state.rack.selectedRack);
   const searchResult = useSelector((state) => state.search.fields);
@@ -45,11 +44,6 @@ export default function Warehouse({ setIsWarehousePage }) {
   const [loading, setLoading] = useState(true);
   const [showRacks, setShowRacks] = useState(false);
 
-  const vaultsArr = [];
-  selectedField?.vaults?.forEach((id) =>
-    vaults[id] ? vaultsArr.push(vaults[id]) : null
-  );
-  
   useEffect(() => {
     if (loadedWarehouseFields && allFields) {
       const fieldsArr = Object.values(allFields);
@@ -249,9 +243,17 @@ export default function Warehouse({ setIsWarehousePage }) {
                   showRacks ? "h-[80%] px-4" : "h-full"
                 } w-full`}
               >
-                {fields && warehouse
-                  ? FieldGrid(fields, warehouse, handleFieldClick, selectedField, searchResult)
-                  : null}
+                {fields && warehouse ? (
+                  <FieldGrid
+                    fields={fields}
+                    warehouse={warehouse}
+                    handleFieldClick={handleFieldClick}
+                    selectedField={selectedField}
+                    searchResult={searchResult}
+                  />
+                ) : (
+                  <div>No fields available</div>
+                )}
               </div>
 
               {/* Right Side (Six Stacked Columns) */}
