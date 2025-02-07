@@ -49,6 +49,16 @@ export default function Warehouse({ setIsWarehousePage }) {
   selectedField?.vaults?.forEach((id) =>
     vaults[id] ? vaultsArr.push(vaults[id]) : null
   );
+  
+  useEffect(() => {
+    if (loadedWarehouseFields && allFields) {
+      const fieldsArr = Object.values(allFields);
+      if (fieldsArr.length) {
+        const sortedFields = sortFields(fieldsArr);
+        setFields(sortedFields);
+      }
+    }
+  }, [loadedWarehouseFields]);
 
   useEffect(() => {
     if (racks && Object.values(racks).length) {
@@ -172,16 +182,6 @@ export default function Warehouse({ setIsWarehousePage }) {
     );
   };
 
-  useEffect(() => {
-    if (loadedWarehouseFields && allFields) {
-      const fieldsArr = Object.values(allFields);
-      if (fieldsArr.length) {
-        const sortedFields = sortFields(fieldsArr);
-        setFields(sortedFields);
-      }
-    }
-  }, [loadedWarehouseFields]);
-
   if (!warehouse) return <LoadingSpinner />;
 
   return (
@@ -250,7 +250,7 @@ export default function Warehouse({ setIsWarehousePage }) {
                 } w-full`}
               >
                 {fields && warehouse
-                  ? FieldGrid(fields, warehouse, handleFieldClick, selectedField)
+                  ? FieldGrid(fields, warehouse, handleFieldClick, selectedField, searchResult)
                   : null}
               </div>
 
