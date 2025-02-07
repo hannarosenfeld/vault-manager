@@ -98,7 +98,7 @@ export default function Warehouse({ setIsWarehousePage }) {
   };
 
   const handleOpenAddVaultModal = async (position) => {
-    await setPosition(position);
+    setPosition(position);
     setIsModalOpen(true);
   };
 
