@@ -27,7 +27,6 @@ export default function Warehouse({ setIsWarehousePage }) {
 
   const warehouse = useSelector((state) => state.warehouse[warehouseId]);
   const allFields = useSelector((state) => state.field[warehouseId]);
-  const field = useSelector((state) => state.field.selectedField);
   const selectedField = useSelector((state) => state.field.selectedField);
   const vaults = useSelector((state) => state.vault);
   const racks = useSelector((state) => state.rack);
@@ -45,13 +44,9 @@ export default function Warehouse({ setIsWarehousePage }) {
   const [toggleSelected, setToggleSelected] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showRacks, setShowRacks] = useState(false);
-
-  useEffect(() => {
-    console.log("🤨", showRacks);
-  }, [showRacks]);
-
+  
   const vaultsArr = [];
-  field?.vaults?.forEach((id) =>
+  selectedField?.vaults?.forEach((id) =>
     vaults[id] ? vaultsArr.push(vaults[id]) : null
   );
 
