@@ -17,10 +17,6 @@ const FieldInfo = ({
   moveVault,
   warehouse,
   component
-  // selectedFieldId,
-  // field,
-  // vaultsArr,
-  // topmostVault
  }) => {
   const dispatch = useDispatch();
   const fields = useSelector((state) => state.field[warehouse.id]);
@@ -88,11 +84,6 @@ const FieldInfo = ({
         <div className="selected-field-vaults-tmb" style={{ gridTemplateRows: type === "couchbox" ? "repeat(4,1fr)" : ""}}>
           <div className="top field-row">
             <span className="position">T</span>
-            {/* { onlyTop && sortedVaults.full && type === "vault" && (
-              <div style={{ color: "red" }}>
-                <span className="material-symbols-outlined">warning</span>Field is full
-              </div>
-            )} */}
             { field.type === "couchbox-T" && !T && M2 && M && B ? (
               <AddVaultButton position="T" vault={selectedVault} handleOpenAddVaultModal={handleOpenAddVaultModal} moveVault={moveVault} fieldType={type} isFull={field.full}/>
               ) : field.type === "vault" && !sortedVaults.M2 && !T && M && B ? (
@@ -193,7 +184,6 @@ const FieldInfo = ({
               />
               <label>
                 full
-                {/* {toggleSelected || type === "couchbox" ? 'Couchbox' : 'Vault' } */}
               </label>
             </div>            
           </div>

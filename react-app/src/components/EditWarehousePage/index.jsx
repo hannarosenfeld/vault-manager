@@ -80,7 +80,7 @@ export default function EditWarehousePage() {
 
           <div className="fields flex items-center justify-center w-[70%] m-auto">
             <div className="text-center w-full !h-[65vh]">
-              {fields && warehouse ? FieldGrid(fields, warehouse) : null}
+            {fields && warehouse ? <FieldGrid fields={fields} warehouse={warehouse} /> : null}
             </div>
           </div>
 
