@@ -1,5 +1,4 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client"; // Import from 'react-dom/client' in React 18
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 
@@ -17,26 +16,27 @@ import "./index.css";
 const store = configureStore();
 
 if (process.env.NODE_ENV !== "production") {
-	window.store = store;
-	window.sessionActions = sessionActions;
+  window.store = store;
+  window.sessionActions = sessionActions;
 }
 
 function Root() {
-	return (
-		<ModalProvider>
-			<Provider store={store}>
-				<BrowserRouter>
-					<App />
-					<Modal />
-				</BrowserRouter>
-			</Provider>
-		</ModalProvider>
-	);
+  return (
+    <ModalProvider>
+      <Provider store={store}>
+        <BrowserRouter>
+          <App />
+          <Modal />
+        </BrowserRouter>
+      </Provider>
+    </ModalProvider>
+  );
 }
 
-ReactDOM.render(
-	<React.StrictMode>
-		<Root />
-	</React.StrictMode>,
-	document.getElementById("root")
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(
+  <React.StrictMode>
+    <Root />
+  </React.StrictMode>
 );
