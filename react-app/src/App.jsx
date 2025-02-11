@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector} from "react-redux";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { authenticate } from "./store/session";
@@ -11,8 +11,8 @@ import Navigation from "./components/Navigation";
 import Index from "./components/Index";
 import Warehouse from "./components/Warehouse";
 import Stage from "./components/Stage";
-import EditVaultPage from "./components/Warehouse/RenderTMB/EditVaultPage";
-import VaultDetailPage from "./components/Warehouse/RenderTMB/VaultDetailPage";
+import EditVaultPage from "./components/Warehouse/FieldInfo/EditVaultPage";
+import VaultDetailPage from "./components/Warehouse/FieldInfo/VaultDetailPage";
 
 import EditWarehousePage from "./components/EditWarehousePage";
 
