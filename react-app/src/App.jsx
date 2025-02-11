@@ -44,7 +44,7 @@ function App() {
       )}
       {isLoaded && sessionUser && (
         <>
-        <Navigation isLoaded={isLoaded} company={sessionUser.company} isWarehousePage={isWarehousePage} />
+        {/* <Navigation isLoaded={isLoaded} company={sessionUser.company} isWarehousePage={isWarehousePage} /> */}
           <Routes>
             <Route exact path="/" element={<Index company={sessionUser.company} />} />
             <Route exact path="/signup" element={<SignupFormPage />} />
