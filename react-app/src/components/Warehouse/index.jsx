@@ -20,8 +20,7 @@ import { getAllRacksThunk, setSelectedRackAction } from "../../store/rack.js";
 import { LoadingSpinner } from "../LoadingSpinner.jsx";
 import "./Warehouse.css";
 import RackInfo from "./RackInfo/index.jsx";
-
-
+import Rack from "./Rack.jsx";
 
 export default function Warehouse({ setIsWarehousePage }) {
   const dispatch = useDispatch();
@@ -224,7 +223,9 @@ export default function Warehouse({ setIsWarehousePage }) {
                 className="flex gap-1"
                 style={{ display: !showRacks ? "none" : "flex" }}
               >
-                <div
+                <Rack racksArr={racksArr} />
+                
+                {/* <div
                   className="box w-[2em] h-[2em] bg-gray-300 flex"
                   onClick={() => {
                     const rack = racksArr?.find((rack) => rack.position === "3-1")
@@ -237,7 +238,7 @@ export default function Warehouse({ setIsWarehousePage }) {
                 </div>
                 <div className="box w-[2em] h-[2em] bg-gray-300 flex">
                   <div className="m-auto text-xs">3-2</div>
-                </div>
+                </div> */}
               </div>
 
               {/* Warehouse Fields (Center) */}
