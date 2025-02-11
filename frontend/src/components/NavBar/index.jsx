@@ -13,7 +13,6 @@ export default function NavBar() {
 
   return (
     <Disclosure as="nav" className="">
-      <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
           <div className="flex flex-1">
             <div className="flex">
@@ -53,7 +52,6 @@ export default function NavBar() {
             </Menu>
           </div>
         </div>
-      </div>
       <NavDrawer open={openDrawer} setOpen={setDrawerOpen} />
     </Disclosure>
   );
