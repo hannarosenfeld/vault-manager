@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllWarehousesThunk } from "../../../store/warehouse";
 import { moveVaultFromStageToWarehouseThunk, getVaultsThunk } from "../../../store/vault";
 import MiniWareHouse from "./MiniWareHouse";
-import RenderTMB from "../../Warehouse/RenderTMB";
+import RenderTMB from "../../Warehouse/FieldInfo";
 import { setSelectedFieldAction } from "../../../store/field";
 
 export default function StageToWareHouseModal({ closeModal, selectedVault }) {
