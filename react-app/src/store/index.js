@@ -5,7 +5,7 @@ import userReducer from './user';
 import vaultReducer from './vault'
 import fieldReducer from './field';
 import customerReducer from './customer';
-import stageReducer from './stage';
+// import stageReducer from './stage';
 import warehouseReducer from './warehouse';
 import orderReducer from './order';
 import searchReducer from './search';
@@ -19,7 +19,7 @@ const rootReducer = combineReducers({
   vault: vaultReducer,
   field: fieldReducer,
   customer: customerReducer,
-  stage: stageReducer,
+  // stage: stageReducer,
   warehouse: warehouseReducer,
   order: orderReducer,
   search: searchReducer,

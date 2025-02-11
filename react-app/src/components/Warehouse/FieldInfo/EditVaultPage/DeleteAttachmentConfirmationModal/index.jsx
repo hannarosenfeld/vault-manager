@@ -1,4 +1,3 @@
-import React from 'react';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import './DeleteAttachmentConfirmationModal.css'; // Create a separate CSS file for styling
