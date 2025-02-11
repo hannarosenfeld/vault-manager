@@ -22,7 +22,6 @@ import "./Warehouse.css";
 import RackInfo from "./RackInfo/index.jsx";
 import Rack from "./Rack.jsx";
 
-
 export default function Warehouse({ setIsWarehousePage }) {
   const dispatch = useDispatch();
   const { warehouseId } = useParams();
@@ -224,22 +223,7 @@ export default function Warehouse({ setIsWarehousePage }) {
                 className="flex gap-1"
                 style={{ display: !showRacks ? "none" : "flex" }}
               >
-                <Rack racksArr={racksArr} wallSide="top-left"/>
-                
-                {/* <div
-                  className="box w-[2em] h-[2em] bg-gray-300 flex"
-                  onClick={() => {
-                    const rack = racksArr?.find((rack) => rack.position === "3-1")
-                    console.log("💅🏻", rack)
-                    dispatch(setSelectedRackAction(rack));
-                    dispatch(setSelectedFieldAction(null));
-                  }}
-                >
-                  <div className="m-auto text-xs">3-1</div>
-                </div>
-                <div className="box w-[2em] h-[2em] bg-gray-300 flex">
-                  <div className="m-auto text-xs">3-2</div>
-                </div> */}
+                <Rack racksArr={racksArr} wallSide="top-left" />
               </div>
 
               {/* Warehouse Fields (Center) */}
@@ -266,14 +250,7 @@ export default function Warehouse({ setIsWarehousePage }) {
                 className="flex flex-col gap-1 ml-auto justify-end"
                 style={{ display: !showRacks ? "none" : "flex" }}
               >
-                {[...Array(6)].map((_, index) => (
-                  <div
-                    key={index}
-                    className="box w-[2em] h-[2em] bg-gray-300 flex"
-                  >
-                    <div className="m-auto text-xs">3-{index + 3}</div>
-                  </div>
-                ))}
+                <Rack racksArr={racksArr} wallSide="top-right" />
               </div>
             </div>
 
@@ -283,14 +260,7 @@ export default function Warehouse({ setIsWarehousePage }) {
               style={{ display: !showRacks ? "none" : "flex" }}
             >
               <div className="flex flex-row-reverse gap-1">
-                {[...Array(9)].map((_, index) => (
-                  <div
-                    key={index}
-                    className="box w-[2em] h-[2em] bg-gray-300 flex"
-                  >
-                    <div className="m-auto text-xs">3-{index + 9}</div>
-                  </div>
-                ))}
+              <Rack racksArr={racksArr} wallSide="bottom" />
               </div>
             </div>
 

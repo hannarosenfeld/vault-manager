@@ -12,8 +12,6 @@ export default function Rack({ racksArr, wallSide }) {
     setWallSideRacks(filteredRacks);
   }, [racksArr, wallSide]);
 
-  console.log("💖", wallSideRacks);
-
   const handleRackClick = (rack) => {
     dispatch(setSelectedRackAction(rack));
     dispatch(setSelectedFieldAction(null));
@@ -23,7 +21,7 @@ export default function Rack({ racksArr, wallSide }) {
     <>
       {wallSideRacks.map((rack) => (
         <div
-          key={rack.position}
+          key={rack.id}
           className="box w-[2em] h-[2em] bg-gray-300 flex"
           onClick={() => handleRackClick(rack)} 
         >

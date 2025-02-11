@@ -23,6 +23,22 @@ def seed_racks():
         warehouse_id=warehouse.id
     )
 
+    rack2 = Rack(
+        shelves=3,
+        wall_side='top-right',
+        position='3-3',
+        orientation='vertical',
+        warehouse_id=warehouse.id
+    )
+
+        rack2 = Rack(
+        shelves=3,
+        wall_side='bottom',
+        position='3-',
+        orientation='horizontal',
+        warehouse_id=warehouse.id
+    )    
+
     # Add racks to the session
     db.session.add(rack1)
     db.session.add(rack2)
