@@ -17,8 +17,6 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Form } from 'react-bootstrap';
 
-
-
 function AddNoteModal({ open, onClose, onAddNote, note }) {
     const [noteText, setNoteText] = useState(note); // Initialize noteText with the note prop
 
