@@ -22,6 +22,7 @@ import "./Warehouse.css";
 import RackInfo from "./RackInfo/index.jsx";
 import Rack from "./Rack.jsx";
 
+
 export default function Warehouse({ setIsWarehousePage }) {
   const dispatch = useDispatch();
   const { warehouseId } = useParams();
@@ -223,7 +224,7 @@ export default function Warehouse({ setIsWarehousePage }) {
                 className="flex gap-1"
                 style={{ display: !showRacks ? "none" : "flex" }}
               >
-                <Rack racksArr={racksArr} />
+                <Rack racksArr={racksArr} wallSide="top-left"/>
                 
                 {/* <div
                   className="box w-[2em] h-[2em] bg-gray-300 flex"
