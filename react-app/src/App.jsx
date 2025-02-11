@@ -8,7 +8,7 @@ import AddWarehouseForm from "./components/AddWarehouseForm";
 import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import Navigation from "./components/Navigation";
-import Index from "./components/Index";
+import Index from "./components/HomePage";
 import Warehouse from "./components/Warehouse";
 import Stage from "./components/Stage";
 import EditVaultPage from "./components/Warehouse/FieldInfo/EditVaultPage";

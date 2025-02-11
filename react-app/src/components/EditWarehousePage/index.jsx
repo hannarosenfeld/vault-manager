@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getAllFieldsThunk } from "../../store/field";
 import { deleteWarehouseThunk } from "../../store/warehouse";
 import { EditWarehouseModal } from "./editWarehouseModal";
-import OpenModalButton from "../OpenModalButton";
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
 
 
 export default function EditWarehousePage() {

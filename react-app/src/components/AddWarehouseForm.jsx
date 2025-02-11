@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addWarehouseThunk } from '../../store/warehouse';
+import { addWarehouseThunk } from '../store/warehouse';
 
 
 const AddWarehouseForm = ({ onAddWarehouseSubmit }) => {
