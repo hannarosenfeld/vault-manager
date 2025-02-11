@@ -1,16 +1,16 @@
+import React, { useState } from 'react';
 import {
   Disclosure,
   Menu,
   MenuButton,
 } from "@headlessui/react";
-// import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import NagleeLogo from "../../public/naglee.png";
+import NavDrawer from './NavDrawer';
+import NagleeLogo from "../../../public/naglee.png";
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
 
 export default function NavBar() {
+  const [openDrawer, setDrawerOpen] = useState(false);
+
   return (
     <Disclosure as="nav" className="">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -28,7 +28,10 @@ export default function NavBar() {
             {/* Profile dropdown */}
             <Menu as="div" className="relative ml-3">
               <div>
-                <MenuButton className="relative flex rounded-full text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden">
+                <MenuButton
+                  className="relative flex rounded-full text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden"
+                  onClick={() => setDrawerOpen(true)}
+                >
                   <span className="absolute -inset-1.5" />
                   <span className="sr-only">Open user menu</span>
                   <svg
@@ -51,6 +54,7 @@ export default function NavBar() {
           </div>
         </div>
       </div>
+      <NavDrawer open={openDrawer} setOpen={setDrawerOpen} />
     </Disclosure>
   );
 }
