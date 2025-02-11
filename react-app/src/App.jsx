@@ -9,9 +9,9 @@ import SignupFormPage from "./components/SignupFormPage";
 import LoginFormPage from "./components/LoginFormPage";
 import Navigation from "./components/Navigation";
 import Index from "./components/HomePage";
-import Warehouse from "./components/Warehouse";
-import Stage from "./components/Stage";
-import EditVaultPage from "./components/Warehouse/FieldInfo/EditVaultPage";
+// import Warehouse from "./components/Warehouse";
+// import Stage from "./components/Stage";
+// import EditVaultPage from "./components/Warehouse/FieldInfo/EditVaultPage";
 import VaultDetailPage from "./components/Warehouse/FieldInfo/VaultDetailPage";
 
 import EditWarehousePage from "./components/EditWarehousePage";
@@ -45,15 +45,17 @@ function App() {
       {isLoaded && sessionUser && (
         <>
         {/* <Navigation isLoaded={isLoaded} company={sessionUser.company} isWarehousePage={isWarehousePage} /> */}
+        <Navigation />
+
           <Routes>
             <Route exact path="/" element={<Index company={sessionUser.company} />} />
             <Route exact path="/signup" element={<SignupFormPage />} />
-            <Route exact path="/warehouse/add-warehouse" element={<AddWarehouseForm onAddWarehouseSubmit={onAddWarehouseSubmit}/>} />
+            {/* <Route exact path="/warehouse/add-warehouse" element={<AddWarehouseForm onAddWarehouseSubmit={onAddWarehouseSubmit}/>} />
             <Route exact path="/:companyName/warehouse/:warehouseId" element={<Warehouse setIsWarehousePage={setIsWarehousePage} />} /> 
             <Route exact path="/:companyName/warehouse/:warehouseId/edit" element={<EditWarehousePage />} />
             <Route path="/:companyName/warehouse/:warehouseId/vault/:vaultId/edit" element={<EditVaultPage />} />
             <Route path="/:companyName/warehouse/:warehouseId/vault/:vaultId/detail" element={<VaultDetailPage/>} />
-            <Route path="/stage" element={<Stage />} />
+            <Route path="/stage" element={<Stage />} /> */}
             <Route path="/add-user" element={<SignupFormPage />} />
             <Route path="/login" element={<LoginFormPage />} />
             <Route path='*'>

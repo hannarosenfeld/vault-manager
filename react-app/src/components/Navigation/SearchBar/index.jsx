@@ -136,7 +136,7 @@ function SearchBar() {
               <ul>
                 {suggestions.customers.map((item) => (
                   <li key={item.id} onClick={() => handleSelectItem(item, "customer")} style={{display: "flex", alignItems: "center"}}>
-                    <span class="material-symbols-outlined">
+                    <span className="material-symbols-outlined">
                     person
                     </span>
                     <span style={{marginLeft: "0.3em"}}>{item.name}</span>
@@ -146,7 +146,7 @@ function SearchBar() {
               <ul>
                 {suggestions.orders.map((item) => (
                   <li key={item.id} onClick={() => handleSelectItem(item, "order")} style={{display: "flex", alignItems: "center"}}>
-                    <span class="material-symbols-outlined">
+                    <span className="material-symbols-outlined">
                     list_alt
                     </span>
                     <span style={{marginLeft: "0.3em"}}>{item.name}</span>

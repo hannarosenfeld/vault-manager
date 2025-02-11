@@ -18,9 +18,9 @@ export default function Index({ company }) {
             <div style={{display: "flex", gap: "1em", flexWrap: "wrap"}}>
             {warehouses.map(warehouse => (
                 <div className="card">
-                    <div class="card-body">
+                    <div className="card-body">
                         <NavLink to={`/${company.name.toLowerCase()}/warehouse/${warehouse.id}`}>
-                        <h5 class="card-title">{warehouse.name}</h5>
+                        <h5 className="card-title">{warehouse.name}</h5>
                         </NavLink>
                     </div>
                 </div>
