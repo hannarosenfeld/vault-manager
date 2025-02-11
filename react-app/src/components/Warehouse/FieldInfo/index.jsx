@@ -82,7 +82,7 @@ const FieldInfo = ({
       <LoadingSpinner/>
     ) : (
         <div className="selected-field-vaults-tmb" style={{ gridTemplateRows: type === "couchbox" ? "repeat(4,1fr)" : ""}}>
-          <div className="top field-row">
+          <div className="top field-row h-min-[2em]">
             <span className="position">T</span>
             { field.type === "couchbox-T" && !T && M2 && M && B ? (
               <AddVaultButton position="T" vault={selectedVault} handleOpenAddVaultModal={handleOpenAddVaultModal} moveVault={moveVault} fieldType={type} isFull={field.full}/>

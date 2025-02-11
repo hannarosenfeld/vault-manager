@@ -21,6 +21,8 @@ import { LoadingSpinner } from "../LoadingSpinner.jsx";
 import "./Warehouse.css";
 import RackInfo from "./RackInfo/index.jsx";
 
+
+
 export default function Warehouse({ setIsWarehousePage }) {
   const dispatch = useDispatch();
   const { warehouseId } = useParams();
@@ -225,7 +227,9 @@ export default function Warehouse({ setIsWarehousePage }) {
                 <div
                   className="box w-[2em] h-[2em] bg-gray-300 flex"
                   onClick={() => {
-                    dispatch(setSelectedRackAction(racks[2]));
+                    const rack = racksArr?.find((rack) => rack.position === "3-1")
+                    console.log("💅🏻", rack)
+                    dispatch(setSelectedRackAction(rack));
                     dispatch(setSelectedFieldAction(null));
                   }}
                 >

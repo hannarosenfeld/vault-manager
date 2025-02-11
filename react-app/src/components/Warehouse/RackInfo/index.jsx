@@ -7,7 +7,7 @@ export const RackInfo = ({ selectedRack }) => {
         {Array.from({ length: selectedRack.shelves }, (_, index) => (
           <div
             key={index}
-            className={`flex justify-between items-center p-1 border-[var(--lightgrey)] 
+            className={`h-min-[2em] flex justify-between items-center p-1 border-[var(--lightgrey)] 
               ${index === 0 ? "" : "border-t"} 
               ${index === selectedRack.shelves - 1 ? "" : "border-b"}`}
           >

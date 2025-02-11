@@ -10,7 +10,7 @@ def seed_racks():
     rack1 = Rack(
         shelves=5,
         wall_side='top-left',
-        position='1-1',
+        position='3-1',
         orientation='horizontal',
         warehouse_id=warehouse.id
     )
@@ -18,7 +18,7 @@ def seed_racks():
     rack2 = Rack(
         shelves=3,
         wall_side='top-left',
-        position='1-2',
+        position='3-2',
         orientation='horizontal',
         warehouse_id=warehouse.id
     )

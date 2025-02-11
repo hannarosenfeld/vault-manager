@@ -22,10 +22,6 @@
     /* align-items: center; */
 }
 
-.field-row {
-    min-height: 2rem;
-}
-
 .selected-field-name {
     font-size: 2.5rem;
     margin: 0 auto;
@@ -36,35 +32,13 @@
     margin: auto 0;
 }
 
-.toggle-container {
-}
-
 .toggle-container label {
     font-size: 0.7em;
 }
 
-/* .form-check-input {
-    grid-column: 2 / 3;
-} */
-
-/* .form-check-input:checked {
-    background-color: orange;
-    border-color: orange;
-} */
-
 .form-check-input:focus {
     box-shadow: 0 0 0.25rem orange;
 }
-
-/* .toggled {
-    border: 2px solid orange;
-} */
-/* 
-.selected-field-vaults-tmb {
-    min-height: 100%;
-    width: 65%;
-  } */
-
 
   .top, .middle, .middle-bottom, .middle-top {
     border-bottom: 1px solid var(--lightgrey);
