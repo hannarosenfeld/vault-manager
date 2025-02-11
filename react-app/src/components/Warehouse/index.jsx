@@ -12,7 +12,6 @@ import ConfirmStaging from "./FieldInfo/ConfirmStaging/index.jsx";
 import "./Warehouse.css"
 
 
-
 export default function Warehouse({ setIsWarehousePage }) {
     const dispatch = useDispatch();
     const { warehouseId } = useParams(); 
