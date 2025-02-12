@@ -34,7 +34,7 @@ export default function HomePage() {
               <div
                 key={warehouse.id}
                 className="border border-gray-300 p-4 rounded-lg bg-gray-50 hover:bg-gray-100 cursor-pointer"
-                onClick={() => handleWarehouseClick(warehouse.id)}
+                onClick={() => handleWarehouseClick(warehouse.name.toLowerCase().split(" ").join("-"))}
               >
                 <h2 className="text-lg font-semibold text-gray-800">
                   {warehouse.name}
