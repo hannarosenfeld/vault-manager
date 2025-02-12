@@ -48,15 +48,22 @@ def get_warehouses():
 @warehouse_routes.route('/<int:warehouse_id>', methods=['GET'])
 def get_warehouse_info(warehouse_id):
     """
-    Retrieve information about the warehouse
+    Retrieve information about the warehouse along with its fields
     """
     warehouse = Warehouse.query.get(warehouse_id)
 
     if not warehouse:
         return {'errors': 'Warehouse not found'}, 404
 
-    return {'warehouse_info': warehouse.to_dict()}
+    # Retrieve fields associated with the warehouse
+    fields = Field.query.filter_by(warehouse_id=warehouse_id).all()
+    print("🧖‍♀️🧖‍♀️🦁 fields: ", fields)
+    fields_dict = {field.id: field.to_dict() for field in fields}
 
+    warehouse_info = warehouse.to_dict()
+    warehouse_info['fields'] = fields_dict
+
+    return {'warehouse_info': warehouse_info}
 
 @warehouse_routes.route('/add-warehouse', methods=['POST'])
 def add_warehouse():

@@ -11,8 +11,6 @@ def get_all_fields(warehouseId):
     fields = Field.query.filter_by(warehouse_id=warehouseId)
     return jsonify({ field.id : field.to_dict() for field in fields })
 
-
-
 @field_routes.route('/', methods=['POST', 'DELETE'])
 def add_field():
     form = PostFieldForm()

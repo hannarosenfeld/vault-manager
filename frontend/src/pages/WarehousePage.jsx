@@ -20,6 +20,11 @@ function WarehousePage() {
       dispatch(setCurrentWarehouse(foundWarehouse));
     }
     setLoading(false);
+
+    // Cleanup function to reset currentWarehouse when component unmounts
+    return () => {
+      dispatch(setCurrentWarehouse(null));
+    };
   }, [dispatch, warehouseName, warehouses]);
 
   if (loading) {
@@ -33,10 +38,13 @@ function WarehousePage() {
   return (
     <div className="h-full">
       <h1 className="text-xl font-bold mb-2 text-center">{warehouse.name}</h1>
-      <div className="border-2 h-[20vh]">
-      </div>
+      <div className="border-2 h-[20vh]"></div>
       <div className="border-2 min-h-[60vh]">
-        {warehouse.fields.length ? <WarehouseFields warehouseFields={warehouse.fields} /> : 'this warehouse does not havee'}
+        {warehouse.fields.length ? (
+          <WarehouseFields warehouseFields={warehouse.fields} />
+        ) : (
+          "This warehouse does not have any fields"
+        )}
       </div>
     </div>
   );
