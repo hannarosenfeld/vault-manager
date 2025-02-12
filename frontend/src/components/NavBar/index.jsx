@@ -7,31 +7,28 @@ import {
 import NavDrawer from './NavDrawer';
 import NagleeLogo from "../../../public/naglee.png";
 
-
 export default function NavBar() {
   const [openDrawer, setDrawerOpen] = useState(false);
 
   return (
     <Disclosure as="nav" className="">
+      <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
-          <div className="flex flex-1">
-            <div className="flex">
-              <img
-                alt="Your Company"
-                src={NagleeLogo}
-                className="h-10 w-auto"
-              />
-            </div>
+          <div className="flex items-center">
+            <img
+              alt="Your Company"
+              src={NagleeLogo}
+              className="h-10 w-auto"
+            />
           </div>
-          <div className="absolute inset-y-0 right-0 flex items-center pr-2 ">
+          <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             {/* Profile dropdown */}
             <Menu as="div" className="relative ml-3">
               <div>
                 <MenuButton
-                  className="relative flex rounded-full text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden"
+                  className="flex rounded-full text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-none"
                   onClick={() => setDrawerOpen(true)}
                 >
-                  <span className="absolute -inset-1.5" />
                   <span className="sr-only">Open user menu</span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -52,6 +49,7 @@ export default function NavBar() {
             </Menu>
           </div>
         </div>
+      </div>
       <NavDrawer open={openDrawer} setOpen={setDrawerOpen} />
     </Disclosure>
   );
