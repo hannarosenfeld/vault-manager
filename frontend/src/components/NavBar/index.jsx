@@ -5,7 +5,7 @@ import {
   MenuButton,
 } from "@headlessui/react";
 import NavDrawer from './NavDrawer';
-import NagleeLogo from "../../../public/naglee.png";
+import NagleeLogo from "../../assets/naglee.png";
 
 export default function NavBar() {
   const [openDrawer, setDrawerOpen] = useState(false);

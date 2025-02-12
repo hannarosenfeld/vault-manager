@@ -6,7 +6,7 @@ import LoadingSpinner from "../components/LoadingSpinner"
 export default function HomePage() {
   const dispatch = useDispatch()
   const warehouses = useSelector(state => state.warehouse)
-  const warehouseArr = false
+  const warehouseArr = Object.keys(warehouses)
 
   useEffect(() => {
     dispatch(getAllWarehousesThunk())
