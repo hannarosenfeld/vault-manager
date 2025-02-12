@@ -27,7 +27,7 @@ function App() {
       ) : (
         <div className="flex flex-col w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-[800px] mx-auto">
           <NavBar />
-          <div className="flex-grow p-4">
+          <div className="flex-grow px-4">
             <Routes>
               <Route path="/" element={<HomePage warehouses={warehouses} />} />
               <Route
