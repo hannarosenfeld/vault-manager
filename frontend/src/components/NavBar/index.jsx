@@ -12,7 +12,7 @@ export default function NavBar() {
 
   return (
     <Disclosure as="nav" className="border-2">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-4 lg:px-4">
         <div className="relative flex h-16 items-center justify-between">
           <div className="flex items-center">
             <img
