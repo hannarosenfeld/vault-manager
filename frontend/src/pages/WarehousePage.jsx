@@ -39,7 +39,7 @@ function WarehousePage() {
     <div className="h-full">
       <h1 className="text-xl font-bold mb-2 text-center">{warehouse.name}</h1>
       <div className="border-2 h-[20vh]"></div>
-      <div className="border-2 min-h-[60vh]">
+      <div className="">
         {warehouse.fields.length ? (
           <WarehouseFields warehouse={warehouse} />
         ) : (

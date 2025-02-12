@@ -9,6 +9,7 @@ export default function FieldGrid({ warehouse, fields }) {
                     gridAutoFlow: 'column',
                     gridGap: "1%",
                     width: "100%",
+                    height: "100%"
                 }}
             >
                 {fields.map(field => (
@@ -31,7 +32,7 @@ export default function FieldGrid({ warehouse, fields }) {
                             //     selectedField?.id === field.id ? "3px solid var(--blue)" : 
                             //     searchResult && searchResult?.includes(field.id) ? "3px solid var(--blue)" : "none"
                             // }`,
-                            height: `${field.type === "couchbox-T" ? "213%" : ''}`,
+                            height: `${field.type === "couchbox-T" ? "213%" : '100%'}`,
                             marginBottom: `${field.type === "couchbox-T" ? "-2.6em" : '0'}`,
                             width: `${field.type === "couchbox-B" ? "0px" : ''}`,
                             zIndex: `${field.type === "couchbox-B" ? "100" : 'none'}`,

@@ -77,7 +77,7 @@ export default function EditWarehousePage() {
                         gridAutoFlow: 'column',
                         gridGap: "1%",
                         width: "100%",
-                        height: "75vh",
+                        // height: "75vh",
                         marginBottom: "1em"
                     }}
                 >   
