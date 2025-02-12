@@ -3,7 +3,6 @@ import { getAllWarehousesThunk } from "../store/warehouse";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner";
-import { setCurrentWarehouse } from "../store/warehouse";
 
 // 🚨 Add onhover styles to the warehouse boxes
 export default function HomePage() {
@@ -16,9 +15,8 @@ export default function HomePage() {
     dispatch(getAllWarehousesThunk()).then(() => setLoading(false));
   }, [dispatch]);
 
-  const handleWarehouseClick = (warehouse) => {
-    dispatch(setCurrentWarehouse(warehouse))
-    navigate(`/warehouse/${warehouse.name.toLowerCase().split(" ").join("-")}`)
+  const handleWarehouseClick = (warehouseName) => {
+    navigate(`/warehouse/${warehouseName}`)
   };
 
   return (
@@ -36,7 +34,7 @@ export default function HomePage() {
               <div
                 key={warehouse.id}
                 className="border border-gray-300 p-4 rounded-lg bg-gray-50 hover:bg-gray-100 cursor-pointer"
-                onClick={() => handleWarehouseClick(warehouse)}
+                onClick={() => handleWarehouseClick(warehouse.name.toLowerCase().split(" ").join("-"))}
               >
                 <h2 className="text-lg font-semibold text-gray-800">
                   {warehouse.name}
