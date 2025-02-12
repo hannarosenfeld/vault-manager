@@ -9,14 +9,18 @@ export default function HomePage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const warehouses = useSelector((state) => state.warehouse.warehouses);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(Object.keys(warehouses).length === 0);
 
   useEffect(() => {
-    dispatch(getAllWarehousesThunk()).then(() => setLoading(false));
-  }, [dispatch]);
+    if (Object.keys(warehouses).length === 0) {
+      dispatch(getAllWarehousesThunk()).then(() => setLoading(false));
+    } else {
+      setLoading(false);
+    }
+  }, [dispatch, warehouses]);
 
   const handleWarehouseClick = (warehouseName) => {
-    navigate(`/warehouse/${warehouseName}`)
+    navigate(`/warehouse/${warehouseName.toLowerCase().split(" ").join("-")}`);
   };
 
   return (
