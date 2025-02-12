@@ -12,7 +12,7 @@ export default function WarehouseFields({ warehouse }) {
   }, [warehouse]);
 
   return (
-    <div>
+    <div className="h-full">
       {sortedFields.length ? <FieldGrid warehouse={warehouse} fields={sortedFields} /> : 'no fields'}
     </div>
   );
