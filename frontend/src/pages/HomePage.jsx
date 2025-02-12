@@ -13,19 +13,19 @@ export default function HomePage() {
   }, [dispatch]);
 
   return (
-    <div className="mx-auto p-4 border-2 h-full">
+    <div className="w-full h-full p-4 border-2">
       {loading ? (
         <LoadingSpinner />
       ) : Object.keys(warehouses).length === 0 ? (
         <div className="text-center text-gray-500 mt-4">There are no warehouses</div>
       ) : (
         <div>
-          <h1 className="text-3xl font-bold mb-6 text-center">Warehouses</h1>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {/* Render your warehouses here */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {Object.values(warehouses).map((warehouse) => (
-              <div key={warehouse.id} className="bg-white border border-gray-200 rounded-lg shadow p-6 hover:shadow-lg transition-shadow duration-300 ease-in-out">
-                <h2 className="text-xl font-semibold mb-2">{warehouse.name}</h2>
-                <p className="text-gray-600">{warehouse.location}</p>
+              <div key={warehouse.id} className="border p-4 rounded-lg shadow">
+                <h2 className="text-lg font-semibold">{warehouse.name}</h2>
+                <p>{warehouse.location}</p>
               </div>
             ))}
           </div>
