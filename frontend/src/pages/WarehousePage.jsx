@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCurrentWarehouse } from "../store/warehouse";
 import LoadingSpinner from "../components/LoadingSpinner";
 import FieldGrid from "../components/Warehouse/FieldGrid";
+import FieldInfo from "../components/Warehouse/FieldInfo";
 
 function WarehousePage() {
   const { warehouseName } = useParams();
@@ -43,7 +44,7 @@ function WarehousePage() {
   return (
     <div className="flex flex-col">
       <h1 className="text-xl font-bold mb-2 text-center">{warehouse.name}</h1>
-      <div className="h-[25vh]">{selectedField ? "hi" : "no"}</div>
+      <div className="h-[25vh]">{selectedField ? <FieldInfo field={selectedField} /> : "no"}</div>
       <div className="flex-grow">
         {warehouse.fields.length ? (
           <FieldGrid warehouse={warehouse} handleFieldClick={handleFieldClick} />
