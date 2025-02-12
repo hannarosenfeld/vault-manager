@@ -41,10 +41,10 @@ function WarehousePage() {
   }
 
   return (
-    <div className="h-full">
+    <div className="flex flex-col">
       <h1 className="text-xl font-bold mb-2 text-center">{warehouse.name}</h1>
-      <div className="border-2 h-[20vh]">{selectedField ? "hi" : "no"}</div>
-      <div className="">
+      <div className="h-[25vh]">{selectedField ? "hi" : "no"}</div>
+      <div className="flex-grow">
         {warehouse.fields.length ? (
           <WarehouseFields warehouse={warehouse} handleFieldClick={handleFieldClick} />
         ) : (

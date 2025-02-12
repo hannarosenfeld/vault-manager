@@ -1,48 +1,35 @@
 export default function FieldGrid({ warehouse, fields, handleFieldClick }) {
     if (fields) {
-      return (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: `repeat(${warehouse.columns}, 1fr)`,
-            gridTemplateRows: `repeat(${warehouse.rows}, 1fr)`,
-            gridAutoFlow: 'column',
-            gridGap: "1%",
-            width: "100%",
-            height: "100%",
-          }}
-        >
-          {fields.map(field => (
-            <div
-              className=""
-              key={field.id}
-              style={{
-                position: "relative",
-                width: "100%",
-                paddingBottom: "100%", // This makes the div square
-                backgroundColor: `${
-                  (field.vaults?.length === 3 && field.type === "vault") || field.full ? "red" :
-                  (field.vaults?.length === 4 && field.type === "couchbox-T") || field.full ? "red" :
-                  (field.vaults?.length === 3 && field.type === "couchbox-T") || field.full ? "yellow" :
-                  field.vaults?.length === 2 ? "yellow" :
-                  field.vaults?.length === 1 ? "green" :
-                  "lightgrey"
-                }`,
-                height: `${field.type === "couchbox-T" ? "213%" : '100%'}`,
-                marginBottom: `${field.type === "couchbox-T" ? "-2.6em" : '0'}`,
-                width: `${field.type === "couchbox-B" ? "0px" : ''}`,
-                zIndex: `${field.type === "couchbox-B" ? "100" : 'none'}`,
-              }}
-              onClick={() => handleFieldClick(field)}
-            >
-              {field.type === "couchbox-B" ? "" : (
-                <div className="absolute inset-0 flex items-center justify-center text-center text-xs">
-                  {field.name}
-                </div>
-              )}
+        return (
+            <div 
+                style={{
+                    display: "grid",
+                    gridTemplateColumns: `repeat(${warehouse.columns}, 1fr)`,
+                    gridTemplateRows: `repeat(${warehouse.rows}, 1fr)`,
+                    gridAutoFlow: 'column',
+                    gridGap: "1%",
+                    width: "100%",
+                    height: "100%"
+                }}
+            >   
+                {fields.map(field => (
+                <div
+                    className="field bg-gray-200"
+                    key={field.id}
+                    style={{
+                        aspectRatio: "1 / 1",
+                        marginBottom: `${field.type === "couchbox-T" ? "-2.6em" : '0'}`,
+                        width: `${field.type === "couchbox-B" ? "0px" : '100%'}`,
+                        height: "100%",
+                        zIndex: `${field.type === "couchbox-B" ? "100" : 'none'}`,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center"
+                    }}
+                    onClick={() => handleFieldClick(field)}
+                >{field.type === "couchbox-B" ? "" : <div className="text-md text-center">{field.name}</div>}</div>
+                ))}
             </div>
-          ))}
-        </div>
-      );
+        )
     }
-  }
+}

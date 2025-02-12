@@ -12,7 +12,7 @@ export default function WarehouseFields({ warehouse, handleFieldClick }) {
   }, [warehouse]);
 
   return (
-    <div className="max-h-[90vh] border-2 border-b-fuchsia-700 overflow-hidden">
+    <div className="flex-grow">
       {sortedFields.length ? (
         <FieldGrid warehouse={warehouse} fields={sortedFields} handleFieldClick={handleFieldClick} />
       ) : (
