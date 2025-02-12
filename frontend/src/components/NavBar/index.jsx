@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
-import {
-  Disclosure,
-  Menu,
-  MenuButton,
-} from "@headlessui/react";
+import { Disclosure, Menu, MenuButton } from "@headlessui/react";
+import { Link } from "react-router-dom";
 import NavDrawer from './NavDrawer';
 import NagleeLogo from "../../assets/naglee.png";
 
@@ -15,11 +12,13 @@ export default function NavBar() {
       <div className="mx-auto max-w-7xl px-4 sm:px-4 lg:px-4">
         <div className="relative flex h-16 items-center justify-between">
           <div className="flex items-center">
-            <img
-              alt="Your Company"
-              src={NagleeLogo}
-              className="w-[3em]"
-            />
+            <Link to="/">
+              <img
+                alt="Your Company"
+                src={NagleeLogo}
+                className="w-[3em]"
+              />
+            </Link>
           </div>
           <div className="absolute inset-y-0 right-0 flex items-center sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             {/* Profile dropdown */}
