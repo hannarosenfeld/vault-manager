@@ -16,17 +16,14 @@ export default function FieldGrid({ warehouse, fields, handleFieldClick }) {
             style={{
               backgroundColor: `${
                 (field.vaults?.length === 3 && field.type === "vault") ||
+                field.full ||
+                (field.vaults?.length === 4 && field.type === "couchbox-T") ||
                 field.full
-                  ? "red"
-                  : (field.vaults?.length === 4 &&
-                      field.type === "couchbox-T") ||
-                    field.full
                   ? "red"
                   : (field.vaults?.length === 3 &&
                       field.type === "couchbox-T") ||
-                    field.full
-                  ? "yellow"
-                  : field.vaults?.length === 2
+                    field.full ||
+                    field.vaults?.length === 2
                   ? "yellow"
                   : field.vaults?.length === 1
                   ? "green"
