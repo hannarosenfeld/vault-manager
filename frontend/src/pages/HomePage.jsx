@@ -23,8 +23,8 @@ export default function HomePage() {
           {/* Render your warehouses here */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {Object.values(warehouses).map((warehouse) => (
-              <div key={warehouse.id} className="border border-gray-300 p-4 rounded-lg">
-                <h2 className="text-lg font-semibold text-gray-700">{warehouse.name}</h2>
+              <div key={warehouse.id} className="border border-gray-300 p-4 rounded-lg bg-white">
+                <h2 className="text-lg font-semibold text-gray-800">{warehouse.name}</h2>
                 <p>{warehouse.location}</p>
               </div>
             ))}
