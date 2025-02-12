@@ -4,7 +4,7 @@ function WarehousePage() {
   const { warehouseId } = useParams();
 
   return (
-    <div>
+    <div className="">
       <h1>Warehouse Details</h1>
       <p>Warehouse ID: {warehouseId}</p>
     </div>

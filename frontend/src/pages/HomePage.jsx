@@ -20,7 +20,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="w-full h-full p-4">
+    <div className="w-full h-full">
       {loading ? (
         <LoadingSpinner />
       ) : Object.keys(warehouses).length === 0 ? (
