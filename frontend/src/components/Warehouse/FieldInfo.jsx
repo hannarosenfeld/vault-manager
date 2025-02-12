@@ -52,7 +52,7 @@ export default function FieldInfo({ field }) {
       </div>
       {/* Modal */}
       {isModalOpen && (
-        <Modal onClose={handleCloseModal}>
+        <Modal open={isModalOpen} onClose={handleCloseModal} >
           <h2 className="text-xl font-semibold">Add Vault</h2>
           {/* You can add form fields or other content here */}
           <div className="mt-4">
