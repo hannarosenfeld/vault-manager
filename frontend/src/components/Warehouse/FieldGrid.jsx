@@ -40,19 +40,7 @@ export default function FieldGrid({ warehouse, fields }) {
                         onClick={() => handleFieldClick(field)}
                     >
                         {field.type === "couchbox-B" ? "" : (
-                            <div
-                                className="text-center text-xs"
-                                style={{
-                                    position: "absolute",
-                                    top: 0,
-                                    right: 0,
-                                    bottom: 0,
-                                    left: 0,
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                }}
-                            >
+                            <div className="absolute inset-0 flex items-center justify-center text-center text-xs">
                                 {field.name}
                             </div>
                         )}
