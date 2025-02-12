@@ -11,7 +11,7 @@ export default function NavBar() {
   const [openDrawer, setDrawerOpen] = useState(false);
 
   return (
-    <Disclosure as="nav" className="border-2">
+    <Disclosure as="nav">
       <div className="mx-auto max-w-7xl px-4 sm:px-4 lg:px-4">
         <div className="relative flex h-16 items-center justify-between">
           <div className="flex items-center">
