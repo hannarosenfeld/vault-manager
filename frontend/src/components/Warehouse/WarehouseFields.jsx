@@ -12,7 +12,7 @@ export default function WarehouseFields({ warehouse }) {
   }, [warehouse]);
 
   return (
-    <div className="max-h-[60vh] border-2 border-b-fuchsia-700 overflow-auto">
+    <div className="border-2 border-b-fuchsia-700">
       {sortedFields.length ? <FieldGrid warehouse={warehouse} fields={sortedFields} /> : 'no fields'}
     </div>
   );
