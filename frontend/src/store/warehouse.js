@@ -1,9 +1,15 @@
-const GET_ALL_WAREHOUSES = 'warehouse/GET_ALL_WAREHOUSES'
+const GET_ALL_WAREHOUSES = 'warehouse/GET_ALL_WAREHOUSES';
+const SET_CURRENT_WAREHOUSE = 'warehouse/SET_CURRENT_WAREHOUSE';
 
 export const getAllWarehouses = (warehouses) => ({
   type: GET_ALL_WAREHOUSES,
-  warehouses
-})
+  warehouses,
+});
+
+export const setCurrentWarehouse = (warehouse) => ({
+  type: SET_CURRENT_WAREHOUSE,
+  warehouse,
+});
 
 export const getAllWarehousesThunk = () => async (dispatch) => {
   try {
@@ -23,21 +29,30 @@ export const getAllWarehousesThunk = () => async (dispatch) => {
   }
 };
 
-const initialState = {};
+const initialState = {
+  warehouses: {},
+  currentWarehouse: null,
+};
 
 const warehouseReducer = (state = initialState, action) => {
-  let newState = { ...state };
   switch (action.type) {
     case GET_ALL_WAREHOUSES:
-      const warehouses = action.warehouses;
-      warehouses.map((warehouse) => {
-        newState[warehouse.id] = warehouse;
-      });
-      return newState;
+      const newWarehouses = action.warehouses.reduce((acc, warehouse) => {
+        acc[warehouse.id] = warehouse;
+        return acc;
+      }, {});
+      return {
+        ...state,
+        warehouses: newWarehouses,
+      };
+    case SET_CURRENT_WAREHOUSE:
+      return {
+        ...state,
+        currentWarehouse: action.warehouse,
+      };
     default:
       return state;
   }
 };
-
 
 export default warehouseReducer;
