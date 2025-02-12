@@ -1,6 +1,6 @@
 import AddVaultButton from "./AddVaultButton";
 import VaultInfo from "./VaultInfo";
-import Modal from "../Modal";
+import AddVaultModal from "./AddVaultModal";
 import { useState } from "react";
 
 export default function FieldInfo({ field }) {
@@ -52,16 +52,7 @@ export default function FieldInfo({ field }) {
       </div>
       {/* Modal */}
       {isModalOpen && (
-        <Modal open={isModalOpen} onClose={handleCloseModal} >
-          <h2 className="text-xl font-semibold">Add Vault</h2>
-          {/* You can add form fields or other content here */}
-          <div className="mt-4">
-            <p>Here you can add a new vault.</p>
-            <button onClick={handleCloseModal} className="mt-4 text-blue-500">
-              Close
-            </button>
-          </div>
-        </Modal>
+        <AddVaultModal open={isModalOpen} onClose={handleCloseModal} />
       )}
     </div>
   );
