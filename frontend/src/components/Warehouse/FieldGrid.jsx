@@ -41,7 +41,7 @@ export default function FieldGrid({ warehouse, fields }) {
                     >
                         {field.type === "couchbox-B" ? "" : (
                             <div
-                                className="text-center text-sm"
+                                className="text-center text-xs"
                                 style={{
                                     position: "absolute",
                                     top: 0,
