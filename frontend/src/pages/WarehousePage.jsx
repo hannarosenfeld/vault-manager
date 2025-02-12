@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentWarehouse } from "../store/warehouse";
 import LoadingSpinner from "../components/LoadingSpinner";
-import WarehouseFields from "../components/WarehouseFields";
+import WarehouseFields from "../components/Warehouse/WarehouseFields";
 
 function WarehousePage() {
   const { warehouseName } = useParams();
@@ -41,7 +41,7 @@ function WarehousePage() {
       <div className="border-2 h-[20vh]"></div>
       <div className="border-2 min-h-[60vh]">
         {warehouse.fields.length ? (
-          <WarehouseFields warehouseFields={warehouse.fields} />
+          <WarehouseFields warehouse={warehouse} />
         ) : (
           "This warehouse does not have any fields"
         )}
