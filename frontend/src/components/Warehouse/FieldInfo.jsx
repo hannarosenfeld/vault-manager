@@ -1,3 +1,4 @@
+import AddVaultButton from "./AddVaultButton";
 import VaultInfo from "./VaultInfo";
 
 export default function FieldInfo({ field }) {
@@ -30,7 +31,7 @@ export default function FieldInfo({ field }) {
               index < rowCount - 1 ? "border-b border-gray-300" : ""
             }`}
           >
-            {vaultMap[pos] ? <VaultInfo vault={vaultMap[pos]} /> : "+ Add Vault"}
+            {vaultMap[pos] ? <VaultInfo vault={vaultMap[pos]} /> : <AddVaultButton type={field.type}/>}
           </div>
         ))}
       </div>
