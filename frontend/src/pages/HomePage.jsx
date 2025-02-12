@@ -1,23 +1,10 @@
-import { useDispatch, useSelector } from "react-redux";
-import { getAllWarehousesThunk } from "../store/warehouse";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import LoadingSpinner from "../components/LoadingSpinner";
 
 // 🚨 Add onhover styles to the warehouse boxes
-export default function HomePage() {
-  const dispatch = useDispatch();
+export default function HomePage({ warehouses }) {
   const navigate = useNavigate();
-  const warehouses = useSelector((state) => state.warehouse.warehouses);
-  const [loading, setLoading] = useState(Object.keys(warehouses).length === 0);
 
-  useEffect(() => {
-    if (Object.keys(warehouses).length === 0) {
-      dispatch(getAllWarehousesThunk()).then(() => setLoading(false));
-    } else {
-      setLoading(false);
-    }
-  }, [dispatch, warehouses]);
+  console.log("🥳", warehouses)
 
   const handleWarehouseClick = (warehouseName) => {
     navigate(`/warehouse/${warehouseName.toLowerCase().split(" ").join("-")}`);
@@ -25,13 +12,6 @@ export default function HomePage() {
 
   return (
     <div className="w-full h-full">
-      {loading ? (
-        <LoadingSpinner />
-      ) : Object.keys(warehouses).length === 0 ? (
-        <div className="text-center text-gray-500 mt-4">
-          There are no warehouses
-        </div>
-      ) : (
         <div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {Object.values(warehouses).map((warehouse) => (
@@ -48,7 +28,6 @@ export default function HomePage() {
             ))}
           </div>
         </div>
-      )}
     </div>
   );
 }
