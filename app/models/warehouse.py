@@ -26,17 +26,14 @@ class Warehouse(db.Model):
     )
     orders = db.relationship('Order', secondary=warehouse_orders, back_populates='warehouses', cascade='all, delete')
 
-    # warehouse_vaults = db.relationship('Vault', back_populates="warehouse")
-
     def to_dict(self):
         return {
             'id': self.id,
             'name': self.name,
             'rows': self.rows,
             'columns': self.cols,
-            'fields': [field.id for field in self.warehouse_fields],
+            'fields': [field.to_dict() for field in self.warehouse_fields],
             'orders': [order.id for order in self.orders],
             'companyId': self.company_id,
             'companyName': self.company.name
-            # 'vaults': [vault.to_dict() for vault in self.warehouse_vaults],
         }
