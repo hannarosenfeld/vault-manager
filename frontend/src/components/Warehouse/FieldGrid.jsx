@@ -14,6 +14,24 @@ export default function FieldGrid({ warehouse, fields, handleFieldClick }) {
             className="field bg-gray-200"
             key={field.id}
             style={{
+              backgroundColor: `${
+                (field.vaults?.length === 3 && field.type === "vault") ||
+                field.full
+                  ? "red"
+                  : (field.vaults?.length === 4 &&
+                      field.type === "couchbox-T") ||
+                    field.full
+                  ? "red"
+                  : (field.vaults?.length === 3 &&
+                      field.type === "couchbox-T") ||
+                    field.full
+                  ? "yellow"
+                  : field.vaults?.length === 2
+                  ? "yellow"
+                  : field.vaults?.length === 1
+                  ? "green"
+                  : "lightgrey"
+              }`,
               aspectRatio: "1 / 1",
               marginBottom: `${field.type === "couchbox-T" ? "-2.6em" : "0"}`,
               width: `${field.type === "couchbox-B" ? "0px" : "100%"}`,
