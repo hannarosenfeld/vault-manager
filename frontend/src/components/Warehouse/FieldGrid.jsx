@@ -46,7 +46,7 @@ export default function FieldGrid({ warehouse, fields, handleFieldClick }) {
             {field.type === "couchbox-B" ? (
               ""
             ) : (
-              <div className="text-md text-center">{field.name}</div>
+              <div className="text-xs md:text-md text-center">{field.name}</div>
             )}
           </div>
         ))}
