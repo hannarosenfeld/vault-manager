@@ -1,4 +1,4 @@
-export default function FieldGrid({ warehouse, fields }) {
+export default function FieldGrid({ warehouse, fields, handleFieldClick }) {
     if (fields) {
       return (
         <div
@@ -28,10 +28,6 @@ export default function FieldGrid({ warehouse, fields }) {
                   field.vaults?.length === 1 ? "green" :
                   "lightgrey"
                 }`,
-                // border: `${
-                //     selectedField?.id === field.id ? "3px solid var(--blue)" : 
-                //     searchResult && searchResult?.includes(field.id) ? "3px solid var(--blue)" : "none"
-                // }`,
                 height: `${field.type === "couchbox-T" ? "213%" : '100%'}`,
                 marginBottom: `${field.type === "couchbox-T" ? "-2.6em" : '0'}`,
                 width: `${field.type === "couchbox-B" ? "0px" : ''}`,
