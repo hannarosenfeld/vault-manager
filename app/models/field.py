@@ -27,7 +27,7 @@ class Field(db.Model, UserMixin):
             'id': self.id,
             'name': self.name,
             'type': self.type,
-            'vaults': [vault.id for vault in self.vaults],
+            'vaults': [vault.to_dict() for vault in self.vaults],
             'warehouse_id': self.warehouse_id,
             'full': self.full,
             'orders': [order.id for order in self.orders]
