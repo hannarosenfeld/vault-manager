@@ -12,9 +12,9 @@ export const setCurrentWarehouse = (warehouse) => ({
   warehouse,
 });
 
-export const addVault = (vault) => ({
+export const addVault = (payload) => ({
   type: ADD_VAULT,
-  vault,
+  payload,
 });
 
 export const getAllWarehousesThunk = () => async (dispatch) => {
@@ -79,18 +79,40 @@ const warehouseReducer = (state = initialState, action) => {
         currentWarehouse: action.warehouse,
       };
     case ADD_VAULT:
+      const { fieldId, vault } = action.payload;
+      const { id: vaultId } = vault;
+      
+      // Find the warehouse containing the field
+      const warehouseId = Object.keys(state.warehouses).find(id =>
+        state.warehouses[id].fields[fieldId]
+      );
+      
+      if (!warehouseId) {
+        // If no warehouse contains the field, return the current state
+        return state;
+      }
+      
+      // Update the fields with the new vault
+      const updatedFields = {
+        ...state.warehouses[warehouseId].fields,
+        [fieldId]: {
+          ...state.warehouses[warehouseId].fields[fieldId],
+          vaults: {
+            ...state.warehouses[warehouseId].fields[fieldId].vaults,
+            [vaultId]: vault
+          }
+        }
+      };
+      
       return {
         ...state,
         warehouses: {
           ...state.warehouses,
-          [action.vault.warehouseId]: {
-            ...state.warehouses[action.vault.warehouseId],
-            vaults: [
-              ...(state.warehouses[action.vault.warehouseId]?.vaults || []),
-              action.vault,
-            ],
-          },
-        },
+          [warehouseId]: {
+            ...state.warehouses[warehouseId],
+            fields: updatedFields
+          }
+        }
       };
     default:
       return state;

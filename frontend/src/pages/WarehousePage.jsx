@@ -11,6 +11,7 @@ function WarehousePage() {
   const dispatch = useDispatch();
   const warehouse = useSelector((state) => state.warehouse.currentWarehouse);
   const warehouses = useSelector((state) => state.warehouse.warehouses);
+  const [fieldsArr, setFieldsArr] = useState(null);
   const [selectedField, setSelectedField] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -23,7 +24,8 @@ function WarehousePage() {
       (w) => w.name.toLowerCase().split(" ").join("-") === warehouseName
     );
     if (foundWarehouse) {
-      dispatch(setCurrentWarehouse(foundWarehouse));
+      dispatch(setCurrentWarehouse(foundWarehouse));            
+      setFieldsArr(Object.values(foundWarehouse.fields))
     }
     setLoading(false);
 
@@ -46,7 +48,7 @@ function WarehousePage() {
       <h1 className="text-xl font-bold mb-2 text-center">{warehouse.name}</h1>
       <div className="h-[25vh]">{selectedField ? <FieldInfo field={selectedField} /> : "Select a field to view its info"}</div>
       <div className="flex-grow">
-        {warehouse.fields.length ? (
+        {fieldsArr.length ? (
           <FieldGrid warehouse={warehouse} handleFieldClick={handleFieldClick} />
         ) : (
           "This warehouse does not have any fields"

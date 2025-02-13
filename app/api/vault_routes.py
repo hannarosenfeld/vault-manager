@@ -60,8 +60,6 @@ def add_vault():
     form = VaultForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     
-    print("❤️‍🔥 in route")
-
     try:
         if form.validate_on_submit():
             customer_name = form.data['customer_name']
@@ -80,7 +78,7 @@ def add_vault():
                 note=form.data['note'],
                 empty=form.data['empty']
             )
-
+            
             db.session.add(new_vault)
             db.session.commit()
 
@@ -131,7 +129,7 @@ def add_vault():
 
             dict_new_vault = new_vault.to_dict()
 
-            return dict_new_vault
+            return {"vault": dict_new_vault, "fieldId": field.id}
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500

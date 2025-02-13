@@ -42,8 +42,13 @@ def get_warehouses():
     if not warehouses:
         return {'errors': 'No warehouses found!'}, 404
 
-    return [warehouse.to_dict() for warehouse in warehouses]
+    sorted_warehouses = []
+    for warehouse in warehouses:
+        warehouse_dict = warehouse.to_dict()
+        warehouse_dict['fields'] = {field['id']: field for field in sorted(warehouse_dict['fields'], key=lambda x: x['id'])}
+        sorted_warehouses.append(warehouse_dict)
 
+    return sorted_warehouses
 
 @warehouse_routes.route('/<int:warehouse_id>', methods=['GET'])
 def get_warehouse_info(warehouse_id):
