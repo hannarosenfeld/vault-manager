@@ -31,15 +31,15 @@ export default function FieldGrid({ warehouse, handleFieldClick }) {
                   field.full ||
                   (field.vaults?.length === 4 && field.type === "couchbox-T") ||
                   field.full
-                    ? "red"
+                    ? "var(--red)"
                     : (field.vaults?.length === 3 &&
                         field.type === "couchbox-T") ||
                       field.full ||
                       field.vaults?.length === 2
-                    ? "yellow"
+                    ? "var(--yellow)"
                     : field.vaults?.length === 1
-                    ? "green"
-                    : "lightgrey"
+                    ? "var(--green)"
+                    : "var(--lightgrey)"
                 }`,
                 aspectRatio: "1 / 1",
                 marginBottom: `${field.type === "couchbox-T" ? "-2.6em" : "0"}`,
