@@ -5,6 +5,7 @@ import { useState } from "react";
 
 export default function FieldInfo({ field }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPosition, setSelectedPosition] = useState(null);
   const rowCount = field.type === "couchbox" ? 4 : 3;
 
   // Define positions, conditionally including M2
@@ -26,8 +27,14 @@ export default function FieldInfo({ field }) {
   );
 
   // Handle opening and closing of the modal
-  const handleOpenModal = () => setIsModalOpen(true);
-  const handleCloseModal = () => setIsModalOpen(false);
+  const handleOpenModal = (position) => {
+    setSelectedPosition(position);
+    setIsModalOpen(true);
+  };
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedPosition(null);
+  };
 
   return (
     <div className="h-[90%] grid grid-cols-[65%_35%]">
@@ -42,7 +49,7 @@ export default function FieldInfo({ field }) {
             {vaultMap[pos] ? (
               <VaultInfo vault={vaultMap[pos]} />
             ) : (
-              <AddVaultButton type={field.type} onClick={handleOpenModal} />
+              <AddVaultButton type={field.type} onClick={() => handleOpenModal(pos)} />
             )}
           </div>
         ))}
@@ -52,7 +59,11 @@ export default function FieldInfo({ field }) {
       </div>
       {/* Modal */}
       {isModalOpen && (
-        <AddVaultModal open={isModalOpen} onClose={handleCloseModal} />
+        <AddVaultModal
+          fieldId={field.id}
+          position={selectedPosition}
+          onClose={handleCloseModal}
+        />
       )}
     </div>
   );

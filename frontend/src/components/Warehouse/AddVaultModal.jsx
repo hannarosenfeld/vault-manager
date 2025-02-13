@@ -5,15 +5,21 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addVaultThunk } from "../../store/warehouse";
 
-export default function AddVaultModal({ onClose }) {
+export default function AddVaultModal({ onClose, fieldId, position }) {
+  const dispatch = useDispatch();
   const [isEmpty, setIsEmpty] = useState(false);
   const [formData, setFormData] = useState({
     customer: "",
-    vaultNumber: "",
+    vault_id: "",
     orderNumber: "",
     type: "Standard",
-    message: "",
+    note: "",
+    file: null,
+    field_id: fieldId,
+    position: position,
   });
 
   const handleToggle = () => {
@@ -26,17 +32,27 @@ export default function AddVaultModal({ onClose }) {
   };
 
   const handleChange = (e) => {
-    const { id, value } = e.target;
+    const { id, value, files } = e.target;
     setFormData({
       ...formData,
-      [id]: value,
+      [id]: id === "customer" ? value.toUpperCase() : files ? files[0] : value,
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log("Form submitted", formData);
+    const submissionData = new FormData();
+    submissionData.append('vault_id', formData.vault_id);
+    submissionData.append('customer_name', formData.customer.toUpperCase());
+    submissionData.append('order_name', formData.orderNumber);
+    submissionData.append('type', formData.type === "Standard" ? "S" : "T");
+    submissionData.append('note', formData.note);
+    submissionData.append('field_id', formData.field_id);
+    submissionData.append('position', formData.position);
+    if (formData.file) {
+      submissionData.append('file', formData.file);
+    }
+    await dispatch(addVaultThunk(submissionData));
     onClose();
   };
 
@@ -91,22 +107,22 @@ export default function AddVaultModal({ onClose }) {
                         className={`${
                           isEmpty ? "bg-gray-200 text-gray-500" : "bg-gray-50"
                         } border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5`}
-                        placeholder="Customer Name"
+                        placeholder="CUSTOMER NAME"
                         required
                       />
                     </div>
                     <div className="flex gap-2">
                       <div className="mb-5 w-1/2">
                         <label
-                          htmlFor="vaultNumber"
+                          htmlFor="vault_id"
                           className="block mb-2 text-sm font-medium text-gray-900"
                         >
                           Vault Number
                         </label>
                         <input
                           type="text"
-                          id="vaultNumber"
-                          value={formData.vaultNumber}
+                          id="vault_id"
+                          value={formData.vault_id}
                           onChange={handleChange}
                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                           placeholder="Vault Number"
@@ -135,7 +151,7 @@ export default function AddVaultModal({ onClose }) {
                       </div>
                     </div>
 
-                    <div className="flex gap-2 mb-5">
+                    <div className="flex gap-5 mb-5 justify-between">
                       <div className="w-1/2">
                         <label
                           htmlFor="type"
@@ -153,16 +169,17 @@ export default function AddVaultModal({ onClose }) {
                           <option>Tall</option>
                         </select>
                       </div>
-                      <div className="w-1/2">
+                      <div className="w-full">
                         <label
-                          htmlFor="fileUpload"
+                          htmlFor="file"
                           className="block mb-2 text-sm font-medium text-gray-900"
                         >
                           Upload File
                         </label>
                         <input
                           type="file"
-                          id="fileUpload"
+                          id="file"
+                          onChange={handleChange}
                           className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         />
                       </div>
@@ -170,14 +187,14 @@ export default function AddVaultModal({ onClose }) {
 
                     <div className="mb-5">
                       <label
-                        htmlFor="message"
+                        htmlFor="note"
                         className="block mb-2 text-sm font-medium text-gray-900"
                       >
-                        Your message
+                        Add note
                       </label>
                       <textarea
-                        id="message"
-                        value={formData.message}
+                        id="note"
+                        value={formData.note}
                         onChange={handleChange}
                         rows="4"
                         className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"

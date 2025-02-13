@@ -54,19 +54,13 @@ def all_vaults_staged():
     vaults = Vault.query.filter_by(field_id=None)
     return { vault.id : vault.to_dict() for vault in vaults }
 
-# @vault_routes.route('/<int:id>')
-# def single_vault(id):
-#     """
-#     Query for a vault by id and returns that vault in a dictionary
-#     """
-#     vault = Vault.query.get(id)
-#     return vault.to_dict()
-
 @vault_routes.route('/', methods=['POST'])
 @login_required
 def add_vault():
     form = VaultForm()
     form['csrf_token'].data = request.cookies['csrf_token']
+    
+    print("❤️‍🔥 in route")
 
     try:
         if form.validate_on_submit():

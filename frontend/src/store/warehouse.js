@@ -1,5 +1,6 @@
 const GET_ALL_WAREHOUSES = 'warehouse/GET_ALL_WAREHOUSES';
 const SET_CURRENT_WAREHOUSE = 'warehouse/SET_CURRENT_WAREHOUSE';
+const ADD_VAULT = 'warehouse/ADD_VAULT';
 
 export const getAllWarehouses = (warehouses) => ({
   type: GET_ALL_WAREHOUSES,
@@ -9,6 +10,11 @@ export const getAllWarehouses = (warehouses) => ({
 export const setCurrentWarehouse = (warehouse) => ({
   type: SET_CURRENT_WAREHOUSE,
   warehouse,
+});
+
+export const addVault = (vault) => ({
+  type: ADD_VAULT,
+  vault,
 });
 
 export const getAllWarehousesThunk = () => async (dispatch) => {
@@ -28,6 +34,28 @@ export const getAllWarehousesThunk = () => async (dispatch) => {
     return error;
   }
 };
+
+export const addVaultThunk = (vaultData) => async (dispatch) => {
+  try {
+    const res = await fetch('/api/vaults/', {
+      method: 'POST',
+      body: vaultData
+    });
+    if (res.ok) {
+      const data = await res.json();
+      dispatch(addVault(data));
+      return data;
+    } else {
+      const err = await res.json();
+      console.error("Error adding vault:", err);
+      return err;
+    }
+  } catch (error) {
+    console.error("Error adding vault:", error);
+    return error;
+  }
+};
+
 
 const initialState = {
   warehouses: {},
@@ -49,6 +77,20 @@ const warehouseReducer = (state = initialState, action) => {
       return {
         ...state,
         currentWarehouse: action.warehouse,
+      };
+    case ADD_VAULT:
+      return {
+        ...state,
+        warehouses: {
+          ...state.warehouses,
+          [action.vault.warehouseId]: {
+            ...state.warehouses[action.vault.warehouseId],
+            vaults: [
+              ...(state.warehouses[action.vault.warehouseId]?.vaults || []),
+              action.vault,
+            ],
+          },
+        },
       };
     default:
       return state;
