@@ -100,9 +100,9 @@ export default function AddVaultModal({ onClose }) {
             <button
               type="button"
               onClick={() => onClose()}
-              className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 sm:ml-3 sm:w-auto"
+              className="inline-flex w-full justify-center rounded-md bg-blue-500 px-3 py-2 text-sm text-white shadow-xs hover:bg-red-500 sm:ml-3 sm:w-auto"
             >
-              Deactivate
+              Add Vault
             </button>
             <button
               type="button"
