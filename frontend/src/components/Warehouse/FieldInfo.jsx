@@ -1,9 +1,7 @@
 import AddVaultButton from "./AddVaultButton";
 import VaultInfo from "./VaultInfo";
 import AddVaultModal from "./AddVaultModal";
-import { useState } from "react";
-
-export default function FieldInfo({ field }) {
+import { useState } from "react";export default function FieldInfo({ field }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPosition, setSelectedPosition] = useState(null);
   const rowCount = field.type === "couchbox" ? 4 : 3;
@@ -25,6 +23,11 @@ export default function FieldInfo({ field }) {
   const vaultMap = Object.fromEntries(
     sortedVaults.map((vault) => [vault.position, vault])
   );
+
+  // Find the last empty position
+  const lastEmptyPosition = [...positionOrder]
+    .reverse()
+    .find((pos) => !vaultMap[pos]);
 
   // Handle opening and closing of the modal
   const handleOpenModal = (position) => {
@@ -49,7 +52,9 @@ export default function FieldInfo({ field }) {
             {vaultMap[pos] ? (
               <VaultInfo vault={vaultMap[pos]} />
             ) : (
-              <AddVaultButton type={field.type} onClick={() => handleOpenModal(pos)} />
+              lastEmptyPosition === pos && (
+                <AddVaultButton type={field.type} onClick={() => handleOpenModal(pos)} />
+              )
             )}
           </div>
         ))}
