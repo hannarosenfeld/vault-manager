@@ -27,17 +27,17 @@ export default function FieldGrid({ warehouse, handleFieldClick }) {
               key={field.id}
               style={{
                 backgroundColor: `${
-                  (field.vaults?.length === 3 && field.type === "vault") ||
+                  (Object.keys(field.vaults).length === 3 && field.type === "vault") ||
                   field.full ||
-                  (field.vaults?.length === 4 && field.type === "couchbox-T") ||
+                  (Object.keys(field.vaults).length === 4 && field.type === "couchbox-T") ||
                   field.full
                     ? "var(--red)"
-                    : (field.vaults?.length === 3 &&
+                    : (Object.keys(field.vaults).length === 3 &&
                         field.type === "couchbox-T") ||
                       field.full ||
-                      field.vaults?.length === 2
+                      Object.keys(field.vaults).length === 2
                     ? "var(--yellow)"
-                    : field.vaults?.length === 1
+                    : Object.keys(field.vaults).length === 1
                     ? "var(--green)"
                     : "var(--lightgrey)"
                 }`,

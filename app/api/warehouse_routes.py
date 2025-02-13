@@ -46,6 +46,11 @@ def get_warehouses():
     for warehouse in warehouses:
         warehouse_dict = warehouse.to_dict()
         warehouse_dict['fields'] = {field['id']: field for field in sorted(warehouse_dict['fields'], key=lambda x: x['id'])}
+        
+        # Adding vaults to the fields
+        for field_id, field in warehouse_dict['fields'].items():
+            field['vaults'] = {vault['id']: vault for vault in sorted(field['vaults'], key=lambda x: x['id'])}
+        
         sorted_warehouses.append(warehouse_dict)
 
     return sorted_warehouses

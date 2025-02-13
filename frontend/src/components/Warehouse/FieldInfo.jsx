@@ -16,7 +16,7 @@ export default function FieldInfo({ field }) {
 
   // Sort vaults based on their position
   const sortedVaults = field.vaults
-    ? [...field.vaults].sort(
+    ? [...Object.values(field.vaults)].sort(
         (a, b) =>
           positionOrder.indexOf(a.position) - positionOrder.indexOf(b.position)
       )
