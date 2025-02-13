@@ -91,7 +91,7 @@ const warehouseReducer = (state = initialState, action) => {
         // If no warehouse contains the field, return the current state
         return state;
       }
-      
+
       // Update the fields with the new vault
       const updatedFields = {
         ...state.warehouses[warehouseId].fields,
@@ -103,6 +103,14 @@ const warehouseReducer = (state = initialState, action) => {
           }
         }
       };
+
+      // Update the current warehouse if it matches the warehouseId
+      const updatedCurrentWarehouse = state.currentWarehouse && state.currentWarehouse.id === parseInt(warehouseId)
+        ? {
+            ...state.currentWarehouse,
+            fields: updatedFields
+          }
+        : state.currentWarehouse;
       
       return {
         ...state,
@@ -112,7 +120,8 @@ const warehouseReducer = (state = initialState, action) => {
             ...state.warehouses[warehouseId],
             fields: updatedFields
           }
-        }
+        },
+        currentWarehouse: updatedCurrentWarehouse
       };
     default:
       return state;
