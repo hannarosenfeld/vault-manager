@@ -1,7 +1,10 @@
 import AddVaultButton from "./AddVaultButton";
 import VaultInfo from "./VaultInfo";
 import AddVaultModal from "./AddVaultModal";
-import { useState } from "react";export default function FieldInfo({ field }) {
+import { useState } from "react";
+
+
+export default function FieldInfo({ field }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPosition, setSelectedPosition] = useState(null);
   const rowCount = field.type === "couchbox" ? 4 : 3;

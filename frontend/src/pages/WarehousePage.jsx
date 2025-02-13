@@ -44,7 +44,7 @@ function WarehousePage() {
   return (
     <div className="flex flex-col">
       <h1 className="text-xl font-bold mb-2 text-center">{warehouse.name}</h1>
-      <div className="h-[25vh]">{selectedField ? <FieldInfo field={selectedField} /> : "no"}</div>
+      <div className="h-[25vh]">{selectedField ? <FieldInfo field={selectedField} /> : "Select a field to view its info"}</div>
       <div className="flex-grow">
         {warehouse.fields.length ? (
           <FieldGrid warehouse={warehouse} handleFieldClick={handleFieldClick} />
