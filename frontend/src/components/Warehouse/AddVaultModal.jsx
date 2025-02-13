@@ -35,7 +35,7 @@ export default function AddVaultModal({ onClose, fieldId, position }) {
     const { id, value, files } = e.target;
     setFormData({
       ...formData,
-      [id]: id === "customer" ? value.toUpperCase() : files ? files[0] : value,
+      [id]: files ? files[0] : value,
     });
   };
 
@@ -43,7 +43,7 @@ export default function AddVaultModal({ onClose, fieldId, position }) {
     e.preventDefault();
     const submissionData = new FormData();
     submissionData.append('vault_id', formData.vault_id);
-    submissionData.append('customer_name', formData.customer.toUpperCase());
+    submissionData.append('customer_name', isEmpty ? "EMPTY" : formData.customer.toUpperCase());
     submissionData.append('order_name', formData.orderNumber);
     submissionData.append('type', formData.type === "Standard" ? "S" : "T");
     submissionData.append('note', formData.note);
