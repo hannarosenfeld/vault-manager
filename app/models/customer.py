@@ -23,5 +23,4 @@ class Customer(db.Model, UserMixin):
             'name': self.name,
             'vaults': [vault.id for vault in self.vaults], 
             'companies': [company.id for company in self.customer_companies]
-            # 'orders': [order.id for order in self.orders], 
         }

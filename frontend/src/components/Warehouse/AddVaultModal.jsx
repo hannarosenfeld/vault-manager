@@ -41,6 +41,7 @@ export default function AddVaultModal({ onClose, fieldId, position }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("😈", formData)
     const submissionData = new FormData();
     submissionData.append('vault_id', formData.vault_id);
     submissionData.append('customer_name', isEmpty ? "EMPTY" : formData.customer.toUpperCase());

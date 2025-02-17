@@ -87,6 +87,7 @@ def add_vault():
                     new_customer = Customer(name=customer_name)
                     db.session.add(new_customer)
                     db.session.commit()
+                    new_vault.customer_id = new_customer.id
 
             if not existent_order:
                 if order_name:
@@ -127,7 +128,10 @@ def add_vault():
 
             db.session.commit()
 
+            # Retrieve the customer name for the response
+            customer_name = Customer.query.get(new_vault.customer_id).name if new_vault.customer_id else None
             dict_new_vault = new_vault.to_dict()
+            dict_new_vault["customer_name"] = customer_name
 
             return {"vault": dict_new_vault, "fieldId": field.id}
 
@@ -193,7 +197,7 @@ def manage_vault(id):
 
             # Handle file uploads
             for key, value in request.files.items():
-                if key.startswith('attachment'):
+                if (key.startswith('attachment')):
                     attachment = value
 
                     # Get AWS credentials from environment variables
@@ -254,4 +258,3 @@ def move_vault_to_warehouse(selected_field_id, vault_id, position):
 
     else:
         return {"message" : "vault not found"}
-

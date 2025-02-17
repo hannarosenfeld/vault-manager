@@ -42,6 +42,7 @@ export const getAllWarehousesThunk = () => async (dispatch) => {
 };
 
 export const addVaultThunk = (vaultData) => async (dispatch) => {
+  console.log("😎", vaultData.get('customer_name'));
   try {
     const res = await fetch('/api/vaults/', {
       method: 'POST',
@@ -113,6 +114,7 @@ const warehouseReducer = (state = initialState, action) => {
         currentField: action.field,
       };
     case ADD_VAULT:
+      console.log("💖", action)
       const { fieldId, vault } = action.payload;
       const { id: vaultId } = vault;
       
