@@ -8,9 +8,10 @@ warehouse_routes = Blueprint('warehouse', __name__)
 # fetch current field
 @warehouse_routes.route('/<int:warehouse_id>/<int:field_id>')
 def get_current_field(warehouse_id, field_id):
-    print("💖 IN ROUTE", )
     field = Field.query.get(field_id)
-    return jsonify(field.to_dict())
+    field_dict = field.to_dict()
+    field_dict['vaults'] = {vault['id']: vault for vault in sorted(field_dict['vaults'], key=lambda x: x['id'])}
+    return jsonify(field_dict)
 
 
 @warehouse_routes.route('/<int:warehouse_id>', methods=['DELETE'])
