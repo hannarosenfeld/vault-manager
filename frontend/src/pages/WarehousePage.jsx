@@ -5,6 +5,7 @@ import { setCurrentWarehouse } from "../store/warehouse";
 import LoadingSpinner from "../components/LoadingSpinner";
 import FieldGrid from "../components/Warehouse/FieldGrid";
 import FieldInfo from "../components/Warehouse/FieldInfo";
+import { getCurrentFieldThunk } from "../store/warehouse";
 
 function WarehousePage() {
   const { warehouseName } = useParams();
@@ -12,11 +13,13 @@ function WarehousePage() {
   const warehouse = useSelector((state) => state.warehouse.currentWarehouse);
   const warehouses = useSelector((state) => state.warehouse.warehouses);
   const [fieldsArr, setFieldsArr] = useState(null);
-  const [selectedField, setSelectedField] = useState(null);
+  const selectedField = useSelector((state) => state.warehouse.currentField)
+  // const [selectedField, setSelectedField] = useState(null);
   const [loading, setLoading] = useState(true);
 
   function handleFieldClick(field) {
-    setSelectedField(field);
+    // setSelectedField(field);
+    if (field.id) dispatch(getCurrentFieldThunk(field.id));
   }
 
   useEffect(() => {
@@ -24,8 +27,8 @@ function WarehousePage() {
       (w) => w.name.toLowerCase().split(" ").join("-") === warehouseName
     );
     if (foundWarehouse) {
-      dispatch(setCurrentWarehouse(foundWarehouse));            
-      setFieldsArr(Object.values(foundWarehouse.fields))
+      dispatch(setCurrentWarehouse(foundWarehouse));
+      setFieldsArr(Object.values(foundWarehouse.fields));
     }
     setLoading(false);
 
@@ -46,10 +49,19 @@ function WarehousePage() {
   return (
     <div className="flex flex-col">
       <h1 className="text-xl font-bold mb-2 text-center">{warehouse.name}</h1>
-      <div className="h-[25vh]">{selectedField ? <FieldInfo field={selectedField} /> : "Select a field to view its info"}</div>
+      <div className="h-[25vh]">
+        {selectedField ? (
+          <FieldInfo field={selectedField} />
+        ) : (
+          "Select a field to view its info"
+        )}
+      </div>
       <div className="flex-grow">
         {fieldsArr.length ? (
-          <FieldGrid warehouse={warehouse} handleFieldClick={handleFieldClick} />
+          <FieldGrid
+            warehouse={warehouse}
+            handleFieldClick={handleFieldClick}
+          />
         ) : (
           "This warehouse does not have any fields"
         )}

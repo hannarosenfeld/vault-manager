@@ -4,10 +4,13 @@ from app.forms import EditFieldForm, PostFieldForm
 
 field_routes = Blueprint('fields', __name__)
 
+@field_routes.route('/<int:field_id>')
+def get_current_field(field_id):
+    field = Field.query.get(field_id)
+    return jsonify(field.to_dict())
 
 @field_routes.route('/<int:warehouseId>')
 def get_all_fields(warehouseId):
-    # fields = Field.query.all()
     fields = Field.query.filter_by(warehouse_id=warehouseId)
     return jsonify({ field.id : field.to_dict() for field in fields })
 
@@ -33,8 +36,6 @@ def add_field():
             res = []
             fields = Field.query.filter_by(warehouse_id=warehouse_id)
             warehouse = Warehouse.query.get(warehouse_id)
-
-            print("😎 warehouse: ", warehouse.to_dict())
 
             if request.method == 'POST' and opperation == 'add':
                 if direction == 'left':
@@ -200,8 +201,6 @@ def add_field():
     # return jsonify({'errors': '🪐 there is some other error'}), 400
         
 
-
-
 @field_routes.route('/single/<int:id>', methods=['PUT'])
 def toggle_field_full(id):
 
@@ -227,7 +226,7 @@ def toggle_field_full(id):
 def edit_field(id):
     form = EditFieldForm()
     form['csrf_token'].data = request.cookies['csrf_token']
-    print("🚨 in route")
+
 
     try:
         if form.validate_on_submit():
@@ -269,7 +268,6 @@ def edit_field(id):
                 return jsonify([field1.to_dict(), field2.to_dict()])
 
             if type == 'vault':
-                print("💖 in route", field1, field2)
                 if checkVaultCount(field1.vaults) > 0:
                     return jsonify(message="Please stage all vaults in field to continue")
 

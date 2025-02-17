@@ -1,5 +1,6 @@
 const GET_ALL_WAREHOUSES = 'warehouse/GET_ALL_WAREHOUSES';
 const SET_CURRENT_WAREHOUSE = 'warehouse/SET_CURRENT_WAREHOUSE';
+const SET_CURRENT_FIELD = 'warehouse/SET_CURRENT_FIELD';
 const ADD_VAULT = 'warehouse/ADD_VAULT';
 
 export const getAllWarehouses = (warehouses) => ({
@@ -10,6 +11,11 @@ export const getAllWarehouses = (warehouses) => ({
 export const setCurrentWarehouse = (warehouse) => ({
   type: SET_CURRENT_WAREHOUSE,
   warehouse,
+});
+
+export const setCurrentField = (field) => ({
+  type: SET_CURRENT_FIELD,
+  field,
 });
 
 export const addVault = (payload) => ({
@@ -56,10 +62,29 @@ export const addVaultThunk = (vaultData) => async (dispatch) => {
   }
 };
 
+export const getCurrentFieldThunk = (fieldId) => async (dispatch) => {
+  try {
+    const res = await fetch(`/api/fields/${fieldId}`);
+    if (res.ok) {
+      const data = await res.json();
+      dispatch(setCurrentField(data));
+      return data;
+    } else {
+      const err = await res.json();
+      console.error("Error fetching field:", err);
+      return err;
+    }
+  } catch (error) {
+    console.error("Error fetching field:", error);
+    return error;
+  }
+};
+
 
 const initialState = {
   warehouses: {},
   currentWarehouse: null,
+  currentField: null,
 };
 
 const warehouseReducer = (state = initialState, action) => {
@@ -77,6 +102,11 @@ const warehouseReducer = (state = initialState, action) => {
       return {
         ...state,
         currentWarehouse: action.warehouse,
+      };
+    case SET_CURRENT_FIELD:
+      return {
+        ...state,
+        currentField: action.field,
       };
     case ADD_VAULT:
       const { fieldId, vault } = action.payload;
