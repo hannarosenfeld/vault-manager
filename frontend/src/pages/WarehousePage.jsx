@@ -14,11 +14,9 @@ function WarehousePage() {
   const warehouses = useSelector((state) => state.warehouse.warehouses);
   const [fieldsArr, setFieldsArr] = useState(null);
   const selectedField = useSelector((state) => state.warehouse.currentField)
-  // const [selectedField, setSelectedField] = useState(null);
   const [loading, setLoading] = useState(true);
 
   function handleFieldClick(field) {
-    // setSelectedField(field);
     if (field.id) dispatch(getCurrentFieldThunk(field.id));
   }
 
