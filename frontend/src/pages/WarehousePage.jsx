@@ -13,7 +13,7 @@ function WarehousePage() {
   const warehouse = useSelector((state) => state.warehouse.currentWarehouse);
   const warehouses = useSelector((state) => state.warehouse.warehouses);
   const [fieldsArr, setFieldsArr] = useState(null);
-  const selectedField = useSelector((state) => state.warehouse.currentField)
+  const selectedField = useSelector((state) => state.warehouse.currentField);
   const [loading, setLoading] = useState(true);
 
   function handleFieldClick(field) {
@@ -30,7 +30,6 @@ function WarehousePage() {
     }
     setLoading(false);
 
-    // Cleanup function to reset currentWarehouse when component unmounts
     return () => {
       dispatch(setCurrentWarehouse(null));
     };

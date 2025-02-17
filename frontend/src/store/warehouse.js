@@ -1,7 +1,7 @@
-const GET_ALL_WAREHOUSES = 'warehouse/GET_ALL_WAREHOUSES';
-const SET_CURRENT_WAREHOUSE = 'warehouse/SET_CURRENT_WAREHOUSE';
-const SET_CURRENT_FIELD = 'warehouse/SET_CURRENT_FIELD';
-const ADD_VAULT = 'warehouse/ADD_VAULT';
+const GET_ALL_WAREHOUSES = "warehouse/GET_ALL_WAREHOUSES";
+const SET_CURRENT_WAREHOUSE = "warehouse/SET_CURRENT_WAREHOUSE";
+const SET_CURRENT_FIELD = "warehouse/SET_CURRENT_FIELD";
+const ADD_VAULT = "warehouse/ADD_VAULT";
 
 export const getAllWarehouses = (warehouses) => ({
   type: GET_ALL_WAREHOUSES,
@@ -25,28 +25,28 @@ export const addVault = (payload) => ({
 
 export const getAllWarehousesThunk = () => async (dispatch) => {
   try {
-    const response = await fetch('/api/warehouse/');
+    const response = await fetch("/api/warehouse/");
     if (response.ok) {
       const data = await response.json();
       dispatch(getAllWarehouses(data));
       return data;
     } else {
       const errorData = await response.json();
-      console.error('Error fetching warehouses:', errorData.errors);
+      console.error("Error fetching warehouses:", errorData.errors);
       return errorData;
     }
   } catch (error) {
-    console.error('Error fetching warehouses:', error);
+    console.error("Error fetching warehouses:", error);
     return error;
   }
 };
 
 export const addVaultThunk = (vaultData) => async (dispatch) => {
-  console.log("😎", vaultData.get('customer_name'));
+  console.log("😎", vaultData.get("customer_name"));
   try {
-    const res = await fetch('/api/vaults/', {
-      method: 'POST',
-      body: vaultData
+    const res = await fetch("/api/vaults/", {
+      method: "POST",
+      body: vaultData,
     });
     if (res.ok) {
       const data = await res.json();
@@ -64,8 +64,8 @@ export const addVaultThunk = (vaultData) => async (dispatch) => {
 };
 
 export const getCurrentFieldThunk = (field) => async (dispatch) => {
-  const fieldId = field.id
-  const warehouseId = field.warehouse_id
+  const fieldId = field.id;
+  const warehouseId = field.warehouse_id;
 
   try {
     const res = await fetch(`/api/warehouse/${warehouseId}/${fieldId}`);
@@ -83,7 +83,6 @@ export const getCurrentFieldThunk = (field) => async (dispatch) => {
     return error;
   }
 };
-
 
 const initialState = {
   warehouses: {},
@@ -108,21 +107,21 @@ const warehouseReducer = (state = initialState, action) => {
         currentWarehouse: action.warehouse,
       };
     case SET_CURRENT_FIELD:
-      console.log("💋", action.field)
+      console.log("💋", action.field);
       return {
         ...state,
         currentField: action.field,
       };
     case ADD_VAULT:
-      console.log("💖", action)
+      console.log("💖", action);
       const { fieldId, vault } = action.payload;
       const { id: vaultId } = vault;
-      
+
       // Find the warehouse containing the field
-      const warehouseId = Object.keys(state.warehouses).find(id =>
-        state.warehouses[id].fields[fieldId]
+      const warehouseId = Object.keys(state.warehouses).find(
+        (id) => state.warehouses[id].fields[fieldId]
       );
-      
+
       if (!warehouseId) {
         // If no warehouse contains the field, return the current state
         return state;
@@ -135,29 +134,44 @@ const warehouseReducer = (state = initialState, action) => {
           ...state.warehouses[warehouseId].fields[fieldId],
           vaults: {
             ...state.warehouses[warehouseId].fields[fieldId].vaults,
-            [vaultId]: vault
-          }
-        }
+            [vaultId]: vault,
+          },
+        },
       };
 
       // Update the current warehouse if it matches the warehouseId
-      const updatedCurrentWarehouse = state.currentWarehouse && state.currentWarehouse.id === parseInt(warehouseId)
-        ? {
-            ...state.currentWarehouse,
-            fields: updatedFields
-          }
-        : state.currentWarehouse;
-      
+      const updatedCurrentWarehouse =
+        state.currentWarehouse &&
+        state.currentWarehouse.id === parseInt(warehouseId)
+          ? {
+              ...state.currentWarehouse,
+              fields: updatedFields,
+            }
+          : state.currentWarehouse;
+
+      // Update the current field if it matches the fieldId
+      const updatedCurrentField =
+        state.currentField && state.currentField.id === parseInt(fieldId)
+          ? {
+              ...state.currentField,
+              vaults: {
+                ...state.currentField.vaults,
+                [vaultId]: vault,
+              },
+            }
+          : state.currentField;
+
       return {
         ...state,
         warehouses: {
           ...state.warehouses,
           [warehouseId]: {
             ...state.warehouses[warehouseId],
-            fields: updatedFields
-          }
+            fields: updatedFields,
+          },
         },
-        currentWarehouse: updatedCurrentWarehouse
+        currentWarehouse: updatedCurrentWarehouse,
+        currentField: updatedCurrentField,
       };
     default:
       return state;

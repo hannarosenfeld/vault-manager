@@ -1,38 +1,38 @@
 import AddVaultButton from "./AddVaultButton";
 import VaultInfo from "./VaultInfo";
 import AddVaultModal from "./AddVaultModal";
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 export default function FieldInfo({ field }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPosition, setSelectedPosition] = useState(null);
+  const [vaults, setVaults] = useState(field.vaults);
   const rowCount = field.type === "couchbox" ? 4 : 3;
 
-  // Define positions, conditionally including M2
   const positionOrder = ["T", "M2", "M", "B"].filter(
     (pos) => pos !== "M2" || field.type === "couchbox"
   );
 
-  // Sort vaults based on their position
-  const sortedVaults = field.vaults
-    ? [...Object.values(field.vaults)].sort(
+  useEffect(() => {
+    setVaults(field.vaults);
+  }, [field.vaults]);
+
+  const sortedVaults = vaults
+    ? [...Object.values(vaults)].sort(
         (a, b) =>
           positionOrder.indexOf(a.position) - positionOrder.indexOf(b.position)
       )
     : [];
 
-  // Map vaults to positions
   const vaultMap = Object.fromEntries(
     sortedVaults.map((vault) => [vault.position, vault])
   );
 
-  // Find the last empty position
   const lastEmptyPosition = [...positionOrder]
     .reverse()
     .find((pos) => !vaultMap[pos]);
 
-  // Handle opening and closing of the modal
   const handleOpenModal = (position) => {
     setSelectedPosition(position);
     setIsModalOpen(true);
@@ -65,7 +65,6 @@ export default function FieldInfo({ field }) {
       <div className="flex font-semibold text-3xl items-center justify-center p-2">
         {field.name}
       </div>
-      {/* Modal */}
       {isModalOpen && (
         <AddVaultModal
           fieldId={field.id}
