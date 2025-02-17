@@ -62,9 +62,12 @@ export const addVaultThunk = (vaultData) => async (dispatch) => {
   }
 };
 
-export const getCurrentFieldThunk = (fieldId) => async (dispatch) => {
+export const getCurrentFieldThunk = (field) => async (dispatch) => {
+  const fieldId = field.id
+  const warehouseId = field.warehouse_id
+
   try {
-    const res = await fetch(`/api/fields/${fieldId}`);
+    const res = await fetch(`/api/warehouse/${warehouseId}/${fieldId}`);
     if (res.ok) {
       const data = await res.json();
       dispatch(setCurrentField(data));
@@ -104,6 +107,7 @@ const warehouseReducer = (state = initialState, action) => {
         currentWarehouse: action.warehouse,
       };
     case SET_CURRENT_FIELD:
+      console.log("💋", action.field)
       return {
         ...state,
         currentField: action.field,

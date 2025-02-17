@@ -17,7 +17,7 @@ function WarehousePage() {
   const [loading, setLoading] = useState(true);
 
   function handleFieldClick(field) {
-    if (field.id) dispatch(getCurrentFieldThunk(field.id));
+    if (field.id) dispatch(getCurrentFieldThunk(field));
   }
 
   useEffect(() => {

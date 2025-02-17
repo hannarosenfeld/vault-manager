@@ -5,6 +5,14 @@ from app.models import Warehouse, Field, Vault, db
 warehouse_routes = Blueprint('warehouse', __name__)
 
 
+# fetch current field
+@warehouse_routes.route('/<int:warehouse_id>/<int:field_id>')
+def get_current_field(warehouse_id, field_id):
+    print("💖 IN ROUTE", )
+    field = Field.query.get(field_id)
+    return jsonify(field.to_dict())
+
+
 @warehouse_routes.route('/<int:warehouse_id>', methods=['DELETE'])
 def delete_warehouse(warehouse_id):
     warehouse = Warehouse.query.get(warehouse_id)
@@ -14,7 +22,6 @@ def delete_warehouse(warehouse_id):
 
     if warehouse.warehouse_fields:
         for field in warehouse.warehouse_fields:
-            print("😎", field.id)
             field_to_delete = Field.query.get(field.id)
             for vault in field_to_delete.vaults:
                 vault_to_delete = Vault.query.get(vault.id)
