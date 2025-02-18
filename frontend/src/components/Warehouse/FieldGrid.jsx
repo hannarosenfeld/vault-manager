@@ -3,12 +3,18 @@ import { sortWarehouseFields } from "../../utils/sortWarehouseFields";
 
 export default function FieldGrid({ warehouse, handleFieldClick }) {
   const [sortedFields, setSortedFields] = useState([]);
+  const [selectedField, setSelectedField] = useState(null);
 
   useEffect(() => {
     if (warehouse.fields) {
       setSortedFields(sortWarehouseFields(warehouse.fields));
     }
   }, [warehouse]);
+
+  const handleFieldSelect = (field) => {
+    setSelectedField(field.id);
+    handleFieldClick(field);
+  };
 
   return (
     <div className="flex-grow">
@@ -23,7 +29,9 @@ export default function FieldGrid({ warehouse, handleFieldClick }) {
         >
           {sortedFields.map((field) => (
             <div
-              className="field bg-gray-200"
+              className={`field bg-gray-200 ${
+                selectedField === field.id ? "border-2 border-blue-500" : ""
+              }`}
               key={field.id}
               style={{
                 backgroundColor: `${
@@ -50,7 +58,7 @@ export default function FieldGrid({ warehouse, handleFieldClick }) {
                 alignItems: "center",
                 justifyContent: "center",
               }}
-              onClick={() => handleFieldClick(field)}
+              onClick={() => handleFieldSelect(field)}
             >
               {field.type === "couchbox-B" ? (
                 ""
