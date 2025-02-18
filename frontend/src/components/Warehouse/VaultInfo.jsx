@@ -28,6 +28,7 @@ export default function VaultInfo({ vault }) {
               strokeWidth={1.5}
               stroke="currentColor"
               className="w-4 h-4 cursor-pointer"
+              style={{color: "var(--blue)"}}
             >
               <path
                 strokeLinecap="round"
@@ -36,7 +37,7 @@ export default function VaultInfo({ vault }) {
               />
             </svg>
           </div>
-          <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
+          <span className="material-symbols-outlined text-amber-500" style={{ fontSize: '18px'}}>
             forklift
           </span>
         </div>
