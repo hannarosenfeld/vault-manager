@@ -37,7 +37,7 @@ export default function ViewAndEditVaultModal({ toggleModal, vault }) {
       <div className="bg-white p-8 rounded-lg shadow-lg z-10 w-full h-full overflow-auto">
         <h2 className="text-2xl font-semibold mb-6">View / Edit Vault</h2>
         
-        <div className="mb-6 flex items-center">
+        <div className="mb-6 flex items-center border-b border-gray-200 pb-4">
           <label className="block text-sm font-medium text-gray-700 w-1/3">Customer Name</label>
           {editFields.customer_name ? (
             <input
@@ -67,7 +67,7 @@ export default function ViewAndEditVaultModal({ toggleModal, vault }) {
           </svg>
         </div>
         
-        <div className="mb-6 flex items-center">
+        <div className="mb-6 flex items-center border-b border-gray-200 pb-4">
           <label className="block text-sm font-medium text-gray-700 w-1/3">Vault#</label>
           {editFields.vault_id ? (
             <input
@@ -97,7 +97,7 @@ export default function ViewAndEditVaultModal({ toggleModal, vault }) {
           </svg>
         </div>
         
-        <div className="mb-6 flex items-center">
+        <div className="mb-6 flex items-center border-b border-gray-200 pb-4">
           <label className="block text-sm font-medium text-gray-700 w-1/3">Order#</label>
           {editFields.order_number ? (
             <input
@@ -127,7 +127,7 @@ export default function ViewAndEditVaultModal({ toggleModal, vault }) {
           </svg>
         </div>
 
-        <div className="mb-6">
+        <div className="mb-6 border-b border-gray-200 pb-4">
           <label
             htmlFor="file"
             className="block mb-2 text-sm font-medium text-gray-700"
@@ -144,7 +144,7 @@ export default function ViewAndEditVaultModal({ toggleModal, vault }) {
           <p className="mt-1 text-sm text-gray-500">No file chosen</p>
         </div>
 
-        <div className="mb-6">
+        <div className="mb-6 border-b border-gray-200 pb-4">
           <label
             htmlFor="note"
             className="block mb-2 text-sm font-medium text-gray-700"
@@ -162,7 +162,7 @@ export default function ViewAndEditVaultModal({ toggleModal, vault }) {
           ></textarea>
         </div>
 
-        <div className="mb-6">
+        <div className="mb-6 border-b border-gray-200 pb-4">
           <label className="block mb-2 text-sm font-medium text-gray-700">
             Attachments
           </label>
