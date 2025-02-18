@@ -34,7 +34,7 @@ class Vault(db.Model, UserMixin):
             'customer_name': customer_name,
             'position': self.position,
             'order_id': self.order_id,
-            'order_name': self.order.name,
+            'order_name': self.order.name if self.order else None,
             'type': self.type,
             'note': self.note,
             'attachments': [attachment.to_dict() for attachment in self.attachments],
