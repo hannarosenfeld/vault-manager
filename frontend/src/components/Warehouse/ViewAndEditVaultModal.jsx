@@ -5,7 +5,7 @@ export default function ViewAndEditVaultModal({ toggleModal, vault }) {
   const [editFields, setEditFields] = useState({
     customer_name: false,
     vault_id: false,
-    order_number: false,
+    order_name: false,
     note: false,
   });
 
@@ -99,16 +99,16 @@ export default function ViewAndEditVaultModal({ toggleModal, vault }) {
         
         <div className="mb-6 flex items-center border-b border-gray-200 pb-4">
           <label className="block text-sm font-medium text-gray-700 w-1/3">Order#</label>
-          {editFields.order_number ? (
+          {editFields.order_name ? (
             <input
               type="text"
-              name="order_number"
-              value={editableVault.order_number}
+              name="order_name"
+              value={editableVault.order_name}
               onChange={handleChange}
               className="ml-2 mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
           ) : (
-            <span className="ml-2 w-2/3">{editableVault.order_number}</span>
+            <span className="ml-2 w-2/3">{editableVault.order_name}</span>
           )}
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -117,7 +117,7 @@ export default function ViewAndEditVaultModal({ toggleModal, vault }) {
             strokeWidth={1.5}
             stroke="currentColor"
             className="w-5 h-5 cursor-pointer ml-2 text-blue-500"
-            onClick={() => toggleEditField('order_number')}
+            onClick={() => toggleEditField('order_name')}
           >
             <path
               strokeLinecap="round"
