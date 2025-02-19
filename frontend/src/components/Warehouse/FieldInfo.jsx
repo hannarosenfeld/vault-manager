@@ -48,17 +48,22 @@ export default function FieldInfo({ field }) {
         {positionOrder.map((pos, index) => (
           <div
             key={pos}
-            className={`p-2 ${
+            className={`p-2 flex items-center justify-between ${
               index < rowCount - 1 ? "border-b border-gray-300" : ""
             }`}
           >
-            {vaultMap[pos] ? (
-              <VaultInfo vault={vaultMap[pos]} />
-            ) : (
-              lastEmptyPosition === pos && (
-                <AddVaultButton type={field.type} onClick={() => handleOpenModal(pos)} />
-              )
-            )}
+            <div className="text-sm w-[10%] flex items-center">
+              {pos}
+            </div>
+            <div className="flex-grow flex items-center">
+              {vaultMap[pos] ? (
+                <VaultInfo vault={vaultMap[pos]} />
+              ) : (
+                lastEmptyPosition === pos && (
+                  <AddVaultButton type={field.type} onClick={() => handleOpenModal(pos)} />
+                )
+              )}
+            </div>
           </div>
         ))}
       </div>

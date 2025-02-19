@@ -12,7 +12,6 @@ export default function VaultInfo({ vault }) {
     <div className="flex justify-center items-center h-full w-full">
       <div className="flex justify-between text-xs h-full w-full items-center">
         <div className="flex gap-2 h-full items-center justify-center">
-          <div className="leading-none">{vault.position}</div>
           <div className="flex gap-1 leading-none">
             <div>{vault.customer_name.length > 10 ? `${vault.customer_name.substring(0, 10)}...` : vault.customer_name}</div>
             <div>{vault.name}</div>
