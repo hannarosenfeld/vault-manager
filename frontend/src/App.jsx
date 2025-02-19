@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getAllWarehousesThunk } from "./store/warehouse";
 import LoadingSpinner from "../src/components/LoadingSpinner";
+import Stage from "./pages/Stage";
 
 function App() {
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ function App() {
           <div className="flex-grow px-4">
             <Routes>
               <Route path="/" element={<HomePage warehouses={warehouses} />} />
+              <Route path="/stage" element={<Stage />} />
               <Route
                 path="/warehouse/:warehouseName"
                 element={<WarehousePage warehouses={warehouses}/>}
