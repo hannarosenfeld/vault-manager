@@ -34,7 +34,7 @@ export default function ViewAndEditVaultModal({ toggleModal, vault }) {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div className="fixed inset-0 bg-black opacity-50"></div>
-      <div className="bg-white p-8 rounded-lg shadow-lg z-10 w-full h-full overflow-auto">
+      <div className="bg-white p-8 rounded-lg shadow-lg z-10 w-full max-w-3xl h-full overflow-auto">
         <h2 className="text-2xl font-semibold mb-6">View / Edit Vault</h2>
         
         <div className="mb-6 flex items-center border-b border-gray-200 pb-4">
