@@ -1,5 +1,6 @@
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { Link } from 'react-router-dom';  // Import Link from react-router-dom
 
 export default function NavDrawer({ open, setOpen }) {
   return (
@@ -37,13 +38,15 @@ export default function NavDrawer({ open, setOpen }) {
                   Menu
                 </DialogTitle>
                 <nav className="mt-4 space-y-2">
-                  <a
-                    href="#"
+                  {/* Use Link from react-router-dom for navigation */}
+                  <Link
+                    to="/stage"  // This will navigate to the /stage route
                     className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                    onClick={() => setOpen(false)} // Close the drawer on click
                   >
-                    <span class="material-symbols-outlined">package_2</span>
+                    <span className="material-symbols-outlined">package_2</span>
                     <span className="ml-3">Stage</span>
-                  </a>
+                  </Link>
                 </nav>
               </div>
             </DialogPanel>
