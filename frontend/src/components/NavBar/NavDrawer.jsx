@@ -7,8 +7,6 @@ export default function NavDrawer({ open, setOpen }) {
   const warehouses = useSelector((state) => state.warehouse.warehouses);
   const warehouseArr = Object.values(warehouses);
 
-  console.log("👯‍♀️", warehouseArr); // Debugging: Check warehouses data
-
   return (
     <Dialog
       open={open}
