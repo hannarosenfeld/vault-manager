@@ -1,11 +1,17 @@
 import { useState } from 'react';
 import ViewAndEditVaultModal from './ViewAndEditVaultModal';
+import ConfirmStagingModal from './ConfirmStagingModal'; // Import ConfirmStagingModal
 
 export default function VaultInfo({ vault }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] = useState(false); // State for forklift modal
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
+  };
+
+  const toggleConfirmStagingModal = () => {
+    setIsConfirmStagingModalOpen(!isConfirmStagingModalOpen);
   };
 
   return (
@@ -36,7 +42,7 @@ export default function VaultInfo({ vault }) {
               />
             </svg>
           </div>
-          <span className="material-symbols-outlined text-amber-500" style={{ fontSize: '18px'}}>
+          <span className="material-symbols-outlined text-amber-500 cursor-pointer" style={{ fontSize: '18px'}} onClick={toggleConfirmStagingModal}>
             forklift
           </span>
         </div>
@@ -44,6 +50,9 @@ export default function VaultInfo({ vault }) {
 
       {isModalOpen && (
         <ViewAndEditVaultModal toggleModal={toggleModal} vault={vault} />
+      )}
+      {isConfirmStagingModalOpen && (
+        <ConfirmStagingModal onClose={toggleConfirmStagingModal} vault={vault} />
       )}
     </div>
   );

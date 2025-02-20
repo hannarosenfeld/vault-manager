@@ -42,7 +42,6 @@ export const getAllWarehousesThunk = () => async (dispatch) => {
 };
 
 export const addVaultThunk = (vaultData) => async (dispatch) => {
-  console.log("😎", vaultData.get("customer_name"));
   try {
     const res = await fetch("/api/vaults/", {
       method: "POST",
