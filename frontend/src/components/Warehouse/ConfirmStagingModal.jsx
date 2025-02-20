@@ -1,4 +1,14 @@
+import { useDispatch } from 'react-redux';
+import { stageVaultThunk } from '../../store/stage';
+
 export default function ConfirmStagingModal({ onClose, vault }) {
+  const dispatch = useDispatch();
+
+  const handleStage = () => {
+    dispatch(stageVaultThunk(vault.id));
+    onClose();
+  };
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-500/75 transition-opacity">
       <div className="bg-white p-4 rounded shadow-lg">
@@ -8,7 +18,7 @@ export default function ConfirmStagingModal({ onClose, vault }) {
           <button
             type="button"
             className="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
-            onClick={onClose}
+            onClick={handleStage}
           >
             Yes, stage it
           </button>

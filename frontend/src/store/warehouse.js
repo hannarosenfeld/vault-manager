@@ -2,6 +2,7 @@ const GET_ALL_WAREHOUSES = "warehouse/GET_ALL_WAREHOUSES";
 const SET_CURRENT_WAREHOUSE = "warehouse/SET_CURRENT_WAREHOUSE";
 const SET_CURRENT_FIELD = "warehouse/SET_CURRENT_FIELD";
 const ADD_VAULT = "warehouse/ADD_VAULT";
+export const STAGE_VAULT_SUCCESS = "warehouse/STAGE_VAULT_SUCCESS"; // Export the action type
 
 export const getAllWarehouses = (warehouses) => ({
   type: GET_ALL_WAREHOUSES,
@@ -106,13 +107,11 @@ const warehouseReducer = (state = initialState, action) => {
         currentWarehouse: action.warehouse,
       };
     case SET_CURRENT_FIELD:
-      console.log("💋", action.field);
       return {
         ...state,
         currentField: action.field,
       };
     case ADD_VAULT:
-      console.log("💖", action);
       const { fieldId, vault } = action.payload;
       const { id: vaultId } = vault;
 
@@ -171,6 +170,71 @@ const warehouseReducer = (state = initialState, action) => {
         },
         currentWarehouse: updatedCurrentWarehouse,
         currentField: updatedCurrentField,
+      };
+    case STAGE_VAULT_SUCCESS:
+      console.log("🚀 STAGE_VAULT_SUCCESS", action.payload);
+      const stagedVaultId = action.payload.id;
+      const stagedFieldId = action.payload.field_id;
+
+      // Find the warehouse containing the field
+      const stagedWarehouseId = Object.keys(state.warehouses).find(
+        (id) => state.warehouses[id].fields[stagedFieldId]
+      );
+
+      if (!stagedWarehouseId) {
+        // If no warehouse contains the field, return the current state
+        return state;
+      }
+
+      // Remove the vault from the fields
+      const updatedStagedFields = {
+        ...state.warehouses[stagedWarehouseId].fields,
+        [stagedFieldId]: {
+          ...state.warehouses[stagedWarehouseId].fields[stagedFieldId],
+          vaults: Object.keys(state.warehouses[stagedWarehouseId].fields[stagedFieldId].vaults)
+            .filter((id) => id !== stagedVaultId)
+            .reduce((acc, id) => {
+              acc[id] = state.warehouses[stagedWarehouseId].fields[stagedFieldId].vaults[id];
+              return acc;
+            }, {}),
+        },
+      };
+
+      // Update the current warehouse if it matches the warehouseId
+      const updatedStagedCurrentWarehouse =
+        state.currentWarehouse &&
+        state.currentWarehouse.id === parseInt(stagedWarehouseId)
+          ? {
+              ...state.currentWarehouse,
+              fields: updatedStagedFields,
+            }
+          : state.currentWarehouse;
+
+      // Update the current field if it matches the fieldId
+      const updatedStagedCurrentField =
+        state.currentField && state.currentField.id === parseInt(stagedFieldId)
+          ? {
+              ...state.currentField,
+              vaults: Object.keys(state.currentField.vaults)
+                .filter((id) => id !== stagedVaultId)
+                .reduce((acc, id) => {
+                  acc[id] = state.currentField.vaults[id];
+                  return acc;
+                }, {}),
+            }
+          : state.currentField;
+
+      return {
+        ...state,
+        warehouses: {
+          ...state.warehouses,
+          [stagedWarehouseId]: {
+            ...state.warehouses[stagedWarehouseId],
+            fields: updatedStagedFields,
+          },
+        },
+        currentWarehouse: updatedStagedCurrentWarehouse,
+        currentField: updatedStagedCurrentField,
       };
     default:
       return state;
