@@ -172,7 +172,7 @@ const warehouseReducer = (state = initialState, action) => {
         currentField: updatedCurrentField,
       };
     case STAGE_VAULT_SUCCESS:
-      console.log("🚀 STAGE_VAULT_SUCCESS", action.payload);
+      console.log("🚀 STAGE_VAULT_SUCCESS" );
       const stagedVaultId = action.payload.id;
       const stagedFieldId = action.payload.field_id;
 

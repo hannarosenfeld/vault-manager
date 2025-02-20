@@ -22,6 +22,7 @@ export const stageVaultThunk = createAsyncThunk(
         throw new Error('Failed to stage vault');
       }
       const data = await response.json();
+      console.log("🚀 THUNK DATA", data)
       return data;
     } catch (error) {
       return rejectWithValue(error.message);

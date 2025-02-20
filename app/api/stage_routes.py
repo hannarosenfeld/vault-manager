@@ -12,6 +12,7 @@ def stage_vault(vault_id):
             return jsonify({"error": "Vault not found"}), 404
 
         vault.field_id = None
+        vault.position = None
         db.session.commit()
 
         return jsonify(vault.to_dict()), 200
