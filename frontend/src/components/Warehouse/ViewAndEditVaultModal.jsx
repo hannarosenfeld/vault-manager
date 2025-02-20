@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 export default function ViewAndEditVaultModal({ toggleModal, vault }) {
   const [editableVault, setEditableVault] = useState({ ...vault });
@@ -20,7 +20,7 @@ export default function ViewAndEditVaultModal({ toggleModal, vault }) {
   const handleSave = () => {
     // Save the updated vault information
     // This could involve making an API call or updating the parent component's state
-    console.log('Saved vault:', editableVault);
+    console.log("Saved vault:", editableVault);
     toggleModal();
   };
 
@@ -36,9 +36,11 @@ export default function ViewAndEditVaultModal({ toggleModal, vault }) {
       <div className="fixed inset-0 bg-black opacity-50"></div>
       <div className="bg-white p-8 rounded-lg shadow-lg z-10 w-full max-w-3xl h-full overflow-auto">
         <h2 className="text-2xl font-semibold mb-6">View / Edit Vault</h2>
-        
+
         <div className="mb-6 flex items-center border-b border-gray-200 pb-4">
-          <label className="block text-sm font-medium text-gray-700 w-1/3">Customer Name</label>
+          <label className="block text-sm font-medium text-gray-700 w-1/3">
+            Customer Name
+          </label>
           {editFields.customer_name ? (
             <input
               type="text"
@@ -57,7 +59,7 @@ export default function ViewAndEditVaultModal({ toggleModal, vault }) {
             strokeWidth={1.5}
             stroke="currentColor"
             className="w-5 h-5 cursor-pointer ml-2 text-blue-500"
-            onClick={() => toggleEditField('customer_name')}
+            onClick={() => toggleEditField("customer_name")}
           >
             <path
               strokeLinecap="round"
@@ -66,9 +68,11 @@ export default function ViewAndEditVaultModal({ toggleModal, vault }) {
             />
           </svg>
         </div>
-        
+
         <div className="mb-6 flex items-center border-b border-gray-200 pb-4">
-          <label className="block text-sm font-medium text-gray-700 w-1/3">Vault#</label>
+          <label className="block text-sm font-medium text-gray-700 w-1/3">
+            Vault#
+          </label>
           {editFields.vault_id ? (
             <input
               type="text"
@@ -87,7 +91,7 @@ export default function ViewAndEditVaultModal({ toggleModal, vault }) {
             strokeWidth={1.5}
             stroke="currentColor"
             className="w-5 h-5 cursor-pointer ml-2 text-blue-500"
-            onClick={() => toggleEditField('vault_id')}
+            onClick={() => toggleEditField("vault_id")}
           >
             <path
               strokeLinecap="round"
@@ -96,9 +100,11 @@ export default function ViewAndEditVaultModal({ toggleModal, vault }) {
             />
           </svg>
         </div>
-        
+
         <div className="mb-6 flex items-center border-b border-gray-200 pb-4">
-          <label className="block text-sm font-medium text-gray-700 w-1/3">Order#</label>
+          <label className="block text-sm font-medium text-gray-700 w-1/3">
+            Order#
+          </label>
           {editFields.order_name ? (
             <input
               type="text"
@@ -117,7 +123,7 @@ export default function ViewAndEditVaultModal({ toggleModal, vault }) {
             strokeWidth={1.5}
             stroke="currentColor"
             className="w-5 h-5 cursor-pointer ml-2 text-blue-500"
-            onClick={() => toggleEditField('order_name')}
+            onClick={() => toggleEditField("order_name")}
           >
             <path
               strokeLinecap="round"
@@ -181,13 +187,15 @@ export default function ViewAndEditVaultModal({ toggleModal, vault }) {
 
         <div className="flex justify-end">
           <button
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 mr-2"
+            type="button"
+            className="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
             onClick={handleSave}
           >
             Save
           </button>
           <button
-            className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700"
+            type="button"
+            className="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
             onClick={toggleModal}
           >
             Close
