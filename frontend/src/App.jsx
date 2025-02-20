@@ -5,6 +5,7 @@ import WarehousePage from "./pages/WarehousePage";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getAllWarehousesThunk } from "./store/warehouse";
+import { getAllStagedVaultsThunk } from "./store/stage"; // Import the action
 import LoadingSpinner from "../src/components/LoadingSpinner";
 import Stage from "./pages/Stage";
 
@@ -19,6 +20,7 @@ function App() {
     } else {
       setLoading(false);
     }
+    dispatch(getAllStagedVaultsThunk());
   }, [dispatch, warehouses]);
 
   return (
