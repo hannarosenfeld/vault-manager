@@ -11,11 +11,15 @@ def stage_vault(vault_id):
         if not vault:
             return jsonify({"error": "Vault not found"}), 404
 
+        old_field_id = vault.field_id  # Capture the old field ID
         vault.field_id = None
         vault.position = None
         db.session.commit()
 
-        return jsonify(vault.to_dict()), 200
+        response_data = vault.to_dict()
+        response_data['old_field_id'] = old_field_id  # Include the old field ID in the response
+
+        return jsonify(response_data), 200
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500

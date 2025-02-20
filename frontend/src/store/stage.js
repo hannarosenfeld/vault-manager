@@ -1,9 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { updateWarehouseAfterStaging } from './warehouse'; // Import the new action
 
 const GET_ALL_STAGED_VAULTS = "warehouse/GET_ALL_STAGED_VAULTS";
 const STAGE_VAULT = "warehouse/STAGE_VAULT";
-const STAGE_VAULT_SUCCESS = "warehouse/STAGE_VAULT_SUCCESS";
-const STAGE_VAULT_FAILURE = "warehouse/STAGE_VAULT_FAILURE";
 
 export const getAllStagedVaultsThunk = createAsyncThunk(
   GET_ALL_STAGED_VAULTS,
@@ -23,7 +22,7 @@ export const getAllStagedVaultsThunk = createAsyncThunk(
 
 export const stageVaultThunk = createAsyncThunk(
   STAGE_VAULT,
-  async (vaultId, { rejectWithValue }) => {
+  async (vaultId, { dispatch, rejectWithValue }) => {
     console.log("😎 IN THUNK", vaultId);
     try {
       const response = await fetch(`/api/stage/vaults/${vaultId}`, {
@@ -34,6 +33,7 @@ export const stageVaultThunk = createAsyncThunk(
       }
       const data = await response.json();
       console.log("🚀 THUNK DATA", data);
+      dispatch(updateWarehouseAfterStaging(data)); // Dispatch the new action
       return data;
     } catch (error) {
       return rejectWithValue(error.message);

@@ -2,7 +2,7 @@ const GET_ALL_WAREHOUSES = "warehouse/GET_ALL_WAREHOUSES";
 const SET_CURRENT_WAREHOUSE = "warehouse/SET_CURRENT_WAREHOUSE";
 const SET_CURRENT_FIELD = "warehouse/SET_CURRENT_FIELD";
 const ADD_VAULT = "warehouse/ADD_VAULT";
-export const STAGE_VAULT_SUCCESS = "warehouse/STAGE_VAULT_SUCCESS"; // Export the action type
+const UPDATE_WAREHOUSE_AFTER_STAGING = "warehouse/UPDATE_WAREHOUSE_AFTER_STAGING"; // New action type
 
 export const getAllWarehouses = (warehouses) => ({
   type: GET_ALL_WAREHOUSES,
@@ -21,6 +21,11 @@ export const setCurrentField = (field) => ({
 
 export const addVault = (payload) => ({
   type: ADD_VAULT,
+  payload,
+});
+
+export const updateWarehouseAfterStaging = (payload) => ({
+  type: UPDATE_WAREHOUSE_AFTER_STAGING,
   payload,
 });
 
@@ -171,15 +176,17 @@ const warehouseReducer = (state = initialState, action) => {
         currentWarehouse: updatedCurrentWarehouse,
         currentField: updatedCurrentField,
       };
-    case STAGE_VAULT_SUCCESS:
-      console.log("🚀 STAGE_VAULT_SUCCESS" );
+    case UPDATE_WAREHOUSE_AFTER_STAGING:
       const stagedVaultId = action.payload.id;
-      const stagedFieldId = action.payload.field_id;
+      const stagedFieldId = action.payload.old_field_id;
 
       // Find the warehouse containing the field
       const stagedWarehouseId = Object.keys(state.warehouses).find(
         (id) => state.warehouses[id].fields[stagedFieldId]
       );
+
+      console.log("🚀 stagedWarehouseId", stagedWarehouseId);
+      console.log("🚀 stagedFieldId", stagedFieldId);
 
       if (!stagedWarehouseId) {
         // If no warehouse contains the field, return the current state
@@ -187,18 +194,7 @@ const warehouseReducer = (state = initialState, action) => {
       }
 
       // Remove the vault from the fields
-      const updatedStagedFields = {
-        ...state.warehouses[stagedWarehouseId].fields,
-        [stagedFieldId]: {
-          ...state.warehouses[stagedWarehouseId].fields[stagedFieldId],
-          vaults: Object.keys(state.warehouses[stagedWarehouseId].fields[stagedFieldId].vaults)
-            .filter((id) => id !== stagedVaultId)
-            .reduce((acc, id) => {
-              acc[id] = state.warehouses[stagedWarehouseId].fields[stagedFieldId].vaults[id];
-              return acc;
-            }, {}),
-        },
-      };
+      delete state.warehouses[stagedWarehouseId].fields[stagedFieldId].vaults[stagedVaultId];
 
       // Update the current warehouse if it matches the warehouseId
       const updatedStagedCurrentWarehouse =
@@ -206,7 +202,15 @@ const warehouseReducer = (state = initialState, action) => {
         state.currentWarehouse.id === parseInt(stagedWarehouseId)
           ? {
               ...state.currentWarehouse,
-              fields: updatedStagedFields,
+              fields: {
+                ...state.currentWarehouse.fields,
+                [stagedFieldId]: {
+                  ...state.currentWarehouse.fields[stagedFieldId],
+                  vaults: {
+                    ...state.currentWarehouse.fields[stagedFieldId].vaults,
+                  },
+                },
+              },
             }
           : state.currentWarehouse;
 
@@ -215,23 +219,23 @@ const warehouseReducer = (state = initialState, action) => {
         state.currentField && state.currentField.id === parseInt(stagedFieldId)
           ? {
               ...state.currentField,
-              vaults: Object.keys(state.currentField.vaults)
-                .filter((id) => id !== stagedVaultId)
-                .reduce((acc, id) => {
-                  acc[id] = state.currentField.vaults[id];
-                  return acc;
-                }, {}),
+              vaults: {
+                ...state.currentField.vaults,
+              },
             }
           : state.currentField;
+
+      // Remove the vault from the current field
+      console.log("❤️‍🔥",state.currentField && state.currentField.id === parseInt(stagedFieldId))
+      if (state.currentField && state.currentField.id === parseInt(stagedFieldId)) {
+        console.log("HIIIII", state.currentField.vaults[stagedVaultId]);
+        delete state.currentField.vaults[stagedVaultId];
+      }
 
       return {
         ...state,
         warehouses: {
           ...state.warehouses,
-          [stagedWarehouseId]: {
-            ...state.warehouses[stagedWarehouseId],
-            fields: updatedStagedFields,
-          },
         },
         currentWarehouse: updatedStagedCurrentWarehouse,
         currentField: updatedStagedCurrentField,
