@@ -2,8 +2,8 @@ export default function ConfirmStagingModal({ onClose, vault }) {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-500/75 transition-opacity">
       <div className="bg-white p-4 rounded shadow-lg">
-        <h2 className="text-xl font-semibold mb-4">Forklift Modal</h2>
-        <p className="mb-5">Are you sure you want to stage vault {vault.name}?</p>
+        <h2 className="text-xl font-semibold mb-4">Stage Vault</h2>
+        <p className="mb-5">Are you sure you want to stage vault <span className="text-blue-500 font-semibold">{vault.name}</span>?</p>
         <div className="flex flex-col">
           <button
             type="button"
