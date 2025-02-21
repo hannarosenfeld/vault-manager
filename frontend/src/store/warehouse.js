@@ -193,16 +193,15 @@ const warehouseReducer = (state = initialState, action) => {
       const vaultsArr = Object.values(
         state.warehouses[stagedWarehouseId].fields[stagedFieldId].vaults
       );
-      console.log("💄 vaultsArr: ", vaultsArr);
+
       const updatedVaults = vaultsArr.filter(
         (vault) => vault.id !== stagedVaultId
       );
-      console.log("👰🏼‍♀️ updatedVaults: ", updatedVaults);
+      
       const updatedVaultsObj = updatedVaults.reduce((acc, vault) => {
         acc[vault.id] = vault;
         return acc;
       }, {});
-      console.log("🌎 updatedVaultsObj", updatedVaultsObj);
 
       // Remove the vault from the fields
       const updatedFieldsAfterStaging = {
