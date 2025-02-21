@@ -8,6 +8,11 @@ export default function StageToWareHouseModal({ isOpen, onClose, vault }) {
   const warehouses = useSelector((state) => state.warehouse.warehouses);
   const warehouseArr = Object.values(warehouses);
 
+  const handleFieldClick = (field) => {
+    console.log("👰🏼‍♀️ field: ", field)
+  }
+
+
   if (!vault) return null;
 
   return (
@@ -33,7 +38,7 @@ export default function StageToWareHouseModal({ isOpen, onClose, vault }) {
                     {warehouse.name}
                   </button>
                 </div>
-              <FieldGrid warehouse={warehouse} handleFieldClick={() => console.log("👰🏼‍♀️")} />
+              <FieldGrid warehouse={warehouse} handleFieldClick={handleFieldClick} />
               </>
             ))
           ) : (
