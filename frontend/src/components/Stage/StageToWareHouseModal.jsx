@@ -1,17 +1,19 @@
+import { useState } from "react";
 import { Dialog } from "@headlessui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { stageVaultThunk } from "../../store/stage";
 import FieldGrid from "../Warehouse/FieldGrid";
+import FieldInfo from "../Warehouse/FieldInfo";
 
 export default function StageToWareHouseModal({ isOpen, onClose, vault }) {
   const dispatch = useDispatch();
   const warehouses = useSelector((state) => state.warehouse.warehouses);
   const warehouseArr = Object.values(warehouses);
+  const [selectedField, setSelectedField] = useState(null);
 
   const handleFieldClick = (field) => {
-    console.log("👰🏼‍♀️ field: ", field)
-  }
-
+    console.log("👰🏼‍♀️ field: ", field);
+    setSelectedField(field);
+  };
 
   if (!vault) return null;
 
@@ -38,7 +40,11 @@ export default function StageToWareHouseModal({ isOpen, onClose, vault }) {
                     {warehouse.name}
                   </button>
                 </div>
-              <FieldGrid warehouse={warehouse} handleFieldClick={handleFieldClick} />
+                {selectedField?.id ? <FieldInfo field={selectedField} /> : "Select a field to view details"}
+                <FieldGrid
+                  warehouse={warehouse}
+                  handleFieldClick={handleFieldClick}
+                />
               </>
             ))
           ) : (
