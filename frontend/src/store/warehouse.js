@@ -184,36 +184,43 @@ const warehouseReducer = (state = initialState, action) => {
       const stagedWarehouseId = Object.keys(state.warehouses).find(
         (id) => state.warehouses[id].fields[stagedFieldId]
       );
-
-      console.log("🚀 stagedWarehouseId", stagedWarehouseId);
-      console.log("🚀 stagedFieldId", stagedFieldId);
-
       if (!stagedWarehouseId) {
         // If no warehouse contains the field, return the current state
         return state;
       }
-
+      
+      const vaultsArr = Object.values(state.warehouses[stagedWarehouseId].fields[stagedFieldId].vaults);
+      console.log("💄 vaultsArr: ", vaultsArr);
+      const updatedVaults = vaultsArr.filter((vault) => vault.id !== stagedVaultId);
+      console.log("👰🏼‍♀️ updatedVaults: ", updatedVaults);
+      const updatedVaultsObj = updatedVaults.reduce((acc, vault) => {
+        acc[vault.id] = vault;
+        return acc;
+      }, {});
+      console.log("🌎 updatedVaultsObj", updatedVaultsObj);
+      
       // Remove the vault from the fields
       const updatedStagedFields = {
         ...state.warehouses[stagedWarehouseId].fields,
         [stagedFieldId]: {
           ...state.warehouses[stagedWarehouseId].fields[stagedFieldId],
           vaults: Object.keys(state.warehouses[stagedWarehouseId].fields[stagedFieldId].vaults)
-            .filter((id) => id !== stagedVaultId)
-            .reduce((acc, id) => {
-              acc[id] = state.warehouses[stagedWarehouseId].fields[stagedFieldId].vaults[id];
-              return acc;
-            }, {}),
         },
       };
-
+      
       // Update the current warehouse if it matches the warehouseId
       const updatedStagedCurrentWarehouse =
         state.currentWarehouse &&
         state.currentWarehouse.id === parseInt(stagedWarehouseId)
           ? {
               ...state.currentWarehouse,
-              fields: updatedStagedFields,
+              fields: {
+                ...state.currentWarehouse.fields,
+                [stagedFieldId]: {
+                  ...state.currentWarehouse.fields[stagedFieldId],
+                  vaults: updatedVaultsObj
+                },
+              },
             }
           : state.currentWarehouse;
 
@@ -222,12 +229,7 @@ const warehouseReducer = (state = initialState, action) => {
         state.currentField && state.currentField.id === parseInt(stagedFieldId)
           ? {
               ...state.currentField,
-              vaults: Object.keys(state.currentField.vaults)
-                .filter((id) => id !== stagedVaultId)
-                .reduce((acc, id) => {
-                  acc[id] = state.currentField.vaults[id];
-                  return acc;
-                }, {}),
+              vaults: updatedVaultsObj
             }
           : state.currentField;
 
