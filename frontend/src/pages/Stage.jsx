@@ -1,7 +1,21 @@
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import StageToWareHouseModal from '../components/Stage/StageToWarehouseModal';
 
 export default function Stage() {
   const stagedVaults = useSelector((state) => state.stage.stagedVaults);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedVault, setSelectedVault] = useState(null);
+
+  const openModal = (vault) => {
+    setSelectedVault(vault);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedVault(null);
+    setIsModalOpen(false);
+  };
 
   return (
     <div
@@ -18,6 +32,7 @@ export default function Stage() {
             <div
               key={vault.id}
               className="flex flex-col justify-center items-center p-2 border-2 border-gray-800 rounded shadow cursor-pointer hover:bg-gray-100 bg-yellow-400 w-[calc(33.333%-1rem)]"
+              onClick={() => openModal(vault)}
             >
               <h2 className="text-xs text-blue-500 font-semibold">#{vault.id}</h2>
               <p className="text-xs font-semibold text-gray-700 text-center">{vault.customer_name}</p>
@@ -28,6 +43,7 @@ export default function Stage() {
           ))}
         </div>
       )}
+      <StageToWareHouseModal isOpen={isModalOpen} onClose={closeModal} vault={selectedVault} />
     </div>
   );
 }
