@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { updateWarehouseAfterStaging } from './warehouse'; // Import the new action
+import { updateWarehouseAfterStaging } from './warehouse';
 
 const GET_ALL_STAGED_VAULTS = "warehouse/GET_ALL_STAGED_VAULTS";
 const STAGE_VAULT = "warehouse/STAGE_VAULT";
@@ -23,7 +23,6 @@ export const getAllStagedVaultsThunk = createAsyncThunk(
 export const stageVaultThunk = createAsyncThunk(
   STAGE_VAULT,
   async (vaultId, { dispatch, rejectWithValue }) => {
-    console.log("😎 IN THUNK", vaultId);
     try {
       const response = await fetch(`/api/stage/vaults/${vaultId}`, {
         method: 'POST',
@@ -32,8 +31,7 @@ export const stageVaultThunk = createAsyncThunk(
         throw new Error('Failed to stage vault');
       }
       const data = await response.json();
-      console.log("🚀 THUNK DATA", data);
-      dispatch(updateWarehouseAfterStaging(data)); // Dispatch the new action
+      dispatch(updateWarehouseAfterStaging(data));
       return data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -61,17 +59,14 @@ const stageSlice = createSlice({
         state.stagedVaults = newStagedVaults;
       })
       .addCase(stageVaultThunk.pending, (state) => {
-        console.log("💁🏻‍♀️ STAGE_VAULT");
         state.loading = true;
         state.error = null;
       })
       .addCase(stageVaultThunk.fulfilled, (state, action) => {
-        console.log("💁🏻‍♀️ STAGE_VAULT_SUCCESS");
         state.loading = false;
         state.stagedVaults[action.payload.id] = action.payload;
       })
       .addCase(stageVaultThunk.rejected, (state, action) => {
-        console.log("💁🏻‍♀️ STAGE_VAULT_FAILURE");
         state.loading = false;
         state.error = action.payload;
       });
