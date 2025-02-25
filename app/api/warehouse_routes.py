@@ -39,13 +39,14 @@ def delete_warehouse(warehouse_id):
 
 
 @warehouse_routes.route('/', methods=['GET'])
-@login_required
+# @login_required
 def get_warehouses():
     """
     Retrieve all warehouses
     """
-    company_id = current_user.company_id
-    warehouses = Warehouse.query.filter(Warehouse.company_id == company_id).all()
+    # company_id = current_user.company_id
+    # warehouses = Warehouse.query.filter(Warehouse.company_id == company_id).all()
+    warehouses = Warehouse.query.all()
 
     if not warehouses:
         return {'errors': 'No warehouses found!'}, 404

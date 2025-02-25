@@ -15,13 +15,13 @@ function App() {
   const [loading, setLoading] = useState(Object.keys(warehouses).length === 0);
 
   useEffect(() => {
-    if (Object.keys(warehouses).length === 0) {
+    if (Object.keys(!warehouses.length)) {
       dispatch(getAllWarehousesThunk()).then(() => setLoading(false));
     } else {
       setLoading(false);
     }
     dispatch(getAllStagedVaultsThunk());
-  }, [dispatch, warehouses]);
+  }, [dispatch]);
 
   return (
     <Router>
