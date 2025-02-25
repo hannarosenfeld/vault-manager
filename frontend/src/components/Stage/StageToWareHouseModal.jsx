@@ -5,13 +5,11 @@ import FieldGrid from "../Warehouse/FieldGrid";
 import FieldInfo from "../Warehouse/FieldInfo";
 
 export default function StageToWareHouseModal({ isOpen, onClose, vault }) {
-  const dispatch = useDispatch();
   const warehouses = useSelector((state) => state.warehouse.warehouses);
   const warehouseArr = Object.values(warehouses);
   const [selectedField, setSelectedField] = useState(null);
 
   const handleFieldClick = (field) => {
-    console.log("👰🏼‍♀️ field: ", field);
     setSelectedField(field);
   };
 

@@ -36,7 +36,6 @@ export default function FieldInfo({ field, isStage }) {
     .find((pos) => !vaultMap[pos]);
 
   const handleOpenModal = (position) => {
-    console.log("👰🏼‍♀️ position: ", position);
     setSelectedPosition(position);
     if (!isStage) {
       setIsModalOpen(true);

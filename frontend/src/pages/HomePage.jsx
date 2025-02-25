@@ -4,8 +4,6 @@ import { useNavigate } from "react-router-dom";
 export default function HomePage({ warehouses }) {
   const navigate = useNavigate();
 
-  console.log("🥳", warehouses)
-
   const handleWarehouseClick = (warehouseName) => {
     navigate(`/warehouse/${warehouseName.toLowerCase().split(" ").join("-")}`);
   };

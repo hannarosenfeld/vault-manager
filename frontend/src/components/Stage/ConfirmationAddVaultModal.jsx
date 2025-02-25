@@ -1,4 +1,4 @@
- import { Dialog } from "@headlessui/react";
+import { Dialog } from "@headlessui/react";
 
 export default function ConfirmAddVaultModal({ isOpen, onClose, onConfirm, position }) {
   return (
