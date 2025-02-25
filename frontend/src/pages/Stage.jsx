@@ -43,7 +43,7 @@ export default function Stage() {
           ))}
         </div>
       )}
-      <StageToWareHouseModal isOpen={isModalOpen} onClose={closeModal} vault={selectedVault} />
+      <StageToWareHouseModal isOpen={isModalOpen} onClose={closeModal} vault={selectedVault} setIsModalOpen={setIsModalOpen}/>
     </div>
   );
 }
