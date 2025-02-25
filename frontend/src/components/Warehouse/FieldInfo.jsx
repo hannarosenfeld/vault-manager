@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { moveVaultToWarehouseThunk } from "../../store/warehouse";
 
-export default function FieldInfo({ field, isStage, vaultId }) {
+export default function FieldInfo({ field, isStage, vaultId, onMove }) {
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
@@ -53,6 +53,7 @@ export default function FieldInfo({ field, isStage, vaultId }) {
 
   const handleConfirmAddStagedVaultToWarehouse = () => {
     dispatch(moveVaultToWarehouseThunk(vaultId, field.id, selectedPosition));
+    onMove();
     setIsConfirmModalOpen(false);
     setIsModalOpen(true);
   };

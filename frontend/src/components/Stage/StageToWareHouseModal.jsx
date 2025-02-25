@@ -13,6 +13,11 @@ export default function StageToWareHouseModal({ isOpen, onClose, vault }) {
     setSelectedField(field);
   };
 
+  const onMove = () => {
+    // move vault to
+    console.log("❤️‍🔥")
+  } 
+
   if (!vault) return null;
 
   return (
@@ -43,7 +48,7 @@ export default function StageToWareHouseModal({ isOpen, onClose, vault }) {
                     {warehouse.name}
                   </button>
                 </div>
-                {selectedField?.id ? <FieldInfo vaultId={vault.id} field={selectedField} isStage={true}/> : <div className="h-[17vh]">Select a field to view details</div>}
+                {selectedField?.id ? <FieldInfo vaultId={vault.id} field={selectedField} isStage={true} onMove={onMove}/> : <div className="h-[17vh]">Select a field to view details</div>}
                 <FieldGrid
                   warehouse={warehouse}
                   handleFieldClick={handleFieldClick}
