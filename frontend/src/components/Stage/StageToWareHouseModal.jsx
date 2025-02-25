@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Dialog } from "@headlessui/react";
-import { useDispatch, useSelector } from "react-redux";
+import { Dialog, DialogPanel, DialogTitle, DialogDescription } from "@headlessui/react";
+import { useSelector } from "react-redux";
 import FieldGrid from "../Warehouse/FieldGrid";
 import FieldInfo from "../Warehouse/FieldInfo";
 
@@ -19,7 +19,7 @@ export default function StageToWareHouseModal({ isOpen, onClose, vault }) {
     <Dialog open={isOpen} onClose={onClose} className="fixed inset-0 z-50 overflow-y-auto">
       <div className="fixed inset-0 bg-black opacity-30" />
       <div className="flex items-center justify-center min-h-screen">
-        <Dialog.Panel className="bg-white p-6 rounded shadow-lg z-50 w-full max-w-4xl relative">
+        <DialogPanel className="bg-white p-6 rounded shadow-lg z-50 w-full max-w-4xl relative">
           <button
             type="button"
             className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
@@ -29,9 +29,9 @@ export default function StageToWareHouseModal({ isOpen, onClose, vault }) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
-          <Dialog.Title className="text-lg font-bold">
+          <DialogTitle className="text-lg font-bold">
             Move Vault {vault.name} into Warehouse
-          </Dialog.Title>
+          </DialogTitle>
           {warehouseArr.length ? (
             warehouseArr.map((warehouse) => (
               <div key={warehouse.id}>
@@ -43,7 +43,7 @@ export default function StageToWareHouseModal({ isOpen, onClose, vault }) {
                     {warehouse.name}
                   </button>
                 </div>
-                {selectedField?.id ? <FieldInfo field={selectedField} isStage={true}/> : "Select a field to view details"}
+                {selectedField?.id ? <FieldInfo field={selectedField} isStage={true}/> : <div className="h-[17vh]">Select a field to view details</div>}
                 <FieldGrid
                   warehouse={warehouse}
                   handleFieldClick={handleFieldClick}
@@ -53,8 +53,7 @@ export default function StageToWareHouseModal({ isOpen, onClose, vault }) {
           ) : (
             <div>No warehouses found!</div>
           )}
-          <Dialog.Description className="mt-2"></Dialog.Description>
-        </Dialog.Panel>
+        </DialogPanel>
       </div>
     </Dialog>
   );
