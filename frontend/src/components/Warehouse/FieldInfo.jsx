@@ -3,7 +3,7 @@ import VaultInfo from "./VaultInfo";
 import AddVaultModal from "./AddVaultModal";
 import ConfirmAddVaultModal from "../Stage/ConfirmationAddVaultModal";
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+
 
 export default function FieldInfo({ field, isStage }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
