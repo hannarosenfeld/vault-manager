@@ -4,6 +4,8 @@ const SET_CURRENT_FIELD = "warehouse/SET_CURRENT_FIELD";
 const ADD_VAULT = "warehouse/ADD_VAULT";
 const UPDATE_WAREHOUSE_AFTER_STAGING = "warehouse/UPDATE_WAREHOUSE_AFTER_STAGING";
 const MOVE_VAULT_TO_WAREHOUSE = "warehouse/MOVE_VAULT_TO_WAREHOUSE"; // New action type
+import { removeVaultFromStage } from './stage'; // Import the action creator
+
 
 export const getAllWarehouses = (warehouses) => ({
   type: GET_ALL_WAREHOUSES,
@@ -34,6 +36,33 @@ export const moveVaultToWarehouse = (payload) => ({
   type: MOVE_VAULT_TO_WAREHOUSE,
   payload,
 });
+
+export const moveVaultToWarehouseThunk = (vaultId, fieldId, position) => async (dispatch) => {
+  const input = JSON.stringify({ vaultId, fieldId, position });
+  console.log("💖", input);
+  try {
+    const res = await fetch(`/api/vaults/move`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: input,
+    });
+    if (res.ok) {
+      const data = await res.json();
+      dispatch(moveVaultToWarehouse(data));
+      dispatch(removeVaultFromStage(vaultId)); // Remove the vault from the stage
+      return data;
+    } else {
+      const err = await res.json();
+      console.error("Error moving vault:", err);
+      return err;
+    }
+  } catch (error) {
+    console.error("Error moving vault:", error);
+    return error;
+  }
+};
 
 export const getAllWarehousesThunk = () => async (dispatch) => {
   try {
@@ -94,33 +123,6 @@ export const getCurrentFieldThunk = (field) => async (dispatch) => {
     return error;
   }
 };
-
-export const moveVaultToWarehouseThunk = (vaultId, fieldId, position) => async (dispatch) => {
-  const input = JSON.stringify({ vaultId, fieldId, position });
-  console.log("💖", input);
-  try {
-    const res = await fetch(`/api/vaults/move`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: input,
-    });
-    if (res.ok) {
-      const data = await res.json();
-      dispatch(moveVaultToWarehouse(data));
-      return data;
-    } else {
-      const err = await res.json();
-      console.error("Error moving vault:", err);
-      return err;
-    }
-  } catch (error) {
-    console.error("Error moving vault:", error);
-    return error;
-  }
-};
-
 
 const initialState = {
   warehouses: {},

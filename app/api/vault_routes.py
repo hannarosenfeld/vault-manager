@@ -45,11 +45,9 @@ def move_vault():
     vault_id = data.get('vaultId')
     field_id = data.get('fieldId')
     position = data.get('position')
-    print("🚚 In ROUTE", vault_id, field_id, position)
-    
+
     vault = Vault.query.get(vault_id)
     
-    print("🏠 vault: ", vault)
     if vault:
         vault.field_id = field_id
         vault.position = position

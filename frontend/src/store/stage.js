@@ -3,6 +3,7 @@ import { updateWarehouseAfterStaging } from './warehouse';
 
 const GET_ALL_STAGED_VAULTS = "warehouse/GET_ALL_STAGED_VAULTS";
 const STAGE_VAULT = "warehouse/STAGE_VAULT";
+const REMOVE_VAULT_FROM_STAGE = "stage/REMOVE_VAULT_FROM_STAGE"; // New action type
 
 export const getAllStagedVaultsThunk = createAsyncThunk(
   GET_ALL_STAGED_VAULTS,
@@ -39,6 +40,11 @@ export const stageVaultThunk = createAsyncThunk(
   }
 );
 
+export const removeVaultFromStage = (vaultId) => ({
+  type: REMOVE_VAULT_FROM_STAGE,
+  vaultId,
+});
+
 const initialState = {
   stagedVaults: {},
   loading: false,
@@ -69,6 +75,9 @@ const stageSlice = createSlice({
       .addCase(stageVaultThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(REMOVE_VAULT_FROM_STAGE, (state, action) => {
+        delete state.stagedVaults[action.vaultId];
       });
   },
 });
