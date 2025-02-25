@@ -1,4 +1,4 @@
-import { Dialog } from "@headlessui/react";
+ import { Dialog } from "@headlessui/react";
 
 export default function ConfirmAddVaultModal({ isOpen, onClose, onConfirm, position }) {
   return (
@@ -8,7 +8,7 @@ export default function ConfirmAddVaultModal({ isOpen, onClose, onConfirm, posit
         <Dialog.Panel className="bg-white p-6 rounded shadow-lg z-50">
           <Dialog.Title className="text-lg font-bold">Confirm Add Vault</Dialog.Title>
           <Dialog.Description className="mt-2">
-            <div>Are you sure you want to add a vault at position <span className="text-blue-500 font-semibold">{position}</span>?</div>
+            Are you sure you want to add a vault at position <span className="text-blue-500 font-semibold">{position}</span>?
           </Dialog.Description>
           <div className="flex flex-col mt-4">
             <button
