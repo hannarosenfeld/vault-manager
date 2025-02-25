@@ -4,7 +4,7 @@ import AddVaultModal from "./AddVaultModal";
 import ConfirmAddVaultModal from "../Stage/ConfirmationAddVaultModal";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-
+import { moveVaultToWarehouseThunk } from "../../store/warehouse";
 
 export default function FieldInfo({ field, isStage, vaultId }) {
   const dispatch = useDispatch();
@@ -52,14 +52,7 @@ export default function FieldInfo({ field, isStage, vaultId }) {
   };
 
   const handleConfirmAddStagedVaultToWarehouse = () => {
-    dispatch(
-      addStagedVaultToWarehouse({
-        vaultId: vaultId,
-        fieldId: field.id,
-        position: selectedPosition,
-        warehouseId: field.warehouseId,
-      })
-    );
+    dispatch(moveVaultToWarehouseThunk(vaultId, field.id, selectedPosition));
     setIsConfirmModalOpen(false);
     setIsModalOpen(true);
   };

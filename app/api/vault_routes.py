@@ -23,6 +23,41 @@ def validation_errors_to_error_messages(validation_errors):
             errorMessages.append(f'{field} : {error}')
     return errorMessages
 
+# @vault_routes.route('/moveVault/<int:selected_field_id>/<int:vault_id>/<string:position>', methods=['PUT'])
+# # TODO: in the future, add a form for moving vault and take in vault info through form body, not through the route
+# @login_required
+# def move_vault_to_warehouse(selected_field_id, vault_id, position):
+#     vault = Vault.query.get(vault_id)
+#     if (vault):
+#         vault.field_id = selected_field_id
+#         vault.position = position
+#         db.session.commit()
+#         return vault.to_dict()
+
+#     else:
+#         return {"message" : "vault not found"}
+
+ 
+@vault_routes.route('/move', methods=['PUT'])
+# @login_required
+def move_vault():
+    data = request.get_json()
+    vault_id = data.get('vaultId')
+    field_id = data.get('fieldId')
+    position = data.get('position')
+    print("🚚 In ROUTE", vault_id, field_id, position)
+    
+    vault = Vault.query.get(vault_id)
+    
+    print("🏠 vault: ", vault)
+    if vault:
+        vault.field_id = field_id
+        vault.position = position
+        db.session.commit()
+        return jsonify(vault.to_dict())
+    else:
+        return jsonify({"message": "Vault not found"}), 404
+
 
 @vault_routes.route('/<int:field_id>')
 @login_required
@@ -243,18 +278,3 @@ def manage_vault(id):
             db.session.commit()
 
         return jsonify({'vaultId': vault_id, "customer_to_delete": customer_to_delete})
-
-
-@vault_routes.route('/moveVault/<int:selected_field_id>/<int:vault_id>/<string:position>', methods=['PUT'])
-# TODO: in the future, add a form for moving vault and take in vault info through form body, not through the route
-@login_required
-def move_vault_to_warehouse(selected_field_id, vault_id, position):
-    vault = Vault.query.get(vault_id)
-    if (vault):
-        vault.field_id = selected_field_id
-        vault.position = position
-        db.session.commit()
-        return vault.to_dict()
-
-    else:
-        return {"message" : "vault not found"}

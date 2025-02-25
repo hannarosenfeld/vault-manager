@@ -95,14 +95,16 @@ export const getCurrentFieldThunk = (field) => async (dispatch) => {
   }
 };
 
-export const moveVaultToWarehouseThunk = (vaultId, warehouseId, fieldId, position) => async (dispatch) => {
+export const moveVaultToWarehouseThunk = (vaultId, fieldId, position) => async (dispatch) => {
+  const input = JSON.stringify({ vaultId, fieldId, position });
+  console.log("💖", input);
   try {
-    const res = await fetch(`/api/vaults/${vaultId}/move`, {
-      method: "POST",
+    const res = await fetch(`/api/vaults/move`, {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ warehouseId, fieldId }),
+      body: input,
     });
     if (res.ok) {
       const data = await res.json();
@@ -118,6 +120,7 @@ export const moveVaultToWarehouseThunk = (vaultId, warehouseId, fieldId, positio
     return error;
   }
 };
+
 
 const initialState = {
   warehouses: {},
