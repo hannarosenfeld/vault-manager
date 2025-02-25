@@ -4,7 +4,7 @@ import AddVaultModal from "./AddVaultModal";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
-export default function FieldInfo({ field }) {
+export default function FieldInfo({ field, isStage }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPosition, setSelectedPosition] = useState(null);
   const [vaults, setVaults] = useState(field.vaults);
@@ -57,7 +57,7 @@ export default function FieldInfo({ field }) {
             </div>
             <div className="flex-grow flex items-center">
               {vaultMap[pos] ? (
-                <VaultInfo vault={vaultMap[pos]} />
+                <VaultInfo vault={vaultMap[pos]} isStage={isStage} />
               ) : (
                 lastEmptyPosition === pos && (
                   <AddVaultButton type={field.type} onClick={() => handleOpenModal(pos)} />

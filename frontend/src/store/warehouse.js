@@ -2,8 +2,8 @@ const GET_ALL_WAREHOUSES = "warehouse/GET_ALL_WAREHOUSES";
 const SET_CURRENT_WAREHOUSE = "warehouse/SET_CURRENT_WAREHOUSE";
 const SET_CURRENT_FIELD = "warehouse/SET_CURRENT_FIELD";
 const ADD_VAULT = "warehouse/ADD_VAULT";
-const UPDATE_WAREHOUSE_AFTER_STAGING =
-  "warehouse/UPDATE_WAREHOUSE_AFTER_STAGING"; // New action type
+const UPDATE_WAREHOUSE_AFTER_STAGING = "warehouse/UPDATE_WAREHOUSE_AFTER_STAGING";
+const MOVE_VAULT_TO_WAREHOUSE = "warehouse/MOVE_VAULT_TO_WAREHOUSE"; // New action type
 
 export const getAllWarehouses = (warehouses) => ({
   type: GET_ALL_WAREHOUSES,
@@ -27,6 +27,11 @@ export const addVault = (payload) => ({
 
 export const updateWarehouseAfterStaging = (payload) => ({
   type: UPDATE_WAREHOUSE_AFTER_STAGING,
+  payload,
+});
+
+export const moveVaultToWarehouse = (payload) => ({
+  type: MOVE_VAULT_TO_WAREHOUSE,
   payload,
 });
 
@@ -90,6 +95,30 @@ export const getCurrentFieldThunk = (field) => async (dispatch) => {
   }
 };
 
+export const moveVaultToWarehouseThunk = (vaultId, warehouseId, fieldId) => async (dispatch) => {
+  try {
+    const res = await fetch(`/api/vaults/${vaultId}/move`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ warehouseId, fieldId }),
+    });
+    if (res.ok) {
+      const data = await res.json();
+      dispatch(moveVaultToWarehouse(data));
+      return data;
+    } else {
+      const err = await res.json();
+      console.error("Error moving vault:", err);
+      return err;
+    }
+  } catch (error) {
+    console.error("Error moving vault:", error);
+    return error;
+  }
+};
+
 const initialState = {
   warehouses: {},
   currentWarehouse: null,
@@ -118,26 +147,26 @@ const warehouseReducer = (state = initialState, action) => {
         currentField: action.field,
       };
     case ADD_VAULT:
-      const { fieldId, vault } = action.payload;
+      const { fieldId: addFieldId, vault } = action.payload;
       const { id: vaultId } = vault;
 
       // Find the warehouse containing the field
-      const warehouseId = Object.keys(state.warehouses).find(
-        (id) => state.warehouses[id].fields[fieldId]
+      const addWarehouseId = Object.keys(state.warehouses).find(
+        (id) => state.warehouses[id].fields[addFieldId]
       );
 
-      if (!warehouseId) {
+      if (!addWarehouseId) {
         // If no warehouse contains the field, return the current state
         return state;
       }
 
       // Update the fields with the new vault
       const updatedFields = {
-        ...state.warehouses[warehouseId].fields,
-        [fieldId]: {
-          ...state.warehouses[warehouseId].fields[fieldId],
+        ...state.warehouses[addWarehouseId].fields,
+        [addFieldId]: {
+          ...state.warehouses[addWarehouseId].fields[addFieldId],
           vaults: {
-            ...state.warehouses[warehouseId].fields[fieldId].vaults,
+            ...state.warehouses[addWarehouseId].fields[addFieldId].vaults,
             [vaultId]: vault,
           },
         },
@@ -146,7 +175,7 @@ const warehouseReducer = (state = initialState, action) => {
       // Update the current warehouse if it matches the warehouseId
       const updatedCurrentWarehouse =
         state.currentWarehouse &&
-        state.currentWarehouse.id === parseInt(warehouseId)
+        state.currentWarehouse.id === parseInt(addWarehouseId)
           ? {
               ...state.currentWarehouse,
               fields: updatedFields,
@@ -155,7 +184,7 @@ const warehouseReducer = (state = initialState, action) => {
 
       // Update the current field if it matches the fieldId
       const updatedCurrentField =
-        state.currentField && state.currentField.id === parseInt(fieldId)
+        state.currentField && state.currentField.id === parseInt(addFieldId)
           ? {
               ...state.currentField,
               vaults: {
@@ -169,8 +198,8 @@ const warehouseReducer = (state = initialState, action) => {
         ...state,
         warehouses: {
           ...state.warehouses,
-          [warehouseId]: {
-            ...state.warehouses[warehouseId],
+          [addWarehouseId]: {
+            ...state.warehouses[addWarehouseId],
             fields: updatedFields,
           },
         },
@@ -248,6 +277,65 @@ const warehouseReducer = (state = initialState, action) => {
         },
         currentWarehouse: updatedCurrentWarehouseAfterStaging,
         currentField: updatedCurrenField,
+      };
+    case MOVE_VAULT_TO_WAREHOUSE:
+      const { vaultId: moveVaultId, warehouseId: moveWarehouseId, fieldId: moveFieldId, vault: moveVault } = action.payload;
+
+      // Find the warehouse containing the field
+      const targetWarehouseId = Object.keys(state.warehouses).find(
+        (id) => state.warehouses[id].fields[moveFieldId]
+      );
+
+      if (!targetWarehouseId) {
+        // If no warehouse contains the field, return the current state
+        return state;
+      }
+
+      // Update the fields with the moved vault
+      const updatedTargetFields = {
+        ...state.warehouses[targetWarehouseId].fields,
+        [moveFieldId]: {
+          ...state.warehouses[targetWarehouseId].fields[moveFieldId],
+          vaults: {
+            ...state.warehouses[targetWarehouseId].fields[moveFieldId].vaults,
+            [moveVaultId]: moveVault,
+          },
+        },
+      };
+
+      // Update the current warehouse if it matches the target warehouseId
+      const updatedTargetCurrentWarehouse =
+        state.currentWarehouse &&
+        state.currentWarehouse.id === parseInt(targetWarehouseId)
+          ? {
+              ...state.currentWarehouse,
+              fields: updatedTargetFields,
+            }
+          : state.currentWarehouse;
+
+      // Update the current field if it matches the fieldId
+      const updatedTargetCurrentField =
+        state.currentField && state.currentField.id === parseInt(moveFieldId)
+          ? {
+              ...state.currentField,
+              vaults: {
+                ...state.currentField.vaults,
+                [moveVaultId]: moveVault,
+              },
+            }
+          : state.currentField;
+
+      return {
+        ...state,
+        warehouses: {
+          ...state.warehouses,
+          [targetWarehouseId]: {
+            ...state.warehouses[targetWarehouseId],
+            fields: updatedTargetFields,
+          },
+        },
+        currentWarehouse: updatedTargetCurrentWarehouse,
+        currentField: updatedTargetCurrentField,
       };
     default:
       return state;

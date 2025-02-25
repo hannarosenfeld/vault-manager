@@ -45,7 +45,7 @@ export default function StageToWareHouseModal({ isOpen, onClose, vault }) {
                     {warehouse.name}
                   </button>
                 </div>
-                {selectedField?.id ? <FieldInfo field={selectedField} /> : "Select a field to view details"}
+                {selectedField?.id ? <FieldInfo field={selectedField} isStage={true}/> : "Select a field to view details"}
                 <FieldGrid
                   warehouse={warehouse}
                   handleFieldClick={handleFieldClick}

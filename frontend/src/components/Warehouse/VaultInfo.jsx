@@ -2,7 +2,7 @@ import { useState } from 'react';
 import ViewAndEditVaultModal from './ViewAndEditVaultModal';
 import ConfirmStagingModal from './ConfirmStagingModal'; // Import ConfirmStagingModal
 
-export default function VaultInfo({ vault }) {
+export default function VaultInfo({ vault, isStage }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] = useState(false); // State for forklift modal
 
@@ -24,6 +24,7 @@ export default function VaultInfo({ vault }) {
             <div className="font-semibold text-red-600">{vault.type}</div>
           </div>
         </div>
+        {!isStage && (
         <div className="flex text-md gap-2 items-center justify-center">
           <div className="flex items-center" onClick={toggleModal}>
             <svg
@@ -46,6 +47,7 @@ export default function VaultInfo({ vault }) {
             forklift
           </span>
         </div>
+        )}
       </div>
 
       {isModalOpen && (
