@@ -1,11 +1,13 @@
 import AddVaultButton from "./AddVaultButton";
 import VaultInfo from "./VaultInfo";
 import AddVaultModal from "./AddVaultModal";
+import ConfirmAddVaultModal from "../Stage/ConfirmationAddVaultModal";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 export default function FieldInfo({ field, isStage }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [selectedPosition, setSelectedPosition] = useState(null);
   const [vaults, setVaults] = useState(field.vaults);
   const rowCount = field.type === "couchbox" ? 4 : 3;
@@ -34,11 +36,27 @@ export default function FieldInfo({ field, isStage }) {
     .find((pos) => !vaultMap[pos]);
 
   const handleOpenModal = (position) => {
+    console.log("👰🏼‍♀️ position: ", position);
     setSelectedPosition(position);
-    setIsModalOpen(true);
+    if (!isStage) {
+      setIsModalOpen(true);
+    } else {
+      setIsConfirmModalOpen(true);
+    }
   };
+
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    setSelectedPosition(null);
+  };
+
+  const handleConfirmAddVault = () => {
+    setIsConfirmModalOpen(false);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseConfirmModal = () => {
+    setIsConfirmModalOpen(false);
     setSelectedPosition(null);
   };
 
@@ -75,6 +93,14 @@ export default function FieldInfo({ field, isStage }) {
           fieldId={field.id}
           position={selectedPosition}
           onClose={handleCloseModal}
+        />
+      )}
+      {isConfirmModalOpen && (
+        <ConfirmAddVaultModal
+          isOpen={isConfirmModalOpen}
+          onClose={handleCloseConfirmModal}
+          onConfirm={handleConfirmAddVault}
+          position={selectedPosition}
         />
       )}
     </div>
