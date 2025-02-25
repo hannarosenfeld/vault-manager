@@ -5,11 +5,11 @@ export default function ConfirmAddVaultModal({ isOpen, onClose, onConfirm, posit
     <Dialog open={isOpen} onClose={onClose} className="fixed inset-0 z-50 overflow-y-auto">
       <div className="fixed inset-0 bg-black opacity-30" />
       <div className="flex items-center justify-center min-h-screen">
-        <Dialog.Panel className="bg-white p-6 rounded shadow-lg z-50">
-          <Dialog.Title className="text-lg font-bold">Confirm Add Vault</Dialog.Title>
-          <Dialog.Description className="mt-2">
+        <DialogPanel className="bg-white p-6 rounded shadow-lg z-50">
+          <DialogTitle className="text-lg font-bold">Confirm Add Vault</DialogTitle>
+          <DialogDescription className="mt-2">
             Are you sure you want to add a vault at position <span className="text-blue-500 font-semibold">{position}</span>?
-          </Dialog.Description>
+          </DialogDescription>
           <div className="flex flex-col mt-4">
             <button
               type="button"
@@ -26,7 +26,7 @@ export default function ConfirmAddVaultModal({ isOpen, onClose, onConfirm, posit
               No, take me back
             </button>
           </div>
-        </Dialog.Panel>
+        </DialogPanel>
       </div>
     </Dialog>
   );

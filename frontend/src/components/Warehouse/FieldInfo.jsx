@@ -3,9 +3,11 @@ import VaultInfo from "./VaultInfo";
 import AddVaultModal from "./AddVaultModal";
 import ConfirmAddVaultModal from "../Stage/ConfirmationAddVaultModal";
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 
-export default function FieldInfo({ field, isStage }) {
+export default function FieldInfo({ field, isStage, vaultId }) {
+  const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [selectedPosition, setSelectedPosition] = useState(null);
@@ -49,7 +51,15 @@ export default function FieldInfo({ field, isStage }) {
     setSelectedPosition(null);
   };
 
-  const handleConfirmAddVault = () => {
+  const handleConfirmAddStagedVaultToWarehouse = () => {
+    dispatch(
+      addStagedVaultToWarehouse({
+        vaultId: vaultId,
+        fieldId: field.id,
+        position: selectedPosition,
+        warehouseId: field.warehouseId,
+      })
+    );
     setIsConfirmModalOpen(false);
     setIsModalOpen(true);
   };
@@ -98,7 +108,7 @@ export default function FieldInfo({ field, isStage }) {
         <ConfirmAddVaultModal
           isOpen={isConfirmModalOpen}
           onClose={handleCloseConfirmModal}
-          onConfirm={handleConfirmAddVault}
+          onConfirm={handleConfirmAddStagedVaultToWarehouse}
           position={selectedPosition}
         />
       )}

@@ -95,7 +95,7 @@ export const getCurrentFieldThunk = (field) => async (dispatch) => {
   }
 };
 
-export const moveVaultToWarehouseThunk = (vaultId, warehouseId, fieldId) => async (dispatch) => {
+export const moveVaultToWarehouseThunk = (vaultId, warehouseId, fieldId, position) => async (dispatch) => {
   try {
     const res = await fetch(`/api/vaults/${vaultId}/move`, {
       method: "POST",
