@@ -54,7 +54,7 @@ export default function StageToWareHouseModal({ isOpen, onClose, vault, setIsMod
                       {warehouse.name}
                     </button>
                   </div>
-                  {selectedField?.id ? <FieldInfo vaultId={vault.id} field={selectedField} isStage={true} onMove={onMove}/> : <div className="h-[17vh]">Select a field to view details</div>}
+                  <div className="h-[20vh]">{selectedField?.id ? <FieldInfo vaultId={vault.id} field={selectedField} isStage={true} onMove={onMove}/> : <div>Select a field to view details</div>}</div>
                   <FieldGrid
                     warehouse={warehouse}
                     handleFieldClick={handleFieldClick}
