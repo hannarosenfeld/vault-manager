@@ -88,7 +88,7 @@ def all_vaults_staged():
     return { vault.id : vault.to_dict() for vault in vaults }
 
 @vault_routes.route('/', methods=['POST'])
-@login_required
+# @login_required
 def add_vault():
     form = VaultForm()
     form['csrf_token'].data = request.cookies['csrf_token']
