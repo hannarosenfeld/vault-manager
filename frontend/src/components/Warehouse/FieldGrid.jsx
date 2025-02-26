@@ -12,11 +12,6 @@ export default function FieldGrid({ warehouse, handleFieldClick }) {
     if (warehouse.fields) {
       setSortedFields(sortWarehouseFields(warehouse.fields));
     }
-
-    // Cleanup function to set currentField to null on unmount
-    return () => {
-      dispatch(setCurrentField(null));
-    };
   }, [warehouse, dispatch]);
 
   const handleFieldSelect = (field) => {
