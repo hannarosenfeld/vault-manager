@@ -16,6 +16,7 @@ export default function StageToWareHouseModal({ isOpen, onClose, vault, setIsMod
 
   const onMove = () => {
     setIsModalOpen(false);
+    setSelectedField(null);
     setIsSuccessModalOpen(true);
     setTimeout(() => {
       setIsSuccessModalOpen(false);
