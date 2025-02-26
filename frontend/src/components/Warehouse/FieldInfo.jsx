@@ -2,7 +2,7 @@ import AddVaultButton from "./AddVaultButton";
 import VaultInfo from "./VaultInfo";
 import AddVaultModal from "./AddVaultModal";
 import ConfirmAddVaultModal from "../Stage/ConfirmationAddVaultModal";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { moveVaultToWarehouseThunk } from "../../store/warehouse";
 
@@ -22,20 +22,26 @@ export default function FieldInfo({ field, isStage, vaultId, onMove }) {
     setVaults(field.vaults);
   }, [field.vaults]);
 
-  const sortedVaults = vaults
-    ? [...Object.values(vaults)].sort(
-        (a, b) =>
-          positionOrder.indexOf(a.position) - positionOrder.indexOf(b.position)
-      )
-    : [];
+  const sortedVaults = useMemo(() => {
+    return vaults
+      ? [...Object.values(vaults)].sort(
+          (a, b) =>
+            positionOrder.indexOf(a.position) - positionOrder.indexOf(b.position)
+        )
+      : [];
+  }, [vaults, positionOrder]);
 
-  const vaultMap = Object.fromEntries(
-    sortedVaults.map((vault) => [vault.position, vault])
-  );
+  const vaultMap = useMemo(() => {
+    return Object.fromEntries(
+      sortedVaults.map((vault) => [vault.position, vault])
+    );
+  }, [sortedVaults]);
 
-  const lastEmptyPosition = [...positionOrder]
-    .reverse()
-    .find((pos) => !vaultMap[pos]);
+  const lastEmptyPosition = useMemo(() => {
+    return [...positionOrder]
+      .reverse()
+      .find((pos) => !vaultMap[pos]);
+  }, [positionOrder, vaultMap]);
 
   const handleOpenModal = (position) => {
     setSelectedPosition(position);
@@ -51,11 +57,11 @@ export default function FieldInfo({ field, isStage, vaultId, onMove }) {
     setSelectedPosition(null);
   };
 
-  const handleConfirmAddStagedVaultToWarehouse = () => {
-    dispatch(moveVaultToWarehouseThunk(vaultId, field.id, selectedPosition));
+  const handleConfirmAddStagedVaultToWarehouse = async () => {
+    await dispatch(moveVaultToWarehouseThunk(vaultId, field.id, selectedPosition));
     onMove();
     setIsConfirmModalOpen(false);
-    setIsModalOpen(true);
+    setIsModalOpen(false); // Close the modal after moving the vault
   };
 
   const handleCloseConfirmModal = () => {

@@ -52,11 +52,15 @@ def move_vault():
         vault.field_id = field_id
         vault.position = position
         db.session.commit()
-        return jsonify(vault.to_dict())
+        return jsonify({
+            "vaultId": vault_id,
+            "fieldId": field_id,
+            "position": position,
+            "vault": vault.to_dict()
+        })
     else:
         return jsonify({"message": "Vault not found"}), 404
-
-
+    
 @vault_routes.route('/<int:field_id>')
 @login_required
 def all_field_vaults(field_id):
@@ -257,8 +261,6 @@ def manage_vault(id):
             return vault.to_dict()
         else:
             return jsonify({'errors': validation_errors_to_error_messages(form.errors)}), 400
-
-    print("💅🏻")
 
     if request.method == 'DELETE':
         customer = Customer.query.get(vault.customer_id)
