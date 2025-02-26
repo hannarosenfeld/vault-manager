@@ -47,6 +47,8 @@ def get_warehouses():
     # company_id = current_user.company_id
     # warehouses = Warehouse.query.filter(Warehouse.company_id == company_id).all()
     warehouses = Warehouse.query.all()
+    
+    print("🎆")
 
     if not warehouses:
         return {'errors': 'No warehouses found!'}, 404

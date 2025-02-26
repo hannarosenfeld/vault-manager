@@ -1,10 +1,12 @@
 import os
-
-from flask import Flask, render_template, request, session, redirect
+from flask import Flask, render_template, request, session, redirect, jsonify
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 from flask_login import LoginManager, login_required
+from google.oauth2 import service_account
+from googleapiclient.discovery import build
+from googleapiclient.http import MediaFileUpload
 from .models import db, User
 from .api.user_routes import user_routes
 from .api.auth_routes import auth_routes
@@ -20,18 +22,15 @@ from .api.stage_routes import stage_routes
 from .seeds import seed_commands
 from .config import Config
 
-
 app = Flask(__name__, static_folder='../react-app/build', static_url_path='/')
 
 # Setup login manager
 login = LoginManager(app)
 login.login_view = 'auth.unauthorized'
 
-
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
-
 
 # Tell flask about our seed commands
 app.cli.add_command(seed_commands)
@@ -49,19 +48,21 @@ app.register_blueprint(attachment_routes, url_prefix='/api/attachments')
 app.register_blueprint(company_routes, url_prefix='/api/companies')
 app.register_blueprint(stage_routes, url_prefix='/api/stage')
 
-
 db.init_app(app)
 Migrate(app, db)
 
 # Application Security
 CORS(app)
 
+# Google Drive API setup
+SCOPES = ['https://www.googleapis.com/auth/drive.file']
+SERVICE_ACCOUNT_FILE = os.path.join(os.path.dirname(__file__), 'credentials.json')  # Your Google Drive service account file
+FOLDER_ID = '1haDVbvjQAjhaZR5rk77PtMSqXqRS1s5X'  # Your Google Drive folder ID
 
-# Since we are deploying with Docker and Flask,
-# we won't be using a buildpack when we deploy to Heroku.
-# Therefore, we need to make sure that in production any
-# request made over http is redirected to https.
-# Well.........
+credentials = service_account.Credentials.from_service_account_file(
+    SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+drive_service = build('drive', 'v3', credentials=credentials)
+
 @app.before_request
 def https_redirect():
     if os.environ.get('FLASK_ENV') == 'production':
@@ -69,7 +70,6 @@ def https_redirect():
             url = request.url.replace('http://', 'https://', 1)
             code = 301
             return redirect(url, code=code)
-
 
 @app.after_request
 def inject_csrf_token(response):
@@ -81,7 +81,6 @@ def inject_csrf_token(response):
             'FLASK_ENV') == 'production' else None,
         httponly=True)
     return response
-
 
 @app.route("/api/docs")
 @login_required
@@ -95,7 +94,6 @@ def api_help():
                     for rule in app.url_map.iter_rules() if rule.endpoint != 'static' }
     return route_list
 
-
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def react_root(path):
@@ -107,7 +105,6 @@ def react_root(path):
     if path == 'favicon.ico':
         return app.send_from_directory('public', 'favicon.ico')
     return app.send_static_file('index.html')
-
 
 @app.errorhandler(404)
 def not_found(e):

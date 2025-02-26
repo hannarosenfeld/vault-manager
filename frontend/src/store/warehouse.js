@@ -65,6 +65,7 @@ export const moveVaultToWarehouseThunk = (vaultId, fieldId, position) => async (
 };
 
 export const getAllWarehousesThunk = () => async (dispatch) => {
+  console.log("❤️‍🔥 in thunk")
   try {
     const response = await fetch("/api/warehouse/");
     if (response.ok) {
@@ -83,9 +84,10 @@ export const getAllWarehousesThunk = () => async (dispatch) => {
 };
 
 export const addVaultThunk = (vaultData) => async (dispatch) => {
+  console.log("🚀", vaultData);
   try {
     const res = await fetch("/api/vaults/", {
-      method: "POST",
+      method: "POST",      
       body: vaultData,
     });
     if (res.ok) {
@@ -133,6 +135,7 @@ const initialState = {
 const warehouseReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_ALL_WAREHOUSES:
+      console.log("❤️‍🔥")
       const newWarehouses = action.warehouses.reduce((acc, warehouse) => {
         acc[warehouse.id] = warehouse;
         return acc;

@@ -5,9 +5,10 @@ from app.forms import VaultForm, EditVaultForm
 from werkzeug.utils import secure_filename
 import os
 from dotenv import load_dotenv
-import boto3
-import botocore
 import uuid
+from google.oauth2 import service_account
+from googleapiclient.discovery import build
+from googleapiclient.http import MediaFileUpload
 
 load_dotenv()
 
@@ -23,21 +24,15 @@ def validation_errors_to_error_messages(validation_errors):
             errorMessages.append(f'{field} : {error}')
     return errorMessages
 
-# @vault_routes.route('/moveVault/<int:selected_field_id>/<int:vault_id>/<string:position>', methods=['PUT'])
-# # TODO: in the future, add a form for moving vault and take in vault info through form body, not through the route
-# @login_required
-# def move_vault_to_warehouse(selected_field_id, vault_id, position):
-#     vault = Vault.query.get(vault_id)
-#     if (vault):
-#         vault.field_id = selected_field_id
-#         vault.position = position
-#         db.session.commit()
-#         return vault.to_dict()
+# Google Drive API setup
+SCOPES = ['https://www.googleapis.com/auth/drive.file']
+SERVICE_ACCOUNT_FILE = os.path.join(os.path.dirname(__file__), '../credentials.json')  # Your Google Drive service account file
+FOLDER_ID = '1haDVbvjQAjhaZR5rk77PtMSqXqRS1s5X'  # Your Google Drive folder ID
 
-#     else:
-#         return {"message" : "vault not found"}
+credentials = service_account.Credentials.from_service_account_file(
+    SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+drive_service = build('drive', 'v3', credentials=credentials)
 
- 
 @vault_routes.route('/move', methods=['PUT'])
 # @login_required
 def move_vault():
@@ -83,7 +78,7 @@ def all_vaults():
     return { vault.id : vault.to_dict() for vault in vaults }
 
 @vault_routes.route('/staged')
-@login_required
+# @login_required
 def all_vaults_staged():
     """
     Query for all vaults and returns them in a list of vault dictionaries
@@ -111,7 +106,6 @@ def add_vault():
                 field_id=form.data['field_id'],
                 order_id=existent_order.id if existent_order else None,
                 position=form.data['position'],
-                type=form.data['type'],
                 note=form.data['note'],
                 empty=form.data['empty']
             )
@@ -142,26 +136,52 @@ def add_vault():
             # Handle file upload
             attachment = form.data['attachment']
 
+            print("👰🏼‍♀️ in route")
+            print("👰🏼‍♀️ attachment:", attachment)
+            
+            
             if attachment:
-                # Get AWS credentials from environment variables
-                aws_access_key_id = os.getenv('AWS_ACCESS_KEY')
-                aws_secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY')
-                s3_bucket_name = os.getenv('AWS_BUCKET_NAME')
-                unique_name = f'{secure_filename(attachment.filename)}-{uuid.uuid4()}'
-                s3_key = f'attachments/{unique_name}'
+                # Google Drive API setup
+                SCOPES = ['https://www.googleapis.com/auth/drive.file']
+                SERVICE_ACCOUNT_FILE = os.path.join(os.path.dirname(__file__), '../credentials.json')  # Your Google Drive service account file
+                FOLDER_ID = '1haDVbvjQAjhaZR5rk77PtMSqXqRS1s5X'  # Your Google Drive folder ID
 
-                # Store file information in the database (adjust the model and fields accordingly)
-                new_attachment = Attachment(
-                    vault_id=new_vault.id,
-                    file_name=attachment.filename,
-                    unique_name=unique_name,
-                    file_url=f'https://{s3_bucket_name}.s3.amazonaws.com/{s3_key}',
-                )
-                db.session.add(new_attachment)
+                credentials = service_account.Credentials.from_service_account_file(
+                    SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+                drive_service = build('drive', 'v3', credentials=credentials)                
+                try:
+                    print("💖 Starting file upload to Google Drive...")
+                    # Google Drive upload code
+                    file_path = os.path.join('/tmp', secure_filename(attachment.filename))
+                    attachment.save(file_path)
+                    print(f"💖 File saved to {file_path}")
 
-                # Save file to AWS S3
-                s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
-                s3.upload_fileobj(attachment, s3_bucket_name, s3_key, ExtraArgs={'ContentType': 'application/pdf'})
+                    file_metadata = {
+                        'name': attachment.filename,
+                        'parents': [FOLDER_ID]
+                    }
+                    media = MediaFileUpload(file_path, mimetype=attachment.content_type)
+                    file = drive_service.files().create(
+                        body=file_metadata,
+                        media_body=media,
+                        fields='id'
+                    ).execute()
+                    print(f"💖 File uploaded to Google Drive with ID: {file.get('id')}")
+
+                    file_url = f'https://drive.google.com/file/d/{file.get("id")}/view'
+
+                    new_attachment = Attachment(
+                        vault_id=new_vault.id,
+                        file_name=attachment.filename,
+                        unique_name=attachment.filename,
+                        file_url=file_url,
+                    )
+                    db.session.add(new_attachment)
+                    os.remove(file_path)
+                    print(f"💖 File removed from local path: {file_path}")
+                except Exception as e:
+                    print(f"💖 Error uploading file to Google Drive: {e}")
+                    return jsonify({'error': f"Error uploading file to Google Drive: {e}"}), 500
 
             db.session.commit()
 
@@ -173,6 +193,7 @@ def add_vault():
             return {"vault": dict_new_vault, "fieldId": field.id}
 
     except Exception as e:
+        print(f"Error in add_vault route: {e}")
         return jsonify({'error': str(e)}), 500
 
     return jsonify({'errors': validation_errors_to_error_messages(form.errors)}), 400
@@ -237,25 +258,39 @@ def manage_vault(id):
                 if (key.startswith('attachment')):
                     attachment = value
 
-                    # Get AWS credentials from environment variables
-                    aws_access_key_id = os.getenv('AWS_ACCESS_KEY')
-                    aws_secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY')
-                    s3_bucket_name = os.getenv('AWS_BUCKET_NAME')
-                    unique_name = f'{secure_filename(attachment.filename)}-{uuid.uuid4()}'
-                    s3_key = f'attachments/{unique_name}'
+                    try:
+                        print("Starting file upload to Google Drive...")
+                        # Google Drive upload code
+                        file_path = os.path.join('/tmp', secure_filename(attachment.filename))
+                        attachment.save(file_path)
+                        print(f"File saved to {file_path}")
 
-                    # Store file information in the database
-                    new_attachment = Attachment(
-                        vault_id=vault.id,
-                        file_name=attachment.filename,
-                        unique_name=unique_name,
-                        file_url=f'https://{s3_bucket_name}.s3.amazonaws.com/{s3_key}',
-                    )
-                    db.session.add(new_attachment)
+                        file_metadata = {
+                            'name': attachment.filename,
+                            'parents': [FOLDER_ID]
+                        }
+                        media = MediaFileUpload(file_path, mimetype=attachment.content_type)
+                        file = drive_service.files().create(
+                            body=file_metadata,
+                            media_body=media,
+                            fields='id'
+                        ).execute()
+                        print(f"File uploaded to Google Drive with ID: {file.get('id')}")
 
-                    # Save file to AWS S3
-                    s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
-                    s3.upload_fileobj(attachment, s3_bucket_name, s3_key, ExtraArgs={'ContentType': 'application/pdf'})
+                        file_url = f'https://drive.google.com/file/d/{file.get("id")}/view'
+
+                        new_attachment = Attachment(
+                            vault_id=vault.id,
+                            file_name=attachment.filename,
+                            unique_name=attachment.filename,
+                            file_url=file_url,
+                        )
+                        db.session.add(new_attachment)
+                        os.remove(file_path)
+                        print(f"File removed from local path: {file_path}")
+                    except Exception as e:
+                        print(f"Error uploading file to Google Drive: {e}")
+                        return jsonify({'error': f"Error uploading file to Google Drive: {e}"}), 500
 
             db.session.commit()
             return vault.to_dict()

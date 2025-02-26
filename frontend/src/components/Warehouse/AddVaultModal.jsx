@@ -33,27 +33,53 @@ export default function AddVaultModal({ onClose, fieldId, position }) {
 
   const handleChange = (e) => {
     const { id, value, files } = e.target;
+    if (id === "file" && files) {
+      const selectedFile = files[0];
+      if (selectedFile.size > 5 * 1024 * 1024) {
+        // Limit to 5MB
+        alert("File size should not exceed 5MB");
+        return;
+      }
+    }
     setFormData({
       ...formData,
       [id]: files ? files[0] : value,
     });
   };
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const submissionData = new FormData();
-    submissionData.append('vault_id', formData.vault_id);
-    submissionData.append('customer_name', isEmpty ? "EMPTY" : formData.customer.toUpperCase());
-    submissionData.append('order_number', formData.orderNumber); // Changed to order_number
-    submissionData.append('type', formData.type === "Standard" ? "S" : "T");
-    submissionData.append('note', formData.note);
-    submissionData.append('field_id', formData.field_id);
-    submissionData.append('position', formData.position);
-    if (formData.file) {
-      submissionData.append('file', formData.file);
+    setIsLoading(true);
+    try {
+      const submissionData = new FormData();
+      submissionData.append("vault_id", formData.vault_id);
+      submissionData.append(
+        "customer_name",
+        isEmpty ? "EMPTY" : formData.customer.toUpperCase()
+      );
+      submissionData.append("order_number", formData.orderNumber);
+      submissionData.append("type", formData.type === "Standard" ? "S" : "T");
+      submissionData.append("note", formData.note);
+      submissionData.append("field_id", formData.field_id);
+      submissionData.append("position", formData.position);
+      if (formData.file) {
+        submissionData.append("attachment", formData.file);
+      }
+  
+      // Log each part of the FormData object
+      for (let [key, value] of submissionData.entries()) {
+        console.log(`${key}:`, value);
+      }
+  
+      await dispatch(addVaultThunk(submissionData));
+      onClose();
+    } catch (error) {
+      console.error("Error submitting form: ", error);
+    } finally {
+      setIsLoading(false);
     }
-    await dispatch(addVaultThunk(submissionData));
-    onClose();
   };
 
   return (
@@ -152,7 +178,6 @@ export default function AddVaultModal({ onClose, fieldId, position }) {
                     </div>
 
                     <div className="flex gap-5 mb-5 justify-between">
-
                       <div className="w-full">
                         <label
                           htmlFor="file"
@@ -188,10 +213,14 @@ export default function AddVaultModal({ onClose, fieldId, position }) {
                     <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                       <button
                         type="submit"
-                        className="inline-flex w-full justify-center rounded-md bg-blue-500 px-3 py-2 text-sm text-white shadow-xs hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:ml-3 sm:w-auto"
+                        disabled={isLoading}
+                        className={`inline-flex w-full justify-center rounded-md bg-blue-500 px-3 py-2 text-sm text-white shadow-xs hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:ml-3 sm:w-auto ${
+                          isLoading ? "opacity-50 cursor-not-allowed" : ""
+                        }`}
                       >
-                        Add Vault
+                        {isLoading ? "Submitting..." : "Add Vault"}
                       </button>
+
                       <button
                         type="button"
                         data-autofocus
