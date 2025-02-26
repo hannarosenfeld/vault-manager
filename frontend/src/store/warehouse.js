@@ -51,7 +51,7 @@ export const moveVaultToWarehouseThunk = (vaultId, fieldId, position) => async (
     if (res.ok) {
       const data = await res.json();
       dispatch(moveVaultToWarehouse(data));
-      dispatch(removeVaultFromStage(vaultId)); // Remove the vault from the stage
+      dispatch(removeVaultFromStage(vaultId));
       return data;
     } else {
       const err = await res.json();

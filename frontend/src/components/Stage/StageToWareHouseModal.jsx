@@ -8,7 +8,7 @@ export default function StageToWareHouseModal({ isOpen, onClose, vault, setIsMod
   const warehouses = useSelector((state) => state.warehouse.warehouses);
   const warehouseArr = Object.values(warehouses);
   const [selectedField, setSelectedField] = useState(null);
-  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false); // Add success modal state
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   const handleFieldClick = (field) => {
     setSelectedField(field);
