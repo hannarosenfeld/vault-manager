@@ -176,7 +176,9 @@ export default function ViewAndEditVaultModal({ toggleModal, vault }) {
             <ul className="list-disc pl-5">
               {editableVault.attachments.map((attachment, index) => (
                 <li key={index} className="text-sm text-gray-900">
-                  {attachment}
+                  <a href={attachment.file_url} target="_blank" rel="noopener noreferrer">
+                    {attachment.file_name}
+                  </a>
                 </li>
               ))}
             </ul>
