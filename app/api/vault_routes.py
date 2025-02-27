@@ -287,7 +287,8 @@ def delete_vault(id):
             db.session.delete(order)
             db.session.commit()
 
-        return jsonify({'vaultId': id, "customer_to_delete": customer_to_delete, "order_to_delete": order_to_delete})
+        return jsonify({'vaultId': id })
+    
     except Exception as e:
         print(f"Error deleting vault: {e}")
         return jsonify({'error': str(e)}), 500

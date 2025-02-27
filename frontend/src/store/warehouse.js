@@ -423,7 +423,10 @@ const warehouseReducer = (state = initialState, action) => {
         currentField: null,
       };
       case DELETE_VAULT:
-        const { deletedVaultId } = action.payload;
+        const deletedVaultId = action.payload.vaultId;
+
+        console.log("❤️‍🔥 payload: ", action.payload)
+        console.log("❤️‍🔥 deletedVautlId: ", deletedVaultId)
   
         // Remove the vault from the current field
         const updatedCurrentFieldAfterVaultDeletion = {
