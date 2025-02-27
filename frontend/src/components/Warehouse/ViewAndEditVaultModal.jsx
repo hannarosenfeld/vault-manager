@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { uploadAttachmentThunk } from "../../store/warehouse";
+import { uploadAttachmentThunk, deleteVaultThunk } from "../../store/warehouse";
 
 export default function ViewAndEditVaultModal({ toggleModal, vault }) {
   const dispatch = useDispatch();
@@ -46,6 +46,13 @@ export default function ViewAndEditVaultModal({ toggleModal, vault }) {
       }
       setLoading(false);
     }
+  };
+
+  const handleDelete = async () => {
+    setLoading(true);
+    await dispatch(deleteVaultThunk(editableVault.id));
+    setLoading(false);
+    toggleModal();
   };
 
   return (
@@ -231,6 +238,14 @@ export default function ViewAndEditVaultModal({ toggleModal, vault }) {
             disabled={loading}
           >
             Close
+          </button>
+          <button
+            type="button"
+            className={`text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-500 dark:focus:ring-red-800 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            onClick={handleDelete}
+            disabled={loading}
+          >
+            Delete
           </button>
         </div>
       </div>

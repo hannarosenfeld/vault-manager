@@ -6,6 +6,8 @@ const UPDATE_WAREHOUSE_AFTER_STAGING =
   "warehouse/UPDATE_WAREHOUSE_AFTER_STAGING";
 const MOVE_VAULT_TO_WAREHOUSE = "warehouse/MOVE_VAULT_TO_WAREHOUSE";
 const ADD_ATTACHMENT = "warehouse/ADD_ATTACHMENT";
+const DELETE_VAULT = "warehouse/DELETE_VAULT";
+
 import { removeVaultFromStage } from "./stage";
 
 export const getAllWarehouses = (warehouses) => ({
@@ -42,6 +44,34 @@ export const addAttachment = (attachment) => ({
   type: ADD_ATTACHMENT,
   attachment,
 });
+
+export const deleteVault = (vaultId, customerToDelete) => ({
+  type: DELETE_VAULT,
+  payload: { vaultId, customerToDelete },
+});
+
+
+
+export const deleteVaultThunk = (vaultId) => async (dispatch) => {
+  try {
+    const res = await fetch(`/api/vaults/${vaultId}`, {
+      method: "DELETE",
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      dispatch(deleteVault(vaultId));
+      return data;
+    } else {
+      const err = await res.json();
+      console.error("Error deleting vault:", err);
+      return err;
+    }
+  } catch (error) {
+    console.error("Error deleting vault:", error);
+    return error;
+  }
+};
 
 export const uploadAttachmentThunk = (file, vaultId) => async (dispatch) => {
   const formData = new FormData();
@@ -157,6 +187,7 @@ export const getCurrentFieldThunk = (field) => async (dispatch) => {
   }
 };
 
+
 const initialState = {
   warehouses: {},
   currentWarehouse: null,
@@ -265,7 +296,7 @@ const warehouseReducer = (state = initialState, action) => {
           },
         },
       };
-      
+
     case UPDATE_WAREHOUSE_AFTER_STAGING:
       const stagedVaultId = action.payload.id;
       const stagedFieldId = action.payload.old_field_id;
@@ -391,6 +422,47 @@ const warehouseReducer = (state = initialState, action) => {
         currentWarehouse: null,
         currentField: null,
       };
+      case DELETE_VAULT:
+        const { deletedVaultId } = action.payload;
+  
+        // Remove the vault from the current field
+        const updatedCurrentFieldAfterVaultDeletion = {
+          ...state.currentField,
+          vaults: Object.keys(state.currentField.vaults)
+            .filter((id) => id !== deletedVaultId)
+            .reduce((acc, id) => {
+              acc[id] = state.currentField.vaults[id];
+              return acc;
+            }, {}),
+        };
+  
+        // Remove the vault from the current warehouse
+        const updatedCurrentWarehouseAfterVaultDeletion = {
+          ...state.currentWarehouse,
+          fields: {
+            ...state.currentWarehouse.fields,
+            [state.currentField.id]: updatedCurrentFieldAfterVaultDeletion,
+          },
+        };
+  
+        // Remove the vault from the warehouses
+        const updatedWarehouses = {
+          ...state.warehouses,
+          [state.currentWarehouse.id]: {
+            ...state.warehouses[state.currentWarehouse.id],
+            fields: {
+              ...state.warehouses[state.currentWarehouse.id].fields,
+              [state.currentField.id]: updatedCurrentFieldAfterVaultDeletion,
+            },
+          },
+        };
+  
+        return {
+          ...state,
+          currentField: updatedCurrentFieldAfterVaultDeletion,
+          currentWarehouse: updatedCurrentWarehouseAfterVaultDeletion,
+          warehouses: updatedWarehouses,
+        };
     default:
       return state;
   }

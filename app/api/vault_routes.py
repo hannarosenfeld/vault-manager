@@ -177,7 +177,7 @@ def add_vault():
 
     return jsonify({'errors': validation_errors_to_error_messages(form.errors)}), 400
 
-@vault_routes.route('/<int:id>', methods=['GET', 'PUT', 'DELETE'])
+@vault_routes.route('/<int:id>', methods=['GET', 'PUT'])
 @login_required
 def manage_vault(id):
     """
@@ -246,19 +246,48 @@ def manage_vault(id):
         else:
             return jsonify({'errors': validation_errors_to_error_messages(form.errors)}), 400
 
-    if request.method == 'DELETE':
+    
+@vault_routes.route('/<int:id>', methods=['DELETE'])
+# @login_required
+def delete_vault(id):
+    """
+    Delete a vault by id and all its attachments
+    """
+    vault = Vault.query.get(id)
+
+    if not vault:
+        return {'errors': 'Vault not found'}, 404
+
+    try:
+        # Delete all attachments
+        attachments = Attachment.query.filter_by(vault_id=id).all()
+        for attachment in attachments:
+            db.session.delete(attachment)
+
         customer = Customer.query.get(vault.customer_id)
+        order = Order.query.get(vault.order_id)
         customer_to_delete = None
-        vault_id = vault.id
+        order_to_delete = None
+
         db.session.delete(vault)
         field = Field.query.get(vault.field_id)
         if field:
             field.full = False
         db.session.commit()
 
-        if len(customer.vaults) == 0:
+        # Check if the customer has any other vaults
+        if customer and len(customer.vaults) == 0:
             customer_to_delete = customer.id
             db.session.delete(customer)
             db.session.commit()
 
-        return jsonify({'vaultId': vault_id, "customer_to_delete": customer_to_delete})
+        # Check if the order has any other vaults
+        if order and len(order.order_vaults) == 0:  # Use order.order_vaults instead of order.vaults
+            order_to_delete = order.id
+            db.session.delete(order)
+            db.session.commit()
+
+        return jsonify({'vaultId': id, "customer_to_delete": customer_to_delete, "order_to_delete": order_to_delete})
+    except Exception as e:
+        print(f"Error deleting vault: {e}")
+        return jsonify({'error': str(e)}), 500
