@@ -55,27 +55,50 @@ def move_vault():
         })
     else:
         return jsonify({"message": "Vault not found"}), 404
-    
-@vault_routes.route('/<int:field_id>')
-@login_required
-def all_field_vaults(field_id):
-    """
-    Query for all vaults and returns them in a list of vault dictionaries
-    """
-    field = Field.query.get(field_id)
-    vault_ids = field.to_dict()['vaults']
-    vaults = [Vault.query.get(id) for id in vault_ids]
-    return { vault.id : vault.to_dict() for vault in vaults }
 
+@vault_routes.route('/upload', methods=['POST'])
+def upload_file():
+    attachment = request.files['attachment']
+    vault_id = request.form['vault_id']
 
-@vault_routes.route('/')
-@login_required
-def all_vaults():
-    """
-    Query for all vaults and returns them in a list of vault dictionaries
-    """
-    vaults = Vault.query.all()
-    return { vault.id : vault.to_dict() for vault in vaults }
+    if attachment:
+        try:
+            print("Starting file upload to Google Drive...")
+            # Google Drive upload code
+            file_path = os.path.join('/tmp', secure_filename(attachment.filename))
+            attachment.save(file_path)
+            print(f"File saved to {file_path}")
+
+            file_metadata = {
+                'name': attachment.filename,
+                'parents': [FOLDER_ID]
+            }
+            media = MediaFileUpload(file_path, mimetype=attachment.content_type)
+            file = drive_service.files().create(
+                body=file_metadata,
+                media_body=media,
+                fields='id'
+            ).execute()
+            print(f"File uploaded to Google Drive with ID: {file.get('id')}")
+
+            file_url = f'https://drive.google.com/file/d/{file.get("id")}/view'
+
+            new_attachment = Attachment(
+                vault_id=vault_id,
+                file_name=attachment.filename,
+                unique_name=attachment.filename,
+                file_url=file_url,
+            )
+            db.session.add(new_attachment)
+            os.remove(file_path)
+            print(f"File removed from local path: {file_path}")
+            db.session.commit()
+            return jsonify({'message': 'File uploaded successfully', 'attachment': new_attachment.to_dict()})
+        except Exception as e:
+            print(f"Error uploading file to Google Drive: {e}")
+            return jsonify({'error': f"Error uploading file to Google Drive: {e}"}), 500
+
+    return jsonify({'error': 'No file provided'}), 400
 
 @vault_routes.route('/staged')
 # @login_required
@@ -136,54 +159,10 @@ def add_vault():
             # Handle file upload
             attachment = form.data['attachment']
 
-            print("👰🏼‍♀️ in route")
-            print("👰🏼‍♀️ attachment:", attachment)
-            
-            
             if attachment:
-                # Google Drive API setup
-                SCOPES = ['https://www.googleapis.com/auth/drive.file']
-                SERVICE_ACCOUNT_FILE = os.path.join(os.path.dirname(__file__), '../credentials.json')  # Your Google Drive service account file
-                FOLDER_ID = '1haDVbvjQAjhaZR5rk77PtMSqXqRS1s5X'  # Your Google Drive folder ID
-
-                credentials = service_account.Credentials.from_service_account_file(
-                    SERVICE_ACCOUNT_FILE, scopes=SCOPES)
-                drive_service = build('drive', 'v3', credentials=credentials)                
-                try:
-                    print("💖 Starting file upload to Google Drive...")
-                    # Google Drive upload code
-                    file_path = os.path.join('/tmp', secure_filename(attachment.filename))
-                    attachment.save(file_path)
-                    print(f"💖 File saved to {file_path}")
-
-                    file_metadata = {
-                        'name': attachment.filename,
-                        'parents': [FOLDER_ID]
-                    }
-                    media = MediaFileUpload(file_path, mimetype=attachment.content_type)
-                    file = drive_service.files().create(
-                        body=file_metadata,
-                        media_body=media,
-                        fields='id'
-                    ).execute()
-                    print(f"💖 File uploaded to Google Drive with ID: {file.get('id')}")
-
-                    file_url = f'https://drive.google.com/file/d/{file.get("id")}/view'
-
-                    new_attachment = Attachment(
-                        vault_id=new_vault.id,
-                        file_name=attachment.filename,
-                        unique_name=attachment.filename,
-                        file_url=file_url,
-                    )
-                    db.session.add(new_attachment)
-                    os.remove(file_path)
-                    print(f"💖 File removed from local path: {file_path}")
-                except Exception as e:
-                    print(f"💖 Error uploading file to Google Drive: {e}")
-                    return jsonify({'error': f"Error uploading file to Google Drive: {e}"}), 500
-
-            db.session.commit()
+                response = upload_file()
+                if response.status_code != 200:
+                    return response
 
             # Retrieve the customer name for the response
             customer_name = Customer.query.get(new_vault.customer_id).name if new_vault.customer_id else None
@@ -255,42 +234,12 @@ def manage_vault(id):
 
             # Handle file uploads
             for key, value in request.files.items():
-                if (key.startswith('attachment')):
+                if key.startswith('attachment'):
                     attachment = value
 
-                    try:
-                        print("Starting file upload to Google Drive...")
-                        # Google Drive upload code
-                        file_path = os.path.join('/tmp', secure_filename(attachment.filename))
-                        attachment.save(file_path)
-                        print(f"File saved to {file_path}")
-
-                        file_metadata = {
-                            'name': attachment.filename,
-                            'parents': [FOLDER_ID]
-                        }
-                        media = MediaFileUpload(file_path, mimetype=attachment.content_type)
-                        file = drive_service.files().create(
-                            body=file_metadata,
-                            media_body=media,
-                            fields='id'
-                        ).execute()
-                        print(f"File uploaded to Google Drive with ID: {file.get('id')}")
-
-                        file_url = f'https://drive.google.com/file/d/{file.get("id")}/view'
-
-                        new_attachment = Attachment(
-                            vault_id=vault.id,
-                            file_name=attachment.filename,
-                            unique_name=attachment.filename,
-                            file_url=file_url,
-                        )
-                        db.session.add(new_attachment)
-                        os.remove(file_path)
-                        print(f"File removed from local path: {file_path}")
-                    except Exception as e:
-                        print(f"Error uploading file to Google Drive: {e}")
-                        return jsonify({'error': f"Error uploading file to Google Drive: {e}"}), 500
+                    response = upload_file()
+                    if response.status_code != 200:
+                        return response
 
             db.session.commit()
             return vault.to_dict()
@@ -307,7 +256,7 @@ def manage_vault(id):
             field.full = False
         db.session.commit()
 
-        if (len(customer.vaults) == 0):
+        if len(customer.vaults) == 0:
             customer_to_delete = customer.id
             db.session.delete(customer)
             db.session.commit()

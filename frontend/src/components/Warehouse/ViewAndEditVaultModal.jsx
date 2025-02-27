@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { uploadAttachmentThunk } from "../../store/warehouse";
 
 export default function ViewAndEditVaultModal({ toggleModal, vault }) {
+  const dispatch = useDispatch();
   const [editableVault, setEditableVault] = useState({ ...vault });
   const [editFields, setEditFields] = useState({
     customer_name: false,
@@ -8,6 +11,8 @@ export default function ViewAndEditVaultModal({ toggleModal, vault }) {
     order_name: false,
     note: false,
   });
+  const [newAttachments, setNewAttachments] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -29,6 +34,18 @@ export default function ViewAndEditVaultModal({ toggleModal, vault }) {
       ...prevFields,
       [field]: !prevFields[field],
     }));
+  };
+
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setLoading(true);
+      const response = await dispatch(uploadAttachmentThunk(file, editableVault.id));
+      if (response.attachment) {
+        setNewAttachments((prevAttachments) => [...prevAttachments, response.attachment]);
+      }
+      setLoading(false);
+    }
   };
 
   return (
@@ -144,10 +161,10 @@ export default function ViewAndEditVaultModal({ toggleModal, vault }) {
             type="file"
             name="file"
             id="file"
-            onChange={handleChange}
+            onChange={handleFileUpload}
             className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           />
-          <p className="mt-1 text-sm text-gray-500">No file chosen</p>
+          {loading && <p className="mt-1 text-sm text-gray-500">Uploading...</p>}
         </div>
 
         <div className="mb-6 border-b border-gray-200 pb-4">
@@ -185,20 +202,33 @@ export default function ViewAndEditVaultModal({ toggleModal, vault }) {
           ) : (
             <p className="text-sm text-gray-500">No attachments</p>
           )}
+          {newAttachments.length > 0 && (
+            <ul className="list-disc pl-5 mt-2">
+              {newAttachments.map((attachment, index) => (
+                <li key={index} className="text-sm text-green-500">
+                  <a href={attachment.file_url} target="_blank" rel="noopener noreferrer">
+                    {attachment.file_name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
 
         <div className="flex justify-end">
           <button
             type="button"
-            className="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
+            className={`text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
             onClick={handleSave}
+            disabled={loading}
           >
             Save
           </button>
           <button
             type="button"
-            className="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+            className={`py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
             onClick={toggleModal}
+            disabled={loading}
           >
             Close
           </button>
