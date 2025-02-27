@@ -282,13 +282,12 @@ def delete_vault(id):
             db.session.commit()
 
         # Check if the order has any other vaults
-        if order and len(order.order_vaults) == 0:  # Use order.order_vaults instead of order.vaults
+        if order and len(order.order_vaults) == 0:
             order_to_delete = order.id
             db.session.delete(order)
             db.session.commit()
 
-        return jsonify({'vaultId': id })
-    
+        return jsonify({'vaultId': id, "customer_to_delete": customer_to_delete, "order_to_delete": order_to_delete})
     except Exception as e:
         print(f"Error deleting vault: {e}")
         return jsonify({'error': str(e)}), 500

@@ -24,7 +24,7 @@ class Warehouse(db.Model):
         back_populates='warehouses',
         cascade='save-update, merge'
     )
-    orders = db.relationship('Order', secondary=warehouse_orders, back_populates='warehouses', cascade='all, delete')
+    orders = db.relationship('Order', secondary=warehouse_orders, back_populates='warehouses', cascade='save-update, merge')
 
     def to_dict(self):
         return {
