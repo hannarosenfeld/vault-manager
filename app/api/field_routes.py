@@ -4,6 +4,19 @@ from app.forms import EditFieldForm, PostFieldForm
 
 field_routes = Blueprint('fields', __name__)
 
+@field_routes.route('/<int:field_id>', methods=['PATCH'])
+def update_field_type(field_id):
+    data = request.get_json()
+    field = Field.query.get(field_id)
+
+    if not field:
+        return jsonify({"error": "Field not found"}), 404
+
+    field.type = data.get('type', field.type)
+    db.session.commit()
+
+    return jsonify(field.to_dict())
+  
 # @field_routes.route('/<int:field_id>')
 # def get_current_field(field_id):
 #     field = Field.query.get(field_id)
