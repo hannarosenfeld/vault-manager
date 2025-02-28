@@ -12,3 +12,4 @@ class VaultForm(FlaskForm):
     attachment = FileField('attachment')
     note = TextAreaField('note')
     empty = BooleanField('empty')
+    type = StringField('type')
