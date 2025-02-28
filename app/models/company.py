@@ -1,6 +1,5 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from flask_login import UserMixin
-from .company_customers import company_customers
 
 
 class Company(db.Model, UserMixin):
@@ -24,10 +23,6 @@ class Company(db.Model, UserMixin):
     # warehouses - one to many
     company_warehouses = db.relationship('Warehouse', back_populates='company', foreign_keys='Warehouse.company_id')
 
-    # customers - many to many
-    company_customers = db.relationship('Customer', secondary=company_customers, back_populates='customer_companies', cascade='all, delete')
-
-
     def to_dict(self):
         return {
             'id': self.id,
@@ -35,5 +30,4 @@ class Company(db.Model, UserMixin):
             'orders': [order.id for order in self.company_orders], 
             'users': [user.id for user in self.company_users], 
             'warehouses': [warehouse.id for warehouse in self.company_warehouses], 
-            'customers': [customer.id for customer in self.company_customers], 
         }

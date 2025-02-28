@@ -1,7 +1,6 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from .warehouse_users import warehouse_users
 
 
 class User(db.Model, UserMixin):
@@ -14,8 +13,6 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(40), nullable=False, unique=True)
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
-    warehouses = db.relationship('Warehouse', secondary=warehouse_users, back_populates='users', cascade='all, delete')
-
     company_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('companies.id')))
     company = db.relationship('Company', back_populates='company_users')
 

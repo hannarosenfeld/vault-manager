@@ -178,7 +178,7 @@ def add_vault():
     return jsonify({'errors': validation_errors_to_error_messages(form.errors)}), 400
 
 @vault_routes.route('/<int:id>', methods=['GET', 'PUT'])
-@login_required
+# @login_required
 def manage_vault(id):
     """
     Query for a vault by id and manage it (GET, PUT/EDIT, DELETE)

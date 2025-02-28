@@ -1,6 +1,5 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from flask_login import UserMixin
-from .field_orders import field_orders
 
 
 class Field(db.Model, UserMixin):
@@ -17,7 +16,6 @@ class Field(db.Model, UserMixin):
 
     warehouse_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('warehouses.id')))
     warehouse = db.relationship('Warehouse', back_populates='warehouse_fields')
-    orders = db.relationship('Order', secondary=field_orders, back_populates='fields', cascade='all, delete')
 
     def generate_name(self, col_name, numerical_identifier):
         return f"{col_name}_{numerical_identifier:02d}"
@@ -30,5 +28,4 @@ class Field(db.Model, UserMixin):
             'vaults': [vault.to_dict() for vault in self.vaults],
             'warehouse_id': self.warehouse_id,
             'full': self.full,
-            'orders': [order.id for order in self.orders]
         }

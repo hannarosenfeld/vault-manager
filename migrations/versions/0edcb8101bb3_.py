@@ -139,8 +139,8 @@ def upgrade():
         sa.Column('position', sa.String(length=100), nullable=True),
         sa.Column('type', sa.String(), nullable=True),
         sa.Column('customer_id', sa.Integer(), nullable=True),
-        sa.Column('note', sa.Text(), nullable=True),  # Changed to sa.Text()
-        sa.Column('empty', sa.Boolean(), nullable=True),  # Added the empty column
+        sa.Column('note', sa.Text(), nullable=True),
+        sa.Column('empty', sa.Boolean(), nullable=True),
         sa.ForeignKeyConstraint(['customer_id'], ['customers.id'], ondelete='CASCADE'),
         sa.ForeignKeyConstraint(['field_id'], ['fields.id'], ondelete='CASCADE'),
         sa.ForeignKeyConstraint(['order_id'], ['orders.id'], ondelete='CASCADE'),

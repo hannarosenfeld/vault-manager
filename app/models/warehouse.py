@@ -1,7 +1,5 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from flask_login import UserMixin
-from .warehouse_users import warehouse_users
-from .warehouse_orders import warehouse_orders
 
 
 class Warehouse(db.Model):
@@ -18,13 +16,6 @@ class Warehouse(db.Model):
     company_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('companies.id')))
     company = db.relationship('Company', back_populates='company_warehouses')
     warehouse_fields = db.relationship('Field', back_populates='warehouse', foreign_keys='Field.warehouse_id')
-    users = db.relationship(
-        'User',
-        secondary=warehouse_users,
-        back_populates='warehouses',
-        cascade='save-update, merge'
-    )
-    orders = db.relationship('Order', secondary=warehouse_orders, back_populates='warehouses', cascade='save-update, merge')
 
     def to_dict(self):
         return {
@@ -33,7 +24,6 @@ class Warehouse(db.Model):
             'rows': self.rows,
             'columns': self.cols,
             'fields': [field.to_dict() for field in self.warehouse_fields],
-            'orders': [order.id for order in self.orders],
             'companyId': self.company_id,
             'companyName': self.company.name
         }
