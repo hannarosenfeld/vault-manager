@@ -12,10 +12,12 @@ export default function FieldInfo({ field, isStage, vaultId, onMove }) {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [selectedPosition, setSelectedPosition] = useState(null);
   const [vaults, setVaults] = useState(field.vaults);
-  const rowCount = field.type === "couchbox" ? 4 : 3;
+  const [fieldType, setFieldType] = useState(field.type); // Add state for field type
+
+  const rowCount = fieldType === "couchbox" ? 4 : 3;
 
   const positionOrder = ["T", "M2", "M", "B"].filter(
-    (pos) => pos !== "M2" || field.type === "couchbox"
+    (pos) => pos !== "M2" || fieldType === "couchbox"
   );
 
   useEffect(() => {
@@ -69,6 +71,10 @@ export default function FieldInfo({ field, isStage, vaultId, onMove }) {
     setSelectedPosition(null);
   };
 
+  const handleFieldTypeChange = (e) => {
+    setFieldType(e.target.value);
+  };
+
   return (
     <div className="h-[90%] grid grid-cols-[65%_35%]">
       <div className={`grid grid-rows-${rowCount} border-r border-gray-300`}>
@@ -87,15 +93,29 @@ export default function FieldInfo({ field, isStage, vaultId, onMove }) {
                 <VaultInfo vault={vaultMap[pos]} isStage={isStage} />
               ) : (
                 lastEmptyPosition === pos && (
-                  <AddVaultButton type={field.type} onClick={() => handleOpenModal(pos)} />
+                  <AddVaultButton type={fieldType} onClick={() => handleOpenModal(pos)} />
                 )
               )}
             </div>
           </div>
         ))}
       </div>
-      <div className="flex font-semibold text-3xl items-center justify-center p-2">
-        {field.name}
+      <div className="flex flex-col items-center justify-center p-2">
+        <div className="font-semibold text-3xl mb-4">{field.name}</div>
+        <div className="mb-4">
+          <label htmlFor="fieldType" className="block mb-2 text-sm font-medium text-gray-900">
+            Field Type
+          </label>
+          <select
+            id="fieldType"
+            value={fieldType}
+            onChange={handleFieldTypeChange}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+          >
+            <option value="standard">Standard</option>
+            <option value="couchbox">Couchbox</option>
+          </select>
+        </div>
       </div>
       {isModalOpen && (
         <AddVaultModal
