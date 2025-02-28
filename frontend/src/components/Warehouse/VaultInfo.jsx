@@ -18,10 +18,10 @@ export default function VaultInfo({ vault, isStage }) {
     <div className="flex justify-center items-center h-full w-full">
       <div className="flex justify-between text-xs h-full w-full items-center">
         <div className="flex gap-2 h-full items-center justify-center">
-          <div className="flex gap-1 leading-none">
-            <div>{vault.customer_name.length > 10 ? `${vault.customer_name.substring(0, 10)}...` : vault.customer_name}</div>
+          <div className="flex gap-2 leading-none items-center">
+            <div>{vault.customer_name?.length > 10 ? `${vault.customer_name.substring(0, 10)}...` : vault.customer_name}</div>
             <div>{vault.name}</div>
-            <div className="font-semibold text-red-600">{vault.type}</div>
+            <div className="font-semibold text-red-600">{vault.type === "couchbox" ? <span class="material-symbols-outlined">weekend</span> : ""}</div>
           </div>
         </div>
         {!isStage && (

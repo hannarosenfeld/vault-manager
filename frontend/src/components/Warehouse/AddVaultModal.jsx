@@ -60,7 +60,7 @@ export default function AddVaultModal({ onClose, fieldId, position }) {
         isEmpty ? "EMPTY" : formData.customer.toUpperCase()
       );
       submissionData.append("order_number", formData.orderNumber);
-      submissionData.append("type", formData.type === "Standard" ? "S" : "T");
+      submissionData.append("type", formData.type === "standard" ? "S" : "couchbox");
       submissionData.append("note", formData.note);
       submissionData.append("field_id", formData.field_id);
       submissionData.append("position", formData.position);
@@ -191,8 +191,8 @@ export default function AddVaultModal({ onClose, fieldId, position }) {
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         required
                       >
-                        <option value="Standard">standard</option>
-                        <option value="Couchbox">couchbox</option>
+                        <option value="Standard">Standard</option>
+                        <option value="Couchbox">Couchbox</option>
                       </select>
                     </div>
 
