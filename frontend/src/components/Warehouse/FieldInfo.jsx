@@ -12,7 +12,7 @@ export default function FieldInfo({ field, isStage, vaultId, onMove }) {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [selectedPosition, setSelectedPosition] = useState(null);
   const [vaults, setVaults] = useState(field.vaults);
-  const [fieldType, setFieldType] = useState(field.type); // Add state for field type
+  const [fieldType, setFieldType] = useState(field.type);
 
   const rowCount = fieldType === "couchbox" ? 4 : 3;
 
@@ -63,7 +63,7 @@ export default function FieldInfo({ field, isStage, vaultId, onMove }) {
     await dispatch(moveVaultToWarehouseThunk(vaultId, field.id, selectedPosition));
     onMove();
     setIsConfirmModalOpen(false);
-    setIsModalOpen(false); // Close the modal after moving the vault
+    setIsModalOpen(false);
   };
 
   const handleCloseConfirmModal = () => {
@@ -71,8 +71,8 @@ export default function FieldInfo({ field, isStage, vaultId, onMove }) {
     setSelectedPosition(null);
   };
 
-  const handleFieldTypeChange = (e) => {
-    setFieldType(e.target.value);
+  const handleFieldTypeToggle = () => {
+    setFieldType((prevType) => (prevType === "standard" ? "couchbox" : "standard"));
   };
 
   return (
@@ -103,18 +103,20 @@ export default function FieldInfo({ field, isStage, vaultId, onMove }) {
       <div className="flex flex-col items-center justify-center p-2">
         <div className="font-semibold text-3xl mb-4">{field.name}</div>
         <div className="mb-4">
-          <label htmlFor="fieldType" className="block mb-2 text-sm font-medium text-gray-900">
-            Field Type
-          </label>
-          <select
-            id="fieldType"
-            value={fieldType}
-            onChange={handleFieldTypeChange}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-          >
-            <option value="standard">Standard</option>
-            <option value="couchbox">Couchbox</option>
-          </select>
+          <div className="flex items-center">
+            <span className="material-symbols-outlined mr-2">
+              {fieldType === "standard" ? "package_2" : "weekend"}
+            </span>
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                className="sr-only peer"
+                checked={fieldType === "couchbox"}
+                onChange={handleFieldTypeToggle}
+              />
+              <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:bg-gray-700 peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:after:left-[calc(100%-2px)] peer-checked:after:translate-x-[-100%]"></div>
+            </label>
+          </div>
         </div>
       </div>
       {isModalOpen && (
