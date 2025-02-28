@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import ViewAndEditVaultModal from './ViewAndEditVaultModal';
-import ConfirmStagingModal from './ConfirmStagingModal'; // Import ConfirmStagingModal
+import ConfirmStagingModal from './ConfirmStagingModal';
 
 export default function VaultInfo({ vault, isStage }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] = useState(false); // State for forklift modal
+  const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] = useState(false);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
