@@ -4,7 +4,7 @@ import AddVaultModal from "./AddVaultModal";
 import ConfirmAddVaultModal from "../Stage/ConfirmationAddVaultModal";
 import { useState, useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
-import { moveVaultToWarehouseThunk } from "../../store/warehouse";
+import { moveVaultToWarehouseThunk, updateFieldTypeThunk } from "../../store/warehouse";
 
 export default function FieldInfo({ field, isStage, vaultId, onMove }) {
   const dispatch = useDispatch();
@@ -71,9 +71,13 @@ export default function FieldInfo({ field, isStage, vaultId, onMove }) {
     setSelectedPosition(null);
   };
 
-  const handleFieldTypeToggle = () => {
-    setFieldType((prevType) => (prevType === "standard" ? "couchbox" : "standard"));
+  const handleFieldTypeToggle = async () => {
+    const newFieldType = fieldType === "standard" ? "couchbox" : "standard";
+    setFieldType(newFieldType);
+    await dispatch(updateFieldTypeThunk(field.id, newFieldType));
   };
+
+  const hasVaults = vaults && Object.keys(vaults).length > 0;
 
   return (
     <div className="h-[90%] grid grid-cols-[65%_35%]">
@@ -113,8 +117,9 @@ export default function FieldInfo({ field, isStage, vaultId, onMove }) {
                 className="sr-only peer"
                 checked={fieldType === "couchbox"}
                 onChange={handleFieldTypeToggle}
+                disabled={hasVaults}
               />
-              <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:bg-gray-700 peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:after:left-[calc(100%-2px)] peer-checked:after:translate-x-[-100%]"></div>
+              <div className={`w-11 h-6 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:bg-gray-700 peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:after:left-[calc(100%-2px)] peer-checked:after:translate-x-[-100%] ${hasVaults ? 'bg-gray-300 cursor-not-allowed' : 'bg-gray-200'}`}></div>
             </label>
           </div>
         </div>
