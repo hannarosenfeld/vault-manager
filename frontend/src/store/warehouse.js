@@ -2,8 +2,7 @@ const GET_ALL_WAREHOUSES = "warehouse/GET_ALL_WAREHOUSES";
 const SET_CURRENT_WAREHOUSE = "warehouse/SET_CURRENT_WAREHOUSE";
 const SET_CURRENT_FIELD = "warehouse/SET_CURRENT_FIELD";
 const ADD_VAULT = "warehouse/ADD_VAULT";
-const UPDATE_WAREHOUSE_AFTER_STAGING =
-  "warehouse/UPDATE_WAREHOUSE_AFTER_STAGING";
+const UPDATE_WAREHOUSE_AFTER_STAGING = "warehouse/UPDATE_WAREHOUSE_AFTER_STAGING";
 const MOVE_VAULT_TO_WAREHOUSE = "warehouse/MOVE_VAULT_TO_WAREHOUSE";
 const ADD_ATTACHMENT = "warehouse/ADD_ATTACHMENT";
 const DELETE_VAULT = "warehouse/DELETE_VAULT";
@@ -425,9 +424,6 @@ const warehouseReducer = (state = initialState, action) => {
       case DELETE_VAULT:
         const deletedVaultId = action.payload.vaultId;
 
-        console.log("❤️‍🔥 payload: ", action.payload)
-        console.log("❤️‍🔥 deletedVautlId: ", deletedVaultId)
-  
         // Remove the vault from the current field
         const updatedCurrentFieldAfterVaultDeletion = {
           ...state.currentField,
