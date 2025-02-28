@@ -26,8 +26,8 @@ def validation_errors_to_error_messages(validation_errors):
 
 # Google Drive API setup
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
-SERVICE_ACCOUNT_FILE = os.path.join(os.path.dirname(__file__), '../credentials.json')  # Your Google Drive service account file
-FOLDER_ID = '1haDVbvjQAjhaZR5rk77PtMSqXqRS1s5X'  # Your Google Drive folder ID
+SERVICE_ACCOUNT_FILE = os.path.join(os.path.dirname(__file__), '../credentials.json')  # Google Drive service account file
+FOLDER_ID = '1haDVbvjQAjhaZR5rk77PtMSqXqRS1s5X'  # Google Drive folder ID
 
 credentials = service_account.Credentials.from_service_account_file(
     SERVICE_ACCOUNT_FILE, scopes=SCOPES)
