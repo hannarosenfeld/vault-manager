@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import NavBar from "./components/NavBar";
 import WarehousePage from "./pages/WarehousePage";
@@ -12,6 +12,7 @@ import LoginPage from "./pages/LoginPage";
 
 function App() {
   const dispatch = useDispatch();
+  const sessionUser = useSelector((state) => state.session.user);
   const warehouses = useSelector((state) => state.warehouse.warehouses);
   const [loading, setLoading] = useState(Object.keys(warehouses).length === 0);
 
@@ -30,16 +31,14 @@ function App() {
         <LoadingSpinner />
       ) : (
         <div className="flex flex-col w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-[800px] mx-auto">
-          <NavBar />
+          {sessionUser && <NavBar />}
           <div className="flex-grow px-4">
             <Routes>
-              <Route path="/" element={<HomePage warehouses={warehouses} />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/stage" element={<Stage />} />
-              <Route
-                path="/warehouse/:warehouseName"
-                element={<WarehousePage warehouses={warehouses}/>}
-              />
+              <Route path="/login" element={sessionUser ? <Navigate to="/" /> : <LoginPage />} />
+              <Route path="/" element={sessionUser ? <HomePage warehouses={warehouses} /> : <Navigate to="/login" />} />
+              <Route path="/stage" element={sessionUser ? <Stage /> : <Navigate to="/login" />} />
+              <Route path="/warehouse/:warehouseName" element={sessionUser ? <WarehousePage warehouses={warehouses} /> : <Navigate to="/login" />} />
+              <Route path="*" element={<Navigate to={sessionUser ? "/" : "/login"} />} />
             </Routes>
           </div>
         </div>
