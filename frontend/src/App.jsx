@@ -5,9 +5,10 @@ import WarehousePage from "./pages/WarehousePage";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getAllWarehousesThunk } from "./store/warehouse";
-import { getAllStagedVaultsThunk } from "./store/stage"; // Import the action
+import { getAllStagedVaultsThunk } from "./store/stage";
 import LoadingSpinner from "../src/components/LoadingSpinner";
 import Stage from "./pages/Stage";
+import LoginPage from "./pages/LoginPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ function App() {
           <div className="flex-grow px-4">
             <Routes>
               <Route path="/" element={<HomePage warehouses={warehouses} />} />
+              <Route path="/login" element={<LoginPage />} />
               <Route path="/stage" element={<Stage />} />
               <Route
                 path="/warehouse/:warehouseName"
