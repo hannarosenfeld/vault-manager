@@ -52,12 +52,12 @@ export default function NavDrawer({ open, setOpen }) {
                   {/* Loop through warehouses and create dynamic links */}
                   {warehouseArr.map((warehouse) => (
                     <Link
-                      key={warehouse.id} // Unique key for each warehouse
+                      key={warehouse.id}
                       to={`/warehouse/${warehouse.name
                         .toLowerCase()
-                        .replace(/\s+/g, "-")}`} // Format the name for the URL
+                        .replace(/\s+/g, "-")}`}
                       className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-                      onClick={() => setOpen(false)} // Close the drawer on click
+                      onClick={() => setOpen(false)}
                     >
                       <span className="material-symbols-outlined">
                         warehouse
@@ -67,9 +67,9 @@ export default function NavDrawer({ open, setOpen }) {
                   ))}
                   {/* Static Stage Link */}
                   <Link
-                    to="/stage" // This will navigate to the /stage route
+                    to="/stage"
                     className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-                    onClick={() => setOpen(false)} // Close the drawer on click
+                    onClick={() => setOpen(false)}
                   >
                     <span className="material-symbols-outlined">package_2</span>
                     <span className="ml-3">Stage</span>
