@@ -1,11 +1,18 @@
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { logout } from "../../store/session"; // Import the logout action
 
 export default function NavDrawer({ open, setOpen }) {
+  const dispatch = useDispatch();
   const warehouses = useSelector((state) => state.warehouse.warehouses);
   const warehouseArr = Object.values(warehouses);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    setOpen(false);
+  };
 
   return (
     <Dialog
@@ -52,7 +59,9 @@ export default function NavDrawer({ open, setOpen }) {
                       className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                       onClick={() => setOpen(false)} // Close the drawer on click
                     >
-                      <span className="material-symbols-outlined">warehouse</span>
+                      <span className="material-symbols-outlined">
+                        warehouse
+                      </span>
                       <span className="ml-3">{warehouse.name}</span>
                     </Link>
                   ))}
@@ -65,6 +74,14 @@ export default function NavDrawer({ open, setOpen }) {
                     <span className="material-symbols-outlined">package_2</span>
                     <span className="ml-3">Stage</span>
                   </Link>
+                  {/* Logout Button */}
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full"
+                  >
+                    <span className="material-symbols-outlined">logout</span>
+                    <span className="ml-3">Logout</span>
+                  </button>
                 </nav>
               </div>
             </DialogPanel>
