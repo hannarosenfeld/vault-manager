@@ -12,7 +12,7 @@ export default function FieldGrid({ warehouse, handleFieldClick }) {
     if (warehouse.fields) {
       setSortedFields(sortWarehouseFields(warehouse.fields));
     }
-  }, [warehouse, dispatch]);
+  }, [warehouse, dispatch, warehouse.fields]);
 
   const handleFieldSelect = (field) => {
     setSelectedField(field.id);

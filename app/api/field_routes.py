@@ -67,6 +67,8 @@ field_routes = Blueprint('fields', __name__)
 #         return jsonify({'error': str(e)}), 500
     
 #     return jsonify({'errors': form.errors}), 400
+
+
 @field_routes.route('/<int:field_id>', methods=['PATCH'])
 def update_field_type(field_id):
     data = request.get_json()
@@ -82,10 +84,10 @@ def update_field_type(field_id):
         return jsonify({"error": "Bottom field not found"}), 404
     
     # Toggle field types based on current types
-    if field.type == 'vault' and new_type == 'couchbox-T':
+    if field.type == 'vault':
         field.type = 'couchbox-T'
         bottom_field.type = 'couchbox-B'
-    elif field.type == 'couchbox-T' and new_type == 'vault':
+    elif field.type == 'couchbox-T':
         field.type = 'vault'
         bottom_field.type = 'vault'
     else:
@@ -93,7 +95,9 @@ def update_field_type(field_id):
     
     db.session.commit()
 
-    return jsonify(field.to_dict())
+    return jsonify({"field1": field.to_dict(), "field2": bottom_field.to_dict()})
+
+
 # @field_routes.route('/<int:field_id>')
 # def get_current_field(field_id):
 #     field = Field.query.get(field_id)

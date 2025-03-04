@@ -50,9 +50,9 @@ export const deleteVault = (vaultId, customerToDelete) => ({
   payload: { vaultId, customerToDelete },
 });
 
-export const updateFieldType = (field) => ({
+export const updateFieldType = (fields) => ({
   type: UPDATE_FIELD_TYPE,
-  field,
+  fields,
 });
 
 export const updateFieldTypeThunk = (fieldId, fieldType, field2) => async (dispatch) => {
@@ -66,9 +66,9 @@ export const updateFieldTypeThunk = (fieldId, fieldType, field2) => async (dispa
     });
 
     if (response.ok) {
-      const updatedField = await response.json();
-      dispatch(updateFieldType(updatedField));
-      return updatedField;
+      const updatedFields = await response.json();
+      dispatch(updateFieldType(updatedFields));
+      return updatedFields;
     } else {
       const error = await response.json();
       console.error("Error updating field type:", error);
@@ -490,8 +490,9 @@ const warehouseReducer = (state = initialState, action) => {
         warehouses: updatedWarehouses,
       };
     case UPDATE_FIELD_TYPE:
-      const updatedField = action.field;
-      const warehouseId = updatedField.warehouse_id;
+      console.log("🪼", action)
+      const { field1, field2 } = action.fields;
+      const warehouseId = field1.warehouse_id;
 
       return {
         ...state,
@@ -501,12 +502,13 @@ const warehouseReducer = (state = initialState, action) => {
             ...state.warehouses[warehouseId],
             fields: {
               ...state.warehouses[warehouseId].fields,
-              [updatedField.id]: updatedField,
+              [field1.id]: field1,
+              [field2.id]: field2,
             },
           },
         },
-        currentField: state.currentField && state.currentField.id === updatedField.id
-          ? updatedField
+        currentField: state.currentField && state.currentField.id === field1.id
+          ? field1
           : state.currentField,
       };
     default:
