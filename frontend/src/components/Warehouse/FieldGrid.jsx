@@ -39,7 +39,7 @@ export default function FieldGrid({ warehouse, handleFieldClick }) {
               key={field.id}
               style={{
                 display: field.type === "couchbox-B" ? "none" : "flex",
-                height: field.type === "couchbox-T" ? "calc(10vh + 1px)" : "5vh", // Double the height for couchbox-T
+                height: field.type === "couchbox-T" ? "calc(10vh + 0.25rem)" : "5vh", // Double the height for couchbox-T
                 backgroundColor: `${
                   (Object.keys(field.vaults).length === 3 && field.type === "vault") ||
                   field.full ||
