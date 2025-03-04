@@ -9,6 +9,7 @@ export default function AddWarehouse() {
   const [name, setName] = useState("");
   const [rows, setRows] = useState("");
   const [columns, setColumns] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -67,9 +68,11 @@ export default function AddWarehouse() {
         <div className="flex items-center justify-between">
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          >
-            Add Warehouse
+            disabled={isLoading}
+            className={`inline-flex w-full justify-center rounded-md bg-blue-500 px-3 py-2 text-sm text-white shadow-xs hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:ml-3 sm:w-auto ${
+              isLoading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+          >            Add Warehouse
           </button>
         </div>
       </form>
