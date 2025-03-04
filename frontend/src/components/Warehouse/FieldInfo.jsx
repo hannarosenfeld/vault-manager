@@ -12,7 +12,7 @@ export default function FieldInfo({ field, isStage, vaultId, onMove }) {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [selectedPosition, setSelectedPosition] = useState(null);
   const [vaults, setVaults] = useState(field.vaults);
-  const [fieldType, setFieldType] = useState(field.type || "standard");
+  const [fieldType, setFieldType] = useState(field.type || "vault");
 
   const rowCount = fieldType === "couchbox" ? 4 : 3;
 
@@ -22,7 +22,10 @@ export default function FieldInfo({ field, isStage, vaultId, onMove }) {
 
   useEffect(() => {
     setVaults(field.vaults);
-  }, [field.vaults]);
+    if (field.type === "couchbox-T") {
+      setFieldType("couchbox");
+    }
+  }, [field.vaults, field.type]);
 
   const sortedVaults = useMemo(() => {
     return vaults
@@ -72,7 +75,7 @@ export default function FieldInfo({ field, isStage, vaultId, onMove }) {
   };
 
   const handleFieldTypeToggle = async () => {
-    const newFieldType = fieldType === "standard" ? "couchbox" : "standard";
+    const newFieldType = fieldType === "vault" ? "couchbox" : "vault";
     setFieldType(newFieldType);    
     console.log('field.name', field.name);
     const letterPart = field.name.match(/[A-Za-z]+/)[0];
@@ -120,7 +123,7 @@ export default function FieldInfo({ field, isStage, vaultId, onMove }) {
               <input
                 type="checkbox"
                 className="sr-only peer"
-                checked={fieldType === "couchbox"}
+                checked={fieldType === "couchbox" }
                 onChange={handleFieldTypeToggle}
                 disabled={hasVaults}
               />
