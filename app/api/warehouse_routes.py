@@ -78,43 +78,43 @@ def get_warehouse_info(warehouse_id):
 
 
 @warehouse_routes.route('/add-warehouse', methods=['POST'])
+@login_required
 def add_warehouse():
     """
     Add a new warehouse along with rows and fields.
     """
     company_id = current_user.company_id
-    data = request.json
+    data = request.get_json()
     name = data.get('name')
-    rows = data.get('numRows')
-    cols = data.get('numCols')
+    rows = data.get('rows')
+    cols = data.get('columns')
+
+    if not name or rows is None or cols is None:
+        return jsonify({'error': 'Name, number of rows, and number of columns are required'}), 400
 
     try:
         # Create warehouse
-        warehouse = Warehouse(name=name)
+        warehouse = Warehouse(name=name, rows=rows, cols=cols, company_id=company_id)
         db.session.add(warehouse)
-        warehouse.name = name
-        warehouse.rows = rows
-        warehouse.cols = cols
-        warehouse.company_id = company_id
         db.session.commit()
 
         # Fetch warehouse with associated rows and fields
         warehouse = Warehouse.query.filter_by(name=name).first()
         warehouse_id = warehouse.id
 
-        # Create colums and fields
+        # Create columns and fields
         for i in range(1, cols + 1):
-            col_char = chr(64+i)
+            col_char = chr(64 + i)
             for field_num in range(1, rows + 1):
                 field_name = f"{col_char}{field_num}"
                 field = Field(
                     name=field_name,
-                    warehouse_id = warehouse_id, #might change this to warehouse.id
+                    warehouse_id=warehouse_id,
                     full=False,
                     type='vault',
                     vaults=[]
                 )
-                db.session.add(field)        
+                db.session.add(field)
                 db.session.commit()
 
         return jsonify(warehouse.to_dict()), 201
@@ -122,16 +122,3 @@ def add_warehouse():
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
-
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({'error': str(e)}), 500
-
-
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({'error': str(e)}), 500
-
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({'errors': str(e)}), 500

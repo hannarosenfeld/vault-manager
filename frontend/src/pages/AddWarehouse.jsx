@@ -13,13 +13,17 @@ export default function AddWarehouse() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const warehouseData = {
       name,
       rows: parseInt(rows, 10),
       columns: parseInt(columns, 10),
     };
-    await dispatch(addWarehouseThunk(warehouseData));
-    navigate("/"); // Redirect to the home page or warehouse list page after adding
+    const result = await dispatch(addWarehouseThunk(warehouseData));
+    setIsLoading(false);
+    if (!result.error) {
+      navigate("/"); // Redirect to the home page or warehouse list page after adding
+    }
   };
 
   return (
@@ -72,7 +76,8 @@ export default function AddWarehouse() {
             className={`inline-flex w-full justify-center rounded-md bg-blue-500 px-3 py-2 text-sm text-white shadow-xs hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:ml-3 sm:w-auto ${
               isLoading ? "opacity-50 cursor-not-allowed" : ""
             }`}
-          >            Add Warehouse
+          >
+            {isLoading ? "Adding..." : "Add Warehouse"}
           </button>
         </div>
       </form>

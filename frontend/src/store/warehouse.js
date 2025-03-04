@@ -63,7 +63,7 @@ export const updateFieldType = (fields) => ({
 
 export const addWarehouseThunk = (warehouseData) => async (dispatch) => {
   try {
-    const res = await fetch("/api/warehouses", {
+    const res = await fetch("/api/warehouse/add-warehouse", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -260,7 +260,7 @@ const warehouseReducer = (state = initialState, action) => {
           ...state.warehouses,
           [action.warehouse.id]: action.warehouse,
         },
-      };    
+      };   
     case GET_ALL_WAREHOUSES:
       const newWarehouses = action.warehouses.reduce((acc, warehouse) => {
         acc[warehouse.id] = warehouse;
