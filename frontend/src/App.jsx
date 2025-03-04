@@ -11,6 +11,7 @@ import LoadingSpinner from "../src/components/LoadingSpinner";
 import Stage from "./pages/Stage";
 import LoginPage from "./pages/LoginPage";
 import AddWarehouse from "./pages/AddWarehouse"; // Import the AddWarehouse component
+import EditWarehousePage from "./pages/EditWarehousePage"; // Import the EditWarehousePage component
 
 function App() {
   const dispatch = useDispatch();
@@ -43,6 +44,7 @@ function App() {
               <Route path="/stage" element={sessionUser ? <Stage /> : <Navigate to="/login" />} />
               <Route path="/warehouse/:warehouseName" element={sessionUser ? <WarehousePage warehouses={warehouses} /> : <Navigate to="/login" />} />
               <Route path="/add-warehouse" element={sessionUser ? <AddWarehouse /> : <Navigate to="/login" />} />
+              <Route path="/edit/:warehouseName" element={sessionUser ? <EditWarehousePage /> : <Navigate to="/login" />} />
               <Route path="*" element={<Navigate to={sessionUser ? "/" : "/login"} />} />
             </Routes>
           </div>
