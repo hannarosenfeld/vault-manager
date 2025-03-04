@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentWarehouse } from "../store/warehouse";
 import LoadingSpinner from "../components/LoadingSpinner";
-import FieldGrid from "../components/Warehouse/FieldGrid";
+import EditWarehouseFieldGrid from "../components/EditWarehouse/EditWarehouseFieldGrid";
 
 import { getCurrentFieldThunk } from "../store/warehouse";
 
@@ -47,7 +47,7 @@ function EditWarehousePage() {
       <h1 className="text-xl font-bold mb-2 text-center">{warehouse.name}</h1>
       <div className="flex-grow">
         {fieldsArr.length ? (
-          <FieldGrid
+          <EditWarehouseFieldGrid
             warehouse={warehouse}
             handleFieldClick={handleFieldClick}
           />
