@@ -177,25 +177,6 @@ export default function AddVaultModal({ onClose, fieldId, position }) {
                       </div>
                     </div>
 
-                    <div className="mb-5">
-                      <label
-                        htmlFor="type"
-                        className="block mb-2 text-sm font-medium text-gray-900"
-                      >
-                        Type
-                      </label>
-                      <select
-                        id="type"
-                        value={formData.type}
-                        onChange={handleChange}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        required
-                      >
-                        <option value="Standard">Standard</option>
-                        <option value="Couchbox">Couchbox</option>
-                      </select>
-                    </div>
-
                     <div className="flex gap-5 mb-5 justify-between">
                       <div className="w-full">
                         <label
