@@ -1,17 +1,23 @@
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../store/session"; // Import the logout action
 
-export default function NavDrawer({ open, setOpen, onAddWarehouse }) {
+export default function NavDrawer({ open, setOpen }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const warehouses = useSelector((state) => state.warehouse.warehouses);
   const warehouseArr = Object.values(warehouses);
 
   const handleLogout = () => {
     dispatch(logout());
     setOpen(false);
+  };
+
+  const handleAddWarehouse = () => {
+    setOpen(false);
+    navigate("/add-warehouse");
   };
 
   return (
@@ -76,7 +82,7 @@ export default function NavDrawer({ open, setOpen, onAddWarehouse }) {
                   </Link>
                   {/* Add Warehouse Button */}
                   <button
-                    onClick={onAddWarehouse}
+                    onClick={handleAddWarehouse}
                     className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full"
                   >
                     <svg

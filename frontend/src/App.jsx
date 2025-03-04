@@ -10,6 +10,7 @@ import { authenticate } from "./store/session"; // Import the authenticate actio
 import LoadingSpinner from "../src/components/LoadingSpinner";
 import Stage from "./pages/Stage";
 import LoginPage from "./pages/LoginPage";
+import AddWarehouse from "./pages/AddWarehouse"; // Import the AddWarehouse component
 
 function App() {
   const dispatch = useDispatch();
@@ -41,6 +42,7 @@ function App() {
               <Route path="/" element={sessionUser ? <HomePage warehouses={warehouses} /> : <Navigate to="/login" />} />
               <Route path="/stage" element={sessionUser ? <Stage /> : <Navigate to="/login" />} />
               <Route path="/warehouse/:warehouseName" element={sessionUser ? <WarehousePage warehouses={warehouses} /> : <Navigate to="/login" />} />
+              <Route path="/add-warehouse" element={sessionUser ? <AddWarehouse /> : <Navigate to="/login" />} />
               <Route path="*" element={<Navigate to={sessionUser ? "/" : "/login"} />} />
             </Routes>
           </div>

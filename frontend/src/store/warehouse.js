@@ -1,3 +1,4 @@
+import { removeVaultFromStage } from "./stage";
 const GET_ALL_WAREHOUSES = "warehouse/GET_ALL_WAREHOUSES";
 const SET_CURRENT_WAREHOUSE = "warehouse/SET_CURRENT_WAREHOUSE";
 const SET_CURRENT_FIELD = "warehouse/SET_CURRENT_FIELD";
@@ -7,8 +8,13 @@ const MOVE_VAULT_TO_WAREHOUSE = "warehouse/MOVE_VAULT_TO_WAREHOUSE";
 const ADD_ATTACHMENT = "warehouse/ADD_ATTACHMENT";
 const DELETE_VAULT = "warehouse/DELETE_VAULT";
 const UPDATE_FIELD_TYPE = "warehouse/UPDATE_FIELD_TYPE";
+const ADD_WAREHOUSE = "warehouse/ADD_WAREHOUSE";
 
-import { removeVaultFromStage } from "./stage";
+
+export const addWarehouse = (warehouse) => ({
+  type: ADD_WAREHOUSE,
+  warehouse,
+});
 
 export const getAllWarehouses = (warehouses) => ({
   type: GET_ALL_WAREHOUSES,
@@ -54,6 +60,31 @@ export const updateFieldType = (fields) => ({
   type: UPDATE_FIELD_TYPE,
   fields,
 });
+
+export const addWarehouseThunk = (warehouseData) => async (dispatch) => {
+  try {
+    const res = await fetch("/api/warehouses", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(warehouseData),
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      dispatch(addWarehouse(data));
+      return data;
+    } else {
+      const err = await res.json();
+      console.error("Error adding warehouse:", err);
+      return err;
+    }
+  } catch (error) {
+    console.error("Error adding warehouse:", error);
+    return error;
+  }
+};
 
 export const updateFieldTypeThunk = (fieldId, fieldType, field2) => async (dispatch) => {
   try {
@@ -222,6 +253,14 @@ const initialState = {
 
 const warehouseReducer = (state = initialState, action) => {
   switch (action.type) {
+    case ADD_WAREHOUSE:
+      return {
+        ...state,
+        warehouses: {
+          ...state.warehouses,
+          [action.warehouse.id]: action.warehouse,
+        },
+      };    
     case GET_ALL_WAREHOUSES:
       const newWarehouses = action.warehouses.reduce((acc, warehouse) => {
         acc[warehouse.id] = warehouse;
