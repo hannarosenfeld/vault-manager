@@ -12,7 +12,7 @@ export default function FieldInfo({ field, isStage, vaultId, onMove }) {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [selectedPosition, setSelectedPosition] = useState(null);
   const [vaults, setVaults] = useState(field.vaults);
-  const [fieldType, setFieldType] = useState("standard"); // Set initial state to "standard"
+  const [fieldType, setFieldType] = useState(field.type || "vault");
 
   const rowCount = fieldType === "couchbox" ? 4 : 3;
 
@@ -73,8 +73,13 @@ export default function FieldInfo({ field, isStage, vaultId, onMove }) {
 
   const handleFieldTypeToggle = async () => {
     const newFieldType = fieldType === "standard" ? "couchbox" : "standard";
-    setFieldType(newFieldType);
-    await dispatch(updateFieldTypeThunk(field.id, newFieldType));
+    setFieldType(newFieldType);    
+    console.log('field.name', field.name);
+    const letterPart = field.name.match(/[A-Za-z]+/)[0];
+    const numberPart = parseInt(field.name.match(/\d+/)[0]);
+    const field2 = letterPart + (numberPart + 1);
+    console.log('field2', field2);
+    await dispatch(updateFieldTypeThunk(field.id, newFieldType, field2));
   };
 
   const hasVaults = vaults && Object.keys(vaults).length > 0;
@@ -109,7 +114,7 @@ export default function FieldInfo({ field, isStage, vaultId, onMove }) {
         <div className="mb-4">
           <div className="flex items-center">
             <span className="material-symbols-outlined mr-2">
-              {fieldType === "standard" ? "package_2" : "weekend"}
+              {fieldType === "vault" ? "package_2" : "weekend"}
             </span>
             <label className="relative inline-flex items-center cursor-pointer">
               <input
@@ -119,7 +124,7 @@ export default function FieldInfo({ field, isStage, vaultId, onMove }) {
                 onChange={handleFieldTypeToggle}
                 disabled={hasVaults}
               />
-              <div className={`w-11 h-6 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:bg-gray-700 peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:after:left-[calc(100%-2px)] peer-checked:after:translate-x-[-100%] ${hasVaults ? 'bg-gray-300 cursor-not-allowed' : 'bg-gray-200'}`}></div>
+              <div className={`w-11 h-6 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:bg-gray-700 peer-checked:bg-blue-600 peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:after:left-[calc(100%-2px)] peer-checked:after:translate-x-[-100%] ${hasVaults ? 'bg-gray-300 cursor-not-allowed' : 'bg-gray-200'}`}></div>
             </label>
           </div>
         </div>

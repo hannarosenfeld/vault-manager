@@ -55,14 +55,14 @@ export const updateFieldType = (field) => ({
   field,
 });
 
-export const updateFieldTypeThunk = (fieldId, fieldType) => async (dispatch) => {
+export const updateFieldTypeThunk = (fieldId, fieldType, field2) => async (dispatch) => {
   try {
     const response = await fetch(`/api/fields/${fieldId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ type: fieldType }),
+      body: JSON.stringify({ type: fieldType, field2 }),
     });
 
     if (response.ok) {

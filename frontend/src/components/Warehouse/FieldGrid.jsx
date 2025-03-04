@@ -56,7 +56,7 @@ export default function FieldGrid({ warehouse, handleFieldClick }) {
                 aspectRatio: "1 / 1",
                 marginBottom: `${field.type === "couchbox-T" ? "-2.6em" : "0"}`,
                 width: `${field.type === "couchbox-B" ? "0px" : "100%"}`,
-                height: "100%",
+                height: `${field.type === "couchbox-B" ? "200%" : "100%"}`,
                 zIndex: `${field.type === "couchbox-B" ? "100" : "none"}`,
                 display: "flex",
                 alignItems: "center",

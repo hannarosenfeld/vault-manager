@@ -4,15 +4,89 @@ from app.forms import EditFieldForm, PostFieldForm
 
 field_routes = Blueprint('fields', __name__)
 
+# @field_routes.route('/<int:field_id>', methods=['PATCH'])
+# def update_field_type(field_id):
+#     form = EditFieldForm()
+#     form['csrf_token'].data = request.cookies['csrf_token']
+
+#     try:
+#         if form.validate_on_submit():
+#             name = form.data['name']
+#             type = form.data['type']
+#             field_id_1 = form.data['field_id_1']
+#             field_id_2 = form.data['field_id_2']
+#             field1 = Field.query.get(field_id_1)
+#             field2 = Field.query.get(field_id_2)
+
+#             if not field1:
+#                 return jsonify(message="Field 1 not found"), 404
+
+#             if not field2:
+#                 return jsonify(message="Field 2 not found"), 404
+
+
+#             def checkVaultCount(vaults):
+#                 count = 0
+#                 for vault in vaults:
+#                     count += 1
+#                 return count
+
+#             if type == 'couchbox':
+#                 if checkVaultCount(field1.vaults) > 0 or checkVaultCount(field2.vaults) > 0:
+#                     return jsonify(message="Please stage all vaults in fields to continue")
+
+#                 if not field2:
+#                     return jsonify(message="Field 2 not found"), 404
+
+#                 if field1.type == 'vault' and field2.type == 'vault':
+#                     field1.type = 'couchbox-T'
+#                     field2.type = 'couchbox-B'
+#                 else:
+#                     return jsonify(message="Cannot switch to couchbox")
+
+#                 db.session.commit()
+
+#                 return jsonify([field1.to_dict(), field2.to_dict()])
+
+#             if type == 'vault':
+#                 if checkVaultCount(field1.vaults) > 0:
+#                     return jsonify(message="Please stage all vaults in field to continue")
+
+#                 if field1.type == 'couchbox-T' and field2.type == 'couchbox-B':
+#                     field1.type = 'vault'
+#                     field2.type = 'vault'
+#                 else: 
+#                     return jsonify(message="Cannot switch to vault")
+                
+#                 db.session.commit()
+
+#                 return jsonify([field1.to_dict(), field2.to_dict()])
+
+
+#     except Exception as e:
+#         return jsonify({'error': str(e)}), 500
+    
+#     return jsonify({'errors': form.errors}), 400
+
 @field_routes.route('/<int:field_id>', methods=['PATCH'])
 def update_field_type(field_id):
     data = request.get_json()
     field = Field.query.get(field_id)
-
+    type = data.get('type', field.type)
+    bottom_field_name = data.get('field2')
+    
     if not field:
-        return jsonify({"error": "Field not found"}), 404
-
-    field.type = data.get('type', field.type)
+        return jsonify({"error": "Field not found"}), 404    
+    
+    print("😆 field2", bottom_field_name)
+    
+    bottom_field = Field.query.filter_by(name=bottom_field_name).first()
+    if not bottom_field:
+        return jsonify({"error": "Bottom field not found"}), 404
+    
+    bottom_field.type = 'couchbox-B'
+    field.type = type
+            
     db.session.commit()
 
     return jsonify(field.to_dict())
@@ -229,70 +303,3 @@ def update_field_type(field_id):
 #         return jsonify({'error': str(e)}), 500
     
 #     return jsonify({'errors': validation_errors_to_error_messages(form.errors)}), 400
-
-
-
-# @field_routes.route('/<int:id>/', methods=['PUT'])
-# def edit_field(id):
-#     form = EditFieldForm()
-#     form['csrf_token'].data = request.cookies['csrf_token']
-
-
-#     try:
-#         if form.validate_on_submit():
-#             name = form.data['name']
-#             type = form.data['type']
-#             field_id_1 = form.data['field_id_1']
-#             field_id_2 = form.data['field_id_2']
-#             field1 = Field.query.get(field_id_1)
-#             field2 = Field.query.get(field_id_2)
-
-#             if not field1:
-#                 return jsonify(message="Field 1 not found"), 404
-
-#             if not field2:
-#                 return jsonify(message="Field 2 not found"), 404
-
-
-#             def checkVaultCount(vaults):
-#                 count = 0
-#                 for vault in vaults:
-#                     count += 1
-#                 return count
-
-#             if type == 'couchbox':
-#                 if checkVaultCount(field1.vaults) > 0 or checkVaultCount(field2.vaults) > 0:
-#                     return jsonify(message="Please stage all vaults in fields to continue")
-
-#                 if not field2:
-#                     return jsonify(message="Field 2 not found"), 404
-
-#                 if field1.type == 'vault' and field2.type == 'vault':
-#                     field1.type = 'couchbox-T'
-#                     field2.type = 'couchbox-B'
-#                 else:
-#                     return jsonify(message="Cannot switch to couchbox")
-
-#                 db.session.commit()
-
-#                 return jsonify([field1.to_dict(), field2.to_dict()])
-
-#             if type == 'vault':
-#                 if checkVaultCount(field1.vaults) > 0:
-#                     return jsonify(message="Please stage all vaults in field to continue")
-
-#                 if field1.type == 'couchbox-T' and field2.type == 'couchbox-B':
-#                     field1.type = 'vault'
-#                     field2.type = 'vault'
-#                 else: 
-#                     return jsonify(message="Cannot switch to vault")
-                
-#                 db.session.commit()
-
-#                 return jsonify([field1.to_dict(), field2.to_dict()])
-
-
-#     except Exception as e:
-#         return jsonify({'error': str(e)}), 500
-    
-#     return jsonify({'errors': form.errors}), 400
