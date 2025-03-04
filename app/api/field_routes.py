@@ -85,7 +85,7 @@ def update_field_type(field_id):
         return jsonify({"error": "Bottom field not found"}), 404
     
     bottom_field.type = 'couchbox-B'
-    field.type = type
+    field.type = 'couchbox-T'
             
     db.session.commit()
 
