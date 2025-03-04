@@ -71,16 +71,6 @@ export default function NavDrawer({ open, setOpen }) {
                       <span className="ml-3">{warehouse.name}</span>
                     </Link>
                   ))}
-                  {/* Static Stage Link */}
-                  <Link
-                    to="/stage"
-                    className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-                    onClick={() => setOpen(false)}
-                  >
-                    <span className="material-symbols-outlined">package_2</span>
-                    <span className="ml-3">Stage</span>
-                  </Link>
-                  {/* Add Warehouse Button */}
                   <button
                     onClick={handleAddWarehouse}
                     className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full"
@@ -101,6 +91,15 @@ export default function NavDrawer({ open, setOpen }) {
                     </svg>
                     <span className="ml-3">Add Warehouse</span>
                   </button>
+                  {/* Static Stage Link */}
+                  <Link
+                    to="/stage"
+                    className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                    onClick={() => setOpen(false)}
+                  >
+                    <span className="material-symbols-outlined">package_2</span>
+                    <span className="ml-3">Stage</span>
+                  </Link>
                 </nav>
                 {/* Logout Button */}
                 <button
