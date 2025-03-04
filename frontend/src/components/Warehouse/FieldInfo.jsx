@@ -12,7 +12,7 @@ export default function FieldInfo({ field, isStage, vaultId, onMove }) {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [selectedPosition, setSelectedPosition] = useState(null);
   const [vaults, setVaults] = useState(field.vaults);
-  const [fieldType, setFieldType] = useState(field.type || "vault");
+  const [fieldType, setFieldType] = useState(field.type || "standard");
 
   const rowCount = fieldType === "couchbox" ? 4 : 3;
 

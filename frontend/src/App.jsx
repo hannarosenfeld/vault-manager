@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getAllWarehousesThunk } from "./store/warehouse";
 import { getAllStagedVaultsThunk } from "./store/stage";
+import { authenticate } from "./store/session"; // Import the authenticate action
 import LoadingSpinner from "../src/components/LoadingSpinner";
 import Stage from "./pages/Stage";
 import LoginPage from "./pages/LoginPage";
@@ -14,15 +15,17 @@ function App() {
   const dispatch = useDispatch();
   const sessionUser = useSelector((state) => state.session.user);
   const warehouses = useSelector((state) => state.warehouse.warehouses);
-  const [loading, setLoading] = useState(Object.keys(warehouses).length === 0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (Object.keys(!warehouses.length)) {
-      dispatch(getAllWarehousesThunk()).then(() => setLoading(false));
-    } else {
-      setLoading(false);
-    }
-    dispatch(getAllStagedVaultsThunk());
+    dispatch(authenticate()).then(() => {
+      if (Object.keys(warehouses).length === 0) {
+        dispatch(getAllWarehousesThunk()).then(() => setLoading(false));
+      } else {
+        setLoading(false);
+      }
+      dispatch(getAllStagedVaultsThunk());
+    });
   }, [dispatch]);
 
   return (
