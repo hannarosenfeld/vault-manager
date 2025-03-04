@@ -44,11 +44,11 @@ export default function NavDrawer({ open, setOpen, onAddWarehouse }) {
               </button>
 
               {/* Drawer Content */}
-              <div className="p-4">
+              <div className="p-4 flex flex-col h-full">
                 <DialogTitle className="text-base font-semibold text-gray-500 uppercase dark:text-gray-400">
                   Menu
                 </DialogTitle>
-                <nav className="mt-4 space-y-2">
+                <nav className="mt-4 space-y-2 flex-grow">
                   {/* Loop through warehouses and create dynamic links */}
                   {warehouseArr.map((warehouse) => (
                     <Link
@@ -95,15 +95,15 @@ export default function NavDrawer({ open, setOpen, onAddWarehouse }) {
                     </svg>
                     <span className="ml-3">Add Warehouse</span>
                   </button>
-                  {/* Logout Button */}
-                  <button
-                    onClick={handleLogout}
-                    className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full"
-                  >
-                    <span className="material-symbols-outlined">logout</span>
-                    <span className="ml-3">Logout</span>
-                  </button>
                 </nav>
+                {/* Logout Button */}
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full mt-auto"
+                >
+                  <span className="material-symbols-outlined">logout</span>
+                  <span className="ml-3">Logout</span>
+                </button>
               </div>
             </DialogPanel>
           </div>
