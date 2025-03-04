@@ -38,6 +38,8 @@ export default function FieldGrid({ warehouse, handleFieldClick }) {
               }`}
               key={field.id}
               style={{
+                display: field.type === "couchbox-B" ? "none" : "flex",
+                height: field.type === "couchbox-T" ? "calc(10vh + 1px)" : "5vh", // Double the height for couchbox-T
                 backgroundColor: `${
                   (Object.keys(field.vaults).length === 3 && field.type === "vault") ||
                   field.full ||
@@ -53,20 +55,15 @@ export default function FieldGrid({ warehouse, handleFieldClick }) {
                     ? "var(--green)"
                     : "var(--lightgrey)"
                 }`,
-                aspectRatio: "1 / 1",
-                marginBottom: `${field.type === "couchbox-T" ? "-2.6em" : "0"}`,
-                width: `${field.type === "couchbox-B" ? "0px" : "100%"}`,
-                height: `${field.type === "couchbox-B" ? "200%" : "100%"}`,
-                zIndex: `${field.type === "couchbox-B" ? "100" : "none"}`,
-                display: "flex",
+                width: "100%",
+                zIndex: field.type === "couchbox-B" ? "100" : "auto",
                 alignItems: "center",
                 justifyContent: "center",
+                gridRow: field.type === "couchbox-T" ? "span 2" : "auto", // Span two rows for couchbox-T
               }}
               onClick={() => handleFieldSelect(field)}
             >
-              {field.type === "couchbox-B" ? (
-                ""
-              ) : (
+              {field.type !== "couchbox-B" && (
                 <div className="text-xs md:text-md text-center">
                   {field.name}
                 </div>
