@@ -8,9 +8,9 @@ export default function HomePage({ warehouses }) {
           {Object.values(warehouses).map((warehouse) => (
             <div
               key={warehouse.id}
-              className="border border-gray-300 p-4 rounded-lg bg-gray-50 hover:bg-gray-100"
+              className="border border-gray-300 rounded-lg bg-gray-50 hover:bg-gray-100"
             >
-              <div className="cursor-pointer">
+              <div className="cursor-pointer p-4">
                 <Link
                   to={`/warehouse/${warehouse.name.toLowerCase().split(" ").join("-")}`}
                   className="text-lg font-semibold text-gray-800"
@@ -19,12 +19,12 @@ export default function HomePage({ warehouses }) {
                 </Link>
                 <p>{warehouse.location}</p>
               </div>
-              <div className="mt-2">
-              <Link
-  to={`/edit/${warehouse.name.toLowerCase().split(" ").join("-")}`}
-  className="text-blue-500 hover:text-blue-700 flex items-center"
->
-
+              <hr className="border-gray-300" />
+              <div className="py-2 px-4">
+                <Link
+                  to={`/edit/${warehouse.name.toLowerCase().split(" ").join("-")}`}
+                  className="text-blue-500 hover:text-blue-700 flex items-center p-2 rounded"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
