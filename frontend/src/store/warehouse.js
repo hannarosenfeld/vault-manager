@@ -253,17 +253,33 @@ const initialState = {
 const warehouseReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_WAREHOUSE:
+      const sortedFields = Object.values(action.warehouse.fields).sort((a, b) => a.id - b.id);
+      const sortedFieldsObj = sortedFields.reduce((acc, field) => {
+        acc[field.id] = field;
+        return acc;
+      }, {});
       return {
         ...state,
         warehouses: {
           ...state.warehouses,
-          [action.warehouse.id]: action.warehouse,
+          [action.warehouse.id]: {
+            ...action.warehouse,
+            fields: sortedFieldsObj,
+          },
         },
-      };   
+      };
     case GET_ALL_WAREHOUSES:
       const sortedWarehouses = action.warehouses.sort((a, b) => a.id - b.id);
       const newWarehouses = sortedWarehouses.reduce((acc, warehouse) => {
-        acc[warehouse.id] = warehouse;
+        const sortedFields = Object.values(warehouse.fields).sort((a, b) => a.id - b.id);
+        const sortedFieldsObj = sortedFields.reduce((acc, field) => {
+          acc[field.id] = field;
+          return acc;
+        }, {});
+        acc[warehouse.id] = {
+          ...warehouse,
+          fields: sortedFieldsObj,
+        };
         return acc;
       }, {});
       return {
