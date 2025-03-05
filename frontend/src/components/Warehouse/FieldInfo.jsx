@@ -24,8 +24,10 @@ export default function FieldInfo({ field, isStage, vaultId, onMove }) {
     setVaults(field.vaults);
     if (field.type === "couchbox-T") {
       setFieldType("couchbox");
+    } else {
+      setFieldType(field.type || "vault");
     }
-  }, [field.vaults, field.type]);
+  }, [field.vaults, field.type, field]);
 
   const sortedVaults = useMemo(() => {
     return vaults
