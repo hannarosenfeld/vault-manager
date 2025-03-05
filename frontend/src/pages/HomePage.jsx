@@ -20,7 +20,7 @@ export default function HomePage({ warehouses }) {
                 <p>{warehouse.location}</p>
               </div>
               <hr className="border-gray-300" />
-              <div className="py-2 px-4">
+              <div className="py-2 px-4 hover:bg-blue-100 bg-blue-50">
                 <Link
                   to={`/edit/${warehouse.name.toLowerCase().split(" ").join("-")}`}
                   className="text-blue-500 hover:text-blue-700 flex items-center p-2 rounded"
