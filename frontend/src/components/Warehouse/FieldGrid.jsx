@@ -14,6 +14,12 @@ export default function FieldGrid({ warehouse, handleFieldClick }) {
     }
   }, [warehouse, dispatch, warehouse.fields]);
 
+  useEffect(() => {
+    return () => {
+      setSelectedField(null);
+    };
+  }, []);
+
   const handleFieldSelect = (field) => {
     setSelectedField(field.id);
     dispatch(setCurrentField(field));

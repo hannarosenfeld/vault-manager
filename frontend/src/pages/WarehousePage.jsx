@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setCurrentWarehouse } from "../store/warehouse";
+import { setCurrentWarehouse, setCurrentField } from "../store/warehouse";
 import LoadingSpinner from "../components/LoadingSpinner";
 import FieldGrid from "../components/Warehouse/FieldGrid";
 import FieldInfo from "../components/Warehouse/FieldInfo";
@@ -32,6 +32,7 @@ function WarehousePage() {
 
     return () => {
       dispatch(setCurrentWarehouse(null));
+      dispatch(setCurrentField(null));
     };
   }, [dispatch, warehouseName, warehouses]);
 
