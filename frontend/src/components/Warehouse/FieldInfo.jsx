@@ -84,9 +84,8 @@ export default function FieldInfo({ field, isStage, vaultId, onMove }) {
     const numberPart = parseInt(field.name.match(/\d+/)[0]);
     const field2 = letterPart + (numberPart + 1);
     console.log('field2', field2);
-    await dispatch(updateFieldTypeThunk(field.id, newFieldType, field2));
+    await dispatch(updateFieldTypeThunk(field.id, newFieldType, field2, field.warehouse_id));
   };
-
   const hasVaults = vaults && Object.keys(vaults).length > 0;
 
   return (

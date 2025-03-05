@@ -75,11 +75,16 @@ def update_field_type(field_id):
     field = Field.query.get(field_id)
     new_type = data.get('type', field.type)
     bottom_field_name = data.get('field2')
+    warehouse_id = data.get('warehouseId')
+    
+    print("💖 field: ", field.to_dict())
+    print("💖 new_type: ", new_type)
+    print("💖 bottom_field_name: ", bottom_field_name)
     
     if not field:
         return jsonify({"error": "Field not found"}), 404    
     
-    bottom_field = Field.query.filter_by(name=bottom_field_name).first()
+    bottom_field = Field.query.filter_by(name=bottom_field_name, warehouse_id=warehouse_id).first()
     if not bottom_field:
         return jsonify({"error": "Bottom field not found"}), 404
     
@@ -95,8 +100,9 @@ def update_field_type(field_id):
     
     db.session.commit()
 
+    print("💅🏻 field1 after change: ", field.to_dict())
+    print("💅🏻 field2 after change: ", bottom_field.to_dict())
     return jsonify({"field1": field.to_dict(), "field2": bottom_field.to_dict()})
-
 
 # @field_routes.route('/<int:field_id>')
 # def get_current_field(field_id):

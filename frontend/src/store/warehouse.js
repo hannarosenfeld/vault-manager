@@ -85,14 +85,14 @@ export const addWarehouseThunk = (warehouseData) => async (dispatch) => {
   }
 };
 
-export const updateFieldTypeThunk = (fieldId, fieldType, field2) => async (dispatch) => {
+export const updateFieldTypeThunk = (fieldId, fieldType, field2, warehouseId) => async (dispatch) => {
   try {
     const response = await fetch(`/api/fields/${fieldId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ type: fieldType, field2 }),
+      body: JSON.stringify({ type: fieldType, field2, warehouseId }),
     });
 
     if (response.ok) {
@@ -544,10 +544,10 @@ const warehouseReducer = (state = initialState, action) => {
         currentWarehouse: updatedCurrentWarehouseAfterVaultDeletion,
         warehouses: updatedWarehouses,
       };
-    case UPDATE_FIELD_TYPE:
+       case UPDATE_FIELD_TYPE:
       const { field1, field2 } = action.fields;
       const warehouseId = field1.warehouse_id;
-
+    
       return {
         ...state,
         warehouses: {
