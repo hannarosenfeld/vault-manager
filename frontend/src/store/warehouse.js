@@ -10,7 +10,6 @@ const DELETE_VAULT = "warehouse/DELETE_VAULT";
 const UPDATE_FIELD_TYPE = "warehouse/UPDATE_FIELD_TYPE";
 const ADD_WAREHOUSE = "warehouse/ADD_WAREHOUSE";
 
-
 export const addWarehouse = (warehouse) => ({
   type: ADD_WAREHOUSE,
   warehouse,
@@ -262,7 +261,8 @@ const warehouseReducer = (state = initialState, action) => {
         },
       };   
     case GET_ALL_WAREHOUSES:
-      const newWarehouses = action.warehouses.reduce((acc, warehouse) => {
+      const sortedWarehouses = action.warehouses.sort((a, b) => a.id - b.id);
+      const newWarehouses = sortedWarehouses.reduce((acc, warehouse) => {
         acc[warehouse.id] = warehouse;
         return acc;
       }, {});
@@ -529,7 +529,6 @@ const warehouseReducer = (state = initialState, action) => {
         warehouses: updatedWarehouses,
       };
     case UPDATE_FIELD_TYPE:
-      console.log("🪼", action)
       const { field1, field2 } = action.fields;
       const warehouseId = field1.warehouse_id;
 
