@@ -21,6 +21,11 @@ function WarehousePage() {
   }
 
   useEffect(() => {
+    dispatch(setCurrentField(null));
+  }, []);
+
+
+  useEffect(() => {    
     const foundWarehouse = Object.values(warehouses).find(
       (w) => w.name.toLowerCase().split(" ").join("-") === warehouseName
     );
@@ -32,7 +37,6 @@ function WarehousePage() {
 
     return () => {
       dispatch(setCurrentWarehouse(null));
-      dispatch(setCurrentField(null));
     };
   }, [dispatch, warehouseName, warehouses]);
 

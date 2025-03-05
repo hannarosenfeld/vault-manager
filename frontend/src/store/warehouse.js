@@ -544,27 +544,27 @@ const warehouseReducer = (state = initialState, action) => {
         currentWarehouse: updatedCurrentWarehouseAfterVaultDeletion,
         warehouses: updatedWarehouses,
       };
-       case UPDATE_FIELD_TYPE:
-      const { field1, field2 } = action.fields;
-      const warehouseId = field1.warehouse_id;
-    
-      return {
-        ...state,
-        warehouses: {
-          ...state.warehouses,
-          [warehouseId]: {
-            ...state.warehouses[warehouseId],
-            fields: {
-              ...state.warehouses[warehouseId].fields,
-              [field1.id]: field1,
-              [field2.id]: field2,
+      case UPDATE_FIELD_TYPE:
+        const { field1, field2 } = action.fields;
+        const warehouseId = field1.warehouse_id;
+
+        console.log("🦊 currentField", state.currentField)
+      
+        return {
+          ...state,
+          warehouses: {
+            ...state.warehouses,
+            [warehouseId]: {
+              ...state.warehouses[warehouseId],
+              fields: {
+                ...state.warehouses[warehouseId].fields,
+                [field1.id]: field1,
+                [field2.id]: field2,
+              },
             },
           },
-        },
-        currentField: state.currentField && state.currentField.id === field1.id
-          ? field1
-          : state.currentField,
-      };
+          currentField: state.currentField
+        };
     default:
       return state;
   }
