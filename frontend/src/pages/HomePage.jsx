@@ -10,15 +10,17 @@ export default function HomePage({ warehouses }) {
               key={warehouse.id}
               className="border border-gray-300 rounded-lg bg-gray-50 hover:bg-gray-100"
             >
-              <div className="cursor-pointer p-4">
-                <Link
-                  to={`/warehouse/${warehouse.name.toLowerCase().split(" ").join("-")}`}
-                  className="text-lg font-semibold text-gray-800"
-                >
-                  {warehouse.name}
-                </Link>
-                <p>{warehouse.location}</p>
-              </div>
+              <Link
+                to={`/warehouse/${warehouse.name.toLowerCase().split(" ").join("-")}`}
+                className="block cursor-pointer p-4"
+              >
+                <div>
+                  <div className="text-lg font-semibold text-gray-800">
+                    {warehouse.name}
+                  </div>
+                  <p>{warehouse.location}</p>
+                </div>
+              </Link>
               <hr className="border-gray-300" />
               <div className="py-2 px-4 hover:bg-blue-100 bg-blue-50">
                 <Link
