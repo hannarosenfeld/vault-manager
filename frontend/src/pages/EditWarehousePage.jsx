@@ -3,6 +3,10 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import EditWarehouseFieldGrid from "../components/EditWarehouse/EditWarehouseFieldGrid";
 import { setCurrentWarehouse } from "../store/warehouse";
+import LoadingSpinner from "../components/LoadingSpinner";
+import ActionButton from "../components/EditWarehouse/ActionButton";
+import EditWarehouseModal from "../components/EditWarehouse/EditWarehouseModal";
+
 
 export default function EditWarehousePage() {
   const dispatch = useDispatch();
@@ -11,13 +15,12 @@ export default function EditWarehousePage() {
   const warehouses = useSelector((state) => state.warehouse.warehouses);
   const warehouse = useSelector((state) => state.warehouse.currentWarehouse);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalProps, setModalProps] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const foundWarehouse = Object.values(warehouses).find(
-      (w) =>
-        w.name.toLowerCase().split(" ").join("-") ===
-        warehouseName.toLowerCase()
+      (w) => w.name.toLowerCase().split(" ").join("-") === warehouseName.toLowerCase()
     );
     if (foundWarehouse) {
       dispatch(setCurrentWarehouse(foundWarehouse));
@@ -28,15 +31,13 @@ export default function EditWarehousePage() {
   }, [dispatch, warehouseName, warehouses]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner />;
   }
 
-  const ActionButton = ({ onClick, icon, label }) => (
-    <button className="btn btn-outline-secondary mb-2" onClick={onClick}>
-      <span className="material-symbols-outlined">{icon}</span>
-      {label && <span className="ml-2">{label}</span>}
-    </button>
-  );
+  const openModal = (dir, operation) => {
+    setModalProps({ dir, operation, warehouseId: warehouse.id });
+    setIsModalOpen(true);
+  };
 
   return (
     <div className="flex flex-col items-center h-full mt-5">
@@ -44,34 +45,24 @@ export default function EditWarehousePage() {
 
       <div className="flex w-full mt-4 justify-center">
         <div className="flex flex-col items-center mx-4 justify-center">
-          <ActionButton onClick={() => setIsModalOpen(true)} icon="add" />
-          <ActionButton onClick={() => setIsModalOpen(true)} icon="remove" />
+          <ActionButton onClick={() => openModal('left', 'plus')} icon="add" />
+          <ActionButton onClick={() => openModal('left', 'minus')} icon="remove" />
         </div>
         <div className="flex-grow flex justify-center">
           <EditWarehouseFieldGrid warehouse={warehouse} />
         </div>
         <div className="flex flex-col items-center mx-4 justify-center">
-          <ActionButton onClick={() => setIsModalOpen(true)} icon="add" />
-          <ActionButton onClick={() => setIsModalOpen(true)} icon="remove" />
+          <ActionButton onClick={() => openModal('right', 'plus')} icon="add" />
+          <ActionButton onClick={() => openModal('right', 'minus')} icon="remove" />
         </div>
       </div>
       <div className="flex items-center gap-4 mt-4 justify-center">
-        <ActionButton onClick={() => setIsModalOpen(true)} icon="add" />
-        <ActionButton onClick={() => setIsModalOpen(true)} icon="remove" />
+        <ActionButton onClick={() => openModal('bottom', 'plus')} icon="add" />
+        <ActionButton onClick={() => openModal('bottom', 'minus')} icon="remove" />
       </div>
 
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded shadow-lg text-center">
-            <p>Placeholder Modal</p>
-            <button
-              onClick={() => setIsModalOpen(false)}
-              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
-            >
-              Close
-            </button>
-          </div>
-        </div>
+        <EditWarehouseModal {...modalProps} onClose={() => setIsModalOpen(false)} />
       )}
     </div>
   );
