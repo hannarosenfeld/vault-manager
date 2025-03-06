@@ -40,7 +40,7 @@ export default function EditWarehousePage() {
 
   return (
     <div className="flex flex-col items-center h-full mt-5">
-      <h2 className="mb-3 text-xl font-semibold">{warehouse.name}</h2>
+      <h2 className="mb-1 text-xl font-semibold">{warehouse.name}</h2>
 
       <div className="flex w-full mt-4 justify-center">
         <div className="flex flex-col items-center mx-4 justify-center">
