@@ -15,7 +15,9 @@ export default function EditWarehousePage() {
 
   useEffect(() => {
     const foundWarehouse = Object.values(warehouses).find(
-      (w) => w.name.toLowerCase().split(" ").join("-") === warehouseName.toLowerCase()
+      (w) =>
+        w.name.toLowerCase().split(" ").join("-") ===
+        warehouseName.toLowerCase()
     );
     if (foundWarehouse) {
       dispatch(setCurrentWarehouse(foundWarehouse));
@@ -30,51 +32,32 @@ export default function EditWarehousePage() {
   }
 
   const ActionButton = ({ onClick, icon, label }) => (
-    <button
-      className="btn btn-outline-secondary mb-2"
-      onClick={onClick}
-    >
+    <button className="btn btn-outline-secondary mb-2" onClick={onClick}>
       <span className="material-symbols-outlined">{icon}</span>
       {label && <span className="ml-2">{label}</span>}
     </button>
   );
 
   return (
-    <div className="flex flex-col items-center h-full">
+    <div className="flex flex-col items-center h-full mt-5">
+      <h2 className="mb-3 text-xl font-semibold">{warehouse.name}</h2>
+
       <div className="flex w-full mt-4 justify-center">
         <div className="flex flex-col items-center mx-4 justify-center">
-          <ActionButton
-            onClick={() => setIsModalOpen(true)}
-            icon="add"
-          />
-          <ActionButton
-            onClick={() => setIsModalOpen(true)}
-            icon="remove"
-          />
+          <ActionButton onClick={() => setIsModalOpen(true)} icon="add" />
+          <ActionButton onClick={() => setIsModalOpen(true)} icon="remove" />
         </div>
         <div className="flex-grow flex justify-center">
           <EditWarehouseFieldGrid warehouse={warehouse} />
         </div>
         <div className="flex flex-col items-center mx-4 justify-center">
-          <ActionButton
-            onClick={() => setIsModalOpen(true)}
-            icon="add"
-          />
-          <ActionButton
-            onClick={() => setIsModalOpen(true)}
-            icon="remove"
-          />
+          <ActionButton onClick={() => setIsModalOpen(true)} icon="add" />
+          <ActionButton onClick={() => setIsModalOpen(true)} icon="remove" />
         </div>
       </div>
       <div className="flex items-center gap-4 mt-4 justify-center">
-        <ActionButton
-          onClick={() => setIsModalOpen(true)}
-          icon="add"
-        />
-        <ActionButton
-          onClick={() => setIsModalOpen(true)}
-          icon="remove"
-        />
+        <ActionButton onClick={() => setIsModalOpen(true)} icon="add" />
+        <ActionButton onClick={() => setIsModalOpen(true)} icon="remove" />
       </div>
 
       {isModalOpen && (
