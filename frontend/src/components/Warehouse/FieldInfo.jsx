@@ -109,11 +109,13 @@ export default function FieldInfo({ field, isStage, vaultId, onMove }) {
               {vaultMap[pos] ? (
                 <VaultInfo vault={vaultMap[pos]} isStage={isStage} isTopmost={pos === topmostVaultPosition} />
               ) : (
-                <AddVaultButton
-                  type={fieldType}
-                  onClick={() => handleOpenModal(pos)}
-                  disabled={pos !== lastEmptyPosition}
-                />
+                pos === lastEmptyPosition && (
+                  <AddVaultButton
+                    type={fieldType}
+                    onClick={() => handleOpenModal(pos)}
+                    disabled={pos !== lastEmptyPosition}
+                  />
+                )
               )}
             </div>
           </div>
