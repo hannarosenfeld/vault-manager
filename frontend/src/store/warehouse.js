@@ -3,7 +3,8 @@ const GET_ALL_WAREHOUSES = "warehouse/GET_ALL_WAREHOUSES";
 const SET_CURRENT_WAREHOUSE = "warehouse/SET_CURRENT_WAREHOUSE";
 const SET_CURRENT_FIELD = "warehouse/SET_CURRENT_FIELD";
 const ADD_VAULT = "warehouse/ADD_VAULT";
-const UPDATE_WAREHOUSE_AFTER_STAGING = "warehouse/UPDATE_WAREHOUSE_AFTER_STAGING";
+const UPDATE_WAREHOUSE_AFTER_STAGING =
+  "warehouse/UPDATE_WAREHOUSE_AFTER_STAGING";
 const MOVE_VAULT_TO_WAREHOUSE = "warehouse/MOVE_VAULT_TO_WAREHOUSE";
 const ADD_ATTACHMENT = "warehouse/ADD_ATTACHMENT";
 const DELETE_VAULT = "warehouse/DELETE_VAULT";
@@ -85,30 +86,31 @@ export const addWarehouseThunk = (warehouseData) => async (dispatch) => {
   }
 };
 
-export const updateFieldTypeThunk = (fieldId, fieldType, field2, warehouseId) => async (dispatch) => {
-  try {
-    const response = await fetch(`/api/fields/${fieldId}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ type: fieldType, field2, warehouseId }),
-    });
+export const updateFieldTypeThunk =
+  (fieldId, fieldType, field2, warehouseId) => async (dispatch) => {
+    try {
+      const response = await fetch(`/api/fields/${fieldId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ type: fieldType, field2, warehouseId }),
+      });
 
-    if (response.ok) {
-      const updatedFields = await response.json();
-      dispatch(updateFieldType(updatedFields));
-      return updatedFields;
-    } else {
-      const error = await response.json();
+      if (response.ok) {
+        const updatedFields = await response.json();
+        dispatch(updateFieldType(updatedFields));
+        return updatedFields;
+      } else {
+        const error = await response.json();
+        console.error("Error updating field type:", error);
+        return error;
+      }
+    } catch (error) {
       console.error("Error updating field type:", error);
       return error;
     }
-  } catch (error) {
-    console.error("Error updating field type:", error);
-    return error;
-  }
-};
+  };
 
 export const deleteVaultThunk = (vaultId) => async (dispatch) => {
   try {
@@ -253,7 +255,9 @@ const initialState = {
 const warehouseReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_WAREHOUSE:
-      const sortedFields = Object.values(action.warehouse.fields).sort((a, b) => a.id - b.id);
+      const sortedFields = Object.values(action.warehouse.fields).sort(
+        (a, b) => a.id - b.id
+      );
       const sortedFieldsObj = sortedFields.reduce((acc, field) => {
         acc[field.id] = field;
         return acc;
@@ -271,7 +275,9 @@ const warehouseReducer = (state = initialState, action) => {
     case GET_ALL_WAREHOUSES:
       const sortedWarehouses = action.warehouses.sort((a, b) => a.id - b.id);
       const newWarehouses = sortedWarehouses.reduce((acc, warehouse) => {
-        const sortedFields = Object.values(warehouse.fields).sort((a, b) => a.id - b.id);
+        const sortedFields = Object.values(warehouse.fields).sort(
+          (a, b) => a.id - b.id
+        );
         const sortedFieldsObj = sortedFields.reduce((acc, field) => {
           acc[field.id] = field;
           return acc;
@@ -481,16 +487,6 @@ const warehouseReducer = (state = initialState, action) => {
         },
       };
 
-      // Update the current warehouse if it matches the target warehouseId
-      const updatedTargetCurrentWarehouse =
-        state.currentWarehouse &&
-        state.currentWarehouse.id === parseInt(targetWarehouseId)
-          ? {
-              ...state.currentWarehouse,
-              fields: updatedTargetFields,
-            }
-          : state.currentWarehouse;
-
       return {
         ...state,
         warehouses: {
@@ -503,14 +499,17 @@ const warehouseReducer = (state = initialState, action) => {
         currentWarehouse: null,
         currentField: null,
       };
+
     case DELETE_VAULT:
       const deletedVaultId = action.payload.vaultId;
+
+      console.log("❤️‍🔥 deletedVaultId: ", deletedVaultId);
 
       // Remove the vault from the current field
       const updatedCurrentFieldAfterVaultDeletion = {
         ...state.currentField,
         vaults: Object.keys(state.currentField.vaults)
-          .filter((id) => id !== deletedVaultId)
+          .filter((id) => id !== deletedVaultId.toString())
           .reduce((acc, id) => {
             acc[id] = state.currentField.vaults[id];
             return acc;
@@ -544,27 +543,28 @@ const warehouseReducer = (state = initialState, action) => {
         currentWarehouse: updatedCurrentWarehouseAfterVaultDeletion,
         warehouses: updatedWarehouses,
       };
-      case UPDATE_FIELD_TYPE:
-        const { field1, field2 } = action.fields;
-        const warehouseId = field1.warehouse_id;
 
-        console.log("🦊 currentField", state.currentField)
-      
-        return {
-          ...state,
-          warehouses: {
-            ...state.warehouses,
-            [warehouseId]: {
-              ...state.warehouses[warehouseId],
-              fields: {
-                ...state.warehouses[warehouseId].fields,
-                [field1.id]: field1,
-                [field2.id]: field2,
-              },
+    case UPDATE_FIELD_TYPE:
+      const { field1, field2 } = action.fields;
+      const warehouseId = field1.warehouse_id;
+
+      console.log("🦊 currentField", state.currentField);
+
+      return {
+        ...state,
+        warehouses: {
+          ...state.warehouses,
+          [warehouseId]: {
+            ...state.warehouses[warehouseId],
+            fields: {
+              ...state.warehouses[warehouseId].fields,
+              [field1.id]: field1,
+              [field2.id]: field2,
             },
           },
-          currentField: state.currentField
-        };
+        },
+        currentField: state.currentField,
+      };
     default:
       return state;
   }
