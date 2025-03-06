@@ -29,56 +29,52 @@ export default function EditWarehousePage() {
     return <div>Loading...</div>;
   }
 
+  const ActionButton = ({ onClick, icon, label }) => (
+    <button
+      className="btn btn-outline-secondary mb-2"
+      onClick={onClick}
+    >
+      <span className="material-symbols-outlined">{icon}</span>
+      {label && <span className="ml-2">{label}</span>}
+    </button>
+  );
+
   return (
     <div className="flex flex-col items-center h-full">
-      <div className="flex flex-col items-center w-full h-full">
-        <div className="flex w-full mt-4 justify-center">
-          <div className="flex flex-col items-center mx-4">
-            <button
-              className="btn btn-outline-secondary mb-2"
-              onClick={() => setIsModalOpen(true)}
-            >
-              <span className="material-symbols-outlined">add</span>
-            </button>
-            <button
-              className="btn btn-outline-secondary"
-              onClick={() => setIsModalOpen(true)}
-            >
-              <span className="material-symbols-outlined">remove</span>
-            </button>
-          </div>
-          <div className="flex-grow flex justify-center">
-            <EditWarehouseFieldGrid warehouse={warehouse} />
-          </div>
-          <div className="flex flex-col items-center mx-4">
-            <button
-              className="btn btn-outline-secondary mb-2"
-              onClick={() => setIsModalOpen(true)}
-            >
-              <span className="material-symbols-outlined">add</span>
-            </button>
-            <button
-              className="btn btn-outline-secondary"
-              onClick={() => setIsModalOpen(true)}
-            >
-              <span className="material-symbols-outlined">remove</span>
-            </button>
-          </div>
-        </div>
-        <div className="flex items-center gap-4 mt-4">
-          <button
-            className="btn btn-outline-secondary"
+      <div className="flex w-full mt-4 justify-center">
+        <div className="flex flex-col items-center mx-4 justify-center">
+          <ActionButton
             onClick={() => setIsModalOpen(true)}
-          >
-            <span className="material-symbols-outlined">add</span>
-          </button>
-          <button
-            className="btn btn-outline-secondary"
+            icon="add"
+          />
+          <ActionButton
             onClick={() => setIsModalOpen(true)}
-          >
-            <span className="material-symbols-outlined">remove</span>
-          </button>
+            icon="remove"
+          />
         </div>
+        <div className="flex-grow flex justify-center">
+          <EditWarehouseFieldGrid warehouse={warehouse} />
+        </div>
+        <div className="flex flex-col items-center mx-4 justify-center">
+          <ActionButton
+            onClick={() => setIsModalOpen(true)}
+            icon="add"
+          />
+          <ActionButton
+            onClick={() => setIsModalOpen(true)}
+            icon="remove"
+          />
+        </div>
+      </div>
+      <div className="flex items-center gap-4 mt-4 justify-center">
+        <ActionButton
+          onClick={() => setIsModalOpen(true)}
+          icon="add"
+        />
+        <ActionButton
+          onClick={() => setIsModalOpen(true)}
+          icon="remove"
+        />
       </div>
 
       {isModalOpen && (
