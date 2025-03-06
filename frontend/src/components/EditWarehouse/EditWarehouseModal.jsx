@@ -1,27 +1,34 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-// import { addFieldsThunk, deleteFieldsThunk, getAllFieldsThunk } from "../../store/field";
+
+import { addFieldsThunk, deleteFieldsThunk } from "../../store/warehouse";
 
 export function EditWarehouseModal({ dir, operation, warehouseId, onClose }) {
   const dispatch = useDispatch();
-  const warehouse = useSelector((state) => state.warehouse[warehouseId]);
+  const warehouse = useSelector((state) => state.warehouse.warehouses[warehouseId]);
   const [count, setCount] = useState(1);
 
   const onSubmit = async (e) => {
     e.preventDefault();
 
+    console.log("warehouseId:", warehouseId);
+    console.log("direction:", dir);
+    console.log("operation:", operation);
+    console.log("warehouse:", warehouse);
+    console.log("warehouse_columns:", warehouse?.columns);
+    console.log("warehouse_rows:", warehouse?.rows);
+    console.log("count:", count);
+
     const formData = new FormData();
     formData.append("warehouse_id", warehouseId);
     formData.append("direction", dir);
     formData.append("operation", operation);
-    formData.append("warehouse_columns", warehouse.columns);
-    formData.append("warehouse_rows", warehouse.rows);
+    formData.append("warehouse_columns", warehouse?.columns);
+    formData.append("warehouse_rows", warehouse?.rows);
     formData.append("count", count);
 
-    if (operation === "add") await dispatch(addFieldsThunk(formData));
-    if (operation === "subtract") await dispatch(deleteFieldsThunk(formData));
-
-    // await dispatch(getAllFieldsThunk(warehouseId));
+    if (operation === "plus") await dispatch(addFieldsThunk(formData));
+    if (operation === "minus") await dispatch(deleteFieldsThunk(formData));
 
     onClose();
   };
@@ -66,10 +73,11 @@ export function EditWarehouseModal({ dir, operation, warehouseId, onClose }) {
             </div>
           </div>
           <div className="flex justify-end mt-10">
-          <button
-            type="submit"
-            className="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
-          >Submit
+            <button
+              type="submit"
+              className="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
+            >
+              Submit
             </button>
             <button
               type="button"

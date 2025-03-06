@@ -10,6 +10,8 @@ const ADD_ATTACHMENT = "warehouse/ADD_ATTACHMENT";
 const DELETE_VAULT = "warehouse/DELETE_VAULT";
 const UPDATE_FIELD_TYPE = "warehouse/UPDATE_FIELD_TYPE";
 const ADD_WAREHOUSE = "warehouse/ADD_WAREHOUSE";
+const ADD_FIELDS = "warehouse/ADD_FIELDS";
+const DELETE_FIELDS = "warehouse/DELETE_FIELDS";
 
 export const addWarehouse = (warehouse) => ({
   type: ADD_WAREHOUSE,
@@ -59,6 +61,32 @@ export const deleteVault = (vaultId, customerToDelete) => ({
 export const updateFieldType = (fields) => ({
   type: UPDATE_FIELD_TYPE,
   fields,
+});
+
+export const addFieldsAction = (
+  fields,
+  warehouseId,
+  newWarehouseRowsCount,
+  newWarehouseColsCount
+) => ({
+  type: ADD_FIELDS,
+  fields,
+  warehouseId,
+  newWarehouseRowsCount,
+  newWarehouseColsCount,
+});
+
+export const deleteFieldsAction = (
+  fields,
+  warehouseId,
+  newWarehouseRowsCount,
+  newWarehouseColsCount
+) => ({
+  type: DELETE_FIELDS,
+  fields,
+  warehouseId,
+  newWarehouseRowsCount,
+  newWarehouseColsCount,
 });
 
 export const addWarehouseThunk = (warehouseData) => async (dispatch) => {
@@ -243,6 +271,47 @@ export const getCurrentFieldThunk = (field) => async (dispatch) => {
   } catch (error) {
     console.error("Error fetching field:", error);
     return error;
+  }
+};
+
+export const addFieldsThunk = (formData) => async (dispatch) => {
+  try {
+    const res = await fetch(`/api/fields/`, {
+      method: 'POST',
+      body: formData
+    });
+    if (res.ok) {
+      const data = await res.json();
+      dispatch(addFieldsAction(data.fields, data.warehouseId, data.newWarehouseRowsCount, data.newWarehouseColumnsCount));
+      return data;
+    } else {
+      const err = await res.json();
+      console.log("Error adding new fields: ", err);
+      return err;
+    }
+  } catch (error) {
+    console.error("Error adding new fields: ", error);
+  }
+};
+
+export const deleteFieldsThunk = (formData) => async (dispatch) => {
+  try {
+    const res = await fetch(`/api/fields/`, {
+      method: 'DELETE',
+      body: formData
+    });
+    if (res.ok) {
+      const data = await res.json();
+      dispatch(deleteFieldsAction(data.fields, data.warehouseId, data.newWarehouseRowsCount, data.newWarehouseColumnsCount));
+      return data;
+    } else {
+      const err = await res.json();
+      console.log("Error removing fields: ", err.error);
+      if (err) alert("⛔️ Please remove all vaults from the row that you want to delete.");
+      return err;
+    }
+  } catch (error) {
+    console.error("Error removing fields: ", error);
   }
 };
 
@@ -548,8 +617,6 @@ const warehouseReducer = (state = initialState, action) => {
       const { field1, field2 } = action.fields;
       const warehouseId = field1.warehouse_id;
 
-      console.log("🦊 currentField", state.currentField);
-
       return {
         ...state,
         warehouses: {
@@ -565,6 +632,47 @@ const warehouseReducer = (state = initialState, action) => {
         },
         currentField: state.currentField,
       };
+    case ADD_FIELDS:
+      return {
+        ...state,
+        warehouses: {
+          ...state.warehouses,
+          [action.warehouseId]: {
+            ...state.warehouses[action.warehouseId],
+            fields: {
+              ...state.warehouses[action.warehouseId].fields,
+              ...action.fields.reduce((acc, field) => {
+                acc[field.id] = field;
+                return acc;
+              }, {}),
+            },
+            rows: action.newWarehouseRowsCount,
+            cols: action.newWarehouseColsCount,
+          },
+        },
+      };
+
+    case DELETE_FIELDS:
+      const updatedFieldsAfterDeletion = {
+        ...state.warehouses[action.warehouseId].fields,
+      };
+      action.fields.forEach((field) => {
+        delete updatedFieldsAfterDeletion[field.id];
+      });
+
+      return {
+        ...state,
+        warehouses: {
+          ...state.warehouses,
+          [action.warehouseId]: {
+            ...state.warehouses[action.warehouseId],
+            fields: updatedFieldsAfterDeletion,
+            rows: action.newWarehouseRowsCount,
+            cols: action.newWarehouseColsCount,
+          },
+        },
+      };
+
     default:
       return state;
   }
