@@ -51,7 +51,6 @@ export default function EditWarehouseFieldGrid({ warehouse }) {
                 justifyContent: "center",
                 gridRow: field.type === "couchbox-T" ? "span 2" : "auto", // Span two rows for couchbox-T
               }}
-              onClick={() => handleFieldSelect(field)}
             >
               {field.type !== "couchbox-B" && (
                 <div className="text-xs md:text-md text-center">

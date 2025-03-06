@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import FieldGrid from "../components/Warehouse/FieldGrid";
+import EditWarehouseFieldGrid from "../components/EditWarehouse/EditWarehouseFieldGrid";
 import { setCurrentWarehouse } from "../store/warehouse";
 
 export default function EditWarehousePage() {
@@ -18,7 +18,6 @@ export default function EditWarehousePage() {
       (w) => w.name.toLowerCase().split(" ").join("-") === warehouseName.toLowerCase()
     );
     if (foundWarehouse) {
-      console.log("🚨 foundWarehouse: ", foundWarehouse);
       dispatch(setCurrentWarehouse(foundWarehouse));
       setLoading(false);
     } else {
@@ -49,7 +48,7 @@ export default function EditWarehousePage() {
             </button>
           </div>
           <div className="flex-grow flex justify-center">
-            <FieldGrid warehouse={warehouse} />
+            <EditWarehouseFieldGrid warehouse={warehouse} />
           </div>
           <div className="flex flex-col items-center mx-4">
             <button
