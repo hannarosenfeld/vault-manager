@@ -314,7 +314,6 @@ export const deleteFieldsThunk = (formData) => async (dispatch) => {
     console.error("Error removing fields: ", error);
   }
 };
-
 const initialState = {
   warehouses: {},
   currentWarehouse: null,
@@ -572,8 +571,6 @@ const warehouseReducer = (state = initialState, action) => {
     case DELETE_VAULT:
       const deletedVaultId = action.payload.vaultId;
 
-      console.log("❤️‍🔥 deletedVaultId: ", deletedVaultId);
-
       // Remove the vault from the current field
       const updatedCurrentFieldAfterVaultDeletion = {
         ...state.currentField,
@@ -653,13 +650,15 @@ const warehouseReducer = (state = initialState, action) => {
       };
 
     case DELETE_FIELDS:
+      console.log("🐳 action: ", action)
+
       const updatedFieldsAfterDeletion = {
         ...state.warehouses[action.warehouseId].fields,
       };
+
       action.fields.forEach((field) => {
         delete updatedFieldsAfterDeletion[field.id];
       });
-
       return {
         ...state,
         warehouses: {

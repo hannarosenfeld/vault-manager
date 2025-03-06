@@ -191,12 +191,13 @@ def delete_field():
     form['csrf_token'].data = request.cookies['csrf_token']
 
     def check_for_vaults(fieldsList):
+        print("✨ in check for vaults function: ", fieldsList)
         for field in fieldsList:
-            vaults = field.vaults.all()  # Retrieve the actual list of vaults
-            if vaults:  # Check if vaults is not empty
+            vaults = field.vaults.all()
+            if vaults:
                 field_dict = field.to_dict()
-                return True  # Return True if a vault is found
-        return False  # Return False if no vaults are found
+                return True
+        return False
 
     try:
         if form.validate_on_submit():
@@ -206,7 +207,7 @@ def delete_field():
             warehouse_columns = form.data['warehouse_columns']
             warehouse_rows = form.data['warehouse_rows']
             count = form.data['count']
-            res = []
+            fields_list = []
             fields = Field.query.filter_by(warehouse_id=warehouse_id)
             warehouse = Warehouse.query.get(warehouse_id)
 
@@ -233,36 +234,46 @@ def delete_field():
                         field.name = new_field_name
                         db.session.commit()
 
-                return { 'fields': res, 'warehouseId': warehouse.id, 'newWarehouseRowsCount': warehouse.rows, 'newWarehouseColumnsCount': new_warehouse_columns_count }
+                return jsonify({ 'fields': fields_list, 'warehouseId': warehouse.id, 'newWarehouseRowsCount': warehouse.rows, 'newWarehouseColumnsCount': new_warehouse_columns_count }), 200
 
 
             elif direction == 'right':
+                print("❤️‍🔥 in route")
                 for i in range(1, count + 1):
                     # Find the field with the smallest first letter of its name
                     smallest_field_name_letter = max([field.name for field in fields])[0]
+                    
+                    print("❤️‍🔥 smallest field name letter: ", smallest_field_name_letter)
                     
                     all_fields_with_that_letter = Field.query.filter(
                         Field.name.like(f'{smallest_field_name_letter}%'),
                         Field.warehouse_id == warehouse_id  # Ensure warehouse matches
                     ).all()
+                    
+                    print("❤️‍🔥 all fields with that letter: ", all_fields_with_that_letter)
 
                     # Convert generator expression to a list to print values
                     vaults_exist = check_for_vaults(all_fields_with_that_letter)
+                    
+                    print("❤️‍🔥 vaults exist: ", vaults_exist)
+                    
                     if vaults_exist:
                         return jsonify({'error': 'Cannot delete fields while vaults are present in fields.'}), 400  # Return error response
-                        
-                    # Further logic can go here
+                    
                     for field in all_fields_with_that_letter:
-                        # Perform actions with each field, if needed
-                            db.session.delete(field)
+                        print("❤️‍🔥 deleting field: ", field.to_dict())
+                        db.session.delete(field)
 
                 new_warehouse_columns_count = warehouse.cols - count
-                warehouse.cols = warehouse.cols - count  # decreasing warehouse cols by count
+                print("❤️‍🔥 new warehouse columns count: ", new_warehouse_columns_count)
+                warehouse.cols = warehouse.cols - count
+                print("❤️‍🔥 warehouse cols: ", warehouse.cols)
 
                 db.session.commit()
+                
+                fields_list = [field.to_dict() for field in all_fields_with_that_letter]
 
-                # Return success response after the loop completes
-                return jsonify({'message': 'Success'}), 200
+                return jsonify({ 'fields': fields_list, 'warehouseId': warehouse.id, 'newWarehouseRowsCount': warehouse.rows, 'newWarehouseColumnsCount': new_warehouse_columns_count }), 200
 
             elif direction == 'bottom':
                 letters = sorted(set([field.name[0] for field in fields]))
@@ -288,7 +299,7 @@ def delete_field():
                 warehouse.rows = new_warehouse_row_count
                 db.session.commit()                
 
-                return { 'fields': res, 'warehouseId': warehouse.id, 'newWarehouseRowsCount': new_warehouse_row_count, 'newWarehouseColumnsCount': warehouse.cols}
+                return jsonify({ 'fields': fieldsList, 'warehouseId': warehouse.id, 'newWarehouseRowsCount': new_warehouse_row_count, 'newWarehouseColumnsCount': warehouse.cols }), 200
 
             else:
                 return jsonify(message="direction not specified")
