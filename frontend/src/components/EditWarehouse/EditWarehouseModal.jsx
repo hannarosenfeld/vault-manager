@@ -32,7 +32,7 @@ export function EditWarehouseModal({ dir, operation, warehouseId, onClose }) {
         <form onSubmit={onSubmit}>
           <div className="mb-4 text-center">
             <h2 className="text-xl font-semibold mb-2">
-              {operation === "add" ? "Add" : "Subtract"} Rows
+              {operation === "plus" ? "Add" : "Subtract"} Rows
             </h2>
             <p className="text-gray-600">
               {operation === "plus" ? "Add" : "Subtract"}{" "}
