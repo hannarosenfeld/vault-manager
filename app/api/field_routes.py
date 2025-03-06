@@ -114,7 +114,7 @@ def add_field():
             warehouse_id = form.data['warehouse_id']
             direction = form.data['direction']
             opperation = form.data['opperation']
-            warehouse_columns = form.data['warehouse_columns']
+            warehouse_cols = form.data['warehouse_cols']
             warehouse_rows = form.data['warehouse_rows']
             count = form.data['count']
             res = []
@@ -122,8 +122,8 @@ def add_field():
             warehouse = Warehouse.query.get(warehouse_id)
 
             if direction == 'left':
-                new_warehouse_columns_count = warehouse.cols + count
-                warehouse.cols = new_warehouse_columns_count # increase columns by count
+                new_warehouse_cols_count = warehouse.cols + count
+                warehouse.cols = new_warehouse_cols_count # increase cols by count
 
                 for field in fields:
                     new_name = update_char(field.name, count)
@@ -141,11 +141,11 @@ def add_field():
 
                 db.session.commit()
 
-                return { 'fields': res, 'warehouseId': warehouse_id, 'newWarehouseRowsCount': warehouse.rows, 'newWarehouseColumnsCount': new_warehouse_columns_count }
+                return { 'fields': res, 'warehouseId': warehouse_id, 'newWarehouseRowsCount': warehouse.rows, 'newWarehouseColsCount': new_warehouse_cols_count }
 
             if direction == 'right':
-                new_warehouse_columns_count = warehouse.cols + count 
-                warehouse.cols = new_warehouse_columns_count # increase columns by count
+                new_warehouse_cols_count = warehouse.cols + count 
+                warehouse.cols = new_warehouse_cols_count # increase cols by count
 
                 largest_field_name_letter = max([field.name for field in fields])
                 largest_field_name_letter_as_number = ord(largest_field_name_letter[0])
@@ -160,7 +160,7 @@ def add_field():
                         db.session.commit()
                         res.append(new_field.to_dict())
 
-                return { 'fields': res, 'warehouseId': warehouse_id, 'newWarehouseRowsCount': warehouse.rows, 'newWarehouseColumnsCount': new_warehouse_columns_count }
+                return { 'fields': res, 'warehouseId': warehouse_id, 'newWarehouseRowsCount': warehouse.rows, 'newWarehouseColsCount': new_warehouse_cols_count }
             
             elif direction == 'bottom':
                 letters = sorted(set([field.name[0] for field in fields]))
@@ -176,7 +176,7 @@ def add_field():
                 warehouse.rows = new_warehouse_row_count
                 db.session.commit()
 
-                return { 'fields': res, 'warehouseId': warehouse_id, 'newWarehouseRowsCount': new_warehouse_row_count, 'newWarehouseColumnsCount': warehouse.cols }
+                return { 'fields': res, 'warehouseId': warehouse_id, 'newWarehouseRowsCount': new_warehouse_row_count, 'newWarehouseColsCount': warehouse.cols }
             
             else:
                 return jsonify(message="direction not specified")
@@ -204,7 +204,7 @@ def delete_field():
             warehouse_id = form.data['warehouse_id']
             direction = form.data['direction']
             opperation = form.data['opperation']
-            warehouse_columns = form.data['warehouse_columns']
+            warehouse_cols = form.data['warehouse_cols']
             warehouse_rows = form.data['warehouse_rows']
             count = form.data['count']
             fields_list = []
@@ -212,8 +212,8 @@ def delete_field():
             warehouse = Warehouse.query.get(warehouse_id)
 
             if direction == 'left':
-                new_warehouse_columns_count = warehouse.cols - count
-                warehouse.cols = new_warehouse_columns_count # decreasing warehouse cols by count
+                new_warehouse_cols_count = warehouse.cols - count
+                warehouse.cols = new_warehouse_cols_count # decreasing warehouse cols by count
                 # for count, for each iteration, find smallest letter, then delete all fields with that letter
                 for i in range(1, count+1):
                     smallest_field_name_letter = min([field.name for field in fields])[0]
@@ -234,7 +234,7 @@ def delete_field():
                         field.name = new_field_name
                         db.session.commit()
 
-                return jsonify({ 'fields': fields_list, 'warehouseId': warehouse.id, 'newWarehouseRowsCount': warehouse.rows, 'newWarehouseColumnsCount': new_warehouse_columns_count }), 200
+                return jsonify({ 'fields': fields_list, 'warehouseId': warehouse.id, 'newWarehouseRowsCount': warehouse.rows, 'newWarehouseColsCount': new_warehouse_cols_count }), 200
 
 
             elif direction == 'right':
@@ -264,8 +264,8 @@ def delete_field():
                         print("❤️‍🔥 deleting field: ", field.to_dict())
                         db.session.delete(field)
 
-                new_warehouse_columns_count = warehouse.cols - count
-                print("❤️‍🔥 new warehouse columns count: ", new_warehouse_columns_count)
+                new_warehouse_cols_count = warehouse.cols - count
+                print("❤️‍🔥 new warehouse cols count: ", new_warehouse_cols_count)
                 warehouse.cols = warehouse.cols - count
                 print("❤️‍🔥 warehouse cols: ", warehouse.cols)
 
@@ -273,7 +273,7 @@ def delete_field():
                 
                 fields_list = [field.to_dict() for field in all_fields_with_that_letter]
 
-                return jsonify({ 'fields': fields_list, 'warehouseId': warehouse.id, 'newWarehouseRowsCount': warehouse.rows, 'newWarehouseColumnsCount': new_warehouse_columns_count }), 200
+                return jsonify({ 'fields': fields_list, 'warehouseId': warehouse.id, 'newWarehouseRowsCount': warehouse.rows, 'newWarehouseColsCount': new_warehouse_cols_count }), 200
 
             elif direction == 'bottom':
                 letters = sorted(set([field.name[0] for field in fields]))
@@ -299,7 +299,7 @@ def delete_field():
                 warehouse.rows = new_warehouse_row_count
                 db.session.commit()                
 
-                return jsonify({ 'fields': fieldsList, 'warehouseId': warehouse.id, 'newWarehouseRowsCount': new_warehouse_row_count, 'newWarehouseColumnsCount': warehouse.cols }), 200
+                return jsonify({ 'fields': fieldsList, 'warehouseId': warehouse.id, 'newWarehouseRowsCount': new_warehouse_row_count, 'newWarehouseColsCount': warehouse.cols }), 200
 
             else:
                 return jsonify(message="direction not specified")

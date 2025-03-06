@@ -15,7 +15,7 @@ export function EditWarehouseModal({ dir, operation, warehouseId, onClose }) {
     console.log("direction:", dir);
     console.log("operation:", operation);
     console.log("warehouse:", warehouse);
-    console.log("warehouse_columns:", warehouse?.columns);
+    console.log("warehouse_cols:", warehouse?.cols);
     console.log("warehouse_rows:", warehouse?.rows);
     console.log("count:", count);
 
@@ -23,7 +23,7 @@ export function EditWarehouseModal({ dir, operation, warehouseId, onClose }) {
     formData.append("warehouse_id", warehouseId);
     formData.append("direction", dir);
     formData.append("operation", operation);
-    formData.append("warehouse_columns", warehouse?.cols);
+    formData.append("warehouse_cols", warehouse?.cols);
     formData.append("warehouse_rows", warehouse?.rows);
     formData.append("count", count);
 

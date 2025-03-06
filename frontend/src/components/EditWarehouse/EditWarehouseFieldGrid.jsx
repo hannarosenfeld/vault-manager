@@ -18,7 +18,7 @@ export default function EditWarehouseFieldGrid({ warehouse }) {
         <div
           className="grid w-full h-full gap-1"
           style={{
-            gridTemplateColumns: `repeat(${warehouse.cols}, 1fr)`,
+            gridTemplateCols: `repeat(${warehouse.cols}, 1fr)`,
             gridTemplateRows: `repeat(${warehouse.rows}, 1fr)`,
             gridAutoFlow: "column",
           }}
