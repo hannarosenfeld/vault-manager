@@ -22,7 +22,7 @@ class Warehouse(db.Model):
             'id': self.id,
             'name': self.name,
             'rows': self.rows,
-            'columns': self.cols,
+            'cols': self.cols,
             'fields': [field.to_dict() for field in self.warehouse_fields],
             'companyId': self.company_id,
             'companyName': self.company.name

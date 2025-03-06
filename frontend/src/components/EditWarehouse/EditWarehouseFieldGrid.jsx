@@ -18,7 +18,7 @@ export default function EditWarehouseFieldGrid({ warehouse }) {
         <div
           className="grid w-full h-full gap-1"
           style={{
-            gridTemplateColumns: `repeat(${warehouse.columns}, 1fr)`,
+            gridTemplateColumns: `repeat(${warehouse.cols}, 1fr)`,
             gridTemplateRows: `repeat(${warehouse.rows}, 1fr)`,
             gridAutoFlow: "column",
           }}
@@ -49,7 +49,7 @@ export default function EditWarehouseFieldGrid({ warehouse }) {
                 zIndex: field.type === "couchbox-B" ? "100" : "auto",
                 alignItems: "center",
                 justifyContent: "center",
-                gridRow: field.type === "couchbox-T" ? "span 2" : "auto", // Span two rows for couchbox-T
+                gridRow: field.type === "couchbox-T" ? "span 2" : "auto",
               }}
             >
               {field.type !== "couchbox-B" && (

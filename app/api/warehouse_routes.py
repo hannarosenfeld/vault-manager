@@ -87,7 +87,7 @@ def add_warehouse():
     data = request.get_json()
     name = data.get('name')
     rows = data.get('rows')
-    cols = data.get('columns')
+    cols = data.get('cols')
 
     if not name or rows is None or cols is None:
         return jsonify({'error': 'Name, number of rows, and number of columns are required'}), 400

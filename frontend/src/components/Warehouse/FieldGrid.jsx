@@ -32,7 +32,7 @@ export default function FieldGrid({ warehouse, handleFieldClick }) {
         <div
           className="grid w-full h-full gap-1"
           style={{
-            gridTemplateColumns: `repeat(${warehouse.columns}, 1fr)`,
+            gridTemplateColumns: `repeat(${warehouse.cols}, 1fr)`,
             gridTemplateRows: `repeat(${warehouse.rows}, 1fr)`,
             gridAutoFlow: "column",
           }}

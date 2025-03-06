@@ -23,7 +23,7 @@ export function EditWarehouseModal({ dir, operation, warehouseId, onClose }) {
     formData.append("warehouse_id", warehouseId);
     formData.append("direction", dir);
     formData.append("operation", operation);
-    formData.append("warehouse_columns", warehouse?.columns);
+    formData.append("warehouse_columns", warehouse?.cols);
     formData.append("warehouse_rows", warehouse?.rows);
     formData.append("count", count);
 

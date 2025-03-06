@@ -282,7 +282,7 @@ export const addFieldsThunk = (formData) => async (dispatch) => {
     });
     if (res.ok) {
       const data = await res.json();
-      dispatch(addFieldsAction(data.fields, data.warehouseId, data.newWarehouseRowsCount, data.newWarehouseColumnsCount));
+      dispatch(addFieldsAction(data.fields, data.warehouseId, data.newWarehouseRowsCount, data.newWarehousecolsCount));
       return data;
     } else {
       const err = await res.json();
@@ -302,7 +302,7 @@ export const deleteFieldsThunk = (formData) => async (dispatch) => {
     });
     if (res.ok) {
       const data = await res.json();
-      dispatch(deleteFieldsAction(data.fields, data.warehouseId, data.newWarehouseRowsCount, data.newWarehouseColumnsCount));
+      dispatch(deleteFieldsAction(data.fields, data.warehouseId, data.newWarehouseRowsCount, data.newWarehousecolsCount));
       return data;
     } else {
       const err = await res.json();
@@ -650,8 +650,8 @@ const warehouseReducer = (state = initialState, action) => {
       };
 
     case DELETE_FIELDS:
-      console.log("🐳 action: ", action)
-
+      console.log("🐠", action)
+      
       const updatedFieldsAfterDeletion = {
         ...state.warehouses[action.warehouseId].fields,
       };
@@ -670,6 +670,15 @@ const warehouseReducer = (state = initialState, action) => {
             cols: action.newWarehouseColsCount,
           },
         },
+        currentWarehouse : {
+          ...state.currentWarehouse,
+          [action.warehouseId]: {
+            ...state.currentWarehouse[action.warehouseId],
+            fields: updatedFieldsAfterDeletion,
+            rows: action.newWarehouseRowsCount,
+            cols: action.newWarehouseColsCount,
+          }
+        }
       };
 
     default:

@@ -8,7 +8,7 @@ export default function AddWarehouse() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [rows, setRows] = useState("");
-  const [columns, setColumns] = useState("");
+  const [cols, setCols] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -17,7 +17,7 @@ export default function AddWarehouse() {
     const warehouseData = {
       name,
       rows: parseInt(rows, 10),
-      columns: parseInt(columns, 10),
+      cols: parseInt(cols, 10),
     };
     const result = await dispatch(addWarehouseThunk(warehouseData));
     setIsLoading(false);
@@ -57,14 +57,14 @@ export default function AddWarehouse() {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="columns">
-            Number of Columns
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="cols">
+            Number of Cols
           </label>
           <input
             type="number"
-            id="columns"
-            value={columns}
-            onChange={(e) => setColumns(e.target.value)}
+            id="cols"
+            value={cols}
+            onChange={(e) => setCols(e.target.value)}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             required
           />
