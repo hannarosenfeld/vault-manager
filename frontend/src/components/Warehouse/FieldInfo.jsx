@@ -44,6 +44,10 @@ export default function FieldInfo({ field, isStage, vaultId, onMove }) {
     );
   }, [sortedVaults]);
 
+  const topmostVaultPosition = useMemo(() => {
+    return positionOrder.find((pos) => vaultMap[pos]);
+  }, [positionOrder, vaultMap]);
+
   const lastEmptyPosition = useMemo(() => {
     return [...positionOrder]
       .reverse()
@@ -51,11 +55,13 @@ export default function FieldInfo({ field, isStage, vaultId, onMove }) {
   }, [positionOrder, vaultMap]);
 
   const handleOpenModal = (position) => {
-    setSelectedPosition(position);
-    if (!isStage) {
-      setIsModalOpen(true);
-    } else {
-      setIsConfirmModalOpen(true);
+    if (position === lastEmptyPosition) {
+      setSelectedPosition(position);
+      if (!isStage) {
+        setIsModalOpen(true);
+      } else {
+        setIsConfirmModalOpen(true);
+      }
     }
   };
 
@@ -101,11 +107,13 @@ export default function FieldInfo({ field, isStage, vaultId, onMove }) {
             </div>
             <div className="flex-grow flex items-center">
               {vaultMap[pos] ? (
-                <VaultInfo vault={vaultMap[pos]} isStage={isStage} />
+                <VaultInfo vault={vaultMap[pos]} isStage={isStage} isTopmost={pos === topmostVaultPosition} />
               ) : (
-                lastEmptyPosition === pos && (
-                  <AddVaultButton type={fieldType} onClick={() => handleOpenModal(pos)} />
-                )
+                <AddVaultButton
+                  type={fieldType}
+                  onClick={() => handleOpenModal(pos)}
+                  disabled={pos !== lastEmptyPosition}
+                />
               )}
             </div>
           </div>

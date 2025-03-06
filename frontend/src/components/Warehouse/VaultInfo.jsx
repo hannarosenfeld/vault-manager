@@ -2,7 +2,7 @@ import { useState } from 'react';
 import ViewAndEditVaultModal from './ViewAndEditVaultModal';
 import ConfirmStagingModal from './ConfirmStagingModal';
 
-export default function VaultInfo({ vault, isStage }) {
+export default function VaultInfo({ vault, isStage, isTopmost }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isConfirmStagingModalOpen, setIsConfirmStagingModalOpen] = useState(false);
 
@@ -42,7 +42,11 @@ export default function VaultInfo({ vault, isStage }) {
               />
             </svg>
           </div>
-          <span className="material-symbols-outlined text-amber-500 cursor-pointer" style={{ fontSize: '18px'}} onClick={toggleConfirmStagingModal}>
+          <span
+            className={`material-symbols-outlined cursor-pointer ${isTopmost ? 'text-amber-500' : 'text-gray-400 cursor-not-allowed'}`}
+            style={{ fontSize: '18px'}}
+            onClick={isTopmost ? toggleConfirmStagingModal : null}
+          >
             forklift
           </span>
         </div>
