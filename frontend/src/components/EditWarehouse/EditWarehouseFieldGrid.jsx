@@ -55,7 +55,7 @@ export default function EditWarehouseFieldGrid({ warehouse }) {
               }}
             >
               {field.type !== "couchbox-B" && (
-                <div className="text-xs md:text-md text-center">
+                <div className="md:text-md text-center" style={{fontSize: "0.5rem"}}>
                   {field.name}
                 </div>
               )}

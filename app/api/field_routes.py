@@ -200,7 +200,6 @@ def add_field():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-
 @field_routes.route('/', methods=['DELETE'])
 def delete_field():
     form = PostFieldForm()
@@ -273,7 +272,7 @@ def delete_field():
                     
                     print("❤️‍🔥 vaults exist: ", vaults_exist)
                     
-                    if vaults_exist:
+                    if (vaults_exist):
                         return jsonify({'error': 'Cannot delete fields while vaults are present in fields.'}), 400  # Return error response
                     
                     for field in all_fields_with_that_letter:
@@ -282,7 +281,7 @@ def delete_field():
 
                 new_warehouse_cols_count = warehouse.cols - count
                 print("❤️‍🔥 new warehouse cols count: ", new_warehouse_cols_count)
-                warehouse.cols = warehouse.cols - count
+                warehouse.cols = new_warehouse_cols_count
                 print("❤️‍🔥 warehouse cols: ", warehouse.cols)
 
                 db.session.commit()
@@ -324,8 +323,8 @@ def delete_field():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-        
-
+    
+    
 @field_routes.route('/single/<int:id>', methods=['PUT'])
 def toggle_field_full(id):
 
