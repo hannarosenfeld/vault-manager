@@ -27,14 +27,15 @@ export default function FieldGrid({ warehouse, handleFieldClick }) {
   };
 
   return (
-    <div className="flex-grow">
+    <div className="flex-grow max-w-full overflow-x-hidden">
       {sortedFields.length ? (
         <div
           className="grid w-full h-full gap-1"
           style={{
-            gridTemplateCols: `repeat(${warehouse.cols}, 1fr)`,
+            gridTemplateColumns: `repeat(${warehouse.cols}, minmax(0, 1fr))`,
             gridTemplateRows: `repeat(${warehouse.rows}, 1fr)`,
             gridAutoFlow: "column",
+            margin: "0 auto",
           }}
         >
           {sortedFields.map((field) => (

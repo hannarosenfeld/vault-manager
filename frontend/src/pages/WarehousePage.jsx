@@ -24,7 +24,6 @@ function WarehousePage() {
     dispatch(setCurrentField(null));
   }, []);
 
-
   useEffect(() => {    
     const foundWarehouse = Object.values(warehouses).find(
       (w) => w.name.toLowerCase().split(" ").join("-") === warehouseName
@@ -49,7 +48,7 @@ function WarehousePage() {
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col max-w-[100vw] p-4">
       <h1 className="text-xl font-bold mb-2 text-center">{warehouse.name}</h1>
       <div className="h-[25vh]">
         {selectedField ? (
@@ -58,11 +57,12 @@ function WarehousePage() {
           "Select a field to view its info"
         )}
       </div>
-      <div className="flex-grow">
+      <div className="flex-grow max-w-full overflow-x-hidden">
         {fieldsArr.length ? (
           <FieldGrid
             warehouse={warehouse}
             handleFieldClick={handleFieldClick}
+            style={{ maxWidth: "65vw", margin: "0 auto" }}
           />
         ) : (
           "This warehouse does not have any fields"
