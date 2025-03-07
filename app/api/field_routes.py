@@ -170,7 +170,7 @@ def add_field():
                         db.session.commit()
                         res.append(new_field.to_dict())
 
-                return { 'fields': res, 'warehouseId': warehouse_id, 'newWarehouseRowsCount': warehouse.rows, 'newWarehouseColsCount': new_warehouse_cols_count }
+                return jsonify({ 'fields': res, 'warehouseId': warehouse_id, 'newWarehouseRowsCount': warehouse.rows, 'newWarehouseColsCount': new_warehouse_cols_count })
             
             elif direction == 'bottom':
                 letters = sorted(set([field.name[0] for field in fields]))
@@ -189,10 +189,10 @@ def add_field():
                 print("🚀 fields: ", res)
                 print("🚀 warehouse id: ", warehouse_id)
                 print("🚀 new warehouse rows count: ", warehouse.rows)
-                print("🚀 new warehouse cols count: ", new_warehouse_cols_count)
+                print("🚀 new warehouse cols count: ", warehouse.cols)
                 print("🚀 returning response")                
 
-                return { 'fields': res, 'warehouseId': warehouse_id, 'newWarehouseRowsCount': new_warehouse_row_count, 'newWarehouseColsCount': warehouse.cols }
+                return jsonify({ 'fields': res, 'warehouseId': warehouse_id, 'newWarehouseRowsCount': new_warehouse_row_count, 'newWarehouseColsCount': warehouse.cols })
             
             else:
                 return jsonify(message="direction not specified")

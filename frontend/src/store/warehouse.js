@@ -283,7 +283,7 @@ export const addFieldsThunk = (formData) => async (dispatch) => {
     });
     if (res.ok) {
       const data = await res.json();
-      dispatch(addFieldsAction(data.fields, data.warehouseId, data.newWarehouseRowsCount, data.newWarehousecolsCount));
+      dispatch(addFieldsAction(data.fields, data.warehouseId, data.newWarehouseRowsCount, data.newWarehouseColsCount));
       return data;
     } else {
       const err = await res.json();
