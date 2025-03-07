@@ -277,12 +277,19 @@ export const getCurrentFieldThunk = (field) => async (dispatch) => {
 export const addFieldsThunk = (formData) => async (dispatch) => {
   try {
     const res = await fetch(`/api/fields/`, {
-      method: 'POST',
-      body: formData
+      method: "POST",
+      body: formData,
     });
     if (res.ok) {
       const data = await res.json();
-      dispatch(addFieldsAction(data.fields, data.warehouseId, data.newWarehouseRowsCount, data.newWarehousecolsCount));
+      dispatch(
+        addFieldsAction(
+          data.fields,
+          data.warehouseId,
+          data.newWarehouseRowsCount,
+          data.newWarehousecolsCount
+        )
+      );
       return data;
     } else {
       const err = await res.json();
@@ -297,17 +304,27 @@ export const addFieldsThunk = (formData) => async (dispatch) => {
 export const deleteFieldsThunk = (formData) => async (dispatch) => {
   try {
     const res = await fetch(`/api/fields/`, {
-      method: 'DELETE',
-      body: formData
+      method: "DELETE",
+      body: formData,
     });
     if (res.ok) {
       const data = await res.json();
-      dispatch(deleteFieldsAction(data.fields, data.warehouseId, data.newWarehouseRowsCount, data.newWarehousecolsCount));
+      dispatch(
+        deleteFieldsAction(
+          data.fields,
+          data.warehouseId,
+          data.newWarehouseRowsCount,
+          data.newWarehousecolsCount
+        )
+      );
       return data;
     } else {
       const err = await res.json();
       console.log("Error removing fields: ", err.error);
-      if (err) alert("⛔️ Please remove all vaults from the row that you want to delete.");
+      if (err)
+        alert(
+          "⛔️ Please remove all vaults from the row that you want to delete."
+        );
       return err;
     }
   } catch (error) {
@@ -647,11 +664,20 @@ const warehouseReducer = (state = initialState, action) => {
             cols: action.newWarehouseColsCount,
           },
         },
+        currentWarehouse: {
+          ...state.currentWarehouse,
+          [action.warehouseId]: {
+            ...state.currentWarehouse[action.warehouseId],
+            fields: updatedFieldsAfterDeletion,
+            rows: action.newWarehouseRowsCount,
+            cols: action.newWarehouseColsCount,
+          },
+        },
       };
 
     case DELETE_FIELDS:
-      console.log("🐠", action)
-      
+      console.log("🐠", action);
+
       const updatedFieldsAfterDeletion = {
         ...state.warehouses[action.warehouseId].fields,
       };
@@ -670,15 +696,15 @@ const warehouseReducer = (state = initialState, action) => {
             cols: action.newWarehouseColsCount,
           },
         },
-        currentWarehouse : {
+        currentWarehouse: {
           ...state.currentWarehouse,
           [action.warehouseId]: {
             ...state.currentWarehouse[action.warehouseId],
             fields: updatedFieldsAfterDeletion,
             rows: action.newWarehouseRowsCount,
             cols: action.newWarehouseColsCount,
-          }
-        }
+          },
+        },
       };
 
     default:
