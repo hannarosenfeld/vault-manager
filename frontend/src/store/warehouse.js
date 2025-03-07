@@ -294,7 +294,6 @@ export const addFieldsThunk = (formData) => async (dispatch) => {
     console.error("Error adding new fields: ", error);
   }
 };
-
 export const deleteFieldsThunk = (formData) => async (dispatch) => {
   try {
     const res = await fetch(`/api/fields/`, {
@@ -303,18 +302,23 @@ export const deleteFieldsThunk = (formData) => async (dispatch) => {
     });
     if (res.ok) {
       const data = await res.json();
-      dispatch(deleteFieldsAction(data.fields, data.warehouseId, data.newWarehouseRowsCount, data.newWarehousecolsCount));
+      console.log("Fields to delete:", data.fields);
+      console.log("Warehouse ID:", data.warehouseId);
+      console.log("New Warehouse Rows Count:", data.newWarehouseRowsCount);
+      console.log("New Warehouse Cols Count:", data.newWarehouseColsCount);
+      dispatch(deleteFieldsAction(data.fields, data.warehouseId, data.newWarehouseRowsCount, data.newWarehouseColsCount));
       return data;
     } else {
       const err = await res.json();
-      console.log("Error removing fields: ", err.error);
+      console.log("Error removing fields:", err.error);
       if (err) alert("⛔️ Please remove all vaults from the row that you want to delete.");
       return err;
     }
   } catch (error) {
-    console.error("Error removing fields: ", error);
+    console.error("Error removing fields:", error);
   }
 };
+
 const initialState = {
   warehouses: {},
   currentWarehouse: null,
@@ -341,6 +345,7 @@ const warehouseReducer = (state = initialState, action) => {
           },
         },
       };
+
     case GET_ALL_WAREHOUSES:
       const sortedWarehouses = action.warehouses.sort((a, b) => a.id - b.id);
       const newWarehouses = sortedWarehouses.reduce((acc, warehouse) => {
@@ -361,16 +366,19 @@ const warehouseReducer = (state = initialState, action) => {
         ...state,
         warehouses: newWarehouses,
       };
+
     case SET_CURRENT_WAREHOUSE:
       return {
         ...state,
         currentWarehouse: action.warehouse,
       };
+
     case SET_CURRENT_FIELD:
       return {
         ...state,
         currentField: action.field,
       };
+
     case ADD_VAULT:
       const { fieldId: addFieldId, vault } = action.payload;
       const { id: vaultId } = vault;
@@ -622,7 +630,6 @@ const warehouseReducer = (state = initialState, action) => {
           [warehouseId]: {
             ...state.warehouses[warehouseId],
             fields: {
-              ...state.warehouses[warehouseId].fields,
               [field1.id]: field1,
               [field2.id]: field2,
             },
@@ -632,7 +639,7 @@ const warehouseReducer = (state = initialState, action) => {
       };
 
     case ADD_FIELDS:
-      console.log("🐠 in ADD action", action)
+      console.log("🐠 in ADD action", action);
       return {
         ...state,
         warehouses: {
@@ -650,11 +657,23 @@ const warehouseReducer = (state = initialState, action) => {
             cols: action.newWarehouseColsCount,
           },
         },
+        currentWarehouse: {
+          ...state.currentWarehouse,
+          fields: {
+            ...state.currentWarehouse.fields,
+            ...action.fields.reduce((acc, field) => {
+              acc[field.id] = field;
+              return acc;
+            }, {}),
+          },
+          rows: action.newWarehouseRowsCount,
+          cols: action.newWarehouseColsCount,
+        },
       };
 
     case DELETE_FIELDS:
-      console.log("🐠 in DELETE action", action)
-      
+      console.log("🐠 in DELETE action", action);
+
       const updatedFieldsAfterDeletion = {
         ...state.warehouses[action.warehouseId].fields,
       };
@@ -662,6 +681,7 @@ const warehouseReducer = (state = initialState, action) => {
       action.fields.forEach((field) => {
         delete updatedFieldsAfterDeletion[field.id];
       });
+
       return {
         ...state,
         warehouses: {
@@ -673,15 +693,12 @@ const warehouseReducer = (state = initialState, action) => {
             cols: action.newWarehouseColsCount,
           },
         },
-        currentWarehouse : {
+        currentWarehouse: {
           ...state.currentWarehouse,
-          [action.warehouseId]: {
-            ...state.currentWarehouse[action.warehouseId],
-            fields: updatedFieldsAfterDeletion,
-            rows: action.newWarehouseRowsCount,
-            cols: action.newWarehouseColsCount,
-          }
-        }
+          fields: updatedFieldsAfterDeletion,
+          rows: action.newWarehouseRowsCount,
+          cols: action.newWarehouseColsCount,
+        },
       };
 
     default:
