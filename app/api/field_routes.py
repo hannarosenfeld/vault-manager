@@ -98,8 +98,10 @@ def update_field_type(field_id):
 
     return jsonify({"field1": field.to_dict(), "field2": bottom_field.to_dict()})
 
+
 @field_routes.route('/', methods=['POST'])
 def add_field():
+    print("🚀 in add field route")
     form = PostFieldForm()
     form['csrf_token'].data = request.cookies['csrf_token']
 
@@ -122,8 +124,9 @@ def add_field():
             warehouse = Warehouse.query.get(warehouse_id)
 
             if direction == 'left':
+                print("🚀 in left direction")
                 new_warehouse_cols_count = warehouse.cols + count
-                warehouse.cols = new_warehouse_cols_count # increase cols by count
+                warehouse.cols = new_warehouse_cols_count
 
                 for field in fields:
                     new_name = update_char(field.name, count)
@@ -140,12 +143,19 @@ def add_field():
                         res.append(new_field.to_dict())
 
                 db.session.commit()
+                
+                print("🚀 fields: ", res)
+                print("🚀 warehouse id: ", warehouse_id)
+                print("🚀 new warehouse rows count: ", warehouse.rows)
+                print("🚀 new warehouse cols count: ", new_warehouse_cols_count)
+                print("🚀 returning response")
 
-                return { 'fields': res, 'warehouseId': warehouse_id, 'newWarehouseRowsCount': warehouse.rows, 'newWarehouseColsCount': new_warehouse_cols_count }
+                return jsonify({ 'fields': res, 'warehouseId': warehouse_id, 'newWarehouseRowsCount': warehouse.rows, 'newWarehouseColsCount': new_warehouse_cols_count })
 
             if direction == 'right':
+                print("🚀 in right direction")
                 new_warehouse_cols_count = warehouse.cols + count 
-                warehouse.cols = new_warehouse_cols_count # increase cols by count
+                warehouse.cols = new_warehouse_cols_count 
 
                 largest_field_name_letter = max([field.name for field in fields])
                 largest_field_name_letter_as_number = ord(largest_field_name_letter[0])
@@ -175,6 +185,12 @@ def add_field():
                 new_warehouse_row_count = warehouse.rows + count
                 warehouse.rows = new_warehouse_row_count
                 db.session.commit()
+                
+                print("🚀 fields: ", res)
+                print("🚀 warehouse id: ", warehouse_id)
+                print("🚀 new warehouse rows count: ", warehouse.rows)
+                print("🚀 new warehouse cols count: ", new_warehouse_cols_count)
+                print("🚀 returning response")                
 
                 return { 'fields': res, 'warehouseId': warehouse_id, 'newWarehouseRowsCount': new_warehouse_row_count, 'newWarehouseColsCount': warehouse.cols }
             

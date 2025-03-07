@@ -37,7 +37,7 @@ function App() {
       ) : (
         <div className="flex flex-col w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-[800px] mx-auto">
           {sessionUser && <NavBar />}
-          <div className="flex-grow px-4">
+          <div className="flex-grow">
             <Routes>
               <Route path="/login" element={sessionUser ? <Navigate to="/" /> : <LoginPage />} />
               <Route path="/" element={sessionUser ? <HomePage warehouses={warehouses} /> : <Navigate to="/login" />} />

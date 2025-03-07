@@ -45,7 +45,7 @@ export default function EditWarehousePage() {
       <h2 className="mb-1 text-xl font-semibold">{warehouse.name}</h2>
 
       <div className="flex w-full mt-4 justify-center">
-        <div className="flex flex-col items-center mx-4 justify-center">
+        <div className="flex flex-col items-center mx-1 justify-center">
           <ActionButton onClick={() => openModal("left", "plus")} icon="add" />
           <ActionButton
             onClick={() => openModal("left", "minus")}
@@ -55,7 +55,7 @@ export default function EditWarehousePage() {
         <div className="flex-grow flex justify-center">
           <EditWarehouseFieldGrid warehouse={warehouse} />
         </div>
-        <div className="flex flex-col items-center mx-4 justify-center">
+        <div className="flex flex-col items-center mx-1 justify-center">
           <ActionButton onClick={() => openModal("right", "plus")} icon="add" />
           <ActionButton
             onClick={() => openModal("right", "minus")}

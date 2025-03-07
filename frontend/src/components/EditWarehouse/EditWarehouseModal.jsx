@@ -11,6 +11,7 @@ export function EditWarehouseModal({ dir, operation, warehouseId, onClose }) {
   const onSubmit = async (e) => {
     e.preventDefault();
 
+    console.log("🏁 Submitting form...");
     console.log("warehouseId:", warehouseId);
     console.log("direction:", dir);
     console.log("operation:", operation);
@@ -27,8 +28,8 @@ export function EditWarehouseModal({ dir, operation, warehouseId, onClose }) {
     formData.append("warehouse_rows", warehouse?.rows);
     formData.append("count", count);
 
-    if (operation === "plus") await dispatch(addFieldsThunk(formData));
-    if (operation === "minus") await dispatch(deleteFieldsThunk(formData));
+    if (operation === "plus") dispatch(addFieldsThunk(formData));
+    if (operation === "minus") dispatch(deleteFieldsThunk(formData));
 
     onClose();
   };
