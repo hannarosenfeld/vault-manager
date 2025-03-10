@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import DeleteModal from "../components/DeleteModal";
 
+
 export default function HomePage({ warehouses }) {
+  const navigate = useNavigate();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedWarehouse, setSelectedWarehouse] = useState(null);
 
@@ -17,11 +19,9 @@ export default function HomePage({ warehouses }) {
   };
 
   const handleAddWarehouse = () => {
-    // Add your logic to handle adding a warehouse here
-    console.log("Add Warehouse button clicked");
+    navigate("/add-warehouse");
   };
 
-  console.log("💖")
   return (
     <div className="w-full h-full p-4">
       <div className="mt-5">
