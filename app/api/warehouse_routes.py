@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
-from app.models import Warehouse, Field, Vault, db
+from app.models import Warehouse, Field, Order, Vault, db
 
 warehouse_routes = Blueprint('warehouse', __name__)
 
@@ -15,9 +15,9 @@ def get_current_field(warehouse_id, field_id):
 
 
 @warehouse_routes.route('/<int:warehouse_id>', methods=['DELETE'])
-def delete_warehouse(warehouse_id):
+def delete_warehouse(warehouse_id):    
     warehouse = Warehouse.query.get(warehouse_id)
-
+    
     if not warehouse:
         return jsonify({'error': 'Warehouse not found'}), 404
 
@@ -26,15 +26,18 @@ def delete_warehouse(warehouse_id):
             field_to_delete = Field.query.get(field.id)
             for vault in field_to_delete.vaults:
                 vault_to_delete = Vault.query.get(vault.id)
+                if vault_to_delete.order_id:
+                    order_to_delete = Order.query.get(vault_to_delete.order_id)
+                    if order_to_delete:
+                        db.session.delete(order_to_delete)
                 db.session.delete(vault_to_delete)
             db.session.delete(field_to_delete)
-
     else:
         print("No fields found for this warehouse.")
 
-    
     db.session.delete(warehouse)
     db.session.commit()
+    
     return jsonify({'message': 'Warehouse deleted successfully'}), 200
 
 

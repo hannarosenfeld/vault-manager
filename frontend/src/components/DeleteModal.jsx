@@ -1,7 +1,20 @@
+import { useDispatch } from "react-redux";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
+import { deleteWarehouseThunk } from "../store/warehouse";
 
 export default function DeleteModal({ onClose, warehouse }) {
+  const dispatch = useDispatch();
+
+  const handleDelete = async () => {
+    const result = await dispatch(deleteWarehouseThunk(warehouse.id));
+    if (result.success) {
+      onClose();
+    } else {
+      console.error("Failed to delete warehouse:", result.error);
+    }
+  };
+
   return (
     <Dialog open={true} onClose={onClose} className="relative z-10">
       <DialogBackdrop
@@ -36,7 +49,7 @@ export default function DeleteModal({ onClose, warehouse }) {
             <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
               <button
                 type="button"
-                onClick={() => onClose()}
+                onClick={handleDelete}
                 className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 sm:ml-3 sm:w-auto"
               >
                 Delete
@@ -44,7 +57,7 @@ export default function DeleteModal({ onClose, warehouse }) {
               <button
                 type="button"
                 data-autofocus
-                onClick={() => onClose()}
+                onClick={onClose}
                 className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50 sm:mt-0 sm:w-auto"
               >
                 Cancel

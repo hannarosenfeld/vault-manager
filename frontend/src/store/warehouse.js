@@ -12,6 +12,7 @@ const UPDATE_FIELD_TYPE = "warehouse/UPDATE_FIELD_TYPE";
 const ADD_WAREHOUSE = "warehouse/ADD_WAREHOUSE";
 const ADD_FIELDS = "warehouse/ADD_FIELDS";
 const DELETE_FIELDS = "warehouse/DELETE_FIELDS";
+const DELETE_WAREHOUSE = "warehouse/DELETE_WAREHOUSE";
 
 export const addWarehouse = (warehouse) => ({
   type: ADD_WAREHOUSE,
@@ -87,6 +88,11 @@ export const deleteFieldsAction = (
   warehouseId,
   newWarehouseRowsCount,
   newWarehouseColsCount,
+});
+
+export const deleteWarehouse = (warehouseId) => ({
+  type: DELETE_WAREHOUSE,
+  warehouseId,
 });
 
 export const addWarehouseThunk = (warehouseData) => async (dispatch) => {
@@ -240,7 +246,6 @@ export const addVaultThunk = (vaultData) => async (dispatch) => {
     });
     if (res.ok) {
       const data = await res.json();
-      console.log("💖 data: ", data)
       dispatch(addVault(data));
       return data;
     } else {
@@ -278,12 +283,19 @@ export const getCurrentFieldThunk = (field) => async (dispatch) => {
 export const addFieldsThunk = (formData) => async (dispatch) => {
   try {
     const res = await fetch(`/api/fields/`, {
-      method: 'POST',
-      body: formData
+      method: "POST",
+      body: formData,
     });
     if (res.ok) {
       const data = await res.json();
-      dispatch(addFieldsAction(data.fields, data.warehouseId, data.newWarehouseRowsCount, data.newWarehouseColsCount));
+      dispatch(
+        addFieldsAction(
+          data.fields,
+          data.warehouseId,
+          data.newWarehouseRowsCount,
+          data.newWarehouseColsCount
+        )
+      );
       return data;
     } else {
       const err = await res.json();
@@ -298,26 +310,56 @@ export const addFieldsThunk = (formData) => async (dispatch) => {
 export const deleteFieldsThunk = (formData) => async (dispatch) => {
   try {
     const res = await fetch(`/api/fields/`, {
-      method: 'DELETE',
-      body: formData
+      method: "DELETE",
+      body: formData,
     });
     if (res.ok) {
       const data = await res.json();
-      console.log("🍀 data", data)
+      console.log("🍀 data", data);
       console.log("Fields to delete:", data.fields);
       console.log("Warehouse ID:", data.warehouseId);
       console.log("New Warehouse Rows Count:", data.newWarehouseRowsCount);
       console.log("New Warehouse Cols Count:", data.newWarehouseColsCount);
-      dispatch(deleteFieldsAction(data.fields, data.warehouseId, data.newWarehouseRowsCount, data.newWarehouseColsCount));
+      dispatch(
+        deleteFieldsAction(
+          data.fields,
+          data.warehouseId,
+          data.newWarehouseRowsCount,
+          data.newWarehouseColsCount
+        )
+      );
       return data;
     } else {
       const err = await res.json();
       console.log("Error removing fields:", err.error);
-      if (err) alert("⛔️ Please remove all vaults from the row that you want to delete.");
+      if (err)
+        alert(
+          "⛔️ Please remove all vaults from the row that you want to delete."
+        );
       return err;
     }
   } catch (error) {
     console.error("Error removing fields:", error);
+  }
+};
+
+export const deleteWarehouseThunk = (warehouseId) => async (dispatch) => {
+  try {
+    const res = await fetch(`/api/warehouse/${warehouseId}`, {
+      method: "DELETE",
+    });
+
+    if (res.ok) {
+      dispatch(deleteWarehouse(warehouseId));
+      return { success: true };
+    } else {
+      const err = await res.json();
+      console.error("Error deleting warehouse:", err);
+      return { success: false, error: err };
+    }
+  } catch (error) {
+    console.error("Error deleting warehouse:", error);
+    return { success: false, error };
   }
 };
 
@@ -641,7 +683,6 @@ const warehouseReducer = (state = initialState, action) => {
       };
 
     case ADD_FIELDS:
-      console.log("🐠 in ADD action", action);
       return {
         ...state,
         warehouses: {
@@ -674,9 +715,7 @@ const warehouseReducer = (state = initialState, action) => {
       };
 
     case DELETE_FIELDS:
-      console.log("🐠 in DELETE action", action);
-
-      const updatedFieldsAfterDeletion = action.fields
+      const updatedFieldsAfterDeletion = action.fields;
 
       return {
         ...state,
@@ -695,6 +734,17 @@ const warehouseReducer = (state = initialState, action) => {
           rows: action.newWarehouseRowsCount,
           cols: action.newWarehouseColsCount,
         },
+      };
+    case DELETE_WAREHOUSE:
+      const { [action.warehouseId]: _, ...remainingWarehouses } =
+        state.warehouses;
+      return {
+        ...state,
+        warehouses: remainingWarehouses,
+        currentWarehouse:
+          state.currentWarehouse?.id === action.warehouseId
+            ? null
+            : state.currentWarehouse,
       };
 
     default:
