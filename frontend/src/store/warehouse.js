@@ -674,12 +674,21 @@ const warehouseReducer = (state = initialState, action) => {
           [warehouseId]: {
             ...state.warehouses[warehouseId],
             fields: {
+              ...state.warehouses[warehouseId].fields,
               [field1.id]: field1,
               [field2.id]: field2,
             },
           },
         },
-        currentField: state.currentField,
+        currentWarehouse: {
+          ...state.currentWarehouse,
+          fields: {
+            ...state.currentWarehouse.fields,
+            [field1.id]: field1,
+            [field2.id]: field2,
+          },
+        },
+        currentField: state.currentField,        
       };
 
     case ADD_FIELDS:

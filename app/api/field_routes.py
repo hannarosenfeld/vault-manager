@@ -101,7 +101,6 @@ def update_field_type(field_id):
 
 @field_routes.route('/', methods=['POST'])
 def add_field():
-    print("🚀 in add field route")
     form = PostFieldForm()
     form['csrf_token'].data = request.cookies['csrf_token']
 
@@ -143,17 +142,10 @@ def add_field():
                         res.append(new_field.to_dict())
 
                 db.session.commit()
-                
-                print("🚀 fields: ", res)
-                print("🚀 warehouse id: ", warehouse_id)
-                print("🚀 new warehouse rows count: ", warehouse.rows)
-                print("🚀 new warehouse cols count: ", new_warehouse_cols_count)
-                print("🚀 returning response")
 
                 return jsonify({ 'fields': res, 'warehouseId': warehouse_id, 'newWarehouseRowsCount': warehouse.rows, 'newWarehouseColsCount': new_warehouse_cols_count })
 
             if direction == 'right':
-                print("🚀 in right direction")
                 new_warehouse_cols_count = warehouse.cols + count 
                 warehouse.cols = new_warehouse_cols_count 
 
