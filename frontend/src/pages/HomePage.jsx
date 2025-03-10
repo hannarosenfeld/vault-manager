@@ -16,6 +16,12 @@ export default function HomePage({ warehouses }) {
     setSelectedWarehouse(null);
   };
 
+  const handleAddWarehouse = () => {
+    // Add your logic to handle adding a warehouse here
+    console.log("Add Warehouse button clicked");
+  };
+
+  console.log("💖")
   return (
     <div className="w-full h-full p-4">
       <div className="mt-5">
@@ -91,13 +97,32 @@ export default function HomePage({ warehouses }) {
             </div>
           ))}
         </div>
+        <div className="mt-5">
+        <button
+          onClick={handleAddWarehouse}
+          className="flex items-center p-2 rounded-lg hover:bg-gray-100 group w-full text-grey-600"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="h-6 w-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 4.5v15m7.5-7.5h-15"
+            />
+          </svg>
+          <span className="ml-3">Add Warehouse</span>
+        </button>
+        </div>
       </div>
 
       {isDeleteModalOpen && (
-        <DeleteModal
-          warehouse={selectedWarehouse}
-          onClose={closeDeleteModal}
-        />
+        <DeleteModal warehouse={selectedWarehouse} onClose={closeDeleteModal} />
       )}
     </div>
   );
