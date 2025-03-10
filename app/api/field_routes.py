@@ -248,8 +248,10 @@ def delete_field():
                         new_field_name = f"{chr(ord(field.name[0]) - 1)}{field.name[1:]}"
                         field.name = new_field_name
                         db.session.commit()
+                        
+                print("💖 fields_list: ", [field.to_dict() for field in new_fields])
 
-                return jsonify({ 'fields': fields_list, 'warehouseId': warehouse.id, 'newWarehouseRowsCount': warehouse.rows, 'newWarehouseColsCount': new_warehouse_cols_count }), 200
+                return jsonify({ 'fields': [field.to_dict() for field in new_fields], 'warehouseId': warehouse.id, 'newWarehouseRowsCount': warehouse.rows, 'newWarehouseColsCount': new_warehouse_cols_count }), 200
 
 
             elif direction == 'right':
@@ -257,36 +259,28 @@ def delete_field():
                 for i in range(1, count + 1):
                     # Find the field with the smallest first letter of its name
                     smallest_field_name_letter = max([field.name for field in fields])[0]
-                    
-                    print("❤️‍🔥 smallest field name letter: ", smallest_field_name_letter)
-                    
+                                        
                     all_fields_with_that_letter = Field.query.filter(
                         Field.name.like(f'{smallest_field_name_letter}%'),
                         Field.warehouse_id == warehouse_id  # Ensure warehouse matches
                     ).all()
                     
-                    print("❤️‍🔥 all fields with that letter: ", all_fields_with_that_letter)
-
                     # Convert generator expression to a list to print values
                     vaults_exist = check_for_vaults(all_fields_with_that_letter)
-                    
-                    print("❤️‍🔥 vaults exist: ", vaults_exist)
                     
                     if (vaults_exist):
                         return jsonify({'error': 'Cannot delete fields while vaults are present in fields.'}), 400  # Return error response
                     
                     for field in all_fields_with_that_letter:
-                        print("❤️‍🔥 deleting field: ", field.to_dict())
                         db.session.delete(field)
 
                 new_warehouse_cols_count = warehouse.cols - count
-                print("❤️‍🔥 new warehouse cols count: ", new_warehouse_cols_count)
                 warehouse.cols = new_warehouse_cols_count
-                print("❤️‍🔥 warehouse cols: ", warehouse.cols)
 
                 db.session.commit()
                 
-                fields_list = [field.to_dict() for field in all_fields_with_that_letter]
+                fields_after_deletion = Field.query.filter_by(warehouse_id=warehouse_id).all()
+                fields_list = [field.to_dict() for field in fields_after_deletion]
 
                 return jsonify({ 'fields': fields_list, 'warehouseId': warehouse.id, 'newWarehouseRowsCount': warehouse.rows, 'newWarehouseColsCount': new_warehouse_cols_count }), 200
 

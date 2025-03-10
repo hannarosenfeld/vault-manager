@@ -294,6 +294,7 @@ export const addFieldsThunk = (formData) => async (dispatch) => {
     console.error("Error adding new fields: ", error);
   }
 };
+
 export const deleteFieldsThunk = (formData) => async (dispatch) => {
   try {
     const res = await fetch(`/api/fields/`, {
@@ -302,6 +303,7 @@ export const deleteFieldsThunk = (formData) => async (dispatch) => {
     });
     if (res.ok) {
       const data = await res.json();
+      console.log("🍀 data", data)
       console.log("Fields to delete:", data.fields);
       console.log("Warehouse ID:", data.warehouseId);
       console.log("New Warehouse Rows Count:", data.newWarehouseRowsCount);
@@ -674,13 +676,7 @@ const warehouseReducer = (state = initialState, action) => {
     case DELETE_FIELDS:
       console.log("🐠 in DELETE action", action);
 
-      const updatedFieldsAfterDeletion = {
-        ...state.warehouses[action.warehouseId].fields,
-      };
-
-      action.fields.forEach((field) => {
-        delete updatedFieldsAfterDeletion[field.id];
-      });
+      const updatedFieldsAfterDeletion = action.fields
 
       return {
         ...state,
