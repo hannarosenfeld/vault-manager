@@ -184,13 +184,7 @@ def add_field():
 
                 new_warehouse_row_count = warehouse.rows + count
                 warehouse.rows = new_warehouse_row_count
-                db.session.commit()
-                
-                print("🚀 fields: ", res)
-                print("🚀 warehouse id: ", warehouse_id)
-                print("🚀 new warehouse rows count: ", warehouse.rows)
-                print("🚀 new warehouse cols count: ", warehouse.cols)
-                print("🚀 returning response")                
+                db.session.commit()        
 
                 return jsonify({ 'fields': res, 'warehouseId': warehouse_id, 'newWarehouseRowsCount': new_warehouse_row_count, 'newWarehouseColsCount': warehouse.cols })
             
@@ -206,7 +200,6 @@ def delete_field():
     form['csrf_token'].data = request.cookies['csrf_token']
 
     def check_for_vaults(fieldsList):
-        print("✨ in check for vaults function: ", fieldsList)
         for field in fieldsList:
             vaults = field.vaults.all()
             if vaults:
@@ -249,13 +242,10 @@ def delete_field():
                         field.name = new_field_name
                         db.session.commit()
                         
-                print("💖 fields_list: ", [field.to_dict() for field in new_fields])
-
                 return jsonify({ 'fields': [field.to_dict() for field in new_fields], 'warehouseId': warehouse.id, 'newWarehouseRowsCount': warehouse.rows, 'newWarehouseColsCount': new_warehouse_cols_count }), 200
 
 
             elif direction == 'right':
-                print("❤️‍🔥 in route")
                 for i in range(1, count + 1):
                     # Find the field with the smallest first letter of its name
                     smallest_field_name_letter = max([field.name for field in fields])[0]
@@ -286,29 +276,31 @@ def delete_field():
 
             elif direction == 'bottom':
                 letters = sorted(set([field.name[0] for field in fields]))
-                fieldsList = []
+                fields_list = []
+                
                 for letter in letters:
                     for i in range(warehouse.rows-count+1, warehouse.rows+1):                        
                         field_to_delete = Field.query.filter_by(name=f"{letter}{i}", warehouse=warehouse).first()
-                        
-                        # field_id = field_to_delete.id
-                        fieldsList.append(field_to_delete)
-                        # db.session.delete(field_to_delete)
-                        # db.session.commit()
+                        fields_list.append(field_to_delete)
 
-                vaults_exist = check_for_vaults(fieldsList)
+                vaults_exist = check_for_vaults(fields_list)
+                
                 if vaults_exist:
                     return jsonify({'error': 'Cannot delete fields while vaults are present in fields.'}), 400  # Return error response
 
-                for field in fieldsList:
-                        db.session.delete(field)
-                        db.session.commit()                            
+                for field in fields_list:
+                    db.session.delete(field)
+                    db.session.commit()                            
 
                 new_warehouse_row_count = warehouse.rows - count
                 warehouse.rows = new_warehouse_row_count
-                db.session.commit()                
+                db.session.commit()
+                
+                fields_after_deletion = Field.query.filter_by(warehouse_id=warehouse_id).all()
+                fields_list_dicts = [field.to_dict() for field in fields_after_deletion]
+                print("🚀 fields_list: ", fields_list_dicts)
 
-                return jsonify({ 'fields': fieldsList, 'warehouseId': warehouse.id, 'newWarehouseRowsCount': new_warehouse_row_count, 'newWarehouseColsCount': warehouse.cols }), 200
+                return jsonify({ 'fields': fields_list_dicts, 'warehouseId': warehouse.id, 'newWarehouseRowsCount': new_warehouse_row_count, 'newWarehouseColsCount': warehouse.cols }), 200
 
             else:
                 return jsonify(message="direction not specified")
