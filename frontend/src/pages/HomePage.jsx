@@ -1,6 +1,21 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import DeleteModal from "../components/DeleteModal";
 
 export default function HomePage({ warehouses }) {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedWarehouse, setSelectedWarehouse] = useState(null);
+
+  const openDeleteModal = (warehouse) => {
+    setSelectedWarehouse(warehouse);
+    setIsDeleteModalOpen(true);
+  };
+
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+    setSelectedWarehouse(null);
+  };
+
   return (
     <div className="w-full h-full p-4">
       <div className="mt-5">
@@ -51,7 +66,10 @@ export default function HomePage({ warehouses }) {
                 </Link>
               </div>
               <hr className="border-gray-300" />
-              <div className="py-2 px-4 hover:bg-red-100 text-red-500 hover:text-red-700 cursor-pointer">
+              <div
+                className="py-2 px-4 hover:bg-red-100 text-red-500 hover:text-red-700 cursor-pointer"
+                onClick={() => openDeleteModal(warehouse)}
+              >
                 <div className="flex items-center p-2 rounded">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -74,6 +92,13 @@ export default function HomePage({ warehouses }) {
           ))}
         </div>
       </div>
+
+      {isDeleteModalOpen && (
+        <DeleteModal
+          warehouse={selectedWarehouse}
+          onClose={closeDeleteModal}
+        />
+      )}
     </div>
   );
 }

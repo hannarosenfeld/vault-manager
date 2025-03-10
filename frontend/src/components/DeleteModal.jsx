@@ -3,7 +3,7 @@ import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/re
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 
 
-export default function DeleteModal({ onClose }) {
+export default function DeleteModal({ onClose, warehouse }) {  
   return (
     <Dialog open={true} onClose={onClose} className="relative z-10">
       <DialogBackdrop
@@ -24,11 +24,11 @@ export default function DeleteModal({ onClose }) {
                 </div>
                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                   <DialogTitle as="h3" className="text-base font-semibold text-gray-900">
-                    Deactivate account
+                    Delete Warehouse
                   </DialogTitle>
                   <div className="mt-2">
                     <p className="text-sm text-gray-500">
-                      Are you sure you want to deactivate your account? All of your data will be permanently removed.
+                      Are you sure you want to delete <span className='font-semibold'>{warehouse.name}</span>? All of it's data will be permanently removed.
                       This action cannot be undone.
                     </p>
                   </div>
@@ -41,7 +41,7 @@ export default function DeleteModal({ onClose }) {
                 onClick={() => onClose()}
                 className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 sm:ml-3 sm:w-auto"
               >
-                Deactivate
+                Delete
               </button>
               <button
                 type="button"
