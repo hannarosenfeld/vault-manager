@@ -91,7 +91,7 @@ export default function NavDrawer({ open, setOpen }) {
                     </svg>
                     <span className="ml-3">Add Warehouse</span>
                   </button>
-                  {/* Static Stage Link */}
+
                   <Link
                     to="/stage"
                     className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -100,8 +100,17 @@ export default function NavDrawer({ open, setOpen }) {
                     <span className="material-symbols-outlined">package_2</span>
                     <span className="ml-3">Stage</span>
                   </Link>
+
+                  <Link
+                    to="/print-studio"
+                    className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                    onClick={() => setOpen(false)}
+                  >
+                    <span class="material-symbols-outlined">print</span>
+                    <span className="ml-3">Print Studio</span>
+                  </Link>
                 </nav>
-                {/* Logout Button */}
+
                 <button
                   onClick={handleLogout}
                   className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full mt-auto"

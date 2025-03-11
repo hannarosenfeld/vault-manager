@@ -6,12 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getAllWarehousesThunk } from "./store/warehouse";
 import { getAllStagedVaultsThunk } from "./store/stage";
-import { authenticate } from "./store/session"; // Import the authenticate action
+import { authenticate } from "./store/session";
 import LoadingSpinner from "../src/components/LoadingSpinner";
 import Stage from "./pages/Stage";
 import LoginPage from "./pages/LoginPage";
-import AddWarehouse from "./pages/AddWarehouse"; // Import the AddWarehouse component
-import EditWarehousePage from "./pages/EditWarehousePage"; // Import the EditWarehousePage component
+import AddWarehouse from "./pages/AddWarehouse";
+import EditWarehousePage from "./pages/EditWarehousePage";
+import PrintStudio from "./pages/PrintStudio";
+
 
 function App() {
   const dispatch = useDispatch();
@@ -45,7 +47,8 @@ function App() {
               <Route path="/warehouse/:warehouseName" element={sessionUser ? <WarehousePage warehouses={warehouses} /> : <Navigate to="/login" />} />
               <Route path="/add-warehouse" element={sessionUser ? <AddWarehouse /> : <Navigate to="/login" />} />
               <Route path="/edit/:warehouseName" element={sessionUser ? <EditWarehousePage /> : <Navigate to="/login" />} />
-              <Route path="*" element={<Navigate to={sessionUser ? "/" : "/login"} />} />
+              <Route path="/print-studio" element={sessionUser ? <PrintStudio /> : <Navigate to="/login" />} />
+              <Route path="*" element={<Navigate to={sessionUser ? "/" : "/login"} />} />              
             </Routes>
           </div>
         </div>
