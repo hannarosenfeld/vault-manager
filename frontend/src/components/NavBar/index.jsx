@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { Disclosure, Menu, MenuButton } from "@headlessui/react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import NavDrawer from './NavDrawer';
 import NagleeLogo from "../../assets/naglee.png";
+import Searchbar from '../Searchbar';
 
 export default function NavBar() {
   const [openDrawer, setDrawerOpen] = useState(false);
+  const location = useLocation();
+
+  const isWarehousePage = location.pathname.startsWith('/warehouse/');
 
   return (
     <Disclosure as="nav">
@@ -20,7 +24,12 @@ export default function NavBar() {
               />
             </Link>
           </div>
-          <div className="absolute inset-y-0 right-0 flex items-center sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+          {isWarehousePage && (
+            <div className="flex-grow mx-4">
+              <Searchbar />
+            </div>
+          )}
+          <div className="flex items-center space-x-4">
             {/* Profile dropdown */}
             <Menu as="div" className="relative">
               <div>
