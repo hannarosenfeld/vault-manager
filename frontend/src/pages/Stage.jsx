@@ -68,40 +68,31 @@ export default function Stage() {
   };
 
   return (
-    <div className="p-4">
+    <div className="px-4">
       <div
-        className="min-h-[90vh] max-w-3xl mx-auto border-8 border-solid p-5"
+        className="min-h-[89vh] max-w-3xl mx-auto border-8 border-solid p-2"
         style={{
           borderImage: isDeleteModeOn
             ? "repeating-linear-gradient(-55deg, #000, #000 20px, #ff0000 20px, #ff0000 40px) 10"
             : "repeating-linear-gradient(-55deg, #000, #000 20px, #ffb101 20px, #ffb101 40px) 10",
         }}
       >
-        <div className="flex justify-between items-center mb-4 h-12">
+        <div className="flex justify-between items-center mb-2 h-12 border-2 rounded p-2">
           <div className="flex items-center">
-            <label className="flex items-center cursor-pointer">
-              <div className="relative">
-                <input
-                  type="checkbox"
-                  checked={isDeleteModeOn}
-                  onChange={handleToggleDeleteMode}
-                  className="sr-only"
-                />
-                <div className="block bg-gray-600 w-14 h-8 rounded-full"></div>
-                <div
-                  className={`dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition ${
-                    isDeleteModeOn
-                      ? "transform translate-x-full bg-red-500"
-                      : ""
-                  }`}
-                ></div>
-              </div>
-              <span className="ml-3 text-gray-700">
-                Delete vaults mode{" "}
+            <label className="inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                checked={isDeleteModeOn}
+                onChange={handleToggleDeleteMode}
+                className="sr-only peer"
+              />
+              <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-500"></div>
+              <span className="ml-3 text-sm font-medium text-gray-900">
+                Delete mode{" "}
                 {isDeleteModeOn ? (
-                  <span className="text-green-600">ON</span>
+                  <span className="text-red-600">ON</span>
                 ) : (
-                  <span className="text-red-600">OFF</span>
+                  <span className="text-green-600">OFF</span>
                 )}
               </span>
             </label>
@@ -109,9 +100,22 @@ export default function Stage() {
           {isDeleteModeOn && (
             <button
               onClick={handleDeleteClick}
-              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+              className="bg-red-500 text-white px-2 py-1 rounded text-sm hover:bg-red-600"
             >
-              Delete Selected
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                />
+              </svg>
             </button>
           )}
         </div>
