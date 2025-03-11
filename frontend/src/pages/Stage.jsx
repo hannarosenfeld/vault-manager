@@ -37,7 +37,6 @@ export default function Stage() {
 
   const handleConfirmDelete = async () => {
     try {
-      // Simulate delete action
       await Promise.all(vaultsToDelete.map((vault) => dispatch(deleteVaultThunk(vault.id))));
       setVaultsToDelete([]);
       setIsDeleteModalOpen(false);
@@ -67,9 +66,11 @@ export default function Stage() {
   };
 
   return (
-    <div className="min-h-[90vh] max-w-3xl mx-auto border-8 border-solid border-yellow-500 p-5"
+    <div className="min-h-[90vh] max-w-3xl mx-auto border-8 border-solid p-5"
       style={{
-        borderImage: "repeating-linear-gradient(-55deg, #000, #000 20px, #ffb101 20px, #ffb101 40px) 10",
+        borderImage: isDeleteModeOn
+          ? "repeating-linear-gradient(-55deg, #000, #000 20px, #ff0000 20px, #ff0000 40px) 10"
+          : "repeating-linear-gradient(-55deg, #000, #000 20px, #ffb101 20px, #ffb101 40px) 10",
       }}
     >
       <div className="flex justify-between items-center mb-4 h-12">
