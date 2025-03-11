@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import StageToWareHouseModal from '../components/Stage/StageToWarehouseModal';
 import ConfirmDeleteVaultModal from '../components/Stage/ConfirmDeleteVaultModal';
-// import { deleteVaultThunk, getVaultsThunk } from '../store/vault';
+import { deleteVaultThunk } from '../store/warehouse';
 
 export default function Stage() {
   const dispatch = useDispatch();
@@ -38,7 +38,7 @@ export default function Stage() {
   const handleConfirmDelete = async () => {
     try {
       // Simulate delete action
-      // await Promise.all(vaultsToDelete.map((vault) => dispatch(deleteVaultThunk(vault.id))));
+      await Promise.all(vaultsToDelete.map((vault) => dispatch(deleteVaultThunk(vault.id))));
       setVaultsToDelete([]);
       setIsDeleteModalOpen(false);
       console.log("Vaults deleted!");
