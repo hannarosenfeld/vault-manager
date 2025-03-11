@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import DeleteModal from "../components/DeleteModal";
+import DeleteModal from "../components/ConfirmDeleteWarehouseModal";
 
 
 export default function HomePage({ warehouses }) {
