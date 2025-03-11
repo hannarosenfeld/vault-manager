@@ -109,7 +109,7 @@ export default function Stage() {
             <div
               key={vault.id}
               className={`flex flex-col justify-center items-center p-2 border-2 border-gray-800 rounded shadow cursor-pointer hover:bg-gray-100 w-[calc(33.333%-1rem)] ${
-                vaultsToDelete.some((v) => v.id === vault.id) ? "bg-red-500" : "bg-yellow-400"
+                isDeleteModeOn && vaultsToDelete.some((v) => v.id === vault.id) ? "bg-red-500" : "bg-yellow-400"
               }`}
               onClick={() => handleVaultClick(vault)}
             >
