@@ -676,7 +676,7 @@ const warehouseReducer = (state = initialState, action) => {
     case UPDATE_FIELD_TYPE:
       const { field1, field2 } = action.fields;
       const warehouseId = field1.warehouse_id;
-
+    
       return {
         ...state,
         warehouses: {
@@ -698,7 +698,10 @@ const warehouseReducer = (state = initialState, action) => {
             [field2.id]: field2,
           },
         },
-        currentField: state.currentField,        
+        currentField: {
+          ...state.currentField,
+          type: field1.type,
+        },
       };
 
     case ADD_FIELDS:
