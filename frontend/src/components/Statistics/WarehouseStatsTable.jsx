@@ -12,7 +12,7 @@ function WarehouseStatsPage({ warehouse }) {
   const percentage = Math.round((onlyCustomerVaults.length / warehouseCapacity) * 100);
 
   return (
-    <div className="relative overflow-x-auto">
+    <div className="relative overflow-x-auto mb-5">
       <h1 className="text-2xl font-bold mb-4">{warehouseName}</h1>
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50">
