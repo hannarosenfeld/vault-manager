@@ -7,7 +7,7 @@ function StatisticsPage() {
 
   return (
     <div className="p-4">
-      <h1 className="text-xl mb-4">Statistics</h1>
+      {/* <h1 className="text-xl mb-4">Statistics</h1> */}
       {warehouseArr.map((warehouse) => (
         <div key={warehouse.id}>
           <WarehouseStatsPage warehouse={warehouse} />  

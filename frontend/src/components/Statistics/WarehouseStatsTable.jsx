@@ -1,37 +1,38 @@
 function WarehouseStatsPage({ warehouse }) {
   const warehouseName = warehouse.name;
-  const warehouseFields = Object.values(warehouse.fields);
-  const warehouseVaults = warehouseFields.filter(field => Object.keys(field.vaults).length);
-  const warehouseVaultsArr = warehouseVaults.flatMap(field => Object.values(field.vaults));
-
-  const numberOfPotentialSpaces = warehouseFields.length * 4; // Assuming each field can have 4 vaults
-  const numberOfAllVaults = warehouseVaultsArr.length;
-  const numberOfEmptyVaults = warehouseVaultsArr.filter(vault => vault.customer_name === "EMPTY").length;
-
-  console.log("🍓 warehouseVaultsArr", warehouseVaultsArr);
+  const fieldsArr = Object.values(warehouse.fields);
+  const vaultFields = fieldsArr.filter(field => field.type === "vault").length;
+  const couchboxFields = fieldsArr.filter(field => field.type === "couchbox-T").length;
+  const warehouseCapacity = (vaultFields * 3) + (couchboxFields * 4);
+  const filledFields = fieldsArr.filter(field => Object.values(field.vaults).length);
+  const allVaultsPresentInWarehouse = filledFields.flatMap(field => Object.values(field.vaults));
+  const numberOfAllVaults = allVaultsPresentInWarehouse.length;
+  const numberOfEmptyVaults = allVaultsPresentInWarehouse.filter(vault => vault.customer_name == "EMPTY").length;   
+  const onlyCustomerVaults = allVaultsPresentInWarehouse.filter(vault => vault.customer_name !== "EMPTY");
+  const percentage = Math.round((onlyCustomerVaults.length / warehouseCapacity) * 100);
 
   return (
-    <div>
+    <div className="relative overflow-x-auto">
       <h1 className="text-2xl font-bold mb-4">{warehouseName}</h1>
-      <table className="min-w-full bg-white">
-        <thead>
+      <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50">
           <tr>
-            <th className="py-2 px-4 border-b text-left">Metric</th>
-            <th className="py-2 px-4 border-b">Value</th>
+            <th scope="col" className="px-6 py-3">Metric</th>
+            <th scope="col" className="px-6 py-3">Value</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td className="py-2 px-4 border-b text-left">Number of Potential Spaces</td>
-            <td className="py-2 px-4 border-b">{numberOfPotentialSpaces}</td>
+          <tr className="bg-white border-b ">
+            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">Number of Potential Spaces</td>
+            <td className="px-6 py-4">{warehouseCapacity}</td>
           </tr>
-          <tr>
-            <td className="py-2 px-4 border-b text-left">Number of All Vaults</td>
-            <td className="py-2 px-4 border-b">{numberOfAllVaults}</td>
+          <tr className="bg-white border-b ">
+            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">Number of All Vaults</td>
+            <td className="px-6 py-4">{numberOfAllVaults}</td>
           </tr>
-          <tr>
-            <td className="py-2 px-4 border-b text-left">Number of Empty Vaults</td>
-            <td className="py-2 px-4 border-b">{numberOfEmptyVaults}</td>
+          <tr className="bg-white">
+            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">Number of Empty Vaults</td>
+            <td className="px-6 py-4">{numberOfEmptyVaults}</td>
           </tr>
         </tbody>
       </table>
