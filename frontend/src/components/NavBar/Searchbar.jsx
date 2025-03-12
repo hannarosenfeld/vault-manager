@@ -11,7 +11,7 @@ function Searchbar() {
 
   return (
     <div className="flex items-center py-2">
-      <form className="flex items-center mx-auto" onSubmit={handleSearch}>
+      <form className="flex items-center mx-auto w-[95%] lg:w-[70%]" onSubmit={handleSearch}>
         {/* <label htmlFor="simple-search" className="sr-only"> */}
           {/* Search */}
         {/* </label> */}
