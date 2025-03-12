@@ -271,11 +271,9 @@ def delete_vault(id):
         order_to_delete = None
 
         db.session.delete(vault)
-        field = Field.query.get(vault.field_id)
-        if field:
-            field.full = False
-        db.session.commit()
-
+        
+        print("🍄 deleted vault: ", vault.to_dict())
+        
         # Check if the customer has any other vaults
         if customer and len(customer.vaults) == 0:
             customer_to_delete = customer.id
@@ -287,8 +285,16 @@ def delete_vault(id):
             order_to_delete = order.id
             db.session.delete(order)
             db.session.commit()
+        
+        if vault.field_id == None:
+            return jsonify({'vaultId': id, "deleteFrom": "stage"})                       
 
-        return jsonify({'vaultId': id, "customer_to_delete": customer_to_delete, "order_to_delete": order_to_delete})
+        field = Field.query.get(vault.field_id)
+        if field:
+            field.full = False
+        db.session.commit()
+
+        return jsonify({'vaultId': id, "deleteFrom": "field", "fieldId": field.id})
     except Exception as e:
         print(f"Error deleting vault: {e}")
         return jsonify({'error': str(e)}), 500

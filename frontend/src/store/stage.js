@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { updateWarehouseAfterStaging } from './warehouse';
+import { updateWarehouseAfterStaging, DELETE_VAULT } from './warehouse';
 
 const GET_ALL_STAGED_VAULTS = "warehouse/GET_ALL_STAGED_VAULTS";
 const STAGE_VAULT = "warehouse/STAGE_VAULT";
@@ -42,7 +42,7 @@ export const stageVaultThunk = createAsyncThunk(
 
 export const removeVaultFromStage = (vaultId) => ({
   type: REMOVE_VAULT_FROM_STAGE,
-  vaultId,
+  payload: { vaultId },
 });
 
 const initialState = {
@@ -76,8 +76,14 @@ const stageSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+      .addCase(DELETE_VAULT, (state, action) => {
+        const { vaultId, deleteFrom } = action.payload;
+        if (deleteFrom === "stage") {
+          delete state.stagedVaults[vaultId];
+        }
+      })
       .addCase(REMOVE_VAULT_FROM_STAGE, (state, action) => {
-        delete state.stagedVaults[action.vaultId];
+        delete state.stagedVaults[action.payload.vaultId];
       });
   },
 });

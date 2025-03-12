@@ -1,4 +1,5 @@
 import { removeVaultFromStage } from "./stage";
+
 const GET_ALL_WAREHOUSES = "warehouse/GET_ALL_WAREHOUSES";
 const SET_CURRENT_WAREHOUSE = "warehouse/SET_CURRENT_WAREHOUSE";
 const SET_CURRENT_FIELD = "warehouse/SET_CURRENT_FIELD";
@@ -7,7 +8,7 @@ const UPDATE_WAREHOUSE_AFTER_STAGING =
   "warehouse/UPDATE_WAREHOUSE_AFTER_STAGING";
 const MOVE_VAULT_TO_WAREHOUSE = "warehouse/MOVE_VAULT_TO_WAREHOUSE";
 const ADD_ATTACHMENT = "warehouse/ADD_ATTACHMENT";
-const DELETE_VAULT = "warehouse/DELETE_VAULT";
+export const DELETE_VAULT = "warehouse/DELETE_VAULT";
 const UPDATE_FIELD_TYPE = "warehouse/UPDATE_FIELD_TYPE";
 const ADD_WAREHOUSE = "warehouse/ADD_WAREHOUSE";
 const ADD_FIELDS = "warehouse/ADD_FIELDS";
@@ -54,9 +55,9 @@ export const addAttachment = (attachment) => ({
   attachment,
 });
 
-export const deleteVault = (vaultId, customerToDelete) => ({
+export const deleteVault = (payload) => ({
   type: DELETE_VAULT,
-  payload: { vaultId, customerToDelete },
+  payload,
 });
 
 export const updateFieldType = (fields) => ({
@@ -146,26 +147,29 @@ export const updateFieldTypeThunk =
     }
   };
 
-export const deleteVaultThunk = (vaultId) => async (dispatch) => {
-  try {
-    const res = await fetch(`/api/vaults/${vaultId}`, {
-      method: "DELETE",
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      dispatch(deleteVault(vaultId));
-      return data;
-    } else {
-      const err = await res.json();
-      console.error("Error deleting vault:", err);
-      return err;
+  export const deleteVaultThunk = (vaultId) => async (dispatch) => {
+    try {
+      const res = await fetch(`/api/vaults/${vaultId}`, {
+        method: "DELETE",
+      });
+  
+      if (res.ok) {
+        const data = await res.json();
+        dispatch(deleteVault({ vaultId, deleteFrom: data.deleteFrom }));
+        if (data.deleteFrom === "stage") {
+          dispatch(removeVaultFromStage(vaultId));
+        }
+        return data;
+      } else {
+        const err = await res.json();
+        console.error("Error deleting vault:", err);
+        return err;
+      }
+    } catch (error) {
+      console.error("Error deleting vault:", error);
+      return error;
     }
-  } catch (error) {
-    console.error("Error deleting vault:", error);
-    return error;
-  }
-};
+  };
 
 export const uploadAttachmentThunk = (file, vaultId) => async (dispatch) => {
   const formData = new FormData();
@@ -623,6 +627,12 @@ const warehouseReducer = (state = initialState, action) => {
 
     case DELETE_VAULT:
       const deletedVaultId = action.payload.vaultId;
+      const deleteFrom = action.payload.deleteFrom;
+
+      console.log("🍌 in warehouse reducer", action)
+
+      if (deleteFrom === "stage") console.log("🍉")
+      if (deleteFrom === "stage") return state;
 
       // Remove the vault from the current field
       const updatedCurrentFieldAfterVaultDeletion = {
