@@ -8,7 +8,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addVaultThunk } from "../../store/warehouse";
 
-export default function AddVaultModal({ onClose, fieldId, position }) {
+export default function AddVaultModal({ onClose, fieldId, type, position }) {
   const dispatch = useDispatch();
   const [isEmpty, setIsEmpty] = useState(false);
   const [formData, setFormData] = useState({
@@ -60,7 +60,7 @@ export default function AddVaultModal({ onClose, fieldId, position }) {
         isEmpty ? "EMPTY" : formData.customer.toUpperCase()
       );
       submissionData.append("order_number", formData.orderNumber);
-      submissionData.append("type", formData.type === "standard" ? "S" : "couchbox");
+      submissionData.append("type", formData.type === "vault" ? "vault" : "couchbox");
       submissionData.append("note", formData.note);
       submissionData.append("field_id", formData.field_id);
       submissionData.append("position", formData.position);

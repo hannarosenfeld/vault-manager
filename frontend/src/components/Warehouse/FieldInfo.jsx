@@ -144,6 +144,7 @@ export default function FieldInfo({ field, isStage, vaultId, onMove }) {
       {isModalOpen && (
         <AddVaultModal
           fieldId={field.id}
+          type={fieldType}
           position={selectedPosition}
           onClose={handleCloseModal}
         />
