@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import DeleteModal from "../components/ConfirmDeleteWarehouseModal";
 import WarehouseCard from "../components/WarehouseCard";
 
@@ -27,7 +27,7 @@ export default function HomePage({ warehouses }) {
       <div className="mt-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {Object.values(warehouses).map((warehouse) => (
-            <WarehouseCard openDeleteModal={openDeleteModal} closeDeleteModal={closeDeleteModal} warehouse={warehouse}/>
+            <WarehouseCard openDeleteModal={openDeleteModal} warehouse={warehouse}/>
           ))}
         </div>
         <div className="mt-5">

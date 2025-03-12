@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 
-function WarehouseCard({ openDeleteModal, closeDeleteModal, warehouse }) {
+function WarehouseCard({ openDeleteModal, warehouse }) {
   return (
     <div
       key={warehouse.id}
