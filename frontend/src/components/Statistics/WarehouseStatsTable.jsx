@@ -8,7 +8,10 @@ function WarehouseStatsPage({ warehouse }) {
   const allVaultsPresentInWarehouse = filledFields.flatMap(field => Object.values(field.vaults));
   const numberOfAllVaults = allVaultsPresentInWarehouse.length;
   const numberOfEmptyVaults = allVaultsPresentInWarehouse.filter(vault => vault.customer_name == "EMPTY" && vault.type === "vault").length;   
+  const numberOfEmptyCouchboxes = allVaultsPresentInWarehouse.filter(vault => vault.customer_name == "EMPTY" && vault.type === "couchbox").length;   
+
   const onlyCustomerVaults = allVaultsPresentInWarehouse.filter(vault => vault.customer_name !== "EMPTY");
+  
   const percentage = Math.round((onlyCustomerVaults.length / warehouseCapacity) * 100);
 
   return (
@@ -17,22 +20,26 @@ function WarehouseStatsPage({ warehouse }) {
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50">
           <tr>
-            <th scope="col" className="px-6 py-3">Metric</th>
+            <th scope="col" className="px-3 py-3">Metric</th>
             <th scope="col" className="px-6 py-3">Value</th>
           </tr>
         </thead>
         <tbody>
           <tr className="bg-white border-b ">
-            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">Number of Potential Spaces</td>
+            <td className="px-3 py-4 font-medium text-gray-900 whitespace-nowrap">Number of Potential Spaces</td>
             <td className="px-6 py-4">{warehouseCapacity}</td>
           </tr>
-          <tr className="bg-white border-b ">
+          {/* <tr className="bg-white border-b ">
             <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">Number of All Vaults</td>
             <td className="px-6 py-4">{numberOfAllVaults}</td>
+          </tr> */}
+          <tr className="bg-white border-b">
+            <td className="px-3 py-4 font-medium text-gray-900 whitespace-nowrap">Number of Empty Vaults</td>
+            <td className="px-6 py-4">{numberOfEmptyVaults}</td>
           </tr>
           <tr className="bg-white">
-            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">Number of Empty Vaults</td>
-            <td className="px-6 py-4">{numberOfEmptyVaults}</td>
+            <td className="px-3 py-4 font-medium text-gray-900 whitespace-nowrap">Number of Empty Couchboxes</td>
+            <td className="px-6 py-4">{numberOfEmptyCouchboxes}</td>
           </tr>
         </tbody>
       </table>
