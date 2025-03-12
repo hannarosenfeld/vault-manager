@@ -127,7 +127,7 @@ export default function AddVaultModal({ onClose, fieldId, type, position }) {
                       <input
                         type="text"
                         id="customer"
-                        value={formData.customer}
+                        value={formData.customer.toUpperCase()}
                         onChange={handleChange}
                         disabled={isEmpty}
                         className={`${
