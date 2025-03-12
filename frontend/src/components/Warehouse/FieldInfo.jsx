@@ -102,8 +102,8 @@ export default function FieldInfo({ field, isStage, vaultId, onMove }) {
               index < rowCount - 1 ? "border-b border-gray-300" : ""
             }`}
           >
-            <div className="text-sm w-[10%] flex items-center">
-              {pos}
+            <div className="text-sm w-[14%] flex items-center">
+              {field.type === "couchbox-T" && pos == "M" ? "M1" : pos}
             </div>
             <div className="flex-grow flex items-center">
               {vaultMap[pos] ? (
