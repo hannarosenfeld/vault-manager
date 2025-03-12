@@ -38,5 +38,5 @@ class Vault(db.Model, UserMixin):
             'type': self.type,
             'note': self.note,
             'attachments': [attachment.to_dict() for attachment in self.attachments],
-            'empty': self.empty
+            # 'empty': self.empty # ⚠️ we could probably get rid of this alltogether since customer name EMPTY already signifies this.
         }

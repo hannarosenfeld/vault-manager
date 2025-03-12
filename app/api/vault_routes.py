@@ -56,6 +56,7 @@ def move_vault():
     else:
         return jsonify({"message": "Vault not found"}), 404
 
+
 @vault_routes.route('/upload', methods=['POST'])
 def upload_file():
     attachment = request.files['attachment']
@@ -100,6 +101,7 @@ def upload_file():
 
     return jsonify({'error': 'No file provided'}), 400
 
+
 @vault_routes.route('/staged')
 # @login_required
 def all_vaults_staged():
@@ -108,6 +110,7 @@ def all_vaults_staged():
     """
     vaults = Vault.query.filter_by(field_id=None)
     return { vault.id : vault.to_dict() for vault in vaults }
+
 
 @vault_routes.route('/', methods=['POST'])
 # @login_required
@@ -131,25 +134,29 @@ def add_vault():
                 position=form.data['position'],
                 note=form.data['note'],
                 empty=form.data['empty'],
-                type=form.data['type']
+                type=form.data['type'],
             )
             
             db.session.add(new_vault)
             db.session.commit()
 
             if not existent_customer:
+                print("🍄 creating new customer")
                 if customer_name:
                     new_customer = Customer(name=customer_name)
-                    db.session.add(new_customer)
-                    db.session.commit()
+                    db.session.add(new_customer) 
+                    db.session.commit()                   
                     new_vault.customer_id = new_customer.id
+                    db.session.commit()
 
             if not existent_order:
+                print("🍄 creating new order")
                 if order_name:
                     new_order = Order(name=order_name)
                     db.session.add(new_order)
                     db.session.commit()
                     new_order.order_vaults.append(new_vault)
+                    db.session.commit()
 
             field = Field.query.get(new_vault.field_id)
 
