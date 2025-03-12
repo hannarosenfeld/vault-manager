@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
-import { deleteWarehouseThunk } from "../store/warehouse";
+import { deleteWarehouseThunk } from "../../store/warehouse";
 
 export default function DeleteModal({ onClose, warehouse }) {
   const dispatch = useDispatch();

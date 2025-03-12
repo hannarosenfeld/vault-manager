@@ -13,6 +13,7 @@ import LoginPage from "./pages/LoginPage";
 import AddWarehouse from "./pages/AddWarehouseModal";
 import EditWarehousePage from "./pages/EditWarehousePage";
 import PrintStudio from "./pages/PrintStudio";
+import StatisticsPage from "./pages/StatisticsPage";
 
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
               <Route path="/warehouse/:warehouseName" element={sessionUser ? <WarehousePage warehouses={warehouses} /> : <Navigate to="/login" />} />
               <Route path="/add-warehouse" element={sessionUser ? <AddWarehouse /> : <Navigate to="/login" />} />
               <Route path="/edit/:warehouseName" element={sessionUser ? <EditWarehousePage /> : <Navigate to="/login" />} />
+              <Route path="/statistics" element={sessionUser ? <StatisticsPage /> : <Navigate to="/login" />} />
               <Route path="/print-studio" element={sessionUser ? <PrintStudio /> : <Navigate to="/login" />} />
               <Route path="*" element={<Navigate to={sessionUser ? "/" : "/login"} />} />              
             </Routes>
