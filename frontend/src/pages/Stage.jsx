@@ -42,6 +42,7 @@ export default function Stage() {
       );
       setVaultsToDelete([]);
       setIsDeleteModalOpen(false);
+      setIsDeleteModeOn(false);
       console.log("Vaults deleted!");
     } catch (error) {
       console.error("Error deleting vaults:", error);
