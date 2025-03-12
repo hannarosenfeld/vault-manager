@@ -11,11 +11,11 @@ function Searchbar() {
 
   return (
     <div className="flex items-center py-2">
-      <form className="flex items-center max-w-sm mx-auto" onSubmit={handleSearch}>
-        <label htmlFor="simple-search" className="sr-only">
-          Search
-        </label>
-        <div className="relative">
+      <form className="flex items-center mx-auto" onSubmit={handleSearch}>
+        {/* <label htmlFor="simple-search" className="sr-only"> */}
+          {/* Search */}
+        {/* </label> */}
+        <div className="relative w-full">
           <input
             type="text"
             id="simple-search"

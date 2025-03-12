@@ -3,7 +3,7 @@ import { Disclosure, Menu, MenuButton } from "@headlessui/react";
 import { Link, useLocation } from "react-router-dom";
 import NavDrawer from './NavDrawer';
 import NagleeLogo from "../../assets/naglee.png";
-import Searchbar from '../Searchbar';
+import Searchbar from './Searchbar';
 
 export default function NavBar() {
   const [openDrawer, setDrawerOpen] = useState(false);
