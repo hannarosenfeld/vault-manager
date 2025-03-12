@@ -22,8 +22,6 @@ export default function AddVaultModal({ onClose, fieldId, type, position }) {
     position: position,
   });
 
-  console.log("🥝", type)
-
   const handleToggle = () => {
     setIsEmpty(!isEmpty);
     setFormData({
