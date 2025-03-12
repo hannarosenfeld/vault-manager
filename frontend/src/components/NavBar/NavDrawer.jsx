@@ -100,6 +100,10 @@ export default function NavDrawer({ open, setOpen }) {
                     <span className="material-symbols-outlined">package_2</span>
                     <span className="ml-3">Stage</span>
                   </Link>
+                  <Link className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <span class="material-symbols-outlined">monitoring</span>                    
+                    <span className="ml-3">Statistics</span>
+                  </Link>
 
                   <Link
                     to="/print-studio"

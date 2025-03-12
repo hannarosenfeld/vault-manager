@@ -1,7 +1,30 @@
 import { Link } from "react-router-dom";
 
-
 function WarehouseCard({ openDeleteModal, warehouse }) {
+  const fieldsArr = Object.values(warehouse.fields);
+  const vaultFields = fieldsArr.filter(field => field.type === "vault").length;
+  const couchboxFields = fieldsArr.filter(field => field.type === "couchbox-T").length;
+  const warehouseCapacity = (vaultFields * 3) + (couchboxFields * 4);
+  const filledFields = fieldsArr.filter(field => Object.values(field.vaults).length);
+  const allVaultsPresentInWarehouse = filledFields.flatMap(field => Object.values(field.vaults));
+  const totalVaults = allVaultsPresentInWarehouse.length;
+  const onlyCustomerVaults = allVaultsPresentInWarehouse.filter(vault => vault.customer_name !== "EMPTY");
+  const percentage = Math.round((onlyCustomerVaults.length / warehouseCapacity) * 100);
+
+  console.log("🍇 percentage: ", percentage);
+
+  // Determine the color based on the percentage
+  let percentageColor;
+  if (percentage >= 75) {
+    percentageColor = "text-red-500";
+  } else if (percentage >= 50) {
+    percentageColor = "text-orange-500";
+  } else if (percentage >= 25) {
+    percentageColor = "text-yellow-500";
+  } else {
+    percentageColor = "text-green-500";
+  }
+
   return (
     <div
       key={warehouse.id}
@@ -14,9 +37,8 @@ function WarehouseCard({ openDeleteModal, warehouse }) {
         <div>
           <div className="text-lg font-semibold text-gray-800 justify-between flex">
             <span>{warehouse.name}</span>
-            <span>CAPACITY</span>
+            <span className={percentageColor}>{percentage}%</span>
           </div>
-          <p>{warehouse.location}</p>
         </div>
       </Link>
       <hr className="border-gray-300" />
