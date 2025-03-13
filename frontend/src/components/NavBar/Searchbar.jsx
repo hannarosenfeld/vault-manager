@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { searchWarehouse } from "../../store/warehouse";
+import { searchWarehouse, clearSearch } from "../../store/warehouse";
 
 function Searchbar() {
   const dispatch = useDispatch();
@@ -48,6 +48,11 @@ function Searchbar() {
     setDropdownVisible(false);
   };
 
+  const handleClearSearch = () => {
+    setSearch("");
+    dispatch(clearSearch());
+  };
+
   const handleSearch = (e) => {
     e.preventDefault();
     // Add your search logic here
@@ -68,6 +73,15 @@ function Searchbar() {
             required
             autoComplete="off"
           />
+          {search && (
+            <button
+              type="button"
+              className="absolute right-2 top-2 text-gray-500 hover:text-gray-700"
+              onClick={handleClearSearch}
+            >
+              <span className="material-symbols-outlined">close</span>
+            </button>
+          )}
           {dropdownVisible && suggestions.length > 0 && (
             <div className="absolute z-10 w-full bg-white divide-y divide-gray-100 rounded-lg shadow-sm mt-1 max-h-60 overflow-y-auto">
               <ul className="py-2 text-sm text-gray-700">

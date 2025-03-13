@@ -15,6 +15,7 @@ const ADD_FIELDS = "warehouse/ADD_FIELDS";
 const DELETE_FIELDS = "warehouse/DELETE_FIELDS";
 const DELETE_WAREHOUSE = "warehouse/DELETE_WAREHOUSE";
 const SEARCH_WAREHOUSE = "warehouse/SEARCH_WAREHOUSE";
+const CLEAR_SEARCH = "warehouse/CLEAR_SEARCH";
 
 export const addWarehouse = (warehouse) => ({
   type: ADD_WAREHOUSE,
@@ -103,6 +104,10 @@ export const searchWarehouse = (searchTerm, searchType) => ({
     searchTerm,
     searchType,
   },
+});
+
+export const clearSearch = () => ({
+  type: CLEAR_SEARCH,
 });
 
 export const addWarehouseThunk = (warehouseData) => async (dispatch) => {
@@ -421,7 +426,6 @@ const warehouseReducer = (state = initialState, action) => {
       };
 
     case SET_CURRENT_WAREHOUSE:
-
       if (!action.warehouse?.fields) {
         return {
           ...state,
@@ -795,17 +799,30 @@ const warehouseReducer = (state = initialState, action) => {
       const type = action.payload.searchType;
       const searchTerm = action.payload.searchTerm;
 
-      const fields = Object.values(state.currentWarehouse.fields)
+      const fields = Object.values(state.currentWarehouse.fields);
       const vaults = fields.flatMap((field) => Object.values(field.vaults));
-      const vaultsContainingSearchTerm = type == "order" ? vaults.filter(vault => vault.order_name === searchTerm) : type == "customer" ? vaults.filter(vault => vault.customer_name === searchTerm) : []
+      const vaultsContainingSearchTerm =
+        type == "order"
+          ? vaults.filter((vault) => vault.order_name === searchTerm)
+          : type == "customer"
+          ? vaults.filter((vault) => vault.customer_name === searchTerm)
+          : [];
       const vaultIds = vaultsContainingSearchTerm.map((vault) => vault.id);
-      const fieldIds = vaultsContainingSearchTerm.map((vault) => vault.field_id);
+      const fieldIds = vaultsContainingSearchTerm.map(
+        (vault) => vault.field_id
+      );
 
       return {
         ...state,
         search: fieldIds,
       };
 
+    case CLEAR_SEARCH:
+      return {
+        ...state,
+        search: null,
+      };
+      
     default:
       return state;
   }
