@@ -52,23 +52,23 @@ function PrintStudio() {
           <table className="min-w-full bg-white">
             <thead>
               <tr className="text-xs">
-                <th className="py-2 text-left">Vault #</th>
-                <th className="py-2 text-left">Customer</th>
-                <th className="py-2 text-left">Type</th>
-                <th className="py-2 text-left">Pos</th>
-                <th className="py-2 text-left">Field</th>
-                <th className="py-2 text-left">Warehouse</th>
+                <th className="py-2 text-center">Vault #</th>
+                <th className="py-2 text-center">Customer</th>
+                <th className="py-2 text-center">Type</th>
+                <th className="py-2 text-center">Pos</th>
+                <th className="py-2 text-center">Field</th>
+                <th className="py-2 text-center">Warehouse</th>
               </tr>
             </thead>
             <tbody>
               {sortedVaults.map((vault) => (
                 <tr key={vault.id} className="text-xs">
-                  <td className="border px-4 py-2 text-left">{vault.name}</td>
-                  <td className="border px-4 py-2 text-left">{vault.customer_name}</td>
-                  <td className="border px-4 py-2 text-left">{vault.type}</td>
-                  <td className="border px-4 py-2 text-left">{vault.position}</td>
-                  <td className="border px-4 py-2 text-left">{vault.field_name}</td>
-                  <td className="border px-4 py-2 text-left">{vault.warehouse_name}</td>
+                  <td className="border px-4 py-2 text-center">{vault.name}</td>
+                  <td className="border px-4 py-2 text-center">{vault.customer_name}</td>
+                  <td className="border px-4 py-2 text-center">{vault.type}</td>
+                  <td className="border px-4 py-2 text-center">{vault.position}</td>
+                  <td className="border px-4 py-2 text-center">{vault.field_name}</td>
+                  <td className="border px-4 py-2 text-center">{vault.warehouse_name}</td>
                 </tr>
               ))}
             </tbody>
