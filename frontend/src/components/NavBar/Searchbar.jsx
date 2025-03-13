@@ -7,6 +7,7 @@ function Searchbar() {
   const [customers, setCustomers] = useState([]);
   const [orders, setOrders] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
 
   useEffect(() => {
     if (currentWarehouse === null) {
@@ -32,9 +33,16 @@ function Searchbar() {
         order && order.toLowerCase().includes(value.toLowerCase())
       ).map((order) => ({ type: 'order', name: order }));
       setSuggestions([...customerSuggestions, ...orderSuggestions]);
+      setDropdownVisible(true);
     } else {
       setSuggestions([]);
+      setDropdownVisible(false);
     }
+  };
+
+  const handleSuggestionClick = (suggestion) => {
+    setSearch(suggestion.name);
+    setDropdownVisible(false);
   };
 
   const handleSearch = (e) => {
@@ -56,16 +64,15 @@ function Searchbar() {
             onChange={handleChange}
             required
           />
-          {suggestions.length > 0 && (
+          {dropdownVisible && suggestions.length > 0 && (
             <div className="absolute z-10 w-full bg-white divide-y divide-gray-100 rounded-lg shadow-sm mt-1 max-h-60 overflow-y-auto">
               <ul className="py-2 text-sm text-gray-700">
                 {suggestions.map((suggestion, index) => (
-                  <li key={index}
-                  >
+                  <li key={index}>
                     <a
                       href="#"
                       className="flex items-center px-4 py-2 hover:bg-gray-100"
-                      onClick={() => setSearch(suggestion.name)}
+                      onClick={() => handleSuggestionClick(suggestion)}
                     >
                       <span className="material-symbols-outlined me-2 text-xs">
                         {suggestion.type === 'customer' ? 'person' : 'orders'}
