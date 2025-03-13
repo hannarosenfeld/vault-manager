@@ -14,7 +14,7 @@ function PrintStudio() {
   const handleDownloadCSV = () => {
     const csvData = vaults.map((vault) => ({
       "Vault Name": vault.name,
-      "Customer Name": vault.customerName,
+      "Customer Name": vault.customer_name,
       "Vault Type": vault.type,
       "Position": vault.position,
       "Field Name": vault.field_name,
@@ -33,6 +33,9 @@ function PrintStudio() {
     document.body.removeChild(link);
   };
 
+  // Sort vaults by customer name
+  const sortedVaults = [...vaults].sort((a, b) => a.customer_name.localeCompare(b.customer_name));
+
   return (
     <div className="p-4">
       <h1>Print Studio</h1>
@@ -45,27 +48,27 @@ function PrintStudio() {
         </button>
       </div>
       <div className="mt-4">
-        {vaults.length > 0 ? (
+        {sortedVaults.length > 0 ? (
           <table className="min-w-full bg-white">
             <thead>
               <tr className="text-xs">
-                <th className="py-2">Vault #</th>
-                <th className="py-2">Customer</th>
-                <th className="py-2">Type</th>
-                <th className="py-2">Pos</th>
-                <th className="py-2">Field</th>
-                <th className="py-2">Warehouse</th>
+                <th className="py-2 text-right">Vault #</th>
+                <th className="py-2 text-right">Customer</th>
+                <th className="py-2 text-right">Type</th>
+                <th className="py-2 text-right">Pos</th>
+                <th className="py-2 text-right">Field</th>
+                <th className="py-2 text-right">Warehouse</th>
               </tr>
             </thead>
             <tbody>
-              {vaults.map((vault) => (
-                <tr key={vault.id}>
-                  <td className="border px-4 py-2">{vault.name}</td>
-                  <td className="border px-4 py-2">{vault.customer_name}</td>
-                  <td className="border px-4 py-2">{vault.type}</td>
-                  <td className="border px-4 py-2">{vault.position}</td>
-                  <td className="border px-4 py-2">{vault.field_name}</td>
-                  <td className="border px-4 py-2">{vault.warehouse_name}</td>
+              {sortedVaults.map((vault) => (
+                <tr key={vault.id} className="text-xs">
+                  <td className="border px-4 py-2 text-right">{vault.name}</td>
+                  <td className="border px-4 py-2 text-right">{vault.customer_name}</td>
+                  <td className="border px-4 py-2 text-right">{vault.type}</td>
+                  <td className="border px-4 py-2 text-right">{vault.position}</td>
+                  <td className="border px-4 py-2 text-right">{vault.field_name}</td>
+                  <td className="border px-4 py-2 text-right">{vault.warehouse_name}</td>
                 </tr>
               ))}
             </tbody>
