@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import FieldGrid from "../Warehouse/FieldGrid";
 import FieldInfo from "../Warehouse/FieldInfo";
 
-export default function StageToWareHouseModal({ isOpen, onClose, vault, setIsModalOpen }) {
+export default function StageToWareHouseModal({ isOpen, onClose, vault }) {
   const warehouses = useSelector((state) => state.warehouse.warehouses);
   const warehouseArr = Object.values(warehouses);
   const [selectedField, setSelectedField] = useState(null);
@@ -14,13 +14,18 @@ export default function StageToWareHouseModal({ isOpen, onClose, vault, setIsMod
     setSelectedField(field);
   };
 
-  const onMove = () => {
-    setIsModalOpen(false);
-    setIsSuccessModalOpen(true);
-    setTimeout(() => {
-      setIsSuccessModalOpen(false);
-    }, 2000);
-    setSelectedField(null);
+  const onMove = async () => {
+    try {
+      // Move the vault logic here
+      setIsSuccessModalOpen(true);
+      setTimeout(() => {
+        setIsSuccessModalOpen(false);
+        onClose();
+      }, 2000);
+      setSelectedField(null);
+    } catch (error) {
+      console.error("Error moving vault:", error);
+    }
   };
 
   if (!vault) return null;

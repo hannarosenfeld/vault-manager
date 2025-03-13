@@ -1,6 +1,15 @@
 import { Dialog } from "@headlessui/react";
 
 export default function ConfirmAddVaultModal({ isOpen, onClose, onConfirm, position }) {
+  const handleConfirm = async () => {
+    try {
+      await onConfirm();
+      onClose();
+    } catch (error) {
+      console.error("Error adding vault:", error);
+    }
+  };
+
   return (
     <Dialog open={isOpen} onClose={onClose} className="fixed inset-0 z-50 overflow-y-auto">
       <div className="fixed inset-0 bg-black opacity-30 z-40" />
@@ -14,7 +23,7 @@ export default function ConfirmAddVaultModal({ isOpen, onClose, onConfirm, posit
             <button
               type="button"
               className="w-full text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2"
-              onClick={onConfirm}
+              onClick={handleConfirm}
             >
               Yes, add it
             </button>
