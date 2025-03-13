@@ -23,6 +23,13 @@ function Searchbar() {
     }
   }, [currentWarehouse]);
 
+  useEffect(() => {
+    return () => {
+      dispatch(clearSearch());
+    };
+  }, [dispatch]);
+
+
   const handleChange = (e) => {
     const value = e.target.value;
     setSearch(value);
