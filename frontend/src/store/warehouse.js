@@ -147,29 +147,29 @@ export const updateFieldTypeThunk =
     }
   };
 
-  export const deleteVaultThunk = (vaultId) => async (dispatch) => {
-    try {
-      const res = await fetch(`/api/vaults/${vaultId}`, {
-        method: "DELETE",
-      });
-  
-      if (res.ok) {
-        const data = await res.json();
-        dispatch(deleteVault({ vaultId, deleteFrom: data.deleteFrom }));
-        if (data.deleteFrom === "stage") {
-          dispatch(removeVaultFromStage(vaultId));
-        }
-        return data;
-      } else {
-        const err = await res.json();
-        console.error("Error deleting vault:", err);
-        return err;
+export const deleteVaultThunk = (vaultId) => async (dispatch) => {
+  try {
+    const res = await fetch(`/api/vaults/${vaultId}`, {
+      method: "DELETE",
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      dispatch(deleteVault({ vaultId, deleteFrom: data.deleteFrom }));
+      if (data.deleteFrom === "stage") {
+        dispatch(removeVaultFromStage(vaultId));
       }
-    } catch (error) {
-      console.error("Error deleting vault:", error);
-      return error;
+      return data;
+    } else {
+      const err = await res.json();
+      console.error("Error deleting vault:", err);
+      return err;
     }
-  };
+  } catch (error) {
+    console.error("Error deleting vault:", error);
+    return error;
+  }
+};
 
 export const uploadAttachmentThunk = (file, vaultId) => async (dispatch) => {
   const formData = new FormData();
@@ -416,9 +416,25 @@ const warehouseReducer = (state = initialState, action) => {
       };
 
     case SET_CURRENT_WAREHOUSE:
+      const warehouseVaults = Object.values(action.warehouse.fields).flatMap((field) =>
+        Object.values(field.vaults)
+      );
+      const customers = Object.fromEntries(
+        warehouseVaults.map((vault) => [vault.customer_id, vault.customer_name])
+      );
+      const orders = Object.fromEntries(
+        warehouseVaults.map((vault) => [vault.order_id, vault.order_name])
+      );
+
+      console.log("🍋 orders: ", orders)
+
       return {
         ...state,
-        currentWarehouse: action.warehouse,
+        currentWarehouse: {
+          ...action.warehouse,
+          customers: customers,
+          orders: orders
+        },
       };
 
     case SET_CURRENT_FIELD:
@@ -673,7 +689,7 @@ const warehouseReducer = (state = initialState, action) => {
     case UPDATE_FIELD_TYPE:
       const { field1, field2 } = action.fields;
       const warehouseId = field1.warehouse_id;
-    
+
       return {
         ...state,
         warehouses: {
