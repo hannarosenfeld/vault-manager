@@ -14,6 +14,7 @@ const ADD_WAREHOUSE = "warehouse/ADD_WAREHOUSE";
 const ADD_FIELDS = "warehouse/ADD_FIELDS";
 const DELETE_FIELDS = "warehouse/DELETE_FIELDS";
 const DELETE_WAREHOUSE = "warehouse/DELETE_WAREHOUSE";
+const SEARCH_WAREHOUSE = "warehouse/SEARCH_WAREHOUSE";
 
 export const addWarehouse = (warehouse) => ({
   type: ADD_WAREHOUSE,
@@ -94,6 +95,11 @@ export const deleteFieldsAction = (
 export const deleteWarehouse = (warehouseId) => ({
   type: DELETE_WAREHOUSE,
   warehouseId,
+});
+
+export const searchWarehouse = (payload) => ({
+  type: SEARCH_WAREHOUSE,
+  payload,
 });
 
 export const addWarehouseThunk = (warehouseData) => async (dispatch) => {
@@ -370,6 +376,11 @@ const initialState = {
 
 const warehouseReducer = (state = initialState, action) => {
   switch (action.type) {
+    case SEARCH_WAREHOUSE:
+      console.log("⛱️", action);
+      return {
+        ...state
+      };
     case ADD_WAREHOUSE:
       const sortedFields = Object.values(action.warehouse.fields).sort(
         (a, b) => a.id - b.id
@@ -769,10 +780,7 @@ const warehouseReducer = (state = initialState, action) => {
       return {
         ...state,
         warehouses: remainingWarehouses,
-        currentWarehouse:
-          state.currentWarehouse?.id === action.warehouseId
-            ? null
-            : state.currentWarehouse,
+        currentWarehouse: null
       };
 
     default:

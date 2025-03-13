@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { searchWarehouse } from "../../store/warehouse";
 
 function Searchbar() {
+  const dispatch = useDispatch();
   const currentWarehouse = useSelector((state) => state.warehouse.currentWarehouse);
   const [search, setSearch] = useState("");
   const [customers, setCustomers] = useState([]);
@@ -42,6 +44,7 @@ function Searchbar() {
 
   const handleSuggestionClick = (suggestion) => {
     setSearch(suggestion.name);
+    dispatch(searchWarehouse(suggestion.name, suggestion.type));
     setDropdownVisible(false);
   };
 
@@ -63,6 +66,7 @@ function Searchbar() {
             value={search}
             onChange={handleChange}
             required
+            autoComplete="off"
           />
           {dropdownVisible && suggestions.length > 0 && (
             <div className="absolute z-10 w-full bg-white divide-y divide-gray-100 rounded-lg shadow-sm mt-1 max-h-60 overflow-y-auto">
