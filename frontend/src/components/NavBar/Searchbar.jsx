@@ -1,13 +1,30 @@
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 function Searchbar() {
+  const currentWarehouse = useSelector((state) => state.warehouse.currentWarehouse);
   const [search, setSearch] = useState("");
+
+  // 🚨 We should do this in the reducer...
+  // And have currentWarehouse.customers and currentWarehouse.orders populated when we enter a warehouse
+
+  // Fetch all customers in the current warehouse
+  // const fetchAllCustomersInCurrentWarehouse = async () => {
+  //   const warehouseFields = Object.values(currentWarehouse.fields);
+  //   const warehouseVaults = warehouseFields.flatMap((field) => Object.values(field.vaults));
+  //   console.log("🍊", warehouseFields)
+  //   console.log("🍌", warehouseVaults)
+  // }
+
+  // useEffect(() => {
+  //   fetchAllCustomersInCurrentWarehouse();
+  // }, []);
 
   const handleChange = (e) => {   
     setSearch(e)
     console.log("🍊", e)
   }
-  
+
   const handleSearch = (e) => {
     e.preventDefault();
     // Add your search logic here

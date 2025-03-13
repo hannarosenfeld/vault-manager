@@ -629,9 +629,6 @@ const warehouseReducer = (state = initialState, action) => {
       const deletedVaultId = action.payload.vaultId;
       const deleteFrom = action.payload.deleteFrom;
 
-      console.log("🍌 in warehouse reducer", action)
-
-      if (deleteFrom === "stage") console.log("🍉")
       if (deleteFrom === "stage") return state;
 
       // Remove the vault from the current field
@@ -757,6 +754,7 @@ const warehouseReducer = (state = initialState, action) => {
           cols: action.newWarehouseColsCount,
         },
       };
+
     case DELETE_WAREHOUSE:
       const { [action.warehouseId]: _, ...remainingWarehouses } =
         state.warehouses;
