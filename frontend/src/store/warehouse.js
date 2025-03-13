@@ -110,6 +110,24 @@ export const clearSearch = () => ({
   type: CLEAR_SEARCH,
 });
 
+export const getAllWarehousesThunk = () => async (dispatch) => {
+  try {
+    const response = await fetch("/api/warehouse/");
+    if (response.ok) {
+      const data = await response.json();
+      dispatch(getAllWarehouses(data));
+      return data;
+    } else {
+      const errorData = await response.json();
+      console.error("Error fetching warehouses:", errorData.errors);
+      return errorData;
+    }
+  } catch (error) {
+    console.error("Error fetching warehouses:", error);
+    return error;
+  }
+};
+
 export const addWarehouseThunk = (warehouseData) => async (dispatch) => {
   try {
     const res = await fetch("/api/warehouse/add-warehouse", {
@@ -237,24 +255,6 @@ export const moveVaultToWarehouseThunk =
       return error;
     }
   };
-
-export const getAllWarehousesThunk = () => async (dispatch) => {
-  try {
-    const response = await fetch("/api/warehouse/");
-    if (response.ok) {
-      const data = await response.json();
-      dispatch(getAllWarehouses(data));
-      return data;
-    } else {
-      const errorData = await response.json();
-      console.error("Error fetching warehouses:", errorData.errors);
-      return errorData;
-    }
-  } catch (error) {
-    console.error("Error fetching warehouses:", error);
-    return error;
-  }
-};
 
 export const addVaultThunk = (vaultData) => async (dispatch) => {
   try {

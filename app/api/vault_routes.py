@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required
-from app.models import Customer, Vault, Field, Order, Attachment, db
+from app.models import Customer, Vault, Field, Order, Attachment, Warehouse, db
 from app.forms import VaultForm, EditVaultForm
 from werkzeug.utils import secure_filename
 import os
@@ -55,6 +55,27 @@ def move_vault():
         })
     else:
         return jsonify({"message": "Vault not found"}), 404
+    
+    
+@vault_routes.route('/all', methods=['GET'])
+# @login_required
+def get_all_vaults():
+    """
+    Query for all vaults and return them in a list of vault dictionaries
+    """
+    vaults = Vault.query.all()
+    vaults_with_warehouse = []
+    for vault in vaults:
+        field = Field.query.get(vault.field_id)
+        warehouse_id = field.warehouse_id if field else None
+        warehouse = Warehouse.query.get(warehouse_id) if warehouse_id else None
+        vault_dict = vault.to_dict()
+        vault_dict['warehouse_name'] = warehouse.name if warehouse else None
+        vault_dict['field_id'] = "staged" if vault.field_id is None else vault.field_id
+        vault_dict['field_name'] = field.name if field else "staged"
+        vaults_with_warehouse.append(vault_dict)
+        
+    return jsonify(vaults_with_warehouse)
 
 
 @vault_routes.route('/upload', methods=['POST'])
@@ -185,11 +206,12 @@ def add_vault():
 
     return jsonify({'errors': validation_errors_to_error_messages(form.errors)}), 400
 
+
 @vault_routes.route('/<int:id>', methods=['GET', 'PUT'])
 # @login_required
 def manage_vault(id):
     """
-    Query for a vault by id and manage it (GET, PUT/EDIT, DELETE)
+    Query for a vault by id and manage it (GET, PUT)
     """
     vault = Vault.query.get(id)
 
@@ -278,9 +300,7 @@ def delete_vault(id):
         order_to_delete = None
 
         db.session.delete(vault)
-        
-        print("🍄 deleted vault: ", vault.to_dict())
-        
+                
         # Check if the customer has any other vaults
         if customer and len(customer.vaults) == 0:
             customer_to_delete = customer.id
