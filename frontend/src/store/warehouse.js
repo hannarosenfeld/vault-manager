@@ -319,11 +319,6 @@ export const deleteFieldsThunk = (formData) => async (dispatch) => {
     });
     if (res.ok) {
       const data = await res.json();
-      console.log("🍀 data", data);
-      console.log("Fields to delete:", data.fields);
-      console.log("Warehouse ID:", data.warehouseId);
-      console.log("New Warehouse Rows Count:", data.newWarehouseRowsCount);
-      console.log("New Warehouse Cols Count:", data.newWarehouseColsCount);
       dispatch(
         deleteFieldsAction(
           data.fields,
@@ -425,9 +420,6 @@ const warehouseReducer = (state = initialState, action) => {
       const orders = Object.fromEntries(
         warehouseVaults.map((vault) => [vault.order_id, vault.order_name])
       );
-
-      console.log("🍋 orders: ", orders)
-
       return {
         ...state,
         currentWarehouse: {
