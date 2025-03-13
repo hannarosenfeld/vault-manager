@@ -1,29 +1,41 @@
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 function Searchbar() {
   const currentWarehouse = useSelector((state) => state.warehouse.currentWarehouse);
   const [search, setSearch] = useState("");
+  const [customers, setCustomers] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
 
-  // 🚨 We should do this in the reducer...
-  // And have currentWarehouse.customers and currentWarehouse.orders populated when we enter a warehouse
+  useEffect(() => {
+    if (currentWarehouse === null) {
+      return;
+    }
+    if (currentWarehouse.customers) {
+      setCustomers(Object.values(currentWarehouse.customers));
+    }
+    if (currentWarehouse.orders) {
+      setOrders(Object.values(currentWarehouse.orders));
+    }
+  }, [currentWarehouse]);
 
-  // Fetch all customers in the current warehouse
-  // const fetchAllCustomersInCurrentWarehouse = async () => {
-  //   const warehouseFields = Object.values(currentWarehouse.fields);
-  //   const warehouseVaults = warehouseFields.flatMap((field) => Object.values(field.vaults));
-  //   console.log("🍊", warehouseFields)
-  //   console.log("🍌", warehouseVaults)
-  // }
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setSearch(value);
 
-  // useEffect(() => {
-  //   fetchAllCustomersInCurrentWarehouse();
-  // }, []);
-
-  const handleChange = (e) => {   
-    setSearch(e)
-    console.log("🍊", e)
-  }
+    if (value) {
+      const customerSuggestions = customers.filter((customer) =>
+        customer && customer.toLowerCase().includes(value.toLowerCase())
+      ).map((customer) => ({ type: 'customer', name: customer }));
+      const orderSuggestions = orders.filter((order) =>
+        order && order.toLowerCase().includes(value.toLowerCase())
+      ).map((order) => ({ type: 'order', name: order }));
+      setSuggestions([...customerSuggestions, ...orderSuggestions]);
+    } else {
+      setSuggestions([]);
+    }
+  };
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -34,9 +46,6 @@ function Searchbar() {
   return (
     <div className="flex items-center py-2">
       <form className="flex items-center mx-auto w-[95%] lg:w-[70%]" onSubmit={handleSearch}>
-        {/* <label htmlFor="simple-search" className="sr-only"> */}
-          {/* Search */}
-        {/* </label> */}
         <div className="relative w-full">
           <input
             type="text"
@@ -44,9 +53,30 @@ function Searchbar() {
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-3 p-2.5"
             placeholder="Search customer/order..."
             value={search}
-            onChange={(e) => handleChange(e.target.value)}
+            onChange={handleChange}
             required
           />
+          {suggestions.length > 0 && (
+            <div className="absolute z-10 w-full bg-white divide-y divide-gray-100 rounded-lg shadow-sm mt-1 max-h-60 overflow-y-auto">
+              <ul className="py-2 text-sm text-gray-700">
+                {suggestions.map((suggestion, index) => (
+                  <li key={index}
+                  >
+                    <a
+                      href="#"
+                      className="flex items-center px-4 py-2 hover:bg-gray-100"
+                      onClick={() => setSearch(suggestion.name)}
+                    >
+                      <span className="material-symbols-outlined me-2 text-xs">
+                        {suggestion.type === 'customer' ? 'person' : 'orders'}
+                      </span>
+                      {suggestion.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
         <button
           type="submit"
