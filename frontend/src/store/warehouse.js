@@ -97,9 +97,12 @@ export const deleteWarehouse = (warehouseId) => ({
   warehouseId,
 });
 
-export const searchWarehouse = (payload) => ({
+export const searchWarehouse = (searchTerm, searchType) => ({
   type: SEARCH_WAREHOUSE,
-  payload,
+  payload: {
+    searchTerm,
+    searchType,
+  },
 });
 
 export const addWarehouseThunk = (warehouseData) => async (dispatch) => {
@@ -376,11 +379,6 @@ const initialState = {
 
 const warehouseReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SEARCH_WAREHOUSE:
-      console.log("⛱️", action);
-      return {
-        ...state
-      };
     case ADD_WAREHOUSE:
       const sortedFields = Object.values(action.warehouse.fields).sort(
         (a, b) => a.id - b.id
@@ -422,8 +420,17 @@ const warehouseReducer = (state = initialState, action) => {
       };
 
     case SET_CURRENT_WAREHOUSE:
-      const warehouseVaults = Object.values(action.warehouse.fields).flatMap((field) =>
-        Object.values(field.vaults)
+      console.log("🍾 in set current warehosue", action);
+
+      if (!action.warehouse?.fields) {
+        return {
+          ...state,
+          currentWarehouse: null,
+        };
+      }
+
+      const warehouseVaults = Object.values(action.warehouse.fields).flatMap(
+        (field) => Object.values(field.vaults)
       );
       const customers = Object.fromEntries(
         warehouseVaults.map((vault) => [vault.customer_id, vault.customer_name])
@@ -431,12 +438,13 @@ const warehouseReducer = (state = initialState, action) => {
       const orders = Object.fromEntries(
         warehouseVaults.map((vault) => [vault.order_id, vault.order_name])
       );
+
       return {
         ...state,
         currentWarehouse: {
           ...action.warehouse,
           customers: customers,
-          orders: orders
+          orders: orders,
         },
       };
 
@@ -780,7 +788,22 @@ const warehouseReducer = (state = initialState, action) => {
       return {
         ...state,
         warehouses: remainingWarehouses,
-        currentWarehouse: null
+        currentWarehouse: null,
+      };
+
+    case SEARCH_WAREHOUSE:
+      console.log("⛱️", action.payload);
+      const type = action.payload.searchType;
+      const searchTerm = action.payload.searchTerm;
+
+      const fields = Object.values(state.currentWarehouse.fields)
+      const vaults = fields.flatMap((field) => Object.values(field.vaults));
+      const res = type == "order" ? vaults.filter(vault => vault.order_name === searchTerm) : type == "customer" ? vaults.filter(vault => vault.customer_name === searchTerm) : []
+
+      console.log("🍇", res)
+
+      return {
+        ...state,
       };
 
     default:
