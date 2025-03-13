@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCurrentField } from "../../store/warehouse";
 import { sortWarehouseFields } from "../../utils/sortWarehouseFields";
 
 export default function FieldGrid({ warehouse, handleFieldClick }) {
   const dispatch = useDispatch();
+  const searchIds = useSelector((state) => state.warehouse.search);
   const [sortedFields, setSortedFields] = useState([]);
   const [selectedField, setSelectedField] = useState(null);
 
@@ -12,7 +13,7 @@ export default function FieldGrid({ warehouse, handleFieldClick }) {
     if (warehouse.fields) {
       setSortedFields(sortWarehouseFields(warehouse.fields));
     }
-  }, [warehouse, dispatch, warehouse]);
+  }, [warehouse]);
 
   useEffect(() => {
     return () => {
@@ -45,6 +46,8 @@ export default function FieldGrid({ warehouse, handleFieldClick }) {
               }`}
               key={field.id}
               style={{
+                filter: `${searchIds?.length && !searchIds.includes(field.id) ? "grayscale(100%)" : "none"}`,
+                opacity: `${searchIds?.length && !searchIds.includes(field.id) ? "0.5" : "1"}`,
                 display: field.type === "couchbox-B" ? "none" : "flex",
                 height: field.type === "couchbox-T" ? "calc(10vh + 0.25rem)" : "5vh", // Double the height for couchbox-T
                 backgroundColor: `${

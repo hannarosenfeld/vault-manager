@@ -375,6 +375,7 @@ const initialState = {
   warehouses: {},
   currentWarehouse: null,
   currentField: null,
+  search: null,
 };
 
 const warehouseReducer = (state = initialState, action) => {
@@ -420,7 +421,6 @@ const warehouseReducer = (state = initialState, action) => {
       };
 
     case SET_CURRENT_WAREHOUSE:
-      console.log("🍾 in set current warehosue", action);
 
       if (!action.warehouse?.fields) {
         return {
@@ -792,18 +792,18 @@ const warehouseReducer = (state = initialState, action) => {
       };
 
     case SEARCH_WAREHOUSE:
-      console.log("⛱️", action.payload);
       const type = action.payload.searchType;
       const searchTerm = action.payload.searchTerm;
 
       const fields = Object.values(state.currentWarehouse.fields)
       const vaults = fields.flatMap((field) => Object.values(field.vaults));
-      const res = type == "order" ? vaults.filter(vault => vault.order_name === searchTerm) : type == "customer" ? vaults.filter(vault => vault.customer_name === searchTerm) : []
-
-      console.log("🍇", res)
+      const vaultsContainingSearchTerm = type == "order" ? vaults.filter(vault => vault.order_name === searchTerm) : type == "customer" ? vaults.filter(vault => vault.customer_name === searchTerm) : []
+      const vaultIds = vaultsContainingSearchTerm.map((vault) => vault.id);
+      const fieldIds = vaultsContainingSearchTerm.map((vault) => vault.field_id);
 
       return {
         ...state,
+        search: fieldIds,
       };
 
     default:
