@@ -11,7 +11,7 @@ export default defineConfig({
   },
 
   build: {
-    outDir: "../app/static", // Specify the output directory
+    outDir: "../app/static",
     emptyOutDir: true,
   },
 
