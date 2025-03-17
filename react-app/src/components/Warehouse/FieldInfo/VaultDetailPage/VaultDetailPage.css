@@ -1,7 +1,0 @@
-.attachment {
-    cursor: pointer;
-}
-
-.attachment:hover {
-    color: var(--blue);
-}
