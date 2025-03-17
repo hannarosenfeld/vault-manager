@@ -7,10 +7,10 @@ function WarehouseStatsPage({ warehouse }) {
   const filledFields = fieldsArr.filter(field => Object.values(field.vaults).length);
   const allVaultsPresentInWarehouse = filledFields.flatMap(field => Object.values(field.vaults));
   const numberOfAllVaults = allVaultsPresentInWarehouse.length;
-  const numberOfEmptyVaults = allVaultsPresentInWarehouse.filter(vault => vault.customer_name == "EMPTY" && vault.type === "vault").length;   
-  const numberOfEmptyCouchboxes = allVaultsPresentInWarehouse.filter(vault => vault.customer_name == "EMPTY" && vault.type === "couchbox").length;   
+  const numberOfEmptyVaults = allVaultsPresentInWarehouse.filter(vault => vault.customer_name.includes("EMPTY") && vault.type === "vault").length;   
+  const numberOfEmptyCouchboxes = allVaultsPresentInWarehouse.filter(vault => vault.customer_name.includes("EMPTY") && vault.type === "couchbox").length;   
 
-  const onlyCustomerVaults = allVaultsPresentInWarehouse.filter(vault => vault.customer_name !== "EMPTY");
+  const onlyCustomerVaults = allVaultsPresentInWarehouse.filter(vault => !vault.customer_name.includes("EMPTY"));
   
   const percentage = Math.round((onlyCustomerVaults.length / warehouseCapacity) * 100);
 
