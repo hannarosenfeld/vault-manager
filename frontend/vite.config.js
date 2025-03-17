@@ -10,6 +10,11 @@ export default defineConfig({
     include: ["googleapis"],
   },
 
+  build: {
+    outDir: "../app/static", // Specify the output directory
+    emptyOutDir: true,
+  },
+
   server: {
     host: true,
     port: 5173,

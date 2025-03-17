@@ -22,7 +22,7 @@ from .api.stage_routes import stage_routes
 from .seeds import seed_commands
 from .config import Config
 
-app = Flask(__name__, static_folder='../react-app/build', static_url_path='/')
+app = Flask(__name__, static_folder='static', static_url_path='/')
 
 # Setup login manager
 login = LoginManager(app)
@@ -96,7 +96,7 @@ def api_help():
     """
     Returns all API routes and their doc strings
     """
-    acceptable_methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
+    acceptable_methods are ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
     route_list = { rule.rule: [[ method for method in rule.methods if method in acceptable_methods ],
                     app.view_functions[rule.endpoint].__doc__ ]
                     for rule in app.url_map.iter_rules() if rule.endpoint != 'static' }
@@ -111,7 +111,7 @@ def react_root(path):
     or index.html requests
     """
     if path == 'favicon.ico':
-        return app.send_from_directory('public', 'favicon.ico')
+        return app.send_from_directory('static', 'favicon.ico')
     return app.send_static_file('index.html')
 
 @app.errorhandler(404)
