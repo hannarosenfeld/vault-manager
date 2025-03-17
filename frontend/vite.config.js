@@ -11,7 +11,7 @@ export default defineConfig({
   },
 
   build: {
-    outDir: "../frontend/index.html",
+    outDir: "../frontend/build",
     emptyOutDir: true,
   },
 
