@@ -26,11 +26,19 @@ def validation_errors_to_error_messages(validation_errors):
 
 # Google Drive API setup
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
-SERVICE_ACCOUNT_FILE = os.path.join(os.path.dirname(__file__), '../credentials.json')  # Google Drive service account file
-FOLDER_ID = '1haDVbvjQAjhaZR5rk77PtMSqXqRS1s5X'  # Google Drive folder ID
-
-credentials = service_account.Credentials.from_service_account_file(
-    SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+SERVICE_ACCOUNT_INFO = {
+    "type": os.getenv("GOOGLE_CLOUD_TYPE"),
+    "project_id": os.getenv("GOOGLE_CLOUD_PROJECT_ID"),
+    "private_key_id": os.getenv("GOOGLE_CLOUD_PRIVATE_KEY_ID"),
+    "private_key": os.getenv("GOOGLE_CLOUD_PRIVATE_KEY").replace("\\n", "\n"),
+    "client_email": os.getenv("GOOGLE_CLOUD_CLIENT_EMAIL"),
+    "client_id": os.getenv("GOOGLE_CLOUD_CLIENT_ID"),
+    "auth_uri": os.getenv("GOOGLE_CLOUD_AUTH_URI"),
+    "token_uri": os.getenv("GOOGLE_CLOUD_TOKEN_URI"),
+    "auth_provider_x509_cert_url": os.getenv("GOOGLE_CLOUD_AUTH_PROVIDER_X509_CERT_URL"),
+    "client_x509_cert_url": os.getenv("GOOGLE_CLOUD_CLIENT_X509_CERT_URL")
+}
+credentials = service_account.Credentials.from_service_account_info(SERVICE_ACCOUNT_INFO, scopes=SCOPES)
 drive_service = build('drive', 'v3', credentials=credentials)
 
 @vault_routes.route('/move', methods=['PUT'])
