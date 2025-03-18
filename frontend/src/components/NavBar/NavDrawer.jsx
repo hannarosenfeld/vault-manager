@@ -44,7 +44,7 @@ export default function NavDrawer({ open, setOpen }) {
               {/* Close Button */}
               <button
                 onClick={() => setOpen(false)}
-                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-white"
+                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-white cursor-pointer"
               >
                 <XMarkIcon className="h-6 w-6" />
               </button>
@@ -62,7 +62,7 @@ export default function NavDrawer({ open, setOpen }) {
                       to={`/warehouse/${warehouse.name
                         .toLowerCase()
                         .replace(/\s+/g, "-")}`}
-                      className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                      className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group cursor-pointer"
                       onClick={() => setOpen(false)}
                     >
                       <span className="material-symbols-outlined">
@@ -73,7 +73,7 @@ export default function NavDrawer({ open, setOpen }) {
                   ))}
                   <button
                     onClick={handleAddWarehouse}
-                    className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full"
+                    className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full cursor-pointer"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -94,7 +94,7 @@ export default function NavDrawer({ open, setOpen }) {
 
                   <Link
                     to="/stage"
-                    className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                    className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group cursor-pointer"
                     onClick={() => setOpen(false)}
                   >
                     <span className="material-symbols-outlined">package_2</span>
@@ -102,7 +102,7 @@ export default function NavDrawer({ open, setOpen }) {
                   </Link>
                   <Link
                     to="/statistics"
-                    className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                    className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group cursor-pointer"
                     onClick={() => setOpen(false)}
                   >
                     <span className="material-symbols-outlined">
@@ -113,7 +113,7 @@ export default function NavDrawer({ open, setOpen }) {
 
                   <Link
                     to="/print-studio"
-                    className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                    className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group cursor-pointer"
                     onClick={() => setOpen(false)}
                   >
                     <span className="material-symbols-outlined">print</span>
@@ -123,7 +123,7 @@ export default function NavDrawer({ open, setOpen }) {
 
                 <button
                   onClick={handleLogout}
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full mt-auto"
+                  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full mt-auto cursor-pointer"
                 >
                   <span className="material-symbols-outlined">logout</span>
                   <span className="ml-3">Logout</span>
