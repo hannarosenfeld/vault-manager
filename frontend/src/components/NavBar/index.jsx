@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Disclosure, Menu, MenuButton } from "@headlessui/react";
 import { Link, useLocation } from "react-router-dom";
 import NavDrawer from './NavDrawer';
@@ -34,7 +34,7 @@ export default function NavBar() {
             <Menu as="div" className="relative">
               <div>
                 <MenuButton
-                  className="flex rounded-full text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-none"
+                  className="flex rounded-full text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-none cursor-pointer"
                   onClick={() => setDrawerOpen(true)}
                 >
                   <span className="sr-only">Open user menu</span>
