@@ -3,7 +3,7 @@ export default function AddVaultButton({ type, onClick }) {
 
   return (
     <div className="flex gap-2 text-xs md:text-sm h-full items-center">
-      <button onClick={onClick} className="text-blue-500">+ Add {capitalizedType}</button>
+      <button onClick={onClick} className="text-blue-500 cursor-pointer">+ Add {capitalizedType}</button>
     </div>
   );
 }
